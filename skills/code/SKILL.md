@@ -169,8 +169,8 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
 
 ## 10. Research
 
-- You may have outdated information. MUST check at least 4 independent sources with the
-  `mcp-browser` tools for each claim about a library, API, model or tool. Prefer official
+- You may have outdated information. MUST check at least 4 independent sources with
+  `agent-browser` (the `browse` skill) for each claim about a library, API, model or tool. Prefer official
   documentation, changelogs and source code. Note the date of each source. Say when
   sources disagree and which one you trust and why.
 - Anything worth noticing goes under `## Caveats` in `AGENTS.md`:

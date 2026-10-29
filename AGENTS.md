@@ -9,7 +9,8 @@ turns it off for this project, with a reason. MAY is the agent's choice.
 Personal Claude Code skills, packaged as the `armory` plugin. Phase 1 is six skills:
 `plan`, `code`, `review`, `audit`, `test` and `init-project`. The repo holds markdown
 skill files, their templates and the plugin manifest; it holds no application code. The
-design is in `docs/DESIGN.md`.
+design is in `docs/DESIGN.md`. The repo now also holds the phase-2 tool `agent-browser`
+under `tools/`.
 
 ## Commands
 
@@ -17,7 +18,12 @@ One line per check. A gate in `## Gates` has the command of the same name here; 
 with no command is `off` there. `run` is not a gate. `worktree-per-agent` and `delegate`
 have no command.
 
-- lint: claude plugin validate .
+- lint: claude plugin validate . && npm --prefix tools/agent-browser run lint
+- owasp: npm --prefix tools/agent-browser audit --audit-level=high
+- unit: npm --prefix tools/agent-browser run test:unit
+- integration: docker compose -f tools/agent-browser/compose.yaml run --rm --build test npm run test:integration
+- coverage: docker compose -f tools/agent-browser/compose.yaml run --rm --build test npm run coverage
+- run: node tools/agent-browser/dist/cli.js
 
 The `coverage` command MUST fail below the threshold set in the build tools (default 90%
 per core module).
@@ -49,13 +55,13 @@ until the project turns them on.
 - worktree-per-agent: on
 - delegate: on
 - lint: on
-- owasp: off (markdown-only repo, no code)
-- unit: off (markdown-only repo, no code)
-- integration: off (markdown-only repo, no code)
+- owasp: on
+- unit: on
+- integration: on
 - contract: off (not chosen)
 - functional: off (not chosen)
 - e2e: off (not chosen)
-- coverage: off (markdown-only repo, no code)
+- coverage: on
 
 ## Models
 
@@ -91,6 +97,15 @@ Project rules:
 
 Format: `Term : one-line meaning`
 
+daemon : the background process of agent-browser that owns the browser; it sleeps after the idle period
+profile : the Chrome user-data directory of agent-browser; logins persist in it
+state file : `daemon.json` in the home dir; it names the pid and port of the running daemon
+channel : which browser the daemon launches: `chrome` (installed Google Chrome) or `chromium` (Playwright's bundled browser)
+
 ## Caveats
 
 Format: `SHORT_DESCRIPTION : file_reference.md`
+
+playwright 1.64.1 + playwright-extra 4.3.6 + puppeteer-extra-plugin-stealth 2.11.2 install together; the Docker tag v1.64.1-noble MUST match : tools/agent-browser/package.json
+
+Playwright `launchPersistentContext`: pages MUST come from `context.newPage()`; `context.browser().newPage()` opens a fresh context and bypasses the profile : tools/agent-browser/src/browser.ts

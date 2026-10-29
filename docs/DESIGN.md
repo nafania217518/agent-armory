@@ -12,7 +12,7 @@ One repo for personal Claude Code skills and tools. Phase 1 is skills only.
 
 The skills replace the workflow rules that today live in project `CLAUDE.md` files
 (`local-rag`, `maihem-cli`) and in the ponytail plugin. Always-on rules stay in
-`~/.claude/CLAUDE.md` (writing style, no `nohup`, `mcp-browser`, YAGNI, DRY, SSOT,
+`~/.claude/CLAUDE.md` (writing style, no `nohup`, the `browse` skill for the web, YAGNI, DRY, SSOT,
 big design up front, no premature optimization, Occam). Skills hold the workflows.
 Each project holds its own facts in `AGENTS.md` (section 5).
 
@@ -66,6 +66,7 @@ agent-armory/
     review/SKILL.md
     audit/SKILL.md
     test/SKILL.md
+    browse/SKILL.md           # how agents use agent-browser (section 7.7)
     init-project/
       SKILL.md
       templates/AGENTS.md
@@ -75,7 +76,11 @@ agent-armory/
       templates/agents/writer.md
   docs/
     DESIGN.md                 # this file
-  README.md                   # install, the six skills as a table, notes
+    agent-browser.md          # user docs of the tool
+    plans/                    # approved plans, one per task branch
+  tools/
+    agent-browser/            # phase 2: the browser CLI and its daemon (section 7.7)
+  README.md                   # install, the skills and the tools as tables, notes
   LICENSE
 ```
 
@@ -84,7 +89,8 @@ agent-armory/
 Install, two ways:
 
 - Plugin: `/plugin marketplace add <path-or-github>` then `/plugin install armory@agent-armory`.
-  Skills appear as `armory:code`, `armory:review`, `armory:audit`, `armory:init-project`.
+  Skills appear as `armory:code`, `armory:review`, `armory:audit`, `armory:init-project`,
+  `armory:browse`.
 - Plain: one symlink per skill into `~/.claude/skills/`.
 
 A file that loads another skill names both forms (`/review`, or `/armory:review`).
@@ -252,7 +258,7 @@ Trigger: any coding task: write, add, fix, refactor, choose a dependency. `/code
    calibration, anything the user asked for. Between options of equal size, MUST take
    the one correct on edge cases.
 10. **Research.** You may have outdated information. MUST check at least 4 independent
-    sources (`mcp-browser`) per claim about a library, API, model or tool; prefer
+    sources (`agent-browser`, the `browse` skill) per claim about a library, API, model or tool; prefer
     official documentation; note dates; say when sources disagree. Anything worth
     noticing goes under `## Caveats` in `AGENTS.md`. This section is the single home
     of the research rule; the `researcher` agent loads it.
@@ -459,6 +465,17 @@ every test rule; `code` section 4 keeps only the TDD loop and the per-requiremen
 Dropped from the articles on purpose: speed budgets in numbers (Beck's ten minutes),
 exploratory testing as a step, test ownership across teams, the tool list.
 
+### 7.7 `browse`
+
+Trigger: any web search, page read or source check; `/browse`. The single home of how an
+agent uses `agent-browser` (`tools/agent-browser/`, the first phase-2 tool): the two
+commands and their output, the exit codes (0 ok, 1 the work failed, 2 the call is wrong),
+the daemon (the first call starts it, it exits after 10 idle minutes, MUST NOT stop it
+between calls), cutting the output before it enters the context, and the install check.
+The user docs `docs/agent-browser.md` hold the settings, the profile and the limits; the
+skill does not repeat them. Global rule 3, `code` section 10 and the `researcher` agent
+point here.
+
 ## 8. Agent templates
 
 Each file: frontmatter plus a short role card. No `tools` field: the master session
@@ -548,4 +565,4 @@ Codex caps the combined `AGENTS.md` chain at 32 KiB; the template is about 6 KB.
   (`npm audit`, `pip-audit`, `cargo audit`). The Top 10 self-check is a reading step.
 - Not verified on a real agent load: the frontmatter fields `effort` and `isolation`
   and the model alias `fable`. The sub-agents documentation lists all three.
-- Phase 2 (tools, hooks) is not designed.
+- Phase 2 began with `agent-browser` (`tools/agent-browser/`, docs in `docs/agent-browser.md`) and the `browse` skill that wraps it for agents. Hooks are not designed.

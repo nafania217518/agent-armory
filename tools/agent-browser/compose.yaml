@@ -1,0 +1,10 @@
+services:
+  test:
+    build: .
+    environment:
+      AGENT_BROWSER_HOME: /tmp/agent-browser-home
+      AGENT_BROWSER_TEST_CHANNEL: chromium
+    # xvfb-run hangs as PID 1 (it never gets Xvfb's ready signal); tini takes PID 1.
+    init: true
+    # A headed browser needs a display; xvfb-run gives it one.
+    entrypoint: ["xvfb-run", "--auto-servernum"]

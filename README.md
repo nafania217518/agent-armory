@@ -1,6 +1,6 @@
 # agent-armory
 
-Personal Claude Code skills. Phase 1: six skills. The design is in [docs/DESIGN.md](docs/DESIGN.md).
+Personal Claude Code skills and tools. Phase 1: seven skills. The design is in [docs/DESIGN.md](docs/DESIGN.md).
 
 | Skill | What it does |
 |---|---|
@@ -9,7 +9,14 @@ Personal Claude Code skills. Phase 1: six skills. The design is in [docs/DESIGN.
 | `review` | Review of a change. Reads the connected code, runs the project gates, checks the summary against the diff. Numbered findings with a fix each. Changes no code. |
 | `audit` | Audit of a whole repo or package: bugs, security, load, missing tests, speed, bloat, and the `tech-debt:` ledger. Changes no code. |
 | `test` | Test guide: the pyramid, the levels (unit, integration, contract, functional, e2e), sociable unit tests, what to test, structure, speed, review checks. Loaded by `code`, `review` and `audit`. |
+| `browse` | Web search and page reading through `agent-browser`: the two commands, exit codes, the daemon, and the install check. Loaded before any web search or page read. |
 | `init-project` | Writes `AGENTS.md` (commands, test levels, gates, model table, rules, glossary, caveats) and the project agents `coder`, `reviewer`, `researcher`, `writer` in `.claude/agents/`. |
+
+## Tools
+
+| Tool | What it does |
+|---|---|
+| `agent-browser` | CLI that reads pages as markdown and searches the web through a Chrome that a daemon owns. See [docs/agent-browser.md](docs/agent-browser.md). |
 
 ## Install
 
@@ -32,12 +39,12 @@ Then install:
 ```
 
 The skills then run as `/armory:plan`, `/armory:code`, `/armory:review`, `/armory:audit`,
-`/armory:test` and `/armory:init-project`.
+`/armory:test`, `/armory:init-project` and `/armory:browse`.
 
 As plain skills, one symlink per skill:
 
 ```bash
-for s in plan code review audit test init-project; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
+for s in plan code review audit test init-project browse; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
 ```
 
 ## Notes

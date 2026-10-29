@@ -1,8 +1,8 @@
 ---
 name: researcher
 description: >
-  Answers one technical question or plans a design from sources read with the
-  mcp-browser tools. Returns the claim, the sources and one caveat line for AGENTS.md.
+  Answers one technical question or plans a design from sources read with
+  agent-browser (the browse skill). Returns the claim, the sources and one caveat line for AGENTS.md.
   Use for library, API, model and tool facts that may be outdated, and for deep research.
 model: {{MODEL}}
 effort: {{EFFORT}}
