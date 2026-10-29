@@ -1,0 +1,16 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "agent-armory",
+  "description": "Personal Claude Code skills: TDD coding with gates, change review, repo audit, project setup.",
+  "owner": {
+    "name": "Oleksii Yakovenko"
+  },
+  "plugins": [
+    {
+      "name": "armory",
+      "description": "code, review, audit and init-project skills. RFC 2119 rules, test gates, model table per project.",
+      "source": "./",
+      "category": "productivity"
+    }
+  ]
+}
