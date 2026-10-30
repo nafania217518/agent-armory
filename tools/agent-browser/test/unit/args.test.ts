@@ -1,6 +1,7 @@
-import { expect, test } from 'vitest';
+import { expect, test, describe } from 'vitest';
 import { parseCommand, UsageError } from '../../src/args.js';
 
+describe('tr3_args', () => {
 test('test_tr3_open_parses_url', () => {
   expect(parseCommand(['open', 'https://example.com/a'])).toEqual({
     kind: 'open',
@@ -87,4 +88,14 @@ test('test_tr3_non_http_url_is_usage_error', () => {
 
 test('test_tr3_usage_error_holds_usage_text', () => {
   expect(() => parseCommand(['fly'])).toThrow(/usage: agent-browser/);
+});
+});
+
+describe('tr13_args', () => {
+test('test_tr13_channel_flag_on_start', () => {
+  expect(parseCommand(['start', '--channel', 'chromium'])).toEqual({
+    kind: 'start',
+    flags: { channel: 'chromium' },
+  });
+});
 });
