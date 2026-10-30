@@ -6,11 +6,11 @@ turns it off for this project, with a reason. MAY is the agent's choice.
 
 ## What this is
 
-Personal Claude Code skills, packaged as the `armory` plugin. Phase 1 is six skills:
-`plan`, `code`, `review`, `audit`, `test` and `init-project`. The repo holds markdown
-skill files, their templates and the plugin manifest; it holds no application code. The
-design is in `docs/DESIGN.md`. The repo now also holds the phase-2 tool `agent-browser`
-under `tools/`.
+Personal Claude Code skills and tools, packaged as the `armory` plugin. Phase 1 is the
+skills under `skills/`: `plan`, `code`, `review`, `audit`, `test`, `research` and `init-project`.
+Phase 2 is the tools under `tools/`: `agent-browser`, with the `browse` skill that wraps
+it. The repo also holds the skill templates and the plugin manifest. The design is in
+`docs/DESIGN.md`.
 
 ## Commands
 
@@ -50,7 +50,8 @@ Surface rule: each surface MUST have at least one test level. Frontend: `unit` o
 ## Gates
 
 `on`, or `off <reason>`. `contract`, `functional` and `e2e` are the flexible levels: off
-until the project turns them on.
+until the project turns them on. Besides these gates, any SHOULD rule of a skill is off
+when a line names it: `<skill> section <n>: off <reason>`.
 
 - worktree-per-agent: on
 - delegate: on
@@ -71,7 +72,7 @@ until the project turns them on.
 | Coding (TDD implementation) | opus | low | coder | follows a brief |
 | Deep research | opus | medium | researcher | sources and judgement |
 | Code review, audit | opus | medium | reviewer | needs judgement, no writing |
-| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet or haiku | low | writer; coder, tag `[sonnet]` or `[haiku]` | no reasoning needed |
+| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag `[sonnet]` or `[haiku]` | no reasoning needed |
 | Routine lookup, grep, file reads | sonnet | low | none (built-in Explore) | no reasoning needed |
 
 Fable MUST be used only for the first row: the plan, and the items the plan tags
@@ -82,11 +83,16 @@ row.
 
 ## Rules
 
-Workflows live in the armory skills (`code`, `review`, `audit`). This section holds the
+Workflows live in the armory skills. This section holds the
 base rules when the global `~/.claude/CLAUDE.md` does not, then project-only rules.
 
-1. Questions to the user MUST go through the `AskUserQuestion` tool: at least 2 options,
-   the recommended one first. The message text holds only the context, not the question.
+1. YAGNI: MUST NOT design or implement anything that was not requested.
+2. DRY + SSOT: each fact, rule or piece of logic MUST live in exactly one place.
+   Everywhere else references it.
+3. Big design up front: the design MUST be complete and refined before implementation
+   starts.
+4. MUST NOT optimize without a measured problem.
+5. Occam's razor: SHOULD prefer the solution built from the smallest set of elements.
 
 Project rules:
 

@@ -10,17 +10,16 @@ description: >
 
 # code
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. The project
-`AGENTS.md` defines the gates, the commands and the model table; its `## Gates` section
-says which SHOULD rules are off.
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+
+The project `AGENTS.md` defines the gates, the commands and the model table; its
+`## Gates` section says which SHOULD rules are off.
 
 ## 1. Start
 
 - MUST run `git fetch origin`. The base branch is `git symbolic-ref --short
   refs/remotes/origin/HEAD`. MUST run `git switch -c <task-branch> <base>`. MUST NOT
   commit to the base branch.
-- MUST read `AGENTS.md`: `## Commands`, `## Gates`, `## Models`, `## Rules`,
-  `## Glossary`, `## Caveats`.
 - MUST read the plan: `<docs>/plans/<task-branch>.md` when it exists, else the plan
   approved in plan mode in this conversation (`min`). Its tagged items are the task. No
   plan: MUST run the `plan` skill first (`/plan`, or `/armory:plan` in the plugin
@@ -73,13 +72,10 @@ Subtract before you add: take complexity out first.
 - MUST load the `test` skill (`/test`, or `/armory:test` in the plugin install) before
   writing or changing a test. Its rules apply: levels, unit style, what to test,
   structure, speed.
-- Tests are the only proof that code works.
 - Requirement → test → code. Write the failing test first. See it fail for the reason you
   expect. Make the smallest change that makes it pass.
-- Each requirement `TR-n` and each bug finding MUST have at least one test. Each edge
-  case the requirement touches (the list in the `review` skill, section 3, item 1) and
-  each failure path (invalid input, missing dependency, an error from a callee) MUST
-  have its own test.
+- Each requirement `TR-n` and each bug finding MUST have at least one test. Edge cases
+  and failure paths: the `test` skill, section 4.
 - Tests MUST call the code the way its user does and check the result that user sees.
   A test that still passes when every function returns nothing MUST be deleted.
 - If an honest test is impractical, MUST NOT write a bad one. Say so in the report.
@@ -87,23 +83,19 @@ Subtract before you add: take complexity out first.
   fix.
 - Refactor: MUST pin the current behavior with a passing test, change the structure, then
   show the same test still passes.
-- A defect in built code, or a requirement that changes during work, gets a new `BR-n`
-  or `TR-n`. An old id MUST NOT be rewritten or renumbered; mark it
-  `(replaced by TR-m)`. The plan amendment goes through the `plan` skill, section 10,
-  before the work continues.
-- Every feature MUST ship with its tests, unless the user says otherwise for that feature.
+- A defect in built code, a requirement that changes during work, or one that needs the
+  user's answer: MUST follow the `plan` skill, section 10, before the work continues.
+- Every feature SHOULD ship with its tests.
 
 ## 5. Gates
 
-A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
-`integration`, `contract`, `functional`, `e2e`, `coverage`. `## Gates` says which are `on`.
+A gate has a command of the same name in `## Commands`; `## Gates` says which are `on`.
 
 - Per commit: `lint` and `unit`, when `on`, MUST pass.
 - Before handover: every `on` gate MUST pass, or the report names the failing gate.
 - `owasp`: as in the `review` skill, section 2.
 - `coverage`: run the command. The threshold lives in the build tools (`AGENTS.md`
   `## Commands`); do not compute a number yourself.
-- An `on` gate with no command is a finding. Say so; do not skip it in silence.
 
 ## 6. Test scope
 
@@ -121,11 +113,9 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
   Coding goes to the agent that the `## Models` `Agent` column names for the task kind
   (`coder`, `reviewer`, `researcher`, `writer`; `init-project` creates them). No agent
   file in the project: a general agent with the row's model and effort.
-- The item's tag picks the model of the spawn and overrides the agent file: `[opus]` by
-  default; `[sonnet]` or `[haiku]` for mechanics; `[fable]` only for the items the plan
-  tagged so, or for an item where the coder reports `stuck: <why>`. Such an item goes to
-  the `researcher` agent on Fable; then the work returns to Opus. MUST NOT send an item
-  to Fable "just in case".
+- `[fable]` only for the items the plan tagged so, or for an item where the coder
+  reports `stuck: <why>`. Such an item goes to the `researcher` agent on Fable; then the
+  work returns to Opus. MUST NOT send an item to Fable "just in case".
 - The brief MUST hold:
   - the requirements with their ids (section 1);
   - the test-scope list (section 6);
@@ -137,7 +127,6 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
 - When a coder finishes: MUST merge its worktree branch into the task branch, then run
   `lint` and `unit`. MUST remove the merged worktree (`git worktree remove`). A worktree
   with uncommitted work waits for the user's decision.
-- Keep the main thread small: send bulk reading and writing out, keep the summary.
 
 ## 8. Make it right
 
@@ -159,7 +148,7 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
 - Readability: a human reads this code. The rules of the `review` skill, section 3,
   item 7 (names, line length, short high-level functions, chaining) apply to every line
   you write.
-- Comment only the why the code cannot show, in one line.
+- A comment MUST give only the why the code cannot show, in one line.
 - A shortcut with a known limit MUST carry the comment
   `tech-debt: <the limit>, <when to upgrade>`.
 - Between options of equal size, MUST take the one that is correct on edge cases. A
@@ -169,16 +158,13 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
 
 ## 10. Research
 
-- You may have outdated information. MUST check at least 4 independent sources with
-  `agent-browser` (the `browse` skill) for each claim about a library, API, model or tool. Prefer official
-  documentation, changelogs and source code. Note the date of each source. Say when
-  sources disagree and which one you trust and why.
-- Anything worth noticing goes under `## Caveats` in `AGENTS.md`:
-  `SHORT_DESCRIPTION : file_reference.md`.
+- You may have outdated information. For every claim about a library, API, model or
+  tool, MUST load the `research` skill (`/research`, or `/armory:research` in the plugin
+  install) and follow it. Its caveat line goes under `## Caveats` in `AGENTS.md`.
 
 ## 11. Commits
 
-- One requirement or one fix per commit. `lint` and `unit`, when `on`, green at each.
+- One requirement or one fix per commit.
 - Subject: one imperative sentence under 72 characters that says what was done, so that
   `git log --oneline` reads as the history of the task. Body MAY hold one line on why
   and the test that proves it.
@@ -186,12 +172,8 @@ A gate has a command of the same name in `## Commands`: `lint`, `owasp`, `unit`,
 
 ## 12. Finish
 
-- Finish one small unit and check it. Then start the next.
-- Before the report, SHOULD run the `reviewer` agent on `<base>..HEAD` (`delegate` off:
-  run the `review` skill yourself) and fix the Must fix findings. The review MUST show
-  every `BR-n` and `TR-n` of the requirements document met by the diff or a test.
-- A requirement that needs the user's answer: quiz, adjust the requirements and the plan
-  through the `plan` skill, section 10, then continue.
+- Before the report, MUST run the `reviewer` agent on `<base>..HEAD` (`delegate` off:
+  run the `review` skill yourself) and fix the Must fix findings.
 - Acceptance: a quiz asks which items the user wants to try by hand, with the exact
   commands or clicks for each.
 - Report, in this order: the requirements with ids and their status; the log of actions

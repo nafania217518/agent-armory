@@ -9,9 +9,7 @@ description: >
 
 # init-project
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. The templates
-sit in `templates/` next to this file. The template `AGENTS.md` defines the commands, the
-gates, the surface rule and the model table; this skill fills it.
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 ## 1. Ask
 
@@ -30,6 +28,8 @@ One question set, all at once. A missing answer takes the template default; say 
 6. Other gates that are `off`, each with a reason. Default: `on`.
 7. Project-only rules, as MUST or SHOULD lines.
 8. Changes to the model table. Default: keep it.
+9. The web rule (base rule 3, the `browse` skill): include it? Default: no. It is
+   written only on a yes.
 
 ## 2. Check the answers
 
@@ -45,7 +45,9 @@ One question set, all at once. A missing answer takes the template default; say 
 
 - MUST fill `templates/AGENTS.md` with the answers.
 - Base rules: MUST read `~/.claude/CLAUDE.md`. Keep a base rule only when that file does
-  not hold the same rule in any wording. Then add the project-only rules.
+  not hold the same rule in any wording. Base rule 3 (the web rule) MUST be left out
+  unless question 9 was answered yes. Number the rules that remain from 1 without gaps.
+  Then add the project-only rules.
 - `## Glossary` and `## Caveats` start empty, with their format lines.
 
 ## 4. Write the agents
@@ -60,5 +62,4 @@ One question set, all at once. A missing answer takes the template default; say 
 - MUST NOT overwrite an existing `AGENTS.md` or agent file. Show what exists and stop.
   When the user says so, add only the missing sections or files.
 - Report: the files written, the gates that are off, the base rules skipped because the
-  global file holds them, and the version note from the README (`AGENTS.md` without a
-  `CLAUDE.md` needs Claude Code 2.1.277 or later).
+  global file holds them, and the version note from the README.

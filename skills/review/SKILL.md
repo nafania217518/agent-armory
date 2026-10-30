@@ -9,9 +9,10 @@ description: >
 
 # review
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. Order of
-importance: correct, safe, holds under load, tested, fast, lean, readable. This is a
-report the user asked for: give it in full.
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+
+Order of importance: correct, safe, holds under load, tested, fast, lean, readable. This
+is a report the user asked for: MUST give it in full.
 
 ## 1. Understand first
 
@@ -20,7 +21,7 @@ report the user asked for: give it in full.
 - Target: what the user names (uncommitted or staged changes, a branch, a PR, files).
   Nothing named: the uncommitted changes, or the last commit if there are none.
 - MUST read the diff, then the code it touches: callers of every changed function, the
-  functions it calls, the tests, `AGENTS.md`.
+  functions it calls, the tests.
 - Trace the real flow: where data comes in, what is stored, what goes out.
 - A change can break code it does not touch. When a signature, return value or behavior
   changes, MUST grep every caller.
@@ -33,9 +34,8 @@ report the user asked for: give it in full.
   change is a finding.
 - MUST run every gate that `## Gates` marks `on`, with its `## Commands` line. An `on`
   gate with no command is a finding.
-- `owasp` gate: run the `owasp` command, then read the changed code against the OWASP
-  Top 10: injection, broken authentication, sensitive data exposure, broken access
-  control, security misconfiguration, vulnerable components, missing logging.
+- `owasp` gate: run the `owasp` command, then read the changed code against the current
+  OWASP Top 10.
 - Stray files in the diff (test inputs, outputs, scratch scripts) are a finding.
 - Each requirement `BR-n` and `TR-n` in `<docs>/requirements/<task-branch>.md`, or each
   `TR-n` the task names (task report, PR body, test names): the diff or a check MUST
@@ -72,7 +72,7 @@ report the user asked for: give it in full.
    - merge: near-copies that must change together;
    - split: one function doing several unrelated jobs. Split by job. MUST NOT split by
      line count or into helpers that exist only to make a function shorter.
-7. **Readability:** a human reads this code. It MUST read like a poem.
+7. **Readability:** a human reads this code.
    - Names of variables, functions and classes MUST say what they hold or do.
    - Lines SHOULD stay under 120–140 characters, with spacing. A long signature or call
      goes on several lines, one argument per line, unless that hurts readability.
@@ -124,4 +124,4 @@ Plain English, short sentences. Explain a technical term the first time you use 
 Nothing found: `What this change does:`, `Gates:`, then `Looks good. Ship.` and one line
 on what you checked.
 
-Lists findings, changes no code.
+MUST NOT change any file.

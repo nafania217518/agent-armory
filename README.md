@@ -1,6 +1,7 @@
 # agent-armory
 
-Personal Claude Code skills and tools. Phase 1: seven skills. The design is in [docs/DESIGN.md](docs/DESIGN.md).
+Personal Claude Code skills and tools. Phase 1: the workflow skills. Phase 2: the `agent-browser` tool
+and the `browse` skill that wraps it. The design is in [docs/DESIGN.md](docs/DESIGN.md).
 
 | Skill | What it does |
 |---|---|
@@ -9,6 +10,7 @@ Personal Claude Code skills and tools. Phase 1: seven skills. The design is in [
 | `review` | Review of a change. Reads the connected code, runs the project gates, checks the summary against the diff. Numbered findings with a fix each. Changes no code. |
 | `audit` | Audit of a whole repo or package: bugs, security, load, missing tests, speed, bloat, and the `tech-debt:` ledger. Changes no code. |
 | `test` | Test guide: the pyramid, the levels (unit, integration, contract, functional, e2e), sociable unit tests, what to test, structure, speed, review checks. Loaded by `code`, `review` and `audit`. |
+| `research` | How to research a technical claim: official sources first, independent sources next, dates, disagreements, the caveat line for `AGENTS.md`. Loaded by `code`, `plan` and the `researcher` agent. |
 | `browse` | Web search and page reading through `agent-browser`: the two commands, exit codes, the daemon, and the install check. Loaded before any web search or page read. |
 | `init-project` | Writes `AGENTS.md` (commands, test levels, gates, model table, rules, glossary, caveats) and the project agents `coder`, `reviewer`, `researcher`, `writer` in `.claude/agents/`. |
 
@@ -39,12 +41,12 @@ Then install:
 ```
 
 The skills then run as `/armory:plan`, `/armory:code`, `/armory:review`, `/armory:audit`,
-`/armory:test`, `/armory:init-project` and `/armory:browse`.
+`/armory:test`, `/armory:init-project`, `/armory:research` and `/armory:browse`.
 
 As plain skills, one symlink per skill:
 
 ```bash
-for s in plan code review audit test init-project browse; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
+for s in plan code review audit test init-project research browse; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
 ```
 
 ## Notes

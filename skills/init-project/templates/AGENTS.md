@@ -49,7 +49,8 @@ Surface rule: each surface MUST have at least one test level. Frontend: `unit` o
 ## Gates
 
 `on`, or `off <reason>`. `contract`, `functional` and `e2e` are the flexible levels: off
-until the project turns them on.
+until the project turns them on. Besides these gates, any SHOULD rule of a skill is off
+when a line names it: `<skill> section <n>: off <reason>`.
 
 - worktree-per-agent: on
 - delegate: on
@@ -70,7 +71,7 @@ until the project turns them on.
 | Coding (TDD implementation) | opus | low | coder | follows a brief |
 | Deep research | opus | medium | researcher | sources and judgement |
 | Code review, audit | opus | medium | reviewer | needs judgement, no writing |
-| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet or haiku | low | writer; coder, tag `[sonnet]` or `[haiku]` | no reasoning needed |
+| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag `[sonnet]` or `[haiku]` | no reasoning needed |
 | Routine lookup, grep, file reads | sonnet | low | none (built-in Explore) | no reasoning needed |
 
 Fable MUST be used only for the first row: the plan, and the items the plan tags
@@ -81,7 +82,7 @@ row.
 
 ## Rules
 
-Workflows live in the armory skills (`code`, `review`, `audit`). This section holds the
+Workflows live in the armory skills. This section holds the
 base rules when the global `~/.claude/CLAUDE.md` does not, then project-only rules.
 
 1. Replies and documentation MUST be "80% of the way to ASD-STE100" (Simplified
@@ -90,14 +91,17 @@ base rules when the global `~/.claude/CLAUDE.md` does not, then project-only rul
    Keep natural phrasing and domain terms where strict STE would read awkwardly.
 2. Background tasks MUST start through the tools (`run_in_background=true`). MUST NOT
    use `nohup` or `command &`: such tasks cannot be tracked or stopped.
-3. YAGNI: MUST NOT design or implement anything that was not requested.
-4. DRY + SSOT: each fact, rule or piece of logic MUST live in exactly one place.
+3. MUST NOT use the built-in web search. It is broken. To search the web or read a
+   page, MUST load the `browse` skill (`/browse`, or `/armory:browse` in the plugin
+   install) and follow it.
+4. YAGNI: MUST NOT design or implement anything that was not requested.
+5. DRY + SSOT: each fact, rule or piece of logic MUST live in exactly one place.
    Everywhere else references it.
-5. Big design up front: the design MUST be complete and refined before implementation
+6. Big design up front: the design MUST be complete and refined before implementation
    starts.
-6. MUST NOT optimize without a measured problem.
-7. Occam's razor: SHOULD prefer the solution built from the smallest set of elements.
-8. Questions to the user MUST go through the `AskUserQuestion` tool: at least 2 options,
+7. MUST NOT optimize without a measured problem.
+8. Occam's razor: SHOULD prefer the solution built from the smallest set of elements.
+9. Questions to the user MUST go through the `AskUserQuestion` tool: at least 2 options,
    the recommended one first. The message text holds only the context, not the question.
 
 Project rules:

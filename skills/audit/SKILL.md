@@ -10,22 +10,23 @@ description: >
 
 # audit
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. Order of
-importance: correct, safe, holds under load, tested, fast, lean, readable. This is a
-report the user asked for: give it in full.
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+
+This is a report the user asked for: MUST give it in full.
 
 MUST load the `review` skill first (`/review`, or `/armory:review` in the plugin
-install). Its sections 3 and 4 apply here, to the whole tree. When the tree has tests,
-MUST load the `test` skill too (`/test`, or `/armory:test`); its section 7 applies to the
-suite as a whole: pyramid shape, duplication across levels.
+install). Its sections 3 and 4 apply here, to the whole tree; its section 5 sets the
+language and the finding format. When the tree has tests, MUST load the `test` skill
+too (`/test`, or `/armory:test`); its section 7 applies to the suite as a whole: pyramid
+shape, duplication across levels.
 
 ## 1. Map first
 
 - MUST compare the session model with the `Code review, audit` row of `AGENTS.md`
   `## Models`. When it differs: say so in one line and delegate to the `reviewer` agent.
 - Scope: what the user names (a folder, a package). Nothing named: the whole repo.
-- MUST read the README, `AGENTS.md`, the build and deploy config, the dependency list,
-  the entry points (main, routes, handlers, jobs, CLI commands) and the tests.
+- MUST read the README, the build and deploy config, the dependency list, the entry
+  points (main, routes, handlers, jobs, CLI commands) and the tests.
 - Find the expected load: one person running a script, or many users and processes.
   Judge scale against that and say which load you assumed.
 - Trace the main flows end to end: input from users, money, auth, data writes,
@@ -58,14 +59,7 @@ Add other comment prefixes when the stack uses them. One row per hit, grouped by
 A marker that names no upgrade trigger gets the tag `no-trigger`. Skip hits that are not
 a deferral. End the section with `<N> items, <M> with no trigger.` or `No tech debt.`
 
-## 4. Check before you report
-
-The `review` skill, section 4, applies: a concrete case per finding, re-read the lines,
-a `tech-debt:` comment with a limit is a decision, the smallest fix, no style taste.
-
-## 5. Output
-
-Plain English, short sentences. Explain a technical term the first time you use it.
+## 4. Output
 
 1. `What this repo does:` two or three sentences, and the load you assumed.
 2. Findings in the three groups of the `review` skill, section 5, numbered across
@@ -79,4 +73,4 @@ Plain English, short sentences. Explain a technical term the first time you use 
 Nothing found: `What this repo does:`, then `Healthy. Nothing to fix.`, the tech-debt
 ledger, and one line on what you checked.
 
-One-shot report, changes no code.
+MUST NOT change any file.

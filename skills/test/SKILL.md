@@ -9,9 +9,10 @@ description: >
 
 # test
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. The project
-`AGENTS.md` `## Test levels` section is the truth for level names and the unit style;
-this skill holds the rules.
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+
+The project `AGENTS.md` `## Test levels` section is the truth for level names and the
+unit style; this skill holds the rules.
 
 ## 1. The pyramid
 
@@ -25,7 +26,7 @@ this skill holds the rules.
 ## 2. Levels
 
 The template prefills these definitions in `## Test levels`; the project edits them. The
-names are the project's choice. Do not argue terms; test.
+names are the project's choice.
 
 - `unit`: one unit (a function, a class, or a small cluster the team treats as one).
   Fast. Runs on every change. Frontend unit tests with the backend stubbed are `unit`.
@@ -53,40 +54,32 @@ names are the project's choice. Do not argue terms; test.
   MUST NOT assert the order of internal calls.
 - MUST NOT test private methods. MUST NOT test trivial code: a getter, a pass-through,
   code with no branch.
-- Happy path, every edge case the requirement touches, every failure path (`code` skill,
-  section 4).
-- One test module per production module, as the rule of thumb.
+- The happy path, each edge case the requirement touches (the list in the `review`
+  skill, section 3, item 1) and each failure path (invalid input, missing dependency, an
+  error from a callee) MUST each have their own test.
+- SHOULD keep one test module per production module.
 
 ## 5. Structure
 
 - Arrange, act, assert (given, when, then). One condition per test; as many tests as
   there are conditions.
-- Every test name starts with the requirement id and states the behavior. A requirement
-  has as many tests as it needs: happy path, edge cases, failure paths. One is the floor,
-  not the target.
-- Test code gets the same care as production code.
-- DAMP: duplication in test code is allowed when it improves readability. Extract a
-  helper at the third repeat (Rule of Three). This is the one exception to base rule 4
+- Every test name starts with the requirement id and states the behavior.
+- DAMP: duplication in test code is allowed when it improves readability. SHOULD
+  extract a helper at the third repeat (Rule of Three). This is the one exception to the DRY + SSOT base rule
   (DRY), for test code only.
 
 ## 6. Speed
 
-- The `unit` suite runs after every change (the compile suite). `lint` and `unit` run
-  per commit (the commit suite; `code` skill, section 11). Slower levels run before
+- The `unit` suite runs after every change (the compile suite). Slower levels run before
   handover.
 - A test MUST be deterministic: no sleep-and-hope, no shared mutable state between
   tests, no dependence on test order or on the clock.
 
 ## 7. Review checks
 
-Each is a finding (Should fix, unless it hides a bug):
+Each breach of a MUST or MUST NOT in sections 1–6 is a finding (Should fix, unless it
+hides a bug). Also:
 
-- a test at a higher level than the lowest that can prove the behavior;
-- the same behavior tested at two levels;
-- a test of trivial code or of a private method;
-- a test coupled to structure: mock verification of call order, assertions on internals;
-- a missing edge case or failure path for a changed requirement;
-- a non-deterministic test;
 - in a sociable project, a double for a collaborator that is neither remote, slow,
   non-deterministic nor side-effecting;
 - a contract with a separate service that has no `contract` test while the gate is `on`.

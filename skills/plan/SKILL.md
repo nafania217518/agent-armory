@@ -12,9 +12,7 @@ argument-hint: "[none|min|full]"
 
 # plan
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119. The `## Models`
-table in `AGENTS.md` names the models; this skill assigns them per item. Questions to the
-user follow base rule 8 (`AskUserQuestion`).
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 ## 1. Mode
 
@@ -23,29 +21,24 @@ user follow base rule 8 (`AskUserQuestion`).
   - **none**: no plan, for a trivial task. Return to `code` at once; it writes tagged
     `TR-n` items itself.
   - **min**: plan mode as Claude Code runs it. Tech quiz and plan; the plan lives in the
-    plan-mode file outside the repo and is approved at the exit. After approval, one
-    question: save it to `<docs>/plans/<task-branch>.md`? No file otherwise.
+    plan-mode file outside the repo and is approved at the exit.
   - **full**: research, both quizzes, plan review, approval, then the requirements and
     plan files in the docs folder.
 - MUST compare the session model with the first row of `## Models` (pre-work, Fable).
   When it differs and the task is not trivial: say so in one line, then ask the user to
   switch with `/model`, or delegate the pre-work to the `researcher` agent with that
   row's model. A trivial task MAY run the pre-work on Opus.
-- MUST read `AGENTS.md`: `## Commands`, `## Gates`, `## Test levels`, `## Models`,
-  `## Rules`, `## Glossary`, `## Caveats`.
 
 ## 2. Plan mode
 
-MUST enter plan mode (the planning tool) for sections 3 to 8. The plan text goes into
-the plan-mode file; in `min` that file is the plan. Repo files are written only after
-approval (section 9). MUST load the `code` skill (`/code`, or `/armory:code` in the
-plugin install); its section 2, Understand first, applies: read the code the task
-touches, list every place the change reaches, check what it could break for users.
+MUST enter plan mode (the planning tool) for sections 3 to 8. Repo files are written
+only after approval (section 9). MUST load the `code` skill (`/code`, or `/armory:code`
+in the plugin install); its section 2, Understand first, applies.
 
 ## 3. Research (full only, optional)
 
 Unknowns about a library, API, model or domain go to the `researcher` agent or follow
-`code` section 10. Findings become `## Caveats` lines, written at section 9.
+the `research` skill. Findings become `## Caveats` lines, written at section 9.
 
 ## 4. Business quiz (full only)
 
@@ -70,12 +63,9 @@ TR-<n> [tag] (BR-<m>): MUST <behavior>
   tests: <test names, each starts with the id>
 ```
 
-- Every item MUST carry one tag: `[opus]` (default), `[sonnet]` or `[haiku]` for
-  mechanics (docs, test runs, i18n strings, formatting, routine edits per a ready spec
-  or ready tests), `[fable]` for what Opus cannot carry: architecture, data risk,
-  non-trivial root-cause analysis, core conflicts.
-- `[fable]` MUST have a `why:` line that names the reason from that list. "Just in
-  case" is not a reason.
+- Every item MUST carry one tag from the `## Models` rows, `[opus]` by default.
+- `[fable]` MUST have a `why:` line that names the reason from the first `## Models`
+  row. "Just in case" is not a reason.
 - Each item MUST name its tests, at least one (`test` skill rules apply: level, edge
   cases, failure paths).
 - After the items: the test-scope list (existing tests that will break or change, with
@@ -116,5 +106,6 @@ until nothing is open.
 
 ## 10. Amendments
 
-A new or changed requirement during work gets a new `BR-n` or `TR-n` (old ids are never
-rewritten or renumbered) and re-enters at section 7. The work continues after approval.
+A defect in built code, or a new or changed requirement during work, gets a new `BR-n`
+or `TR-n` and re-enters at section 7. An old id MUST NOT be rewritten or renumbered; mark
+it `(replaced by TR-m)`. The work continues after approval.
