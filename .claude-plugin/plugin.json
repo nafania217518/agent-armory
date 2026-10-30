@@ -1,6 +1,6 @@
 {
   "name": "armory",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "plan, code, review, audit, test, research, browse and init-project skills. RFC 2119 rules, test gates, model table per project.",
   "author": {
     "name": "Oleksii Yakovenko"

@@ -66,7 +66,8 @@ function deps(over: Partial<ClientDeps>): Partial<ClientDeps> {
   return { pollMs: 1, readyTimeoutMs: 200, ...over };
 }
 
-test('test_tr9_healthy_daemon_not_respawned', async () => {
+// req: agent-browser/TR-9
+test('healthy_daemon_not_respawned', async () => {
   writeState(7900);
   const spawn = fakeSpawn();
   const status = await ensureDaemon(SETTINGS, deps({ spawn: spawn as never, fetch: fakeFetch(new Set([7900])) }));
@@ -74,7 +75,7 @@ test('test_tr9_healthy_daemon_not_respawned', async () => {
   expect(spawn).not.toHaveBeenCalled();
 });
 
-test('test_tr9_missing_state_spawns', async () => {
+test('missing_state_spawns', async () => {
   const live = new Set<number>();
   const spawn = fakeSpawn(() => daemonUp(live));
   const status = await ensureDaemon(SETTINGS, deps({ spawn: spawn as never, fetch: fakeFetch(live) }));
@@ -82,7 +83,7 @@ test('test_tr9_missing_state_spawns', async () => {
   expect(status.port).toBe(SETTINGS.port);
 });
 
-test('test_tr9_stale_state_spawns', async () => {
+test('stale_state_spawns', async () => {
   writeState(7900);
   const live = new Set<number>();
   const spawn = fakeSpawn(() => daemonUp(live));
@@ -91,12 +92,12 @@ test('test_tr9_stale_state_spawns', async () => {
   expect(status.port).toBe(SETTINGS.port);
 });
 
-test('test_tr9_never_ready_fails_with_log_path', async () => {
+test('never_ready_fails_with_log_path', async () => {
   const run = ensureDaemon(SETTINGS, deps({ spawn: fakeSpawn() as never, fetch: fakeFetch(new Set()) }));
   await expect(run).rejects.toThrow(join(home, 'daemon.log'));
 });
 
-test('test_tr9_daemon_exit_at_startup_fails_fast_with_log_path', async () => {
+test('daemon_exit_at_startup_fails_fast_with_log_path', async () => {
   const spawn = fakeSpawn((child) => setImmediate(() => child.emit('exit', 1)));
   const started = Date.now();
 
@@ -106,7 +107,7 @@ test('test_tr9_daemon_exit_at_startup_fails_fast_with_log_path', async () => {
   expect(Date.now() - started).toBeLessThan(5_000);
 });
 
-test('test_tr9_losing_daemon_exit_uses_the_winner', async () => {
+test('losing_daemon_exit_uses_the_winner', async () => {
   const live = new Set<number>();
   // The spawned daemon loses the bind race and exits; the winner holds the port and writes its state file later.
   const spawn = fakeSpawn((child) => {
@@ -120,7 +121,7 @@ test('test_tr9_losing_daemon_exit_uses_the_winner', async () => {
   expect(status.port).toBe(SETTINGS.port);
 });
 
-test('test_tr9_ready_only_once_state_file_written', async () => {
+test('ready_only_once_state_file_written', async () => {
   const live = new Set<number>();
   // The port answers at once; the state file follows when the browser has launched.
   const spawn = fakeSpawn(() => {
@@ -133,7 +134,7 @@ test('test_tr9_ready_only_once_state_file_written', async () => {
   expect(existsSync(join(home, 'daemon.json'))).toBe(true);
 });
 
-test('test_tr9_work_requests_wait_150_s', async () => {
+test('work_requests_wait_150_s', async () => {
   const timeout = vi.spyOn(AbortSignal, 'timeout');
   const fetch = vi.fn(async () => json(200, {}));
 
@@ -143,7 +144,7 @@ test('test_tr9_work_requests_wait_150_s', async () => {
   timeout.mockRestore();
 });
 
-test('test_tr9_request_timeout_fails', async () => {
+test('request_timeout_fails', async () => {
   const hang = vi.fn(
     (_input: unknown, init?: RequestInit) =>
       new Promise<Response>((_resolve, reject) => {
@@ -154,7 +155,7 @@ test('test_tr9_request_timeout_fails', async () => {
   await expect(run).rejects.toThrow(/timeout|aborted/i);
 });
 
-test('test_tr9_request_sends_json_over_real_http', async () => {
+test('request_sends_json_over_real_http', async () => {
   const server = createServer((req, res) => {
     let body = '';
     req.on('data', (chunk) => (body += chunk));
@@ -175,7 +176,7 @@ test('test_tr9_request_sends_json_over_real_http', async () => {
   }
 });
 
-test('test_tr9_spawn_passes_settings_as_args', async () => {
+test('spawn_passes_settings_as_args', async () => {
   const live = new Set<number>();
   const spawn = fakeSpawn(() => daemonUp(live));
   await ensureDaemon(SETTINGS, deps({ spawn: spawn as never, fetch: fakeFetch(live) }));

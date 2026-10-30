@@ -29,8 +29,8 @@ Sources merged:
 | ponytail-audit | map, look-for list, finding format |
 | ponytail-debt | the ledger scan, row format, `no-trigger` tag |
 | ub-mode | every bullet of Work → Right → Practice except the tool names: data shape first, do first what helps every phase, outcome-oriented execution, attack the premise, build the lever, glossary, boundary and type discipline, idempotent operations, one writer, root causes, refactoring (pin, change, prove), log, small commits, worktree cleanup |
-| maihem-cli | the diff is the truth; a defect gets a new requirement id; research findings go to Caveats; `AGENTS.md` as the project file |
-| user | RFC 2119 rule strength, gates, worktrees, lint and OWASP, test levels, model table, atomic commits, `tech-debt:` marker, readability ("code like a poem"), model routing: Fable only for the plan and what Opus cannot carry, an executor tag per plan item, Opus leads implementation, Sonnet or Haiku for mechanics |
+| maihem-cli org runs | the diff is the truth (summary versus diff, stray files, re-review); a defect or a changed requirement gets a new id, never a renumbered one; `AGENTS.md` as the project file. Its `CLAUDE.md` rules are the same as local-rag's rules 1–10 |
+| user | RFC 2119 rule strength, gates, worktrees, lint and OWASP, test levels, model table, atomic commits, `tech-debt:` and `req:` markers, readability ("code like a poem"), model routing: Fable only for the plan and what Opus cannot carry, an executor tag per plan item, Opus leads implementation, Sonnet or Haiku for mechanics |
 | Fowler, [Unit Test](https://martinfowler.com/bliki/UnitTest.html) | the unit is the team's choice; sociable by default, doubles only for awkward collaborators; compile suite and commit suite; speed as the reason to run often |
 | Vocke, [The Practical Test Pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) | pyramid shape, narrow integration tests, contract tests, acceptance tests from the user's view, few end-to-end tests, push tests down and avoid duplication, test public behavior not structure, no tests for trivial code, arrange-act-assert, one condition per test, DAMP over DRY in tests, terms are the project's choice |
 
@@ -38,7 +38,9 @@ Dropped on purpose: ponytail levels (lite/full/ultra), "the shortest working dif
 ponytail-debt as a skill, its custom marker word, `git blame` owner and persist-to-file,
 ponytail-gain, ub-mode tool names (crapper, dryer, mutator) and "push to the main line"
 (the branch rule replaces it), the SOLID list (covered by the ladder and boundary
-discipline). The "Opus sub-agents" rule becomes the per-project model table.
+discipline), the maihem re-approval of the plan for a defect found during coding (the
+org tracked ids, not approvals; a changed requirement still re-enters the plan). The
+"Opus sub-agents" rule becomes the per-project model table.
 
 ## 2. Rule strength
 
@@ -64,6 +66,7 @@ agent-armory/
   .claude-plugin/
     marketplace.json          # marketplace "agent-armory", one plugin "armory", source ./
     plugin.json               # name, version, description; skills auto-found in skills/
+  scripts/bump-version.mjs    # bumps the version in plugin.json (major|minor|patch)
   skills/
     plan/SKILL.md
     code/SKILL.md
@@ -261,7 +264,7 @@ The `worktree-per-agent` gate is the `isolation: worktree` line in `coder.md`. O
    appear with the model table; the agents show in the Agent tool list; a `coverage`
    command without a fail-under setting is refused.
 4. One small coding task in `local-rag` through `/armory:code` ends with: a branch from
-   `origin/HEAD`, requirements `TR-n` in the report and the test names, a
+   `origin/HEAD`, requirements `TR-n` in the report and `req:` markers on the tests, a
    failing-then-passing test, lint and unit green per commit, atomic commits that read
    as the task history, a `reviewer` run before the report.
 5. A session on Fable given a coding task through `/armory:code` delegates to `coder`

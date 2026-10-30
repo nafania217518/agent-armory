@@ -90,14 +90,15 @@ afterEach(async () => {
   if (code !== 0 && pid !== null) process.kill(pid, 'SIGTERM');
 }, 20_000);
 
-test('test_tr10_open_prints_markdown_and_wakes_daemon', async () => {
+// req: agent-browser/TR-10
+test('open_prints_markdown_and_wakes_daemon', async () => {
   const run = await cli('open', `${fixtures.baseUrl}/article.html`);
   expect(run.code).toBe(0);
   expect(run.stdout).toContain('Understanding Idle Timers');
   expect(existsSync(statePath())).toBe(true);
 }, 60_000);
 
-test('test_tr10_search_prints_rendered_list', async () => {
+test('search_prints_rendered_list', async () => {
   const run = await cli('search', 'playwright', '--limit', '2');
   expect(run.code).toBe(0);
   expect(run.stdout).toMatch(/^### 1\. \[/);
@@ -105,7 +106,7 @@ test('test_tr10_search_prints_rendered_list', async () => {
   expect(run.stdout).not.toContain('### 3. [');
 }, 60_000);
 
-test('test_tr10_daemon_exits_after_idle_and_removes_state', async () => {
+test('daemon_exits_after_idle_and_removes_state', async () => {
   expect((await cli('open', `${fixtures.baseUrl}/article.html`)).code).toBe(0);
   expect(existsSync(statePath())).toBe(true);
   expect(await waitFor(() => !existsSync(statePath()), 15_000)).toBe(true);
@@ -113,7 +114,7 @@ test('test_tr10_daemon_exits_after_idle_and_removes_state', async () => {
   expect(await daemonCount()).toBe(0);
 }, 60_000);
 
-test('test_tr10_two_concurrent_opens_one_daemon', async () => {
+test('two_concurrent_opens_one_daemon', async () => {
   writeConfig({ idleMinutes: 1 });
   const url = `${fixtures.baseUrl}/article.html`;
   const runs = await Promise.all([cli('open', url), cli('open', url)]);
@@ -128,13 +129,13 @@ test('test_tr10_two_concurrent_opens_one_daemon', async () => {
   expect(count).toBe(1);
 }, 60_000);
 
-test('test_tr10_stop_when_not_running_exits_0', async () => {
+test('stop_when_not_running_exits_0', async () => {
   const run = await cli('stop');
   expect(run.code).toBe(0);
   expect(run.stdout.trim()).toBe('not running');
 });
 
-test('test_tr10_start_headless_shows_in_status', async () => {
+test('start_headless_shows_in_status', async () => {
   writeConfig({ headless: false, idleMinutes: 1 });
   const start = await cli('start', '--headless');
   expect(start.code).toBe(0);
@@ -143,13 +144,13 @@ test('test_tr10_start_headless_shows_in_status', async () => {
 }, 60_000);
 
 // Headed needs a display: the Docker service runs under xvfb; on the host it would open a window.
-test.skipIf(process.platform !== 'linux')('test_tr10_start_headed_shows_in_status', async () => {
+test.skipIf(process.platform !== 'linux')('start_headed_shows_in_status', async () => {
   writeConfig({ headless: true, idleMinutes: 1 });
   expect((await cli('start', '--headed')).code).toBe(0);
   expect((await cli('status')).stdout).toContain('headless: false');
 }, 60_000);
 
-test('test_tr10_start_twice_reports_already_running', async () => {
+test('start_twice_reports_already_running', async () => {
   writeConfig({ idleMinutes: 1 });
   expect((await cli('start')).code).toBe(0);
   const second = await cli('start');
@@ -157,21 +158,22 @@ test('test_tr10_start_twice_reports_already_running', async () => {
   expect(second.stdout).toMatch(new RegExp(`^already running: .*port=${port}`));
 }, 60_000);
 
-test('test_tr10_open_bad_url_exit_1_message_on_stderr', async () => {
+test('open_bad_url_exit_1_message_on_stderr', async () => {
   const run = await cli('open', 'http://127.0.0.1:1/');
   expect(run.code).toBe(1);
   expect(run.stderr).toMatch(/net::ERR_/);
   expect(run.stdout).toBe('');
 }, 60_000);
 
-test('test_tr10_status_not_running', async () => {
+test('status_not_running', async () => {
   const run = await cli('status');
   expect(run.code).toBe(0);
   expect(run.stdout.trim()).toBe('not running');
   expect(existsSync(statePath())).toBe(false);
 });
 
-test('test_tr12_eight_parallel_opens_all_succeed', async () => {
+// req: agent-browser/TR-12
+test('eight_parallel_opens_all_succeed', async () => {
   writeConfig({ idleMinutes: 1 });
   const url = `${fixtures.baseUrl}/article.html`;
   expect((await cli('start')).code).toBe(0);
@@ -182,8 +184,8 @@ test('test_tr12_eight_parallel_opens_all_succeed', async () => {
   }
 }, 90_000);
 
-// In-flight back to 0 shows every slot was released; test_tr8_pages_closed_after_each_call covers pages.
-test('test_tr12_in_flight_back_to_zero_after_parallel_calls', async () => {
+// In-flight back to 0 shows every slot was released; pages_closed_after_each_call in browser.test.ts covers pages.
+test('in_flight_back_to_zero_after_parallel_calls', async () => {
   writeConfig({ idleMinutes: 1 });
   const url = `${fixtures.baseUrl}/article.html`;
   expect((await cli('start')).code).toBe(0);

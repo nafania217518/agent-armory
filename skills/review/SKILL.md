@@ -37,9 +37,12 @@ is a report the user asked for: MUST give it in full.
 - `owasp` gate: run the `owasp` command, then read the changed code against the current
   OWASP Top 10.
 - Stray files in the diff (test inputs, outputs, scratch scripts) are a finding.
-- Each requirement `BR-n` and `TR-n` in `<docs>/requirements/<task-branch>.md`, or each
-  `TR-n` the task names (task report, PR body, test names): the diff or a check MUST
-  show it is met. A `TR` that traces to no `BR` is a finding (scope creep).
+- Each requirement `BR-n` and `TR-n` in `<docs>/requirements/<task-branch>.md` or
+  `<docs>/plans/<task-branch>.md`, or each `TR-n` the task names (task report, PR body):
+  the diff or a check MUST show it is met. The `req:` markers (`test` skill, section 5)
+  MUST cover every `TR` that has code; a `TR` with no marker, or a marker whose id the
+  task file does not have, is a finding. When a requirements file exists, a `TR` that
+  traces to no `BR` is a finding (scope creep).
 - A changed behavior with no test that fails without the change is a finding (section 3,
   item 4). So is a requirement, a bug fix, an edge case or a failure path with no test
   of its own.

@@ -75,8 +75,9 @@ Subtract before you add: take complexity out first.
   structure, speed.
 - Requirement → test → code. Write the failing test first. See it fail for the reason you
   expect. Make the smallest change that makes it pass.
-- Each requirement `TR-n` and each bug finding MUST have at least one test. Edge cases
-  and failure paths: the `test` skill, section 4.
+- Each requirement `TR-n` and each bug finding MUST have at least one test, marked
+  `req:` (`test` skill, section 5). Edge cases and failure paths: the `test` skill,
+  section 4.
 - Tests MUST call the code the way its user does and check the result that user sees.
   A test that still passes when every function returns nothing MUST be deleted.
 - If an honest test is impractical, MUST NOT write a bad one. Say so in the report.
@@ -84,8 +85,9 @@ Subtract before you add: take complexity out first.
   fix.
 - Refactor: MUST pin the current behavior with a passing test, change the structure, then
   show the same test still passes.
-- A defect in built code, a requirement that changes during work, or one that needs the
-  user's answer: MUST follow the `plan` skill, section 10, before the work continues.
+- A defect in built code gets a new `TR-n` (`plan` skill, section 10), its test, then
+  the fix. A requirement that changes during work, or one that needs the user's answer:
+  MUST stop and follow the `plan` skill, section 10, before the work continues.
 - Every feature SHOULD ship with its tests.
 
 ## 5. Gates

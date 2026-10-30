@@ -60,20 +60,21 @@ afterEach(() => {
   rmSync(home, { recursive: true, force: true });
 });
 
-test('test_tr10_usage_error_exits_2_with_usage_on_stderr', async () => {
+// req: agent-browser/TR-10
+test('usage_error_exits_2_with_usage_on_stderr', async () => {
   const { deps } = fakeDaemon(false);
   expect(await main(['fly'], deps)).toBe(2);
   expect(err.join('\n')).toContain(USAGE);
 });
 
-test('test_tr10_main_open_prints_markdown', async () => {
+test('main_open_prints_markdown', async () => {
   const { daemon, deps } = fakeDaemon(false);
   expect(await main(['open', 'https://example.com'], deps)).toBe(0);
   expect(out).toEqual(['# Hello']);
   expect(daemon.spawned).toBe(1);
 });
 
-test('test_tr10_main_open_daemon_error_exits_1', async () => {
+test('main_open_daemon_error_exits_1', async () => {
   writeState();
   const { deps } = fakeDaemon(true, [500, { error: 'net::ERR_NAME_NOT_RESOLVED' }]);
   expect(await main(['open', 'https://example.invalid'], deps)).toBe(1);
@@ -81,14 +82,14 @@ test('test_tr10_main_open_daemon_error_exits_1', async () => {
   expect(out).toEqual([]);
 });
 
-test('test_tr10_main_search_prints_rendered_results', async () => {
+test('main_search_prints_rendered_results', async () => {
   writeState();
   const { deps } = fakeDaemon(true);
   expect(await main(['search', 'playwright', '--limit', '1'], deps)).toBe(0);
   expect(out).toEqual([renderResults(RESULTS)]);
 });
 
-test('test_tr10_main_start_when_running_says_already_running', async () => {
+test('main_start_when_running_says_already_running', async () => {
   writeState();
   const { daemon, deps } = fakeDaemon(true);
   expect(await main(['start'], deps)).toBe(0);
@@ -96,27 +97,27 @@ test('test_tr10_main_start_when_running_says_already_running', async () => {
   expect(daemon.spawned).toBe(0);
 });
 
-test('test_tr10_main_start_when_not_running_starts', async () => {
+test('main_start_when_not_running_starts', async () => {
   const { daemon, deps } = fakeDaemon(false);
   expect(await main(['start', '--headless'], deps)).toBe(0);
   expect(out[0]).toMatch(/^running: pid=42 port=7788/);
   expect(daemon.spawned).toBe(1);
 });
 
-test('test_tr10_main_start_bad_flag_value_exits_2', async () => {
+test('main_start_bad_flag_value_exits_2', async () => {
   const { deps } = fakeDaemon(false);
   expect(await main(['start', '--port', '0'], deps)).toBe(2);
   expect(err[0]).toContain('invalid value for port');
 });
 
-test('test_tr10_main_start_bad_config_file_exits_1', async () => {
+test('main_start_bad_config_file_exits_1', async () => {
   writeFileSync(join(home, 'config.json'), '{ not json');
   const { deps } = fakeDaemon(false);
   expect(await main(['start', '--port', '9000'], deps)).toBe(1);
   expect(err[0]).toContain('is not valid JSON');
 });
 
-test('test_tr10_main_stop_running_stops', async () => {
+test('main_stop_running_stops', async () => {
   writeState();
   const { daemon, deps } = fakeDaemon(true);
   expect(await main(['stop'], deps)).toBe(0);
@@ -124,34 +125,34 @@ test('test_tr10_main_stop_running_stops', async () => {
   expect(daemon.alive).toBe(false);
 });
 
-test('test_tr10_main_stop_waits_until_state_file_gone', async () => {
+test('main_stop_waits_until_state_file_gone', async () => {
   writeState();
   const { deps } = fakeDaemon(true);
   expect(await main(['stop'], deps)).toBe(0);
   expect(existsSync(join(home, 'daemon.json'))).toBe(false);
 });
 
-test('test_tr10_main_stop_daemon_still_there_after_wait_exits_1', async () => {
+test('main_stop_daemon_still_there_after_wait_exits_1', async () => {
   writeState();
   const { deps } = fakeDaemon(true, undefined, true);
   expect(await main(['stop'], { ...deps, stopTimeoutMs: 20, stopPollMs: 1 })).toBe(1);
   expect(err[0]).toMatch(/still runs after/);
 });
 
-test('test_tr10_main_stop_not_running', async () => {
+test('main_stop_not_running', async () => {
   const { deps } = fakeDaemon(false);
   expect(await main(['stop'], deps)).toBe(0);
   expect(out).toEqual(['not running']);
 });
 
-test('test_tr10_main_status_running_prints_fields', async () => {
+test('main_status_running_prints_fields', async () => {
   writeState();
   const { deps } = fakeDaemon(true);
   expect(await main(['status'], deps)).toBe(0);
   expect(out[0].split('\n')).toEqual(['pid: 42', 'port: 7788', 'headless: true', 'inFlight: 0']);
 });
 
-test('test_tr10_main_status_not_running_never_spawns', async () => {
+test('main_status_not_running_never_spawns', async () => {
   const { daemon, deps } = fakeDaemon(false);
   expect(await main(['status'], deps)).toBe(0);
   expect(out).toEqual(['not running']);

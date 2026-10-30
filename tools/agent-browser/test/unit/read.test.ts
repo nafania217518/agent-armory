@@ -4,7 +4,8 @@ import { pageToMarkdown } from '../../src/read.js';
 
 const article = readFileSync(new URL('../fixtures/article.html', import.meta.url), 'utf8');
 
-test('test_tr4_article_fixture_keeps_headings_paragraphs_links_lists', () => {
+// req: agent-browser/TR-4
+test('article_fixture_keeps_headings_paragraphs_links_lists', () => {
   const markdown = pageToMarkdown(article);
 
   expect(markdown).toContain('# Understanding Idle Timers');
@@ -15,7 +16,7 @@ test('test_tr4_article_fixture_keeps_headings_paragraphs_links_lists', () => {
   expect(markdown).toContain('[Node timers docs](https://nodejs.org/api/timers.html)');
 });
 
-test('test_tr4_nav_footer_script_removed', () => {
+test('nav_footer_script_removed', () => {
   const markdown = pageToMarkdown(article);
 
   for (const marker of ['NAV_BLOG_LINK', 'FOOTER_TEXT', 'TRACKING_SCRIPT', 'BODY_SCRIPT',
@@ -24,7 +25,7 @@ test('test_tr4_nav_footer_script_removed', () => {
   }
 });
 
-test('test_tr4_role_and_class_boilerplate_removed', () => {
+test('role_and_class_boilerplate_removed', () => {
   const markdown = pageToMarkdown(article);
 
   for (const marker of ['ROLE_BANNER_TEXT', 'ROLE_COMPLEMENTARY_TEXT', 'SIDEBAR_TEXT',
@@ -33,13 +34,13 @@ test('test_tr4_role_and_class_boilerplate_removed', () => {
   }
 });
 
-test('test_tr4_empty_body_gives_empty_string', () => {
+test('empty_body_gives_empty_string', () => {
   const html = '<!doctype html><html><head><title>t</title></head><body></body></html>';
 
   expect(pageToMarkdown(html)).toBe('');
 });
 
-test('test_tr4_malformed_html_does_not_throw', () => {
+test('malformed_html_does_not_throw', () => {
   const markdown = pageToMarkdown('<div><p>Unclosed <b>bold <nav>x</div></span><h2>Title');
 
   expect(markdown).toContain('Unclosed');

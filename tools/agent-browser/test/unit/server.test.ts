@@ -7,7 +7,8 @@ import { afterEach, beforeEach, expect, test, vi, describe } from 'vitest';
 import type { Settings } from '../../src/config.js';
 import { runDaemon, startServer, type BrowserOps } from '../../src/server.js';
 
-describe('tr7_server', () => {
+// req: agent-browser/TR-7
+describe('server', () => {
 const SETTINGS: Settings = {
   profile: '/tmp/profile',
   headless: true,
@@ -67,7 +68,7 @@ function portOf(server: NetServer): number {
   return (server.address() as { port: number }).port;
 }
 
-test('test_tr7_read_returns_markdown', async () => {
+test('read_returns_markdown', async () => {
   const { url } = await start();
 
   const res = await post(url, '/read', { url: 'https://a.test' });
@@ -77,7 +78,7 @@ test('test_tr7_read_returns_markdown', async () => {
   expect(await res.json()).toEqual({ markdown: '# page https://a.test' });
 });
 
-test('test_tr7_read_without_url_is_400', async () => {
+test('read_without_url_is_400', async () => {
   const { url } = await start();
 
   const res = await post(url, '/read', {});
@@ -86,7 +87,7 @@ test('test_tr7_read_without_url_is_400', async () => {
   expect((await res.json()).error).toMatch(/url/);
 });
 
-test('test_tr7_read_file_url_is_400', async () => {
+test('read_file_url_is_400', async () => {
   const read = vi.fn(async () => '');
   const { url } = await start(fakeOps({ read }));
 
@@ -96,7 +97,7 @@ test('test_tr7_read_file_url_is_400', async () => {
   expect(read).not.toHaveBeenCalled();
 });
 
-test('test_tr7_read_callee_error_is_500_with_message', async () => {
+test('read_callee_error_is_500_with_message', async () => {
   const { url } = await start(fakeOps({ read: async () => Promise.reject(new Error('page timed out')) }));
 
   const res = await post(url, '/read', { url: 'https://a.test' });
@@ -105,7 +106,7 @@ test('test_tr7_read_callee_error_is_500_with_message', async () => {
   expect(await res.json()).toEqual({ error: 'page timed out' });
 });
 
-test('test_tr7_search_returns_results', async () => {
+test('search_returns_results', async () => {
   const { url } = await start();
 
   const res = await post(url, '/search', { query: 'cats', limit: 3 });
@@ -114,7 +115,7 @@ test('test_tr7_search_returns_results', async () => {
   expect(await res.json()).toEqual({ results: [{ title: 'cats', url: 'https://x.test', content: '3' }] });
 });
 
-test('test_tr7_search_default_limit_5', async () => {
+test('search_default_limit_5', async () => {
   const search = vi.fn(async () => []);
   const { url } = await start(fakeOps({ search }));
 
@@ -123,7 +124,7 @@ test('test_tr7_search_default_limit_5', async () => {
   expect(search).toHaveBeenCalledWith('cats', 5);
 });
 
-test('test_tr7_search_without_query_is_400', async () => {
+test('search_without_query_is_400', async () => {
   const { url } = await start();
 
   const res = await post(url, '/search', { limit: 2 });
@@ -131,7 +132,7 @@ test('test_tr7_search_without_query_is_400', async () => {
   expect(res.status).toBe(400);
 });
 
-test('test_tr7_search_bad_limit_is_400', async () => {
+test('search_bad_limit_is_400', async () => {
   const { url } = await start();
 
   const res = await post(url, '/search', { query: 'cats', limit: 0 });
@@ -139,7 +140,7 @@ test('test_tr7_search_bad_limit_is_400', async () => {
   expect(res.status).toBe(400);
 });
 
-test('test_tr7_status_reports_settings_and_uptime', async () => {
+test('status_reports_settings_and_uptime', async () => {
   const { url, port } = await start();
 
   const res = await fetch(url + '/status');
@@ -160,7 +161,7 @@ test('test_tr7_status_reports_settings_and_uptime', async () => {
   expect(body.idleRemainingMs).toBeLessThanOrEqual(600_000);
 });
 
-test('test_tr7_status_does_not_reset_idle', async () => {
+test('status_does_not_reset_idle', async () => {
   let idled = false;
   const { url } = await start(fakeOps(), { idleMinutes: 200 / 60_000 }, () => {
     idled = true;
@@ -175,7 +176,7 @@ test('test_tr7_status_does_not_reset_idle', async () => {
   expect(idled).toBe(true);
 });
 
-test('test_tr7_stop_replies_then_asks_for_shutdown', async () => {
+test('stop_replies_then_asks_for_shutdown', async () => {
   let asked = false;
   const { url } = await start(fakeOps(), {}, () => {
     asked = true;
@@ -188,7 +189,7 @@ test('test_tr7_stop_replies_then_asks_for_shutdown', async () => {
   expect(asked).toBe(true);
 });
 
-test('test_tr7_close_is_idempotent', async () => {
+test('close_is_idempotent', async () => {
   const server = await start();
 
   await server.close();
@@ -196,7 +197,7 @@ test('test_tr7_close_is_idempotent', async () => {
   await expect(server.close()).resolves.toBeUndefined();
 });
 
-test('test_tr7_unknown_route_404', async () => {
+test('unknown_route_404', async () => {
   const { url } = await start();
 
   const res = await fetch(url + '/nope');
@@ -205,7 +206,7 @@ test('test_tr7_unknown_route_404', async () => {
   expect((await res.json()).error).toBeTruthy();
 });
 
-test('test_tr7_get_on_read_405', async () => {
+test('get_on_read_405', async () => {
   const { url } = await start();
 
   const res = await fetch(url + '/read');
@@ -214,7 +215,7 @@ test('test_tr7_get_on_read_405', async () => {
   expect((await res.json()).error).toBeTruthy();
 });
 
-test('test_tr7_invalid_json_body_is_400', async () => {
+test('invalid_json_body_is_400', async () => {
   const { url } = await start();
 
   const res = await post(url, '/read', '{not json');
@@ -222,7 +223,7 @@ test('test_tr7_invalid_json_body_is_400', async () => {
   expect(res.status).toBe(400);
 });
 
-test('test_tr7_body_over_1mib_is_413', async () => {
+test('body_over_1mib_is_413', async () => {
   const { url } = await start();
 
   const res = await post(url, '/read', { url: 'x'.repeat(1024 * 1024 + 1) });
@@ -230,7 +231,7 @@ test('test_tr7_body_over_1mib_is_413', async () => {
   expect(res.status).toBe(413);
 });
 
-test('test_tr7_binds_loopback_only', async () => {
+test('binds_loopback_only', async () => {
   const { port } = await start();
   const external = Object.values(networkInterfaces())
     .flat()
@@ -288,7 +289,7 @@ afterEach(() => {
   delete process.env.AGENT_BROWSER_HOME;
 });
 
-test('test_tr7_state_file_written_after_launch', async () => {
+test('state_file_written_after_launch', async () => {
   const daemon = await fakeDaemon();
   const run = daemon.run();
   await waitFor(() => daemon.events.length > 0);
@@ -309,7 +310,7 @@ test('test_tr7_state_file_written_after_launch', async () => {
   await run;
 });
 
-test('test_tr7_binds_before_launch', async () => {
+test('binds_before_launch', async () => {
   const daemon = await fakeDaemon();
   const run = daemon.run();
   // The launch stays pending: a daemon that binds only after the launch is not listening here.
@@ -322,7 +323,7 @@ test('test_tr7_binds_before_launch', async () => {
   await run;
 });
 
-test('test_tr7_request_before_launch_waits_for_it', async () => {
+test('request_before_launch_waits_for_it', async () => {
   const daemon = await fakeDaemon();
   const run = daemon.run();
   await waitFor(() => daemon.events.length > 0);
@@ -336,7 +337,7 @@ test('test_tr7_request_before_launch_waits_for_it', async () => {
 });
 
 // The entry shim turns this rejection into exit code 1.
-test('test_tr7_bind_failure_exits_nonzero_without_launch', async () => {
+test('bind_failure_exits_nonzero_without_launch', async () => {
   const blocker = await occupyPort();
   closers.push(() => new Promise((r) => blocker.close(() => r())));
   const daemon = await fakeDaemon();
@@ -346,7 +347,7 @@ test('test_tr7_bind_failure_exits_nonzero_without_launch', async () => {
   expect(existsSync(daemon.state)).toBe(false);
 });
 
-test('test_tr7_launch_failure_frees_port_and_rejects', async () => {
+test('launch_failure_frees_port_and_rejects', async () => {
   const daemon = await fakeDaemon();
   const run = daemon.run();
   await waitFor(() => daemon.events.length > 0);
@@ -358,7 +359,7 @@ test('test_tr7_launch_failure_frees_port_and_rejects', async () => {
   expect(existsSync(daemon.state)).toBe(false);
 });
 
-test('test_tr7_stop_resolves_run_daemon', async () => {
+test('stop_resolves_run_daemon', async () => {
   const daemon = await fakeDaemon();
   daemon.launch.resolve();
   const run = daemon.run();
@@ -373,7 +374,7 @@ test('test_tr7_stop_resolves_run_daemon', async () => {
   expect(process.listenerCount('SIGTERM')).toBe(0);
 });
 
-test('test_tr7_shutdown_closes_browser_before_port_and_state_file', async () => {
+test('shutdown_closes_browser_before_port_and_state_file', async () => {
   const daemon = await fakeDaemon();
   daemon.launch.resolve();
   const run = daemon.run();
@@ -387,7 +388,7 @@ test('test_tr7_shutdown_closes_browser_before_port_and_state_file', async () => 
   expect(process.listenerCount('SIGINT')).toBe(0);
 });
 
-test('test_tr7_browser_closed_resolves_run_daemon', async () => {
+test('browser_closed_resolves_run_daemon', async () => {
   const daemon = await fakeDaemon();
   daemon.launch.resolve();
   const run = daemon.run();
@@ -412,13 +413,13 @@ function raw(port: number, method: string, path: string, headers: Record<string,
   });
 }
 
-test('test_tr7_wrong_host_is_403', async () => {
+test('wrong_host_is_403', async () => {
   const { port } = await start();
 
   expect(await raw(port, 'GET', '/status', { Host: `evil.test:${port}` })).toBe(403);
 });
 
-test('test_tr7_stop_with_wrong_host_does_not_stop', async () => {
+test('stop_with_wrong_host_does_not_stop', async () => {
   const onShutdown = vi.fn();
   const { port } = await start(fakeOps(), {}, onShutdown);
 
@@ -426,13 +427,13 @@ test('test_tr7_stop_with_wrong_host_does_not_stop', async () => {
   expect(onShutdown).not.toHaveBeenCalled();
 });
 
-test('test_tr7_localhost_host_is_accepted', async () => {
+test('localhost_host_is_accepted', async () => {
   const { port } = await start();
 
   expect(await raw(port, 'GET', '/status', { Host: `localhost:${port}` })).toBe(200);
 });
 
-test('test_tr7_post_without_json_content_type_is_415', async () => {
+test('post_without_json_content_type_is_415', async () => {
   const onShutdown = vi.fn();
   const { port } = await start(fakeOps(), {}, onShutdown);
 
@@ -441,7 +442,8 @@ test('test_tr7_post_without_json_content_type_is_415', async () => {
 });
 });
 
-describe('tr12_server', () => {
+// req: agent-browser/TR-12
+describe('server concurrency', () => {
 const SETTINGS: Settings = {
   profile: '/tmp/profile',
   headless: true,
@@ -508,7 +510,7 @@ afterEach(async () => {
   rmSync(dir, { recursive: true, force: true });
 });
 
-test('test_tr12_two_reads_run_at_once', async () => {
+test('two_reads_run_at_once', async () => {
   await start(2);
 
   const a = read('a');
@@ -521,7 +523,7 @@ test('test_tr12_two_reads_run_at_once', async () => {
   expect((await b).status).toBe(200);
 });
 
-test('test_tr12_third_waits_when_concurrency_is_2', async () => {
+test('third_waits_when_concurrency_is_2', async () => {
   await start(2);
 
   fire('a');
@@ -532,7 +534,7 @@ test('test_tr12_third_waits_when_concurrency_is_2', async () => {
   expect(calls).toHaveLength(2);
 });
 
-test('test_tr12_waiting_request_runs_after_release_in_order', async () => {
+test('waiting_request_runs_after_release_in_order', async () => {
   await start(1);
   fire('a');
   await waitFor(() => calls.length === 1);
@@ -549,7 +551,7 @@ test('test_tr12_waiting_request_runs_after_release_in_order', async () => {
   expect(calls.map((c) => c.url)).toEqual(['a', 'b', 'c']);
 });
 
-test('test_tr12_failed_request_releases_its_slot', async () => {
+test('failed_request_releases_its_slot', async () => {
   await start(1);
   const a = read('a');
   await waitFor(() => calls.length === 1);
@@ -566,7 +568,7 @@ test('test_tr12_failed_request_releases_its_slot', async () => {
   expect(await second.json()).toEqual({ markdown: 'b ok' });
 });
 
-test('test_tr12_idle_held_while_queue_not_empty', async () => {
+test('idle_held_while_queue_not_empty', async () => {
   await start(1);
   fire('a');
   fire('b');
@@ -586,8 +588,9 @@ test('test_tr12_idle_held_while_queue_not_empty', async () => {
 });
 });
 
-describe('tr13_server', () => {
-test('test_tr13_status_reports_channel', async () => {
+// req: agent-browser/TR-13
+describe('server status channel', () => {
+test('status_reports_channel', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'tr13-'));
   const server = await startServer({
     settings: { profile: '/p', headless: true, idleMinutes: 10, port: 0, concurrency: 1, channel: 'chromium' },

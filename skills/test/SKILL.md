@@ -62,14 +62,20 @@ names are the project's choice.
 
 - Arrange, act, assert (given, when, then). One condition per test; as many tests as
   there are conditions.
-- Every test case name starts with the requirement id and states the behavior. A prefix
-  the framework requires comes first (`Test` in Go, `test` in XCTest).
+- A test case name states the behavior. A prefix the framework requires comes first
+  (`Test` in Go, `test` in XCTest). The requirement id MUST NOT be in the case name or
+  the file name.
+- When the task has requirement ids, the test that proves one MUST carry the marker
+  `req: <task-branch>/<id>` in a comment on the line above the case, or above the group
+  that holds its tests (`// req: agent-browser/TR-8`; several ids:
+  `req: agent-browser/TR-8, TR-13`). The task branch names the file the id lives in,
+  `<docs>/plans/<task-branch>.md` or `<docs>/requirements/<task-branch>.md`. Scan:
+  `git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: '`.
 - A test file is named after the unit under test, in the test framework's own convention
   (`config.test.ts`, `ConfigTest.java`, `test_config.py`, `config_test.go`). SHOULD keep
   one test file per unit and level; the requirements for one unit share its file. The
-  requirement id MUST NOT be in the file name. The project's command for a level
-  (`AGENTS.md` `## Commands`) decides how that level's files are told apart: a
-  directory, a suffix, a build tag or a target.
+  project's command for a level (`AGENTS.md` `## Commands`) decides how that level's
+  files are told apart: a directory, a suffix, a build tag or a target.
 - DAMP: duplication in test code is allowed when it improves readability. SHOULD
   extract a helper at the third repeat (Rule of Three). This is the one exception to the DRY + SSOT base rule
   (DRY), for test code only.

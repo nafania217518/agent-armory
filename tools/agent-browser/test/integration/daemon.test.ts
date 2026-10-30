@@ -29,7 +29,8 @@ afterEach(() => {
   vi.unstubAllEnvs();
 });
 
-test('test_tr7_daemon_exits_when_browser_closes', async () => {
+// req: agent-browser/TR-7
+test('daemon_exits_when_browser_closes', async () => {
   let browser: DaemonBrowser | undefined;
   const launch = async (settings: Settings) => (browser = await createOps(settings));
   const run = runDaemon(testSettings({ port: await freePort() }), launch);

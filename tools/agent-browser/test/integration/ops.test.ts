@@ -16,18 +16,19 @@ afterAll(async () => {
   await fixtures.close();
 });
 
-test('test_tr10_ops_read_returns_markdown', async () => {
+// req: agent-browser/TR-10
+test('ops_read_returns_markdown', async () => {
   const markdown = await browser.ops.read(`${fixtures.baseUrl}/article.html`);
   expect(markdown).toMatch(/^Understanding Idle Timers\n=+|^# Understanding Idle Timers/m);
 });
 
-test('test_tr10_ops_search_uses_the_search_url', async () => {
+test('ops_search_uses_the_search_url', async () => {
   const results = await browser.ops.search('playwright', 2);
   expect(results).toHaveLength(2);
   expect(results[0].title).not.toBe('');
 });
 
-test('test_tr10_ops_close_closes_the_browser', async () => {
+test('ops_close_closes_the_browser', async () => {
   await browser.close();
   await expect(browser.ops.read(`${fixtures.baseUrl}/article.html`)).rejects.toThrow(/closed/i);
 });

@@ -11,45 +11,46 @@ const SETTINGS: Settings = {
   channel: 'chrome',
 };
 
-test('test_tr8_sandbox_on_when_not_root', () => {
+// req: agent-browser/TR-8
+test('sandbox_on_when_not_root', () => {
   const { args } = launchOptions(SETTINGS, 501);
 
   expect(args).not.toContain('--no-sandbox');
   expect(args).not.toContain('--disable-setuid-sandbox');
 });
 
-test('test_tr8_sandbox_off_when_root', () => {
+test('sandbox_off_when_root', () => {
   const { args } = launchOptions(SETTINGS, 0);
 
   expect(args).toContain('--no-sandbox');
   expect(args).toContain('--disable-setuid-sandbox');
 });
 
-test('test_tr8_sandbox_on_when_uid_unknown', () => {
+test('sandbox_on_when_uid_unknown', () => {
   expect(launchOptions(SETTINGS, undefined).args).not.toContain('--no-sandbox');
 });
 
-test('test_tr8_chrome_channel_passed', () => {
+test('chrome_channel_passed', () => {
   expect(launchOptions(SETTINGS, 501).channel).toBe('chrome');
 });
 
-test('test_tr8_chromium_takes_no_channel', () => {
+test('chromium_takes_no_channel', () => {
   expect(launchOptions({ ...SETTINGS, channel: 'chromium' }, 501)).not.toHaveProperty('channel');
 });
 
-test('test_tr8_startup_page_closed_on_macos_headed', () => {
+test('startup_page_closed_on_macos_headed', () => {
   expect(closesStartupPage(false, 'darwin')).toBe(true);
 });
 
-test('test_tr8_startup_page_closed_when_headless', () => {
+test('startup_page_closed_when_headless', () => {
   expect(closesStartupPage(true, 'linux')).toBe(true);
 });
 
 // Headed Chrome on Linux and Windows quits with its last window.
-test('test_tr8_startup_page_kept_on_linux_headed', () => {
+test('startup_page_kept_on_linux_headed', () => {
   expect(closesStartupPage(false, 'linux')).toBe(false);
 });
 
-test('test_tr8_startup_page_kept_on_windows_headed', () => {
+test('startup_page_kept_on_windows_headed', () => {
   expect(closesStartupPage(false, 'win32')).toBe(false);
 });

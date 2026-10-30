@@ -26,7 +26,7 @@ export const YAHOO_SEARCH = 'https://search.yahoo.com/search?p=';
 const MAX_PAGES = 2;
 
 // tech-debt: coupled to Yahoo markup (.algo, .compTitle, .compText.aAbs, a.next); a markup change gives an empty list silently, upgrade the selectors (or move to a search API) when that happens.
-// Coverage cannot see code that runs in the browser page; test_tr8_search_* cover it.
+// Coverage cannot see code that runs in the browser page; the search_* tests in test/integration/browser.test.ts cover it.
 /* v8 ignore start */
 /** Runs inside the page through page.evaluate, so it uses only the DOM. */
 export function extractResults(): SearchResult[] {

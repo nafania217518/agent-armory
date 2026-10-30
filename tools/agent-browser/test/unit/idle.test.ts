@@ -11,7 +11,8 @@ afterEach(() => {
   vi.useRealTimers();
 });
 
-test('test_tr6_fires_after_idle', () => {
+// req: agent-browser/TR-6
+test('fires_after_idle', () => {
   const onIdle = vi.fn();
   new IdleTimer(IDLE_MS, onIdle);
 
@@ -22,7 +23,7 @@ test('test_tr6_fires_after_idle', () => {
   expect(onIdle).toHaveBeenCalledTimes(1);
 });
 
-test('test_tr6_activity_resets', () => {
+test('activity_resets', () => {
   const onIdle = vi.fn();
   const timer = new IdleTimer(IDLE_MS, onIdle);
   vi.advanceTimersByTime(IDLE_MS - 1);
@@ -37,7 +38,7 @@ test('test_tr6_activity_resets', () => {
   expect(timer.remainingMs()).toBe(1);
 });
 
-test('test_tr6_holds_while_in_flight', () => {
+test('holds_while_in_flight', () => {
   const onIdle = vi.fn();
   const timer = new IdleTimer(IDLE_MS, onIdle);
 
@@ -50,7 +51,7 @@ test('test_tr6_holds_while_in_flight', () => {
   expect(timer.remainingMs()).toBeNull();
 });
 
-test('test_tr6_rearms_when_in_flight_reaches_zero', () => {
+test('rearms_when_in_flight_reaches_zero', () => {
   const onIdle = vi.fn();
   const timer = new IdleTimer(IDLE_MS, onIdle);
   timer.begin();
@@ -63,7 +64,7 @@ test('test_tr6_rearms_when_in_flight_reaches_zero', () => {
   expect(onIdle).toHaveBeenCalledTimes(1);
 });
 
-test('test_tr6_stop_cancels', () => {
+test('stop_cancels', () => {
   const onIdle = vi.fn();
   const timer = new IdleTimer(IDLE_MS, onIdle);
   timer.begin();

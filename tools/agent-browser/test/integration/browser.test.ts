@@ -21,12 +21,13 @@ afterAll(async () => {
   await server.close();
 });
 
-test('test_tr8_launch_leaves_no_blank_page', () => {
+// req: agent-browser/TR-8
+test('launch_leaves_no_blank_page', () => {
   expect(context.pages()).toHaveLength(0);
 });
 
 // Headed Chrome on Linux quits with its last window; the blank page keeps it alive.
-test.skipIf(process.platform !== 'linux')('test_tr8_headed_linux_keeps_blank_page', async () => {
+test.skipIf(process.platform !== 'linux')('headed_linux_keeps_blank_page', async () => {
   const headed = await launchBrowser({ ...testSettings(), headless: false });
   try {
     expect(headed.pages()).toHaveLength(1);
@@ -35,20 +36,20 @@ test.skipIf(process.platform !== 'linux')('test_tr8_headed_linux_keeps_blank_pag
   }
 });
 
-test('test_tr8_read_fixture_article', async () => {
+test('read_fixture_article', async () => {
   const html = await readPage(context, `${server.baseUrl}/article.html`);
   expect(html).toContain('<h1>Understanding Idle Timers</h1>');
 });
 
-test('test_tr8_read_unreachable_url_throws', async () => {
+test('read_unreachable_url_throws', async () => {
   await expect(readPage(context, 'http://127.0.0.1:1/')).rejects.toThrow();
 });
 
-test('test_tr8_read_timeout_throws', async () => {
+test('read_timeout_throws', async () => {
   await expect(readPage(context, `${server.baseUrl}/slow`, 500)).rejects.toThrow(/Timeout/);
 });
 
-test('test_tr8_search_fixture_extracts_results', async () => {
+test('search_fixture_extracts_results', async () => {
   const results = await searchWeb(context, { query: 'playwright', limit: 3, baseUrl: searchBase });
   expect(results).toEqual([
     {
@@ -69,19 +70,19 @@ test('test_tr8_search_fixture_extracts_results', async () => {
   ]);
 });
 
-test('test_tr8_search_stops_at_limit', async () => {
+test('search_stops_at_limit', async () => {
   const results = await searchWeb(context, { query: 'playwright', limit: 2, baseUrl: searchBase });
   expect(results.map((r) => r.title)).toEqual(['Installation | Playwright', 'Playwright (software) - Wikipedia']);
 });
 
 // Page 2 links back to page 1, so only MAX_PAGES ends this search.
-test('test_tr8_search_follows_next_until_two_pages', async () => {
+test('search_follows_next_until_two_pages', async () => {
   const results = await searchWeb(context, { query: 'playwright', limit: 10, baseUrl: searchBase });
   expect(results).toHaveLength(6);
   expect(results[5].title).toBe('Playwright for Python');
 });
 
-test('test_tr8_search_no_next_link_stops', async () => {
+test('search_no_next_link_stops', async () => {
   const base = `${server.baseUrl}/yahoo-last.html?p=`;
   const results = await searchWeb(context, { query: 'playwright', limit: 10, baseUrl: base });
   expect(results.map((r) => r.title)).toEqual([
@@ -91,7 +92,7 @@ test('test_tr8_search_no_next_link_stops', async () => {
   ]);
 });
 
-test('test_tr8_pages_closed_after_each_call', async () => {
+test('pages_closed_after_each_call', async () => {
   const before = context.pages().length;
   await readPage(context, `${server.baseUrl}/article.html`);
   await readPage(context, 'http://127.0.0.1:1/').catch(() => undefined);
@@ -99,7 +100,7 @@ test('test_tr8_pages_closed_after_each_call', async () => {
   expect(context.pages().length).toBe(before);
 });
 
-test('test_tr8_cookie_survives_relaunch_on_same_profile', async () => {
+test('cookie_survives_relaunch_on_same_profile', async () => {
   const settings = testSettings();
   const first = await launchBrowser(settings);
   await readPage(first, `${server.baseUrl}/set-cookie`);

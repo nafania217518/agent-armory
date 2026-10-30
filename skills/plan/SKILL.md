@@ -60,7 +60,7 @@ The `TR`s in execution order:
 ```
 TR-<n> [tag] (BR-<m>): MUST <behavior>
   why: <one line, only when the tag is not [opus]>
-  tests: <test names, each starts with the id>
+  tests: <test names>
 ```
 
 - Every item MUST carry one tag from the `## Models` rows, `[opus]` by default.
@@ -106,6 +106,8 @@ until nothing is open.
 
 ## 10. Amendments
 
-A defect in built code, or a new or changed requirement during work, gets a new `BR-n`
-or `TR-n` and re-enters at section 7. An old id MUST NOT be rewritten or renumbered; mark
-it `(replaced by TR-m)`. The work continues after approval.
+A new or changed requirement during work gets a new `BR-n` or `TR-n` and re-enters at
+section 7. The work continues after approval. A defect in built code gets a new `TR-n`
+with its tests, appended to the requirements file (`full`) or the plan file (`min`); it
+needs no new approval, and the task report lists it. An old id MUST NOT be rewritten or
+renumbered; mark it `(replaced by TR-m)`.

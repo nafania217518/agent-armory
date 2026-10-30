@@ -49,6 +49,17 @@ As plain skills, one symlink per skill:
 for s in plan code review audit test init-project research browse; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
 ```
 
+## Release
+
+Run this command from the repo root:
+
+```bash
+node scripts/bump-version.mjs <major|minor|patch>
+```
+
+It raises that part of the version in `.claude-plugin/plugin.json` and sets the lower
+parts to 0. It prints the new version.
+
 ## Notes
 
 - Rules use RFC 2119 words. The project `AGENTS.md` (template in

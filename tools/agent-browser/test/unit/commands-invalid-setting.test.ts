@@ -20,10 +20,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-test('test_tr10_reworded_invalid_flag_still_exits_2', async () => {
+// req: agent-browser/TR-10
+test('reworded_invalid_flag_still_exits_2', async () => {
   expect(await main(['start', '--port', '0'])).toBe(2);
 });
 
-test('test_tr10_reworded_invalid_file_value_still_exits_1', async () => {
+test('reworded_invalid_file_value_still_exits_1', async () => {
   expect(await main(['start', '--headless'])).toBe(1);
 });

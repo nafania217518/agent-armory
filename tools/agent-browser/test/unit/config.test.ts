@@ -5,7 +5,8 @@ import { afterEach, beforeEach, expect, test, describe } from 'vitest';
 import { resolveSettings } from '../../src/config.js';
 import { homePaths } from '../../src/paths.js';
 
-describe('tr2_config', () => {
+// req: agent-browser/TR-2
+describe('resolveSettings', () => {
 let home: string;
 const savedHome = process.env.AGENT_BROWSER_HOME;
 
@@ -24,7 +25,7 @@ function writeConfig(content: string): void {
   writeFileSync(join(home, 'config.json'), content);
 }
 
-test('test_tr2_defaults_when_no_file', () => {
+test('defaults_when_no_file', () => {
   expect(resolveSettings({})).toEqual({
     profile: join(home, 'profile'),
     headless: false,
@@ -35,7 +36,7 @@ test('test_tr2_defaults_when_no_file', () => {
   });
 });
 
-test('test_tr2_file_overrides_defaults', () => {
+test('file_overrides_defaults', () => {
   writeConfig(JSON.stringify({ port: 9000, headless: true, idleMinutes: 0.5 }));
 
   const settings = resolveSettings({});
@@ -43,7 +44,7 @@ test('test_tr2_file_overrides_defaults', () => {
   expect(settings).toMatchObject({ port: 9000, headless: true, idleMinutes: 0.5, concurrency: 4 });
 });
 
-test('test_tr2_flags_override_file', () => {
+test('flags_override_file', () => {
   writeConfig(JSON.stringify({ port: 9000, concurrency: 2 }));
 
   const settings = resolveSettings({ port: 9100 });
@@ -51,33 +52,33 @@ test('test_tr2_flags_override_file', () => {
   expect(settings).toMatchObject({ port: 9100, concurrency: 2 });
 });
 
-test('test_tr2_malformed_json_names_the_file', () => {
+test('malformed_json_names_the_file', () => {
   writeConfig('{ not json');
 
   expect(() => resolveSettings({})).toThrow(join(home, 'config.json'));
 });
 
-test('test_tr2_unknown_key_rejected', () => {
+test('unknown_key_rejected', () => {
   writeConfig(JSON.stringify({ colour: 'red' }));
 
   expect(() => resolveSettings({})).toThrow(/colour/);
 });
 
-test('test_tr2_negative_idle_rejected', () => {
+test('negative_idle_rejected', () => {
   expect(() => resolveSettings({ idleMinutes: -1 })).toThrow(/idleMinutes.*-1/);
 });
 
-test('test_tr2_port_out_of_range_rejected', () => {
+test('port_out_of_range_rejected', () => {
   writeConfig(JSON.stringify({ port: 70000 }));
 
   expect(() => resolveSettings({})).toThrow(/port.*70000/);
 });
 
-test('test_tr2_concurrency_zero_rejected', () => {
+test('concurrency_zero_rejected', () => {
   expect(() => resolveSettings({ concurrency: 0 })).toThrow(/concurrency.*0/);
 });
 
-test('test_tr2_home_env_var_moves_all_paths', () => {
+test('home_env_var_moves_all_paths', () => {
   expect(homePaths()).toEqual({
     config: join(home, 'config.json'),
     profile: join(home, 'profile'),
@@ -86,13 +87,14 @@ test('test_tr2_home_env_var_moves_all_paths', () => {
   });
 });
 
-test('test_tr2_default_home_without_env_var', () => {
+test('default_home_without_env_var', () => {
   delete process.env.AGENT_BROWSER_HOME;
   expect(homePaths().config).toBe(join(homedir(), '.agent-browser', 'config.json'));
 });
 });
 
-describe('tr13_config', () => {
+// req: agent-browser/TR-13
+describe('resolveSettings channel', () => {
 let home: string;
 const savedHome = process.env.AGENT_BROWSER_HOME;
 
@@ -107,17 +109,17 @@ afterEach(() => {
   else process.env.AGENT_BROWSER_HOME = savedHome;
 });
 
-test('test_tr13_channel_default_chrome', () => {
+test('channel_default_chrome', () => {
   expect(resolveSettings({}).channel).toBe('chrome');
 });
 
-test('test_tr13_channel_chromium_from_file', () => {
+test('channel_chromium_from_file', () => {
   writeFileSync(join(home, 'config.json'), JSON.stringify({ channel: 'chromium' }));
 
   expect(resolveSettings({}).channel).toBe('chromium');
 });
 
-test('test_tr13_channel_invalid_rejected', () => {
+test('channel_invalid_rejected', () => {
   writeFileSync(join(home, 'config.json'), JSON.stringify({ channel: 'firefox' }));
 
   expect(() => resolveSettings({})).toThrow(/channel.*firefox/);
