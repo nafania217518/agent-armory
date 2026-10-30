@@ -25,8 +25,9 @@ The project `AGENTS.md` defines the gates, the commands and the model table; its
   plan: MUST run the `plan` skill first (`/plan`, or `/armory:plan` in the plugin
   install); it asks the mode. In mode `none`, MUST write the requirements here as
   `TR-n [opus]: MUST <behavior>`, every item tagged. Each requirement gets its tests;
-  every test name starts with its id (`test_tr3_...`). The report lists the
-  requirements. A vague request gets the smallest version that does the core job.
+  every test case name starts with its id (`tr3_...`), and the file is named after the
+  unit under test (the `test` skill, section 5). The report lists the requirements. A
+  vague request gets the smallest version that does the core job.
 - Implementation runs on Opus: the session (`/model opus`) or the `coder` agent. When
   the session model is not Opus: say so in one line and delegate (section 7). MUST NOT
   write code on Fable.

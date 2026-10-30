@@ -57,13 +57,19 @@ names are the project's choice.
 - The happy path, each edge case the requirement touches (the list in the `review`
   skill, section 3, item 1) and each failure path (invalid input, missing dependency, an
   error from a callee) MUST each have their own test.
-- SHOULD keep one test module per production module.
 
 ## 5. Structure
 
 - Arrange, act, assert (given, when, then). One condition per test; as many tests as
   there are conditions.
-- Every test name starts with the requirement id and states the behavior.
+- Every test case name starts with the requirement id and states the behavior. A prefix
+  the framework requires comes first (`Test` in Go, `test` in XCTest).
+- A test file is named after the unit under test, in the test framework's own convention
+  (`config.test.ts`, `ConfigTest.java`, `test_config.py`, `config_test.go`). SHOULD keep
+  one test file per unit and level; the requirements for one unit share its file. The
+  requirement id MUST NOT be in the file name. The project's command for a level
+  (`AGENTS.md` `## Commands`) decides how that level's files are told apart: a
+  directory, a suffix, a build tag or a target.
 - DAMP: duplication in test code is allowed when it improves readability. SHOULD
   extract a helper at the third repeat (Rule of Three). This is the one exception to the DRY + SSOT base rule
   (DRY), for test code only.
