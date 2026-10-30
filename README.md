@@ -5,7 +5,7 @@ and the `browse` skill that wraps it. The design is in [docs/DESIGN.md](docs/DES
 
 | Skill | What it does |
 |---|---|
-| `plan` | Pre-work on Fable. Modes `none`, `min`, `full`; no mode means a quiz. `min`: tech quiz and a plan in Claude Code's plan mode, saved to the docs folder only on request. `full`: research, business and tech quizzes (`BR-n`, `TR-n`), plan review, approval, then the requirements and plan files. Every item carries an executor tag (`[opus]`, `[fable]`, `[sonnet]`, `[haiku]`). |
+| `plan` | Pre-work on Fable. Three levels, `none`, `min` and `full`, picked by impact: the agent proposes, the user confirms. `min`: business and tech quizzes and a plan that stays in Claude Code's plan mode. `full`: adds research, plan review, and writes the requirements and plan files. Every item carries a model tag (`TR-n` [`opus`], [`fable`], [`sonnet`] or [`haiku`]). |
 | `code` | Coding workflow: branch per task, requirements as RFC 2119 statements and tests (TDD), the smallest complete change, test gates from the project `AGENTS.md`, delegation to project agents, atomic commits. |
 | `review` | Review of a change. Reads the connected code, runs the project gates, checks the summary against the diff. Numbered findings with a fix each. Changes no code. |
 | `audit` | Audit of a whole repo or package: bugs, security, load, missing tests, speed, bloat, and the `tech-debt:` ledger. Changes no code. |

@@ -110,7 +110,7 @@ One table, shipped in `templates/AGENTS.md` under `## Models`, with the Fable ru
 the tag rule below it. The project copy is the truth for that project; the user edits it
 there. Skills MUST pick the model, effort and agent from the project table, not from this
 file. Executor tags: `plan` section 6. Phases: `plan` section 1 (pre-work on Fable) and
-`code` sections 1 and 7 (Opus leads; Fable only for `[fable]` items and `stuck:`
+`code` sections 1 and 7 (Opus leads; Fable only for [`fable`] items and `stuck:`
 reports).
 
 ## 5. The project file: `AGENTS.md`
@@ -190,10 +190,10 @@ after one question set. It does not overwrite an existing file.
 ### 7.5 `plan`
 
 Trigger: a new task, "plan this", "make a plan", `/plan [none|min|full]`, and the `code`
-skill when no plan exists. The pre-work phase: input → research (optional) → business
-quiz → tech quiz → plan → review the plan → propose → approve → save. Runs on the Fable
-row; for a trivial task it MAY run on Opus. The exit of plan mode is the approval gate.
-`plan` section 10 is the single home of amendments.
+skill when no plan exists. The pre-work phase: level by impact → research on demand →
+business quiz → tech quiz → plan → review (`full`) → propose → approve → save (`full`).
+Runs on the Fable row; a `min` task MAY run on Opus. The exit of plan mode is
+the approval gate. `plan` section 9 is the single home of amendments.
 
 ### 7.6 `test`
 
@@ -270,13 +270,13 @@ The `worktree-per-agent` gate is the `isolation: worktree` line in `coder.md`. O
 5. A session on Fable given a coding task through `/armory:code` delegates to `coder`
    and says so. Two coders at once each get a worktree, and their branches land in the
    task branch.
-6. `/armory:plan` on Fable asks the mode; `/armory:plan min` skips the question, runs the
-   tech quiz, proposes in plan mode and asks once whether to save; `full` runs both
-   quizzes, proposes in plan mode, and on approval writes `<docs>/requirements/<branch>.md` with `BR`/`TR`
+6. `/armory:plan` on Fable proposes the level with a reason; `min` runs both quizzes,
+   proposes in plan mode and writes nothing; `full` adds the review checklist, proposes
+   in plan mode, and on approval writes `<docs>/requirements/<branch>.md` with `BR`/`TR`
    ids and `<docs>/plans/<branch>.md` with every item tagged and a `why:` on each
-   non-`[opus]` item. A reject opens the fallback quiz. `/armory:code` on Opus reads the
-   plan, runs `[sonnet]` items on Sonnet through `coder`, sends a `stuck:` item to
-   `researcher` on Fable once, shows every `BR` and `TR` met in the final review, and
+   non-`opus` item. A reject takes the user's words and proposes again. `/armory:code`
+   on Opus reads the plan, runs [`sonnet`] items on Sonnet through `coder`, sends a
+   `stuck:` item to `researcher` on Fable once, shows every `BR` and `TR` met in the final review, and
    ends with the acceptance quiz.
 7. `/armory:test` on a module with a database call and a remote service proposes a
    sociable unit test, one narrow integration test with a real database, a double plus

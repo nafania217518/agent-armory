@@ -23,8 +23,8 @@ The project `AGENTS.md` defines the gates, the commands and the model table; its
 - MUST read the plan: `<docs>/plans/<task-branch>.md` when it exists, else the plan
   approved in plan mode in this conversation (`min`). Its tagged items are the task. No
   plan: MUST run the `plan` skill first (`/plan`, or `/armory:plan` in the plugin
-  install); it asks the mode. In mode `none`, MUST write the requirements here as
-  `TR-n [opus]: MUST <behavior>`, every item tagged. Each requirement gets its tests;
+  install); it proposes the level. At level `none`, MUST write the requirements here as
+  `TR-n` [`opus`]: MUST \<behavior\>, every item tagged. Each requirement gets its tests;
   every test case name starts with its id (`tr3_...`), and the file is named after the
   unit under test (the `test` skill, section 5). The report lists the requirements. A
   vague request gets the smallest version that does the core job.
@@ -85,9 +85,9 @@ Subtract before you add: take complexity out first.
   fix.
 - Refactor: MUST pin the current behavior with a passing test, change the structure, then
   show the same test still passes.
-- A defect in built code gets a new `TR-n` (`plan` skill, section 10), its test, then
+- A defect in built code gets a new `TR-n` (`plan` skill, section 9), its test, then
   the fix. A requirement that changes during work, or one that needs the user's answer:
-  MUST stop and follow the `plan` skill, section 10, before the work continues.
+  MUST stop and follow the `plan` skill, section 9, before the work continues.
 - Every feature SHOULD ship with its tests.
 
 ## 5. Gates
@@ -116,7 +116,7 @@ A gate has a command of the same name in `## Commands`; `## Gates` says which ar
   Coding goes to the agent that the `## Models` `Agent` column names for the task kind
   (`coder`, `reviewer`, `researcher`, `writer`; `init-project` creates them). No agent
   file in the project: a general agent with the row's model and effort.
-- `[fable]` only for the items the plan tagged so, or for an item where the coder
+- [`fable`] only for the items the plan tagged so, or for an item where the coder
   reports `stuck: <why>`. Such an item goes to the `researcher` agent on Fable; then the
   work returns to Opus. MUST NOT send an item to Fable "just in case".
 - The brief MUST hold:

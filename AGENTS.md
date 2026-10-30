@@ -68,16 +68,16 @@ when a line names it: `<skill> section <n>: off <reason>`.
 
 | Task kind | Model | Effort | Agent | Why |
 |---|---|---|---|---|
-| Pre-work: research, requirement quizzes, the plan; tasks Opus cannot carry: architecture, data risk, non-trivial root-cause analysis, core conflicts | fable | high | researcher, tag `[fable]` | heavy reasoning only; a trivial task MAY run pre-work on opus |
+| Pre-work: research, requirement quizzes, the plan; tasks Opus cannot carry: architecture, data risk, non-trivial root-cause analysis, core conflicts | fable | high | researcher, tag [`fable`] | heavy reasoning only; a `min` task MAY run pre-work on opus |
 | Coding (TDD implementation) | opus | low | coder | follows a brief |
 | Deep research | opus | medium | researcher | sources and judgement |
 | Code review, audit | opus | medium | reviewer | needs judgement, no writing |
-| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag `[sonnet]` or `[haiku]` | no reasoning needed |
+| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag [`sonnet`] or [`haiku`] | no reasoning needed |
 | Routine lookup, grep, file reads | sonnet | low | none (built-in Explore) | no reasoning needed |
 
 Fable MUST be used only for the first row: the plan, and the items the plan tags
-`[fable]`. The table binds the session model as well as the agents. A plan tag
-(`[opus]`, `[fable]`, `[sonnet]`, `[haiku]`) names the model for one item; on a spawn
+[`fable`]. The table binds the session model as well as the agents. A plan tag
+([`opus`], [`fable`], [`sonnet`], [`haiku`]) names the model for one item; on a spawn
 it overrides the model in the agent file. Agent files hold the model of their untagged
 row.
 
