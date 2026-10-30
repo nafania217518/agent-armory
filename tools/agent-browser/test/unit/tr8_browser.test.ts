@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { launchOptions } from '../../src/browser.js';
+import { closesStartupPage, launchOptions } from '../../src/browser.js';
 import type { Settings } from '../../src/config.js';
 
 const SETTINGS: Settings = {
@@ -35,4 +35,21 @@ test('test_tr8_chrome_channel_passed', () => {
 
 test('test_tr8_chromium_takes_no_channel', () => {
   expect(launchOptions({ ...SETTINGS, channel: 'chromium' }, 501)).not.toHaveProperty('channel');
+});
+
+test('test_tr8_startup_page_closed_on_macos_headed', () => {
+  expect(closesStartupPage(false, 'darwin')).toBe(true);
+});
+
+test('test_tr8_startup_page_closed_when_headless', () => {
+  expect(closesStartupPage(true, 'linux')).toBe(true);
+});
+
+// Headed Chrome on Linux and Windows quits with its last window.
+test('test_tr8_startup_page_kept_on_linux_headed', () => {
+  expect(closesStartupPage(false, 'linux')).toBe(false);
+});
+
+test('test_tr8_startup_page_kept_on_windows_headed', () => {
+  expect(closesStartupPage(false, 'win32')).toBe(false);
 });

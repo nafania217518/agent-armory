@@ -21,6 +21,20 @@ afterAll(async () => {
   await server.close();
 });
 
+test('test_tr8_launch_leaves_no_blank_page', () => {
+  expect(context.pages()).toHaveLength(0);
+});
+
+// Headed Chrome on Linux quits with its last window; the blank page keeps it alive.
+test.skipIf(process.platform !== 'linux')('test_tr8_headed_linux_keeps_blank_page', async () => {
+  const headed = await launchBrowser({ ...testSettings(), headless: false });
+  try {
+    expect(headed.pages()).toHaveLength(1);
+  } finally {
+    await headed.close();
+  }
+});
+
 test('test_tr8_read_fixture_article', async () => {
   const html = await readPage(context, `${server.baseUrl}/article.html`);
   expect(html).toContain('<h1>Understanding Idle Timers</h1>');

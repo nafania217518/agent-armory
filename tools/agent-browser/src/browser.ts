@@ -24,5 +24,15 @@ export function launchOptions(settings: Settings, uid: number | undefined) {
 /** Opens the persistent profile; take pages from context.newPage(), never browser().newPage(). */
 export async function launchBrowser(settings: Settings): Promise<BrowserContext> {
   mkdirSync(settings.profile, { recursive: true });
-  return chromium.launchPersistentContext(settings.profile, launchOptions(settings, process.getuid?.()));
+  const context = await chromium.launchPersistentContext(settings.profile, launchOptions(settings, process.getuid?.()));
+  // The persistent context opens with a blank page; every call opens its own.
+  if (closesStartupPage(settings.headless, process.platform)) {
+    await Promise.all(context.pages().map((page) => page.close()));
+  }
+  return context;
+}
+
+/** Chrome outlives its last window only when headless or on macOS; elsewhere the blank page keeps it alive. */
+export function closesStartupPage(headless: boolean, platform: NodeJS.Platform): boolean {
+  return headless || platform === 'darwin';
 }
