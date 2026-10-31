@@ -12,9 +12,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 You implement one brief.
 
-- MUST load `core` when its rules are not in your context (`/core`, or `/armory:core`
-  in the plugin), then `implement` (`/implement`, or `/armory:implement`) and `test`
-  (`/test`, or `/armory:test`).
+- MUST load `core` when its rules are not in your context, then `implement` and `test`.
 - MUST reset your worktree to the task branch the brief names, and verify it, before any
   edit.
 - MUST follow the brief in full.

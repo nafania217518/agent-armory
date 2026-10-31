@@ -5,18 +5,17 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 130
+max-lines: 134
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context (`/core`, or
-`/armory:core` in the plugin).
+Load the `core` skill first when its rules are not in your context.
 
 # review
 
 The reviewer, or a main session that reviews itself, judges code against `implement` and
-tests against `test` (load both when not in context: `/implement`, `/test`, or
-`/armory:implement`, `/armory:test` in the plugin). "Reported" means listed as a finding.
+tests against `test` (load both when not in context). "Reported" means listed as a
+finding.
 
 ## 1. Understand first
 
@@ -41,7 +40,7 @@ tests against `test` (load both when not in context: `/implement`, `/test`, or
 - MUST run every `on` gate at the range's last commit (a detached worktree when HEAD moved
   past it), or take the run the brief hands over; `owasp` reading included (`implement`
   section Gates per commit, also for a failure already on `<base>`). An `on` gate with no
-  command MUST be reported. A failure the change made MUST be Must fix.
+  command MUST be reported.
 - MUST confirm that an `on` gate's command covers each changed file, else report the file.
   A prose or docs file is exempt when no gate covers prose: the reviewer MUST read it.
 - Each requirement the task names MUST be shown met by the diff or by a check.
@@ -56,8 +55,8 @@ tests against `test` (load both when not in context: `/implement`, `/test`, or
 
 ## 3. Look for
 
-- Findings MUST follow this order of importance: correct, safe, holds under load,
-  tested, fast, lean, readable. Every extra line costs reading, tests and fixes later.
+- Findings MUST follow this order of importance: correct, safe, holds under load, tested,
+  fast, lean, readable.
 - A review and an audit MUST cover each class:
 
 1. Bug: wrong result, crash, missed edge case (empty, zero, last item, rounding, time
@@ -86,9 +85,9 @@ tests against `test` (load both when not in context: `/implement`, `/test`, or
 ## 4. Check before you report
 
 - Every finding MUST have a concrete case: "this input or situation leads to this wrong
-  result". No case, no finding.
-- MUST re-read the lines and confirm: the caller exists, the value can really be empty,
-  the code really is unused.
+  result".
+- MUST re-read the lines and confirm: the caller exists, the value can be empty, the code
+  is unused.
 - A `tech-debt:` marker (`implement` section The smallest complete change) that is a
   decision MUST NOT be reported, unless the expected load already crosses its limit. In
   a review, a marker is a decision only when the plan's Accepted tech debt part names it
@@ -103,9 +102,9 @@ tests against `test` (load both when not in context: `/implement`, `/test`, or
 - MUST start with `What this change does:` in two or three sentences, and the load
   assumed. Then MUST give `Gates:`, one line per gate: `pass`; `fail <one line>`;
   `fail <one line>, exists on <base>`, no blocker; `(per <who> at <commit>)` after `pass`
-  or `fail` for a run by another agent; `off <reason from AGENTS.md>`; `no command`;
-  `not run (<cause>)`, neither pass nor fail, when an `on` gate's command cannot run
-  (Docker down, no network, a file the range lacks: name the commit that adds it).
+  or `fail` for a run by another agent; `off <reason from the project context>`;
+  `no command`; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
+  cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per earlier finding: `fixed`, `open` or `not re-opened`.
 - Findings MUST come in three groups, empty groups skipped:
@@ -116,11 +115,11 @@ tests against `test` (load both when not in context: `/implement`, `/test`, or
     one hides a bug: a breach of a `test` rule (a missing or wrong `req:` marker, a test
     case changed outside the scope), a commit message not matching the diff, a stray file.
   - Nice to have: small speed-ups, shorter forms.
-- A wrong fact in prose or config (a caveat, a doc line) MUST be graded by its effect,
-  like code: Must fix when it misleads a reader into a wrong action, else Should fix.
-- Each finding MUST have a number across all groups (so the user can say "fix 2 and 5"),
-  a bold title with `file:lines` (or `commit <sha>`), then four parts of one or two short
-  sentences each: What this is, Problem, Fix, If we skip it.
+- A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
+  it misleads a reader into a wrong action, else Should fix.
+- Each finding MUST have a number across all groups, a bold title with `file:lines` (or
+  `commit <sha>`), then four parts of one or two short sentences each: What this is,
+  Problem, Fix, If we skip it.
 - Then MUST give `Answers:`, one line per question or listed check the brief asks the
   reviewer to judge, or `no question`; then the two slots of `core` section Reports.
 - MUST end with these lines, in this order: `Verdict: Ship.` or

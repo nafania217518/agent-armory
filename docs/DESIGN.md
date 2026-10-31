@@ -22,26 +22,29 @@ Processed in this order. Each later source adds to the earlier ones.
 
 - The always-on rules live in one `core` skill, the single source. The global rules 1–8
   are part of it.
-- A SessionStart hook and a SubagentStart hook of the plugin inject `core` into every
-  session and every subagent (`hooks/hooks.json`, `scripts/core-context.sh`).
-- The plain install has no hooks. Each skill opens with "load `core` when it is not in
-  context"; this line is the fallback.
-- `~/.claude/CLAUDE.md` shrinks to a pointer to `core`, plus personal items outside
-  armory. This is to do by the user.
+- On Claude Code, two plugin hooks inject `core` into every session and every subagent
+  (`hooks/hooks.json`, `scripts/core-context.sh`). On other hosts, `setup` installs the
+  host's hook or the pointer (`core` section Host terms).
+- Each skill opens with "load `core` when it is not in context"; this line is the
+  fallback when neither hook nor pointer ran.
+- `setup` writes the pointer into the host's context for the chosen scope; the user
+  keeps personal items there.
 - `core` changes two of the old global rules. It merges KISS into Occam's razor
   (rule 8), and it states rule 1 with MUST.
 - The skill set has ten skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `review`, `audit`, `research` and `init-project`. The skills other
+  `test`, `review`, `audit`, `research` and `setup`. The skills other
   than `core` hold the workflows.
 - The project agents are five: `coder`, `reviewer`, `researcher`, `writer` and
-  `planner`. The plugin ships their templates, not agent files; `init-project` writes
+  `planner`. The plugin ships their templates, not agent files; `setup` writes
   the files into each project.
 - The agent files a project holds are generated instances of the plugin templates,
   which are the single source.
-- The project `AGENTS.md` holds project facts and project-only rules (`init-project`
-  section Write).
+- The project context (AGENTS.md, CLAUDE.md or a rules file, where the host loads it)
+  holds project facts and project-only rules (`setup` section Project context).
 - On 2026-10-31 the `browse` skill and the tool moved to the agent-browser plugin repo;
   `research` loads `/agent-browser:browse`.
+- 2026-10-31: the skills use host terms (`core` section Host terms), bound per host by
+  the profile that `setup` writes; `setup` replaces `init-project`.
 
 ## 3. Rule strength
 
@@ -53,9 +56,10 @@ Every rule carries one RFC 2119 word.
 | SHOULD / SHOULD NOT | on by default | the agent, for one task, with a reasonable cause or after the user approves; the user rules on each bypass at task end (`code` section Task end) |
 | MAY | optional | the agent |
 
-## 4. The `AGENTS.md` template
+## 4. The project context template
 
-Sections:
+The template is `skills/setup/templates/AGENTS.md`. `setup` hands its sections to the
+host, which writes them where it loads project context. Sections:
 
 - `## What this is`: first; one paragraph on what the project is.
 - `## Commands`: one line per check, with the same name as its gate.
@@ -65,10 +69,9 @@ Sections:
 - `## Test levels`: only what the project adds to or changes in the level lines of
   `test` section Levels, and the unit style (sociable or solitary).
 - `## Glossary`: `Term : one-line meaning`.
-- `## Caveats`: `SHORT_DESCRIPTION : <file>`, or `SHORT_DESCRIPTION : —` when no file
-  exists yet.
-- `## Rules`: project-only rules. When the docs folder is not `docs/`, it holds the line
-  `Documentation lives in <folder>` (`init-project` section Write).
+- `## Caveats`: the caveat line of `core` section Reports.
+- `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
+  (`setup` section Write).
 
 Removed: the `## Models` table, the plan executor tags, and the separate requirements
 file under `docs/`. One model table for all projects lives in `delegate` section Models
@@ -81,21 +84,21 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 
 | Home | RULES sections | Loaded by |
 |---|---|---|
-| `core` | 1, 2, 3, 4; the one-line Fable MUST of 23 | the hooks; every armory skill, so every actor |
-| `plan` | 5 (push back), 6 | main session (`/plan`); `planner`, drafting part only |
+| `core` | 1, 2, 3, 4; the one-line Fable MUST of 23 | the hook or the pointer; every armory skill, so every actor |
+| `plan` | 5 (push back), 6 | main session; `planner`, drafting part only |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
-| `code` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session (`/code`) |
+| `code` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
 | `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder; main session when it codes itself |
 | `test` | 13 | coder, reviewer, planner, auditor |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
-| `init-project` | 21, 22; templates `AGENTS.md` and five agent cards | main session (`/init-project`) |
+| `setup` | 21, 22; templates `AGENTS.md` and five agent cards | main session |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
 |---|---|
-| main session, full task | `core` (hook), `plan`, `delegate`, `code` |
+| main session, full task | `core` (the hook or the pointer), `plan`, `delegate`, `code` |
 | coder | `core`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
 | auditor | `core`, `audit`, `review`, `test` |

@@ -4,33 +4,31 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 130
+max-lines: 124
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context (`/core`, or
-`/armory:core` in the plugin).
+Load the `core` skill first when its rules are not in your context.
 
 # test
 
-What to test, at which level, and how. The coder, reviewer, auditor and planner load it.
+What to test, at which level, and how.
 
 ## 1. Pyramid
 
 - You SHOULD write fewer tests the higher the level: many `unit`, some `integration`
   and `functional`, very few `e2e`.
 - You MUST put a test at the lowest level that can prove the behavior.
-- A bug that a higher-level test finds and no lower-level test catches MUST get the
-  lower-level test.
-- The coder MAY delete a higher-level test that only repeats a lower-level one, only
-  when it covers the touched behavior. The deletion is a scope addition (section Test
-  scope). A duplicate outside the touched behavior MUST NOT be touched. It MUST be
-  recorded as an out-of-scope finding (`core` section Reports).
+- A bug that only a higher-level test finds MUST get the lower-level test.
+- The coder MAY delete a higher-level test on the touched behavior that only repeats a
+  lower-level one. The deletion is a scope addition (section Test scope). A duplicate
+  outside the touched behavior MUST NOT be touched. It MUST be recorded as an
+  out-of-scope finding (`core` section Reports).
 
 ## 2. Levels
 
 Each level MUST cover what its line says, in every project. A project adds to these
-lines in its `AGENTS.md` (`init-project` section Write).
+lines in its project context (`setup` section Write).
 
 - unit: one unit (a function, a class, or a small cluster), fast, runs on every change.
   Frontend unit tests with the backend stubbed are `unit`.
@@ -56,47 +54,43 @@ lines in its `AGENTS.md` (`init-project` section Write).
 
 ## 4. TDD
 
-- You MUST write the failing test for every requirement before the code, except one
-  with `tests: none`. You MUST see it fail for the expected reason, then MUST make the
+- You MUST write the failing test for every requirement before the code, except one with
+  `tests: none`. You MUST see it fail for the expected reason, then MUST make the
   smallest change that passes it.
 - A requirement where an honest test is impractical MUST NOT get a bad test. The plan
   MUST decide it: the plan item carries the line `tests: none, <why>`.
 - A coder that finds a planned test impractical MUST NOT drop it. That is a requirement
   change (`plan` section Amendments): the coder MUST stop and report `stuck:` with the
-  why. The report ends the run; `delegate` section Re-spawn and retry handles the rest.
+  why. `delegate` section Re-spawn and retry handles the rest.
 - A test MUST call the code through its public interface, as its user does, and check
-  what that user sees: given `x` and `y`, the result is `z`.
+  what that user sees.
 - A test that still passes when every function returns nothing MUST be thrown out.
 - You MUST NOT assert the order of internal calls, or test private methods or trivial
   code (a getter, a pass-through, code with no branch).
-- The happy path, each edge case the requirement touches (the list in `review` section
-  Look for, class Bug) and each failure path (invalid input, a missing dependency, an
-  error from a callee) MUST each have their own test.
+- The happy path, each edge case the requirement touches (`review` section Look for,
+  class Bug) and each failure path (invalid input, a missing dependency, an error from a
+  callee) MUST each have their own test.
 
 ## 5. Test scope
 
 - The main session MUST write the test-scope list into the plan: the existing test
-  cases the change will break, rework or remove, each with the reason (a removed module
-  removes its tests; a renamed label changes its checks).
+  cases the change will break, rework or remove, each with the reason.
 - A scope addition is the one exception to the ban on unrequested changes (`implement`
   section The smallest complete change). It MUST be a failing test proven missed from
   the list (`implement` section Tests while coding), or a duplicate higher-level test on
   the touched behavior (section Pyramid). It MUST carry its reason in the list.
-- The reviewer MUST check the reason of each scope addition and the code, and decide
+- The reviewer MUST check the reason and the code of each scope addition, and decide
   whether a rework is needed.
 
 ## 6. Structure and naming
 
 - A test SHOULD arrange, act, assert (given, when, then).
 - A test SHOULD check one condition; there SHOULD be one test per condition.
-- A test case name MUST state the behavior. A prefix the framework requires comes first
-  (`Test` in Go, `test` in XCTest). The requirement id MUST NOT be in the case name or
-  the file name.
-- A test file MUST be named after the unit under test, in the framework's convention
-  (`config.test.ts`, `ConfigTest.java`, `test_config.py`, `config_test.go`).
-- You SHOULD keep one test file per unit and level; the requirements for one unit share
-  its file. The project's command for a level decides how its files are told apart: a
-  directory, a suffix, a build tag or a target.
+- A test case name MUST state the behavior. A prefix the framework requires comes first.
+  The requirement id MUST NOT be in the case name or the file name.
+- A test file MUST be named after the unit under test, in the framework's convention.
+- You SHOULD keep one test file per unit and level; a unit's requirements share it.
+  The level's command sets what marks its files: directory, suffix, build tag or target.
 
 ## 7. Markers
 
@@ -111,7 +105,7 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
 
 ## 8. Determinism
 
-- A test MUST be deterministic: no sleep-and-hope, no mutable state shared between
+- A test MUST be deterministic: no sleep as a wait, no mutable state shared between
   tests, no dependence on test order or the clock.
 - A real timer MAY run in an integration test when the timer is the behavior under test,
   with the shortest wait that proves it.
@@ -120,6 +114,6 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
 
 - Each breach of a MUST or MUST NOT in this skill or in `implement` section Tests while
   coding MUST be reported as a finding, in the group `review` section Output sets. Two
-  more cases MUST be findings: a double in a `sociable` project for a collaborator that is
-  neither remote, slow, non-deterministic nor side-effecting; a separate service with no
+  more cases MUST be findings: in a `sociable` project, a double for a collaborator that
+  is not remote, slow, non-deterministic or side-effecting; a separate service with no
   `contract` test while that gate is `on`.

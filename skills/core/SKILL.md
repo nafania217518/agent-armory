@@ -2,37 +2,39 @@
 name: core
 description: >
   Always-on base rules for every armory actor: rule words, writing, questions, background
-  tasks, web access, design principles, the Fable guard, report slots. Use for "/core".
-max-lines: 100
+  tasks, web access, design principles, the Fable guard, report slots, host terms. Use
+  for "/core".
+max-lines: 131
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 # core
 
-Base rules for the main session and every subagent. A plugin hook injects them.
+Base rules for the main session and every subagent. The hook or the pointer injects
+them (section Host terms).
 
 ## 1. Rule words
 
-- MUST and MUST NOT have no exception but one: the approved plan MAY override a design
-  rule, a MUST rule included, because the user approved it. Design rules: section Design
+- MUST and MUST NOT have one exception: the approved plan MAY override a design rule, a
+  MUST rule included, because the user approved it. Design rules: section Design
   principles; `implement` sections The smallest complete change and Domain, boundaries
-  and state. The plan's Overrides part names each one (`plan` section The plan).
+  and state. The plan's Overrides part names each override (`plan` section The plan).
 - A SHOULD rule is on by default. The agent MAY bypass it for one task only, with a
   reasonable cause or after the user approves. Section Reports records each bypass, and
-  only an override made during the work.
+  an override only when it is made during the work.
 - MAY is the agent's choice. Every rule MUST carry one RFC 2119 word.
 
 ## 2. Writing and questions
 
-- Replies and docs MUST follow "80% ASD-STE100": short sentences (about 20 words max),
-  one idea per sentence, active voice, present tense, one meaning per word, no idioms,
-  no filler. Natural phrasing and domain terms stay where strict STE reads badly.
+- Replies and docs MUST follow "80% ASD-STE100": sentences of about 20 words max, one
+  idea each, active voice, present tense, one meaning per word, no idioms, no filler.
+  Natural phrasing and domain terms stay where strict STE reads badly.
 - A report SHOULD explain each technical term at first use, for a reader new to the code.
 - A code comment MUST say only the why the code cannot show, in one line. Exceptions:
-  `req:` (`test` section Markers), `tech-debt:` (`implement` section The smallest
-  complete change).
-- The main session MUST ask the user through `AskUserQuestion`; the message text MUST
+  the `req:` marker (`test` section Markers) and the `tech-debt:` marker (`implement`
+  section The smallest complete change).
+- The main session MUST ask the user through the question tool; the message text MUST
   hold only the context. A free-text question (a name, a description, a command) MAY
   offer only "Other", or go as a plain message. A subagent cannot reach the user: it
   MUST report `stuck: <question>` instead.
@@ -41,15 +43,14 @@ Base rules for the main session and every subagent. A plugin hook injects them.
 
 ## 3. Tools and background tasks
 
-- MUST NOT use `nohup` or `command &` for a background task. MUST start it through the
-  tool with `run_in_background=true`, so it stays tracked and can be stopped.
-- A background task started through the tool, and a spawned agent, MUST stop as soon as
-  it is no longer needed (stop tool, timer, any other means). One left running MUST have
-  a valid reason, stated in the report. `code` section Task end checks only these kinds.
-- MUST NOT use the built-in web search. To search the web or read a page, MUST load the
-  `browse` skill of the agent-browser plugin (`/agent-browser:browse`) and follow it.
-  The main session delegates web work (`research` section When to research); a subagent
-  does its web work itself.
+- MUST NOT use `nohup`, `command &` or any other detached shell job for a background
+  task. MUST start it as a tracked background task of the host.
+- A tracked background task or a spawned agent MUST stop as soon as it is no longer
+  needed, by stop tool, timer or any other means. One left running MUST have a valid
+  reason, stated in the report. `code` section Task end checks only these kinds.
+- MUST NOT use the built-in web search. For a web search or a page read, MUST load the
+  `browse` skill of the agent-browser plugin and follow it. The main session delegates
+  web work (`research` section When to research); a subagent does it itself.
 
 ## 4. Design principles
 
@@ -80,8 +81,8 @@ Base rules for the main session and every subagent. A plugin hook injects them.
   slot, `Caveats:`: each caveat as one caveat line, or `no caveat`. A caveat is anything
   a later reader of the code would not expect: a changed default, a pinned version pair,
   a deprecated call, a limit.
-- A caveat line, in a report or in `AGENTS.md` `## Caveats`, MUST take the format
-  `SHORT_DESCRIPTION : <file>` (`SHORT_DESCRIPTION : —` when no file exists yet).
+- A caveat line, in a report or in the project context `## Caveats`, MUST take the
+  format `SHORT_DESCRIPTION : <file>` (`SHORT_DESCRIPTION : —` when no file exists yet).
 - A finding that the output already numbers MUST be referenced by its number in the
   recorded-items slot, not repeated.
 - These items MUST be recorded during the task: each SHOULD bypass and each override
@@ -90,5 +91,36 @@ Base rules for the main session and every subagent. A plugin hook injects them.
   (`implement` sections The smallest complete change and Gates per commit; `test`
   section Pyramid), and Should fix or Nice to have finding (`review` section Output).
   A subagent MUST put each recorded item in its report.
-- The main session MUST make every write to `AGENTS.md` `## Caveats`. A subagent MUST
-  NOT write to `## Caveats`. `code` section Caveats sets when the main session writes.
+- The main session MUST make every write to the project context `## Caveats`; a
+  subagent MUST NOT write to it. `code` section Caveats sets when the main session
+  writes.
+
+## 7. Host terms
+
+- question tool: the host's structured way to ask the user. Fallback: the main session
+  MUST ask in plain text, one round at a time, with numbered options and the default
+  marked.
+- skill load: the host's way to load a skill by name. Fallback: the agent MUST read the
+  skill file from the armory clone.
+- spawn: the host's way to run a subagent from an agent card. Fallback: the main session
+  MUST do that work itself under the card's rules.
+- agent card: the host's agent definition file, rendered from an armory template.
+  Fallback: the card's rules MUST live as a section of the project context.
+- worktree: an isolated checkout per coding agent. Fallback: coders MUST run one at a
+  time in the task branch.
+- plan mode: the host's read-only planning mode; its exit is the approval. Fallback: the
+  main session MUST ask an explicit approval question through the question tool.
+- hook: the host's command that injects `core` at session start and at subagent start.
+  Fallback: the pointer, one line in the global context or the project context that
+  MUST load `core`, and the profile when it sits elsewhere, at session start.
+- global context: the file or setting the host loads in every session. Fallback: when
+  none is editable, the profile MUST stay in the run and in the report.
+- project context: the file the host loads for a project (`AGENTS.md`, `CLAUDE.md`, a
+  rules file); the skills MUST name its sections. Fallback: when none is editable, the
+  sections MUST stay in the run and in the report.
+
+The host profile binds each term on the host and names the paths of the global context
+and the project context; `setup` writes it.
+
+Outside this section, every skill uses these terms and skill names; it MUST NOT name a
+host's own tool or file.

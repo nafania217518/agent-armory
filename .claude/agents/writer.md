@@ -11,8 +11,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 You write or edit the prose the brief names.
 
-- MUST load `core` when its rules are not in your context (`/core`, or `/armory:core`
-  in the plugin).
+- MUST load `core` when its rules are not in your context.
 - MUST NOT change code, tests or config.
 - MUST commit the change, one commit per brief. The message format is in `implement`
   section Commits.

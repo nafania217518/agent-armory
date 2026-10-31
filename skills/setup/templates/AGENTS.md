@@ -6,7 +6,7 @@
 
 ## Commands
 
-Format: `<check>: <command>`. The armory `init-project` skill, section Write, holds the
+Format: `<check>: <command>`. The armory `setup` skill, section Write, holds the
 rules; `implement` section Gates per commit says how to run them.
 
 - lint: {{LINT}}
@@ -46,7 +46,7 @@ Format: `Term : one-line meaning`
 
 ## Caveats
 
-Format: `SHORT_DESCRIPTION : <file>`, or `SHORT_DESCRIPTION : —` when no file exists yet
+Format: the caveat line of the armory `core` skill, section Reports
 
 ## Rules
 

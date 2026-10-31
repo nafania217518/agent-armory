@@ -5,35 +5,31 @@ description: >
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
   One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
   whole repo", "find bloat", "what can I delete", "list the tech debt", "/audit".
-max-lines: 75
+max-lines: 74
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context (`/core`, or
-`/armory:core` in the plugin).
+Load the `core` skill first when its rules are not in your context.
 
 # audit
 
-The reviewer runs an audit on an audit brief; the main session runs it on `/audit`.
-Load `review`, `test` and `implement` first (`/review`, `/test`, `/implement`, or
-`/armory:review`, `/armory:test`, `/armory:implement` in the plugin). The audit MUST
-apply these `review` rules to a whole repo or package: the full-report and read-only
-rules (`review` section Understand first, first bullet), the order of importance and the
-classes (`review` section Look for), `review` section Check before you report, and the
-finding format of `review` section Output. This skill holds only what differs from a
-review.
+The reviewer runs an audit on an audit brief; the main session runs it when the user
+asks. Load `review`, `test` and `implement` first. The audit MUST apply these `review`
+rules to a whole repo or package: the full-report and read-only rules (`review` section
+Understand first, first bullet), the order of importance and the classes (`review`
+section Look for), `review` section Check before you report, and the finding format of
+`review` section Output. This skill holds only what differs from a review.
 
 ## 1. Map first
 
 - MUST audit what the user names: a folder, a package, or the whole repo. Nothing
   named: the whole repo.
-- MUST read the README, the deploy and build config, the dependency list, the entry
-  points (main, routes, handlers, jobs, CLI commands) and the tests.
-- MUST find the expected load. The output names the load assumed.
+- MUST read the README, deploy and build config, dependency list, entry points (main,
+  routes, handlers, jobs, CLI commands) and tests.
+- MUST find the expected load.
 - MUST trace the main flows end to end. MUST read these fully: input from users, money,
   auth, data writes, background jobs, anything shared between processes.
-- Big repo: SHOULD go deep where a mistake costs the most, not file by file. MUST say
-  which parts were not read.
+- Big repo: SHOULD go deep where a mistake costs the most, not file by file.
 
 ## 2. Audit-only checks
 
@@ -46,8 +42,8 @@ review.
 
 ## 3. Tech-debt ledger
 
-- MUST grep the `tech-debt:` markers, skipping `.git` and ignored files. Other comment
-  prefixes MAY be added for the stack.
+- MUST grep the `tech-debt:` markers, skipping `.git` and ignored files. MAY add other
+  comment prefixes for the stack.
 
 ```
 git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:'

@@ -1,7 +1,9 @@
 # agent-armory
 
-Personal Claude Code skills, packaged as the `armory` plugin. The skills hold the rules
-and the workflows. The design is in [docs/DESIGN.md](docs/DESIGN.md).
+Personal agent skills, packaged as the `armory` plugin. The skills hold the rules
+and the workflows. The design is in [docs/DESIGN.md](docs/DESIGN.md). The skills use host
+terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host that reads a
+`SKILL.md`.
 
 Web search and page reading moved to the agent-browser plugin:
 <https://github.com/nafania217518/agent-browser>. Its `browse` skill loads as
@@ -11,7 +13,7 @@ Web search and page reading moved to the agent-browser plugin:
 
 | Skill | What it does | Loaded by |
 |---|---|---|
-| `core` | Always-on base rules for every actor: rule words, writing, design principles, reports. | the hooks; every armory skill |
+| `core` | Always-on base rules for every actor: rule words, writing, design principles, reports. | the hook or the pointer; every armory skill |
 | `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session; `planner` |
 | `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
 | `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
@@ -20,12 +22,12 @@ Web search and page reading moved to the agent-browser plugin:
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
-| `init-project` | Writes the project `AGENTS.md` and the five project agents. | main session |
+| `setup` | Sets up armory on the host you run in: global, project or session scope; asks the host what it can do and the user what to install; writes the project context and the agents. | main session |
 
 ## Agents
 
-`init-project` writes the agents into `.claude/agents/` from the templates in
-`skills/init-project/templates/agents/`.
+`setup` writes the agents into the host's agent location from the templates in
+`skills/setup/templates/agents/`.
 
 | Agent | Role | Default model | Effort |
 |---|---|---|---|
@@ -37,7 +39,13 @@ Web search and page reading moved to the agent-browser plugin:
 
 ## Install
 
-As a plugin, from GitHub:
+Clone the repo. Then run `setup` from your host; on a host without the skill loaded,
+point the host at `skills/setup/SKILL.md` in the clone. `setup` asks the scope (global,
+project or session), reports what the host can do, asks what to install, and prints a
+report with usage notes.
+
+On Claude Code, install the plugin first, then run `/armory:setup`. Add the plugin from
+GitHub:
 
 ```bash
 /plugin marketplace add nafania217518/agent-armory
@@ -55,22 +63,7 @@ Then install:
 /plugin install armory@agent-armory
 ```
 
-The skills then run as `/armory:<name>`: `/armory:core`, `/armory:plan`,
-`/armory:delegate`, `/armory:code`, `/armory:implement`, `/armory:test`,
-`/armory:review`, `/armory:audit`, `/armory:research` and `/armory:init-project`. The
-plugin hooks inject `core` into every session and every subagent.
-
-As plain skills, one symlink per skill:
-
-```bash
-for s in core plan delegate code implement test review audit research \
-  init-project; do
-  ln -s "$PWD/skills/$s" ~/.claude/skills/$s
-done
-```
-
-The plain install has no hooks. Put this line in `~/.claude/CLAUDE.md`: "Load the `core`
-skill first in every session (`/core`)".
+The skills then load by name; on Claude Code as `/armory:<name>`.
 
 ## Release
 
@@ -86,8 +79,8 @@ parts to 0. It prints the new version.
 ## Notes
 
 - Rules use RFC 2119 words. `core` defines what MUST, SHOULD and MAY mean. The project
-  `AGENTS.md` (template in `skills/init-project/templates/AGENTS.md`) holds the gates.
-- `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later. Below that,
-  add a `CLAUDE.md` with the one line `@AGENTS.md`.
-- The global rules 1–8 now live in `core`. `~/.claude/CLAUDE.md` shrinks to a pointer to
-  `core`, plus personal items outside armory.
+  context (template in `skills/setup/templates/AGENTS.md`) holds the gates.
+- On Claude Code, `AGENTS.md` without a `CLAUDE.md` needs version 2.1.277 or later.
+  Below that, add a `CLAUDE.md` with the one line `@AGENTS.md`.
+- The global rules 1–8 live in `core`; the plugin hook, or the hook or pointer that
+  `setup` installs, loads it.

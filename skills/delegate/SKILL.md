@@ -9,83 +9,78 @@ max-lines: 140
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context (`/core`, or
-`/armory:core` in the plugin).
+Load the `core` skill first when its rules are not in your context.
 
 # delegate
 
-The main session follows this skill for each spawn of a project agent: what goes in,
-what comes back, and on which model and effort the agent runs.
+The main session follows this skill for each spawn of a project agent.
 
 ## 1. Context
 
-- Context is precious. The main session SHOULD stay small: it delegates intensive
-  reading (many files, long files, wide searches) and other bulk work to agents, and
-  keeps only what they return. It SHOULD delegate coding, review and writing to the
-  project agents.
-- In a task in which the main session wrote code, every review MUST go to a reviewer
-  agent. A bypass of the delegation rule above MUST NOT cover it.
+- The main session SHOULD stay small: it delegates intensive reading (many files, long
+  files, wide searches) and other bulk work to agents, and keeps only what they return.
+  It SHOULD delegate coding, review and writing to the project agents through a spawn,
+  else its fallback (`core` section Host terms).
+- When the main session wrote code in the task, every review MUST go to a reviewer
+  agent through a spawn, else its fallback. A bypass of the delegation rule above MUST
+  NOT cover it.
 - In any other task, a main session that bypasses the delegation rule for a review
-  MUST load `review` (`/review`, or `/armory:review` in the plugin) and run it itself.
+  MUST load `review` and run it itself.
 
 ## 2. Delegation and worktrees
 
-- Two or more coding agents that run at once SHOULD each run in their own worktree.
+- Coding agents that run at once SHOULD each run in their own worktree, else its
+  fallback.
 - Two agents that run at once MUST NOT edit the same file.
-- A worktree the tool cuts MAY start from the default branch: the brief MUST name the
+- A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
   task branch (the coder card sets the reset).
 - When an agent finishes in a worktree, the main session MUST merge its branch into the
   task branch, run `lint` and `unit`, then remove the worktree. `code` section Review
   loop sets the review that follows.
-- The merge of a worktree branch into the task branch MAY run without the user's yes.
+- This merge MAY run without the user's yes.
 - A worktree with uncommitted work MUST wait for the user's decision when no retry
   follows (section Re-spawn and retry) or the retry fails too.
 
 ## 3. Briefs
 
 - A coding or review brief MUST hold: the full text of each `BR` and `TR` it covers,
-  quoted from the plan file (`plan` section Plan file), not only the ids; the
-  test-scope list (`test` section Test scope), from the plan for a coding brief and from
-  the coder report for a review brief; the `AGENTS.md` lines of `## Commands`,
-  `## Gates`, `## Test levels` (the unit style included), `## Rules` and `## Caveats`
-  that apply; the names of the skills, or skill sections, that the agent loads; the task
-  branch name and `<base>` (`code` section Branch and plan file); the plan's Overrides
-  and Accepted tech debt parts (`plan` section The plan).
+  quoted from the plan file (`plan` section Plan file); the test-scope list (`test`
+  section Test scope), from the plan for a coding brief and from the coder report for a
+  review brief; the project context lines of `## Commands`, `## Gates`, `## Test
+  levels` (the unit style included), `## Rules` and `## Caveats` that apply; which skills
+  or skill sections the agent loads; the task branch and `<base>` (`code` section
+  Branch and plan file); the plan's Overrides and Accepted tech debt parts (`plan`
+  section The plan).
 - A review brief MUST also hold the commit range and, for a final review, the
-  whole-task checks (`code` section Review loop). A re-review brief MUST hold the
-  findings sent to fix.
+  whole-task checks. A re-review brief MUST hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
   the agent needs.
-- The `core` rules reach every subagent through the plugin hook. A brief MUST NOT
-  repeat them or claim `core` is in context; the agent loads it when the hook did not.
+- The `core` rules reach every subagent through the hook, else its fallback. A brief
+  MUST NOT repeat them or claim `core` is in context; the agent loads it when the hook
+  did not.
 
 ## 4. What each agent returns
 
 - The project agents MUST be these five: coder, reviewer, researcher, writer and
-  planner. The card `skills/init-project/templates/agents/<agent>.md` of each holds its
-  role rules and its report format.
+  planner. Each card `skills/setup/templates/agents/<agent>.md` holds the role rules
+  and the report format.
 - Only the main session MAY delegate. A subagent cannot spawn agents, so it MUST do the
   work of its brief itself.
 - Each report MUST hold the recorded-items slot and the caveat slot of `core` section
   Reports.
-
-| Agent | Returns |
-|---|---|
-| coder | the coder card's report, or `stuck: <why>` |
-| reviewer | the reviewer card's report |
-| researcher | the researcher card's report, `sources disagree`, or a missing command |
-| writer | the writer card's report |
-| planner | the planner card's report |
+- Each agent returns its card's report. The coder also returns `stuck: <why>`; the
+  researcher, `sources disagree` or a missing command.
 
 ## 5. Models
 
+- Fable, Opus, Sonnet and Haiku are tier names; the host profile (`setup`) maps each to
+  a model id of the host.
 - Each subagent spawn SHOULD use the model and effort of its row in the table below
   (`core` section Rule words covers a bypass). The user picks the main session model.
 - A task that no row names SHOULD run on Opus, with effort from the effort map.
-- Effort map, each SHOULD: `low` for one clear step or a ready spec (simple summary,
-  routine edit); `medium` for several steps with some judgment (a summary of many
-  files, an answer that combines facts from several files); `high` for analysis,
-  comparison, review, design, an unknown cause.
+- Effort map, each SHOULD: `low` for one clear step or a ready spec; `medium` for
+  several steps with some judgment; `high` for analysis, comparison, review, design, an
+  unknown cause.
 - `max` MUST be used only through the Fable question, or when the user asks.
 
 | Task | Model | Effort |
@@ -104,7 +99,7 @@ what comes back, and on which model and effort the agent runs.
 
 - Default rows: coder "Coding from a brief" (Opus low); reviewer and planner (Opus
   high); researcher "one fact" and writer "restating" (Sonnet low). A spawn MAY
-  override the default with another row of the table.
+  override the default with another row.
 - The table MUST be read with these definitions:
   - Trivial change: no new branch, loop or data shape (renames, typos, config values,
     copy edits, code moved as is, a change given in full in the brief). Trivial task:
@@ -120,9 +115,10 @@ what comes back, and on which model and effort the agent runs.
 
 ## 6. The Fable question
 
-- A frontier task, or a user request for Fable, MUST go through the Fable question: an
-  `AskUserQuestion` with the options Opus high (default, first), Opus max, Fable high,
-  Fable max. `core` section Models requires the user's yes for any run on Fable.
+- A frontier task, or a user request for Fable, MUST go through the Fable question: a
+  question through the question tool, else its fallback, with the options Opus high
+  (default, first), Opus max, Fable high, Fable max. `core` section Models requires the
+  user's yes for any run on Fable.
 
 ## 7. Re-spawn and retry
 
@@ -135,5 +131,5 @@ what comes back, and on which model and effort the agent runs.
   to the user at once.
 - Any other failed spawn SHOULD get one retry on Opus high. When the spawn had a
   worktree, the retry MUST run in it, on its uncommitted work: its brief MUST name the
-  worktree path of the first spawn, because the card's `isolation: worktree` gives a
-  fresh one. When the retry fails too, the main session MUST ask the user.
+  worktree path of the first spawn, since the agent card cuts a fresh one. When the
+  retry fails too, the main session MUST ask the user.

@@ -1,14 +1,14 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "agent-armory",
-  "description": "Personal Claude Code skills: core, plan, delegate, code, implement, test, review, audit, research and init-project.",
+  "description": "Personal Claude Code skills: core, plan, delegate, code, implement, test, review, audit, research and setup.",
   "owner": {
     "name": "Oleksii Yakovenko"
   },
   "plugins": [
     {
       "name": "armory",
-      "description": "core, plan, delegate, code, implement, test, review, audit, research and init-project skills: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
+      "description": "core, plan, delegate, code, implement, test, review, audit, research and setup skills: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
       "source": "./",
       "category": "productivity"
     }
