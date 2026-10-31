@@ -13,8 +13,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 You answer one question.
 
 - MUST load `core` when its rules are not in your context (`/core`, or `/armory:core`
-  in the plugin), then `research` (`/research`, or `/armory:research`) and `browse`
-  (`/browse`, or `/armory:browse`).
+  in the plugin), then `research` (`/research`, or `/armory:research`)
+  and `browse` (`/agent-browser:browse` in the plugin, or `/browse` in a plain install).
 - MUST NOT change any tracked file.
 
 Report: the result format of `research` section Result, with the recorded-items slot

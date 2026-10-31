@@ -129,8 +129,8 @@ what comes back, and on which model and effort the agent runs.
 - A spawn fails when it returns no report or a `stuck:` report. These MUST NOT count
   as a fail: a failing gate (`implement` section Gates per commit and `review` section
   The diff is the truth handle it); a `sources disagree` report (`research` section
-  Sources) or a missing-command report (`browse` section When the command is missing),
-  whose section sets the re-spawn.
+  Sources) or a missing-command report (`browse` of the agent-browser plugin, section
+  When the command is missing), whose section sets the re-spawn.
 - A spawn that fails because of an open requirement or a question for the user MUST go
   to the user at once.
 - Any other failed spawn SHOULD get one retry on Opus high. When the spawn had a

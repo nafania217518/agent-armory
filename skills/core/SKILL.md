@@ -47,9 +47,9 @@ Base rules for the main session and every subagent. A plugin hook injects them.
   it is no longer needed (stop tool, timer, any other means). One left running MUST have
   a valid reason, stated in the report. `code` section Task end checks only these kinds.
 - MUST NOT use the built-in web search. To search the web or read a page, MUST load the
-  `browse` skill (`/browse`, or `/armory:browse` in the plugin) and follow it. The main
-  session delegates web work (`research` section When to research); a subagent browses
-  itself.
+  `browse` skill of the agent-browser plugin (`/agent-browser:browse`) and follow it.
+  The main session delegates web work (`research` section When to research); a subagent
+  does its web work itself.
 
 ## 4. Design principles
 

@@ -1,8 +1,11 @@
 # agent-armory
 
-Personal Claude Code skills and tools, packaged as the `armory` plugin. The skills hold
-the rules and the workflows. The tool is `agent-browser`, which the `browse` skill wraps.
-The design is in [docs/DESIGN.md](docs/DESIGN.md).
+Personal Claude Code skills, packaged as the `armory` plugin. The skills hold the rules
+and the workflows. The design is in [docs/DESIGN.md](docs/DESIGN.md).
+
+Web search and page reading moved to the agent-browser plugin:
+<https://github.com/nafania217518/agent-browser>. Its `browse` skill loads as
+`/agent-browser:browse`.
 
 ## Skills
 
@@ -17,7 +20,6 @@ The design is in [docs/DESIGN.md](docs/DESIGN.md).
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
-| `browse` | Web search and page reading through the `agent-browser` CLI. | `researcher`; any subagent that browses |
 | `init-project` | Writes the project `AGENTS.md` and the five project agents. | main session |
 
 ## Agents
@@ -32,12 +34,6 @@ The design is in [docs/DESIGN.md](docs/DESIGN.md).
 | `researcher` | Answers one technical question from sources. | Sonnet | low |
 | `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |
 | `planner` | Read-only. Drafts a design, a test design or an analysis of options. | Opus | high |
-
-## Tools
-
-| Tool | What it does |
-|---|---|
-| `agent-browser` | CLI that reads pages as markdown and searches the web through a Chrome that a daemon owns. See [docs/agent-browser.md](docs/agent-browser.md). |
 
 ## Install
 
@@ -61,14 +57,13 @@ Then install:
 
 The skills then run as `/armory:<name>`: `/armory:core`, `/armory:plan`,
 `/armory:delegate`, `/armory:code`, `/armory:implement`, `/armory:test`,
-`/armory:review`, `/armory:audit`, `/armory:research`, `/armory:browse` and
-`/armory:init-project`. The plugin hooks inject `core` into every session and every
-subagent.
+`/armory:review`, `/armory:audit`, `/armory:research` and `/armory:init-project`. The
+plugin hooks inject `core` into every session and every subagent.
 
 As plain skills, one symlink per skill:
 
 ```bash
-for s in core plan delegate code implement test review audit research browse \
+for s in core plan delegate code implement test review audit research \
   init-project; do
   ln -s "$PWD/skills/$s" ~/.claude/skills/$s
 done

@@ -1,7 +1,7 @@
 {
   "name": "armory",
   "version": "0.2.0",
-  "description": "core, plan, delegate, code, implement, test, review, audit, research, browse and init-project skills with coder, reviewer, researcher, writer and planner agent templates: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
+  "description": "core, plan, delegate, code, implement, test, review, audit, research and init-project skills with coder, reviewer, researcher, writer and planner agent templates: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
   "author": {
     "name": "Oleksii Yakovenko"
   }

@@ -1,6 +1,6 @@
 # agent-armory design
 
-Status: the split is done on branch `rebuild-skills`. The eleven skills under `skills/`
+Status: the split is done on branch `rebuild-skills`. The ten skills under `skills/`
 are the single source of the rules. `docs/archive/RULES.md` is the pre-split record; it
 is reference only. This file holds the decisions from the requirement quiz of
 2026-10-30 and the review quiz of 2026-10-31, and the map of where each rule lives.
@@ -16,7 +16,7 @@ Processed in this order. Each later source adds to the earlier ones.
 | Existing rules | `~/.claude/CLAUDE.md` rules 1–8 (they move to `core`, section 2), and the project `AGENTS.md` |
 | ub-mode | <https://raw.githubusercontent.com/unclebob/ub-mode/refs/heads/master/SKILL.md> |
 | ponytail | <https://github.com/dietrichgebert/ponytail>: `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt` |
-| Archived armory skills | `docs/archive/skills/`, `docs/archive/agents/`: the items the user kept in the gap quiz |
+| Archived armory skills | the old skills and agents, archived under `docs/archive/` during the rebuild and deleted after it; the items the user kept in the gap quiz went into `docs/archive/RULES.md` |
 
 ## 2. Rule homes
 
@@ -30,8 +30,8 @@ Processed in this order. Each later source adds to the earlier ones.
   armory. This is to do by the user.
 - `core` changes two of the old global rules. It merges KISS into Occam's razor
   (rule 8), and it states rule 1 with MUST.
-- The skill set has eleven skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `review`, `audit`, `research`, `browse` and `init-project`. The skills other
+- The skill set has ten skills: `core`, `plan`, `delegate`, `code`, `implement`,
+  `test`, `review`, `audit`, `research` and `init-project`. The skills other
   than `core` hold the workflows.
 - The project agents are five: `coder`, `reviewer`, `researcher`, `writer` and
   `planner`. The plugin ships their templates, not agent files; `init-project` writes
@@ -40,6 +40,8 @@ Processed in this order. Each later source adds to the earlier ones.
   which are the single source.
 - The project `AGENTS.md` holds project facts and project-only rules (`init-project`
   section Write).
+- On 2026-10-31 the `browse` skill and the tool moved to the agent-browser plugin repo;
+  `research` loads `/agent-browser:browse`.
 
 ## 3. Rule strength
 
@@ -88,7 +90,6 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
-| `browse` | 8 | researcher; any subagent that browses |
 | `init-project` | 21, 22; templates `AGENTS.md` and five agent cards | main session (`/init-project`) |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
@@ -98,7 +99,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | coder | `core`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
 | auditor | `core`, `audit`, `review`, `test` |
-| researcher | `core`, `research`, `browse` |
+| researcher | `core`, `research`, `browse` (agent-browser plugin) |
 | planner | `core`, `plan`, `test` |
 | writer | `core` |
 

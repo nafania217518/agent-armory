@@ -308,22 +308,13 @@ lint, owasp, unit, integration, coverage: all on.
 
 ## Follow-ups recorded by the quiz (2026-10-31)
 
-- Audit Should fix 6 to 12 on `tools/agent-browser` (the audit report of the `/audit`
-  dogfood run): a later task.
-- The Docker test image has no `scripts/` or `skills/`, so `bump-version.test.ts` and
-  `skill-sizes.test.ts` fail under the `coverage` command: a later task.
-- `lint` type-checks `tools/agent-browser/src` only: a later task widens the include.
+The follow-ups on the tool moved with it to the agent-browser repo
+(`docs/plans/follow-ups.md` there). What stays here:
+
 - `scripts/core-context.sh` has no test and a 3-line comment: a later task.
+- `scripts/skill-sizes.test.mjs` does not cover the `catch` of `hasSkillFile` (an
+  unreadable skill dir) or a plain file in `skills/`: a later task.
 - Ignored: the changed plan prose has no gate (the project has no prose gate by design).
-- From the reviews of Amendment 2, all Should fix, a later task: `search.ts` guards
-  `new URL(url)` with `URL.canParse` (one bad href must not fail the whole search) and
-  fixes the stale comment; `skill-sizes.test.ts` covers the `catch` of `hasSkillFile`
-  (an unreadable skill dir) and a plain file in `skills/`; `config.test.ts` pins the
-  accepted bound 35791; `commands.test.ts` makes the 503 fake keep answering `/status`
-  for a few polls so the wait before the retry is proven.
-- Ignored: a shutdown from SIGINT, SIGTERM or a closed headed window does not set the
-  shutting-down flag; a call in that short window still gets 500 (BR-3 gap outside
-  TR-15).
 
 ## Step 9 result: dogfood notes applied to the skills
 
