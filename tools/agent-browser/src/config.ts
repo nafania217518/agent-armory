@@ -26,10 +26,13 @@ export class InvalidSetting extends Error {
 
 type Check = (value: unknown) => boolean;
 
+// setTimeout turns a delay above 2^31-1 ms into 1 ms.
+const MAX_IDLE_MINUTES = Math.floor((2 ** 31 - 1) / 60_000);
+
 const CHECKS: Record<keyof Settings, Check> = {
   profile: (v) => typeof v === 'string' && v.length > 0,
   headless: (v) => typeof v === 'boolean',
-  idleMinutes: (v) => typeof v === 'number' && Number.isFinite(v) && v > 0,
+  idleMinutes: (v) => typeof v === 'number' && v > 0 && v <= MAX_IDLE_MINUTES,
   port: (v) => Number.isInteger(v) && (v as number) >= 1 && (v as number) <= 65535,
   concurrency: (v) => Number.isInteger(v) && (v as number) >= 1,
   channel: (v) => (CHANNELS as readonly unknown[]).includes(v),

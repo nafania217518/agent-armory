@@ -99,7 +99,7 @@ export function parseCommand(argv: string[]): Command {
     case 'open':
       return { kind: 'open', url: parseUrl(operand) };
     case 'search':
-      if (operand === undefined) throw new UsageError('search needs a query');
+      if (!operand) throw new UsageError('search needs a query');
       return { kind: 'search', query: operand, limit: parseLimit(values.limit) };
     case 'start':
       return { kind: 'start', flags: startFlags(values) };

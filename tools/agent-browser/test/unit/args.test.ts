@@ -22,6 +22,11 @@ test('search_limit_defaults_to_5', () => {
   expect(parseCommand(['search', 'x'])).toEqual({ kind: 'search', query: 'x', limit: 5 });
 });
 
+// req: rebuild-skills/TR-14
+test('empty_search_query_is_usage_error', () => {
+  expect(() => parseCommand(['search', ''])).toThrow(UsageError);
+});
+
 test('search_limit_not_a_number_is_usage_error', () => {
   expect(() => parseCommand(['search', 'x', '--limit', 'abc'])).toThrow(UsageError);
 });

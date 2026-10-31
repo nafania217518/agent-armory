@@ -12,7 +12,7 @@ function escapeTitle(title: string): string {
 
 // encodeURI keeps parentheses, which end a markdown link, so encode them too.
 function encodeUrl(url: string): string {
-  return encodeURI(url).replace(/\(/g, '%28').replace(/\)/g, '%29');
+  return new URL(url).href.replace(/\(/g, '%28').replace(/\)/g, '%29');
 }
 
 export function renderResults(results: SearchResult[]): string {

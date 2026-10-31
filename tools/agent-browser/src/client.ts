@@ -24,6 +24,16 @@ const DEFAULTS: ClientDeps = {
   requestTimeoutMs: 150_000,
 };
 
+/** An error answer of the daemon, with its HTTP status. */
+export class DaemonError extends Error {
+  constructor(
+    readonly status: number,
+    message: string,
+  ) {
+    super(message);
+  }
+}
+
 const DAEMON_SCRIPT = fileURLToPath(new URL('./daemon.js', import.meta.url));
 const STATUS_TIMEOUT_MS = 1_000;
 
@@ -43,7 +53,7 @@ export async function request(
     signal: AbortSignal.timeout(requestTimeoutMs),
   });
   const data = (await res.json()) as Record<string, unknown>;
-  if (!res.ok) throw new Error(String(data.error ?? `daemon answered ${res.status}`));
+  if (!res.ok) throw new DaemonError(res.status, String(data.error ?? `daemon answered ${res.status}`));
   return data;
 }
 

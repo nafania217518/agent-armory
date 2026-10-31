@@ -158,3 +158,35 @@ test('main_status_not_running_never_spawns', async () => {
   expect(out).toEqual(['not running']);
   expect(daemon.spawned).toBe(0);
 });
+
+/** Makes the first `count` /read calls answer 503 and end the fake daemon, as an idle shutdown does. */
+function shutDownOnRead(fake: ReturnType<typeof fakeDaemon>, count: number) {
+  const inner = fake.deps.fetch!;
+  let left = count;
+  const fetch = vi.fn(async (input: string | URL | Request, init?: RequestInit) => {
+    if (new URL(String(input)).pathname !== '/read' || left === 0) return inner(input, init);
+    left -= 1;
+    fake.daemon.alive = false;
+    rmSync(join(home, 'daemon.json'), { force: true });
+    return new Response(JSON.stringify({ error: 'daemon is shutting down' }), { status: 503 });
+  });
+  return { ...fake.deps, fetch: fetch as never };
+}
+
+// req: rebuild-skills/TR-15
+test('cli_retries_once_after_503', async () => {
+  writeState();
+  const fake = fakeDaemon(true);
+  expect(await main(['open', 'https://example.com'], shutDownOnRead(fake, 1))).toBe(0);
+  expect(out).toEqual(['# Hello']);
+  expect(fake.daemon.spawned).toBe(1);
+});
+
+// req: rebuild-skills/TR-15
+test('cli_second_503_exits_1', async () => {
+  writeState();
+  const fake = fakeDaemon(true);
+  expect(await main(['open', 'https://example.com'], shutDownOnRead(fake, 2))).toBe(1);
+  expect(err).toEqual(['daemon is shutting down']);
+  expect(fake.daemon.spawned).toBe(1);
+});

@@ -1,6 +1,6 @@
 import { existsSync, mkdtempSync, readFileSync, rmSync } from 'node:fs';
 import { request as httpRequest } from 'node:http';
-import { createServer as createNetServer, type Server as NetServer } from 'node:net';
+import { connect, createServer as createNetServer, type Server as NetServer } from 'node:net';
 import { networkInterfaces, tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, beforeEach, expect, test, vi, describe } from 'vitest';
@@ -439,6 +439,40 @@ test('post_without_json_content_type_is_415', async () => {
 
   expect(await raw(port, 'POST', '/stop', { Host: `127.0.0.1:${port}`, 'Content-Type': 'text/plain' })).toBe(415);
   expect(onShutdown).not.toHaveBeenCalled();
+});
+
+/** Writes one raw request line over a socket; returns the status line of the reply. */
+function rawLine(port: number, requestLine: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const socket = connect(port, '127.0.0.1', () => socket.write(`${requestLine}\r\nHost: 127.0.0.1:${port}\r\n\r\n`));
+    let text = '';
+    socket.on('data', (chunk) => {
+      text += chunk.toString('latin1');
+      if (text.includes('\r\n')) {
+        socket.destroy();
+        resolve(text.split('\r\n')[0]);
+      }
+    });
+    socket.on('error', reject);
+  });
+}
+
+// req: rebuild-skills/TR-13
+test('malformed_target_gets_400_daemon_stays_up', async () => {
+  const { port, url } = await start();
+
+  expect(await rawLine(port, 'GET http://[ HTTP/1.1')).toMatch(/^HTTP\/1\.1 400 /);
+  expect((await fetch(url + '/status')).status).toBe(200);
+});
+
+// req: rebuild-skills/TR-15
+test('read_during_shutdown_gets_503', async () => {
+  const onShutdown = vi.fn();
+  const { url } = await start(fakeOps(), { idleMinutes: 50 / 60_000 }, onShutdown);
+  await waitFor(() => onShutdown.mock.calls.length > 0);
+
+  expect((await post(url, '/read', { url: 'https://a.test' })).status).toBe(503);
+  expect((await post(url, '/search', { query: 'q' })).status).toBe(503);
 });
 });
 

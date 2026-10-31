@@ -1,107 +1,124 @@
 ---
 name: plan
 description: >
-  Pre-work for a task. The agent measures the impact and proposes a level (none, min,
-  full); the user confirms. Business and tech requirement quizzes (BR-n, TR-n), a plan
-  with a model tag per item, approval through plan mode, and at full the plan review and
-  the requirements and plan files. Runs on Fable. Use for a new task, "plan this", "make
-  a plan", "design this change", "/plan", and from the code skill when no plan exists.
-argument-hint: "[none|min|full]"
+  Pre-work for a task: plan mode, business and tech quizzes, BR-n and TR-n requirements,
+  the plan, self-review, approval, the plan file, amendments, and the planner's drafting
+  part. Use for a new task, "plan this", "make a plan", "design this change", a changed
+  requirement, "/plan", and from the code skill when no plan exists.
+max-lines: 130
 ---
+
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+Load the `core` skill first when its rules are not in your context (`/core`, or
+`/armory:core` in the plugin).
 
 # plan
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
+Pre-work before any edit: quizzes, requirements, the plan, approval and the plan file.
+The main session runs every section except Drafting. The planner runs only Drafting.
 
-## 1. Level
+## 1. Before the plan
 
-MUST load the `code` skill (`/code`, or `/armory:code` in the plugin install). Read the
-task and the code it touches (its section 2, Understand first). Then propose one line:
-"Level <none|min|full>: <reason>". The user confirms or names another level.
-`$ARGUMENTS` sets the level and skips the question.
+- The main session MUST run plan mode, the quizzes and the approval itself.
+- Planning spawns researchers and the planner: MUST load `delegate` first (`/delegate`,
+  or `/armory:delegate` in the plugin).
+- The quizzes, the planning research and the plan MUST run in plan mode. Research
+  during coding runs outside plan mode.
+- When the main session runs on a model below Opus or an effort below `high`, it SHOULD
+  suggest to the user to switch before planning.
+- SHOULD push back, before building, on any part of the request that the need does not
+  justify.
+- Before any edit, MUST quiz the user in rounds until no open point remains (an unclear
+  requirement, a choice between options, an assumption), and wait for the answers.
+  Section Quizzes sets the order and topics; `core` section Writing and questions sets
+  the question format.
+- MUST NOT write any repo file before the approval. Planning MUST NOT write code, tests
+  or config.
 
-| Level | Impact | Flow |
-|---|---|---|
-| `none` | No behavior change: pinned refactor, docs, typo, test-only | back to `code` |
-| `min` | Every other behavior change | 2 to 8; short business quiz; writes nothing |
-| `full` | List below | 2 to 8; wide quiz; checklist; scope, gates, risks, debt; docs |
+## 2. Quizzes
 
-Sections 2 to 9 apply to `min` and `full`. A line that names one level applies to that
-level only. Section 3 runs on demand at both levels. The level is `full` when any of
-these hold:
+- The business quiz MUST come first: goal, who is affected, done criteria, users,
+  features, business rules, out of scope, constraints.
+- The tech quiz MUST follow: stack, data, interfaces, constraints, test levels, risks,
+  acceptance.
+- Each topic MUST be covered when it is relevant to the task, and only then.
+- An unknown during planning (a library, API, model or domain fact) MUST go to research
+  (`research` section When to research). Then, if needed, the user MUST get a quiz on
+  the findings and the next steps.
 
-- a new surface or data shape;
-- an unknown about a library, API or domain;
-- stored data changes shape or can be lost;
-- the change reaches the code of more than one module, or callers the task did not name.
-  Doc updates do not count.
+## 3. Requirements
 
-MUST compare the session model with the first row of `## Models` (pre-work, Fable). When
-it differs, say so in one line. Then ask the user to run `/model`, or delegate the
-pre-work to the `researcher` agent with that row's model. A `min` task MAY run on Opus.
+- An answer MUST become a `BR` or a `TR` only when it is testable: a behavior or a
+  measurable constraint, such as `TR-5 (BR-2): MUST NOT lock the table for more than
+  1 s`. A `BR` is testable when its `TR` items can prove it together. A goal that no
+  test can prove goes into the plan's Goal part instead.
+- Each testable business answer MUST become `BR-n: MUST <behavior>`.
+- Each testable tech answer MUST become a `TR` in the item format of section The plan.
+  Each `TR` MUST trace to a `BR`. The numbered `TR` list MUST exist before the code.
 
-## 2. Plan mode
+## 4. The plan
 
-MUST enter plan mode (the planning tool) for sections 3 to 7. Repo files are written
-only in section 8.
+- Besides the `TR` list, the plan MUST hold these parts: Goal (the context), Risks,
+  Stack choices, Out of scope, Accepted tech debt and Overrides. Their items MUST NOT go
+  into a `BR` or a `TR`.
+- The Overrides part MUST name every design rule the plan overrides (`core` section
+  Rule words), each with its reason.
+- The plan MUST list the `TR` items in execution order. An item that a later item's gate
+  command depends on MUST come first. Each item MUST take the item format
+  `TR-<n> (BR-<m>, ...): MUST <behavior>` and MUST have an indented `tests:` line that
+  names its tests, or `tests: none, <why>`, under the rules of `test` section TDD.
+- The plan MUST hold the test-scope list (`test` section Test scope).
+- The draft of the items, their `tests:` lines and the test-scope list SHOULD come from
+  the planner (section Drafting), which loads `test` and `implement`. When the main
+  session drafts them itself, it MUST load `test` (`/test`, or `/armory:test` in the
+  plugin) and `implement` (`/implement`, or `/armory:implement`).
+- The plan SHOULD name the gates that apply, when relevant.
+- Planning SHOULD look for complexity to take out before adding anything; deletion
+  SHOULD beat addition. The plan MAY include that simplification. During coding, the
+  scope rule of `implement` section The smallest complete change wins.
+- A caveat found during planning (`core` section Reports) MUST go into the plan.
 
-## 3. Research
+## 5. Self-review and approval
 
-Research runs on demand, at both levels, when an unknown appears. An unknown about a
-library, API, model or domain goes to the `researcher` agent or follows the `research`
-skill. The finding becomes a `## Caveats` line in the plan.
+- Before proposing, MUST review the plan: every `BR` has a `TR`; every `TR` has tests
+  for its edge cases and failure paths, or a `tests: none` line (`test` section TDD);
+  the design issues under `core` section Design principles, `implement` section Before
+  you write and `implement` section Domain, boundaries and state are fixed.
+- An open question MUST go to one more quiz round.
+- Exiting plan mode is the approval. On a reject, MUST fix the part the user names and
+  propose again.
 
-## 4. Business quiz
+## 6. Plan file
 
-- Ask in rounds until no open question or assumption remains.
-- `min`: ask the goal, who is affected and the done criteria.
-- `full`: add users, features, business rules, out of scope and constraints.
-- Every answer becomes `BR-n`: MUST \<behavior\>. A goal that no test can prove becomes a
-  `BR` with the `TR`s that prove it.
+- After the approval, the main session MUST cut the task branch (`code` section Branch
+  and plan file).
+- It MUST then write the plan, `BR` and `TR` text included, as the first commit:
+  `<docs>/plans/<task-branch>.md`. `init-project` section Write sets `<docs>`.
+- The plan file MUST hold the requirements. They MUST NOT go into a separate file.
+- Right after that commit, the main session MUST write the plan's caveats into
+  `AGENTS.md` `## Caveats` (`core` section Reports).
 
-## 5. Tech quiz
+## 7. Amendments
 
-- Ask stack, data, interfaces, constraints, test levels, risks and acceptance.
-- Every answer becomes `TR-n` (`BR-m`): MUST \<behavior\>. Each `TR` MUST trace to a `BR`.
+- A requirement that changes during work, or needs the user's answer, MUST stop the
+  work. The work continues after the user's yes.
+- An added or changed requirement MUST get a new id. It MUST go to the user for
+  approval through `AskUserQuestion`, with the new text. The one exception is the `TR`
+  of a defect in built code (below): it needs no approval, because a defect fix repairs
+  approved work.
+- A change to the design MUST go back to plan mode: quizzes, plan, approval. A redesign
+  the user approves (`implement` section Before you write) is such a change.
+- A defect in built code MUST get a new `TR-n` and its test (`implement` section Fixing
+  and refactoring).
+- The main session MUST allocate every new id. A subagent MUST NOT allocate one.
+- Before the next brief, the main session MUST write each new id and each
+  `(replaced by TR-m)` mark into the plan file, and commit it.
+- An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by TR-m)`.
 
-## 6. The plan
+## 8. Drafting
 
-List the `TR` items in execution order. The format of one item:
+- The main session MAY spawn the planner agent for a draft. The `planner` agent card
+  sets its role; `delegate` section Models sets its model.
 
-`TR-<n>` [`<model>`] (`<br-1>`, ..., `<br-n>`): \<descr\>
-
-- Under the item, an indented why: line when the model is not `opus`.
-- Under the item, an indented tests: line with the test names. The `test` skill rules
-  apply: level, edge cases, failure paths.
-- Every item MUST carry one model from the `## Models` rows.
-- A `fable` item MUST have a why: line that names the reason from the first row.
-  "Just in case" is not a reason.
-- `full`: after the items, add the test-scope list, the gates that apply, the risks and
-  the accepted tech debt.
-
-## 7. Review and propose
-
-- `full`: MUST check the plan before proposing. Every `BR` has a `TR`. Every `TR` has
-  tests with edge cases and failure paths. Design issues under `code` sections 2 and 8
-  are fixed. An open question goes to one more quiz round.
-- `min` and `full`: the plan-mode exit is the approval gate.
-- Reject: the user says what is wrong. Fix that part. Propose again.
-
-## 8. Save and stop
-
-- `full`: MUST write `<docs>/requirements/<task-branch>.md` (`## Business`,
-  `## Technical`) and `<docs>/plans/<task-branch>.md`. The docs folder comes from
-  `AGENTS.md` `## Rules`. MUST write the caveat lines into `AGENTS.md`.
-- `min`: write nothing. The approved plan in the conversation is the task. The `code`
-  skill writes the plan's caveat lines into `AGENTS.md`.
-- MUST NOT write code, tests or config.
-- Report: the level, the paths written (or "plan-mode file only"), the item count per
-  model, and the line: "On 'implement', run the `code` skill on Opus."
-
-## 9. Amendments
-
-A new or changed requirement during work gets a new `BR-n` or `TR-n` and re-enters at
-section 7. The work continues after approval. A defect in built code gets a new `TR-n`
-with its tests. It needs no new approval. At `full`, append it to the requirements file.
-The task report lists it at both levels. An old id MUST NOT be rewritten or
-renumbered; mark it `(replaced by TR-m)`.
+The planner drafts in the formats of sections Requirements and The plan, checked against
+section Self-review and approval. Its limits are on the planner card.

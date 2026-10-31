@@ -1,18 +1,37 @@
 # agent-armory
 
-Personal Claude Code skills and tools. Phase 1: the workflow skills. Phase 2: the `agent-browser` tool
-and the `browse` skill that wraps it. The design is in [docs/DESIGN.md](docs/DESIGN.md).
+Personal Claude Code skills and tools, packaged as the `armory` plugin. The skills hold
+the rules and the workflows. The tool is `agent-browser`, which the `browse` skill wraps.
+The design is in [docs/DESIGN.md](docs/DESIGN.md).
 
-| Skill | What it does |
-|---|---|
-| `plan` | Pre-work on Fable. Three levels, `none`, `min` and `full`, picked by impact: the agent proposes, the user confirms. `min`: business and tech quizzes and a plan that stays in Claude Code's plan mode. `full`: adds research, plan review, and writes the requirements and plan files. Every item carries a model tag (`TR-n` [`opus`], [`fable`], [`sonnet`] or [`haiku`]). |
-| `code` | Coding workflow: branch per task, requirements as RFC 2119 statements and tests (TDD), the smallest complete change, test gates from the project `AGENTS.md`, delegation to project agents, atomic commits. |
-| `review` | Review of a change. Reads the connected code, runs the project gates, checks the summary against the diff. Numbered findings with a fix each. Changes no code. |
-| `audit` | Audit of a whole repo or package: bugs, security, load, missing tests, speed, bloat, and the `tech-debt:` ledger. Changes no code. |
-| `test` | Test guide: the pyramid, the levels (unit, integration, contract, functional, e2e), sociable unit tests, what to test, structure, speed, review checks. Loaded by `code`, `review` and `audit`. |
-| `research` | How to research a technical claim: official sources first, independent sources next, dates, disagreements, the caveat line for `AGENTS.md`. Loaded by `code`, `plan` and the `researcher` agent. |
-| `browse` | Web search and page reading through `agent-browser`: the two commands, exit codes, the daemon, and the install check. Loaded before any web search or page read. |
-| `init-project` | Writes `AGENTS.md` (commands, test levels, gates, model table, rules, glossary, caveats) and the project agents `coder`, `reviewer`, `researcher`, `writer` in `.claude/agents/`. |
+## Skills
+
+| Skill | What it does | Loaded by |
+|---|---|---|
+| `core` | Always-on base rules for every actor: rule words, writing, design principles, reports. | the hooks; every armory skill |
+| `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session; `planner` |
+| `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
+| `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
+| `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `reviewer`; main session when it codes itself |
+| `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `reviewer`, `planner`, auditor |
+| `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
+| `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
+| `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
+| `browse` | Web search and page reading through the `agent-browser` CLI. | `researcher`; any subagent that browses |
+| `init-project` | Writes the project `AGENTS.md` and the five project agents. | main session |
+
+## Agents
+
+`init-project` writes the agents into `.claude/agents/` from the templates in
+`skills/init-project/templates/agents/`.
+
+| Agent | Role | Default model | Effort |
+|---|---|---|---|
+| `coder` | Implements one coding brief with TDD, in its own worktree. | Opus | low |
+| `reviewer` | Reviews a change or audits a repo. Changes no tracked file. | Opus | high |
+| `researcher` | Answers one technical question from sources. | Sonnet | low |
+| `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |
+| `planner` | Read-only. Drafts a design, a test design or an analysis of options. | Opus | high |
 
 ## Tools
 
@@ -40,14 +59,23 @@ Then install:
 /plugin install armory@agent-armory
 ```
 
-The skills then run as `/armory:plan`, `/armory:code`, `/armory:review`, `/armory:audit`,
-`/armory:test`, `/armory:init-project`, `/armory:research` and `/armory:browse`.
+The skills then run as `/armory:<name>`: `/armory:core`, `/armory:plan`,
+`/armory:delegate`, `/armory:code`, `/armory:implement`, `/armory:test`,
+`/armory:review`, `/armory:audit`, `/armory:research`, `/armory:browse` and
+`/armory:init-project`. The plugin hooks inject `core` into every session and every
+subagent.
 
 As plain skills, one symlink per skill:
 
 ```bash
-for s in plan code review audit test init-project research browse; do ln -s "$PWD/skills/$s" ~/.claude/skills/$s; done
+for s in core plan delegate code implement test review audit research browse \
+  init-project; do
+  ln -s "$PWD/skills/$s" ~/.claude/skills/$s
+done
 ```
+
+The plain install has no hooks. Put this line in `~/.claude/CLAUDE.md`: "Load the `core`
+skill first in every session (`/core`)".
 
 ## Release
 
@@ -62,13 +90,9 @@ parts to 0. It prints the new version.
 
 ## Notes
 
-- Rules use RFC 2119 words. The project `AGENTS.md` (template in
-  `skills/init-project/templates/AGENTS.md`) defines what MUST, SHOULD and MAY mean here
-  and which SHOULD rules are off.
+- Rules use RFC 2119 words. `core` defines what MUST, SHOULD and MAY mean. The project
+  `AGENTS.md` (template in `skills/init-project/templates/AGENTS.md`) holds the gates.
 - `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later. Below that,
   add a `CLAUDE.md` with the one line `@AGENTS.md`.
-- The ponytail plugin injects its own rules at every session start. Disable it when
-  `armory` is installed, so rules do not come twice.
-- Always-on rules stay in `~/.claude/CLAUDE.md`. The skills hold the workflows. The
-  project `AGENTS.md` holds the project facts and repeats the base rules only when the
-  global file lacks them.
+- The global rules 1–8 now live in `core`. `~/.claude/CLAUDE.md` shrinks to a pointer to
+  `core`, plus personal items outside armory.

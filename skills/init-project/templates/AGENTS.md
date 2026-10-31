@@ -1,18 +1,13 @@
 # {{NAME}}
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this file and in the armory
-skills follow RFC 2119. MUST has no exception. A SHOULD rule is on by default; `## Gates`
-turns it off for this project, with a reason. MAY is the agent's choice.
-
 ## What this is
 
 {{WHAT}}
 
 ## Commands
 
-One line per check. A gate in `## Gates` has the command of the same name here; a gate
-with no command is `off` there. `run` is not a gate. `worktree-per-agent` and `delegate`
-have no command.
+Format: `<check>: <command>`. The armory `init-project` skill, section Write, holds the
+rules; `implement` section Gates per commit says how to run them.
 
 - lint: {{LINT}}
 - owasp: {{OWASP}}
@@ -24,91 +19,26 @@ have no command.
 - coverage: {{COVERAGE}}
 - run: {{RUN}}
 
-The `coverage` command MUST fail below the threshold set in the build tools (default 90%
-per core module).
-
-## Test levels
-
-What each level covers in this project. The armory `test` skill holds the rules.
-
-- unit: one unit (a function, a class, or a small cluster), fast, runs on every change.
-  Frontend unit tests with the backend stubbed are `unit`.
-- integration: narrow, one integration point at a time (a real database, the file
-  system, one separate service or its double), at the boundary of the service.
-- contract: consumer-driven contract tests for each interface with a separate service.
-- functional: acceptance from the user's view, black box, given/when/then, through the
-  API or the UI, externals doubled.
-- e2e: the deployed stack through its UI or API, the main user journeys only.
-
-Unit style: {{UNIT_STYLE}} (`sociable`: real collaborators, doubles only for remote,
-non-deterministic, slow or side-effecting ones; `solitary`: every collaborator doubled).
-
-Surface rule: each surface MUST have at least one test level. Frontend: `unit` or `e2e`
-(browser). Backend: `unit` or `integration`. CLI and library: `unit`.
-
 ## Gates
 
-`on`, or `off <reason>`. `contract`, `functional` and `e2e` are the flexible levels: off
-until the project turns them on. Besides these gates, any SHOULD rule of a skill is off
-when a line names it: `<skill> section <n>: off <reason>`.
+Format: `<gate>: on`, or `<gate>: off <reason>`.
 
-- worktree-per-agent: on
-- delegate: on
-- lint: on
-- owasp: on
-- unit: on
-- integration: on
+- lint: {{LINT_GATE}}
+- owasp: {{OWASP_GATE}}
+- unit: {{UNIT_GATE}}
+- integration: {{INTEGRATION_GATE}}
+- coverage: {{COVERAGE_GATE}}
 - contract: {{CONTRACT_GATE}}
 - functional: {{FUNCTIONAL_GATE}}
 - e2e: {{E2E_GATE}}
-- coverage: on
 
-## Models
+## Test levels
 
-| Task kind | Model | Effort | Agent | Why |
-|---|---|---|---|---|
-| Pre-work: research, requirement quizzes, the plan; tasks Opus cannot carry: architecture, data risk, non-trivial root-cause analysis, core conflicts | fable | high | researcher, tag [`fable`] | heavy reasoning only; a `min` task MAY run pre-work on opus |
-| Coding (TDD implementation) | opus | low | coder | follows a brief |
-| Deep research | opus | medium | researcher | sources and judgement |
-| Code review, audit | opus | medium | reviewer | needs judgement, no writing |
-| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag [`sonnet`] or [`haiku`] | no reasoning needed |
-| Routine lookup, grep, file reads | sonnet | low | none (built-in Explore) | no reasoning needed |
+Only what this project adds to or changes in the armory `test` skill, section Levels.
 
-Fable MUST be used only for the first row: the plan, and the items the plan tags
-[`fable`]. The table binds the session model as well as the agents. A plan tag
-([`opus`], [`fable`], [`sonnet`], [`haiku`]) names the model for one item; on a spawn
-it overrides the model in the agent file. Agent files hold the model of their untagged
-row.
+Unit style: {{UNIT_STYLE}}
 
-## Rules
-
-Workflows live in the armory skills. This section holds the
-base rules when the global `~/.claude/CLAUDE.md` does not, then project-only rules.
-
-1. Replies and documentation MUST be "80% of the way to ASD-STE100" (Simplified
-   Technical English): short sentences (about 20 words max), one idea per sentence,
-   active voice, present tense, one approved meaning per word, no idioms, no filler.
-   Keep natural phrasing and domain terms where strict STE would read awkwardly.
-2. Background tasks MUST start through the tools (`run_in_background=true`). MUST NOT
-   use `nohup` or `command &`: such tasks cannot be tracked or stopped.
-3. MUST NOT use the built-in web search. It is broken. To search the web or read a
-   page, MUST load the `browse` skill (`/browse`, or `/armory:browse` in the plugin
-   install) and follow it.
-4. YAGNI: MUST NOT design or implement anything that was not requested.
-5. DRY + SSOT: each fact, rule or piece of logic MUST live in exactly one place.
-   Everywhere else references it.
-6. Big design up front: the design MUST be complete and refined before implementation
-   starts.
-7. MUST NOT optimize without a measured problem.
-8. Occam's razor: SHOULD prefer the solution built from the smallest set of elements.
-9. Questions to the user MUST go through the `AskUserQuestion` tool: at least 2 options,
-   the recommended one first. The message text holds only the context, not the question.
-
-Project rules:
-
-- Documentation MUST live in `{{DOCS}}`. Only the README stays at the root. Requirements
-  live in `{{DOCS}}requirements/<task-branch>.md`, plans in `{{DOCS}}plans/<task-branch>.md`.
-{{PROJECT_RULES}}
+{{LEVEL_CHANGES}}
 
 ## Glossary
 
@@ -116,4 +46,11 @@ Format: `Term : one-line meaning`
 
 ## Caveats
 
-Format: `SHORT_DESCRIPTION : file_reference.md`
+Format: `SHORT_DESCRIPTION : <file>`, or `SHORT_DESCRIPTION : —` when no file exists yet
+
+## Rules
+
+Project-only rules. The armory skills hold the rest.
+
+- Documentation lives in {{DOCS}}
+{{PROJECT_RULES}}

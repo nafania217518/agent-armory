@@ -68,6 +68,11 @@ test('negative_idle_rejected', () => {
   expect(() => resolveSettings({ idleMinutes: -1 })).toThrow(/idleMinutes.*-1/);
 });
 
+// req: rebuild-skills/TR-12
+test('idle_minutes_above_timeout_limit_is_rejected', () => {
+  expect(() => resolveSettings({ idleMinutes: 35792 })).toThrow(/idleMinutes.*35792/);
+});
+
 test('port_out_of_range_rejected', () => {
   writeConfig(JSON.stringify({ port: 70000 }));
 

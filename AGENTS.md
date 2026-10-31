@@ -1,103 +1,46 @@
 # agent-armory
 
-The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this file and in the armory
-skills follow RFC 2119. MUST has no exception. A SHOULD rule is on by default; `## Gates`
-turns it off for this project, with a reason. MAY is the agent's choice.
-
 ## What this is
 
-Personal Claude Code skills and tools, packaged as the `armory` plugin. Phase 1 is the
-skills under `skills/`: `plan`, `code`, `review`, `audit`, `test`, `research` and `init-project`.
-Phase 2 is the tools under `tools/`: `agent-browser`, with the `browse` skill that wraps
-it. The repo also holds the skill templates and the plugin manifest. The design is in
-`docs/DESIGN.md`.
+Personal Claude Code skills and tools, packaged as the `armory` plugin. The skills under
+`skills/` hold the rules for every armory actor: `core`, `plan`, `delegate`, `code`,
+`implement`, `test`, `review`, `audit`, `research`, `browse` and `init-project`. The
+tool under `tools/agent-browser/` reads web pages and searches the web for agents. The
+design is in `docs/DESIGN.md`.
 
 ## Commands
 
-One line per check. A gate in `## Gates` has the command of the same name here; a gate
-with no command is `off` there. `run` is not a gate. `worktree-per-agent` and `delegate`
-have no command.
+Format: `<check>: <command>`. The armory `init-project` skill, section Write, holds the
+rules; `implement` section Gates per commit says how to run them.
 
-- lint: claude plugin validate . && npm --prefix tools/agent-browser run lint
+- lint: claude plugin validate . && claude plugin validate .claude-plugin/plugin.json && npm --prefix tools/agent-browser run lint && node scripts/skill-sizes.mjs
 - owasp: npm --prefix tools/agent-browser audit --audit-level=high
 - unit: npm --prefix tools/agent-browser run test:unit
 - integration: docker compose -f tools/agent-browser/compose.yaml run --rm --build test npm run test:integration
 - coverage: docker compose -f tools/agent-browser/compose.yaml run --rm --build test npm run coverage
 - run: node tools/agent-browser/dist/cli.js
 
-The `coverage` command MUST fail below the threshold set in the build tools (default 90%
-per core module).
-
-## Test levels
-
-What each level covers in this project. The armory `test` skill holds the rules.
-
-- unit: one unit (a function, a class, or a small cluster), fast, runs on every change.
-  Frontend unit tests with the backend stubbed are `unit`.
-- integration: narrow, one integration point at a time (a real database, the file
-  system, one separate service or its double), at the boundary of the service.
-- contract: consumer-driven contract tests for each interface with a separate service.
-- functional: acceptance from the user's view, black box, given/when/then, through the
-  API or the UI, externals doubled.
-- e2e: the deployed stack through its UI or API, the main user journeys only.
-
-Unit style: sociable (`sociable`: real collaborators, doubles only for remote,
-non-deterministic, slow or side-effecting ones; `solitary`: every collaborator doubled).
-
-Surface rule: each surface MUST have at least one test level. Frontend: `unit` or `e2e`
-(browser). Backend: `unit` or `integration`. CLI and library: `unit`.
-
 ## Gates
 
-`on`, or `off <reason>`. `contract`, `functional` and `e2e` are the flexible levels: off
-until the project turns them on. Besides these gates, any SHOULD rule of a skill is off
-when a line names it: `<skill> section <n>: off <reason>`.
+Format: `<gate>: on`, or `<gate>: off <reason>`.
 
-- worktree-per-agent: on
-- delegate: on
 - lint: on
 - owasp: on
 - unit: on
 - integration: on
+- coverage: on
 - contract: off (not chosen)
 - functional: off (not chosen)
 - e2e: off (not chosen)
-- coverage: on
 
-## Models
+## Test levels
 
-| Task kind | Model | Effort | Agent | Why |
-|---|---|---|---|---|
-| Pre-work: research, requirement quizzes, the plan; tasks Opus cannot carry: architecture, data risk, non-trivial root-cause analysis, core conflicts | fable | high | researcher, tag [`fable`] | heavy reasoning only; a `min` task MAY run pre-work on opus |
-| Coding (TDD implementation) | opus | low | coder | follows a brief |
-| Deep research | opus | medium | researcher | sources and judgement |
-| Code review, audit | opus | medium | reviewer | needs judgement, no writing |
-| Mechanics: docs, test runs, i18n strings, formatting, routine edits per a ready spec or ready tests | sonnet | low | writer; coder, tag [`sonnet`] or [`haiku`] | no reasoning needed |
-| Routine lookup, grep, file reads | sonnet | low | none (built-in Explore) | no reasoning needed |
+Only what this project adds to or changes in the armory `test` skill, section Levels.
 
-Fable MUST be used only for the first row: the plan, and the items the plan tags
-[`fable`]. The table binds the session model as well as the agents. A plan tag
-([`opus`], [`fable`], [`sonnet`], [`haiku`]) names the model for one item; on a spawn
-it overrides the model in the agent file. Agent files hold the model of their untagged
-row.
+Unit style: sociable
 
-## Rules
-
-Workflows live in the armory skills. This section holds the
-base rules when the global `~/.claude/CLAUDE.md` does not, then project-only rules.
-
-1. YAGNI: MUST NOT design or implement anything that was not requested.
-2. DRY + SSOT: each fact, rule or piece of logic MUST live in exactly one place.
-   Everywhere else references it.
-3. Big design up front: the design MUST be complete and refined before implementation
-   starts.
-4. MUST NOT optimize without a measured problem.
-5. Occam's razor: SHOULD prefer the solution built from the smallest set of elements.
-
-Project rules:
-
-- Documentation MUST live in `docs/`. Only the README stays at the root. Requirements
-  live in `docs/requirements/<task-branch>.md`, plans in `docs/plans/<task-branch>.md`.
+Surfaces: CLI (`tools/agent-browser`): `unit`, `integration`. The plugin skills and
+templates: no test level; `lint` checks them.
 
 ## Glossary
 
@@ -110,8 +53,25 @@ channel : which browser the daemon launches: `chrome` (installed Google Chrome) 
 
 ## Caveats
 
-Format: `SHORT_DESCRIPTION : file_reference.md`
+Format: `SHORT_DESCRIPTION : <file>`, or `SHORT_DESCRIPTION : —` when no file exists yet
 
 playwright 1.64.1 + playwright-extra 4.3.6 + puppeteer-extra-plugin-stealth 2.11.2 install together; the Docker tag v1.64.1-noble MUST match : tools/agent-browser/package.json
-
 Playwright `launchPersistentContext`: pages MUST come from `context.newPage()`; `context.browser().newPage()` opens a fresh context and bypasses the profile : tools/agent-browser/src/browser.ts
+The daemon has no auth token; any local user who reaches 127.0.0.1 can drive the browser with the profile's logins : tools/agent-browser/src/server.ts
+The next-page step uses `page.waitForNavigation`, which Playwright has deprecated : tools/agent-browser/src/search.ts
+npm audit reports 5 moderate and 2 low findings through puppeteer-extra-plugin-stealth; the owasp gate fails only at `high` : tools/agent-browser/package.json
+`core-context.sh` escapes only backslash, quote, tab, CR and LF; any other control character in `skills/core/SKILL.md` breaks the SubagentStart JSON : scripts/core-context.sh
+Skill frontmatter carries the non-standard key `max-lines`; `claude plugin validate` accepts it : skills/core/SKILL.md
+A `SKILL.md` with CRLF line ends, or a leading `---` with trailing spaces, counts as missing `max-lines` : scripts/skill-sizes.mjs
+`skill-sizes.test.ts` and `bump-version.test.ts` cannot pass inside the Docker test image, which has no `scripts/` : tools/agent-browser/Dockerfile
+`lint` type-checks `tools/agent-browser/src` only; test files and `scripts/*.mjs` get no type check : tools/agent-browser/tsconfig.json
+`/stop` makes `/read` and `/search` answer 503 until the port closes : tools/agent-browser/src/server.ts
+`URL.parse` (Node 20.18+ or 22.1+) parses the request target; on Node 20.0-20.17 or 22.0 every daemon request crashes the daemon : tools/agent-browser/src/server.ts
+Search result URLs pass through `new URL().href`: hosts are lowercased, IDN hosts become punycode, and a bare origin gains a trailing `/` : tools/agent-browser/src/search.ts
+`idleMinutes` above 35791 is rejected (the `setTimeout` limit, 2^31-1 ms) : tools/agent-browser/src/config.ts
+
+## Rules
+
+Project-only rules. The armory skills hold the rest.
+
+- Documentation lives in docs/

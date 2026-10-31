@@ -1,6 +1,6 @@
 import { existsSync } from 'node:fs';
 import { parseCommand, UsageError, type Command } from './args.js';
-import { ensureDaemon, findDaemon, request, type ClientDeps, type Status } from './client.js';
+import { DaemonError, ensureDaemon, findDaemon, request, type ClientDeps, type Status } from './client.js';
 import { InvalidSetting, resolveSettings, type Settings } from './config.js';
 import { homePaths } from './paths.js';
 import { renderResults, type SearchResult } from './search.js';
@@ -37,15 +37,25 @@ async function waitUntilGone(deps: Partial<CommandDeps>): Promise<void> {
   }
 }
 
+// A 503 means the daemon is in its idle shutdown: wait for it to go, then start a new one, once.
+async function work(path: string, body: unknown, deps: Partial<CommandDeps>): Promise<Record<string, unknown>> {
+  const call = async () => request((await ensureDaemon(resolveSettings({}), deps)).port, 'POST', path, body, deps);
+  try {
+    return await call();
+  } catch (error) {
+    if (!(error instanceof DaemonError && error.status === 503)) throw error;
+    await waitUntilGone(deps);
+    return call();
+  }
+}
+
 async function run(command: Command, deps: Partial<CommandDeps>): Promise<string> {
   switch (command.kind) {
     case 'open': {
-      const { port } = await ensureDaemon(resolveSettings({}), deps);
-      return String((await request(port, 'POST', '/read', { url: command.url }, deps)).markdown);
+      return String((await work('/read', { url: command.url }, deps)).markdown);
     }
     case 'search': {
-      const { port } = await ensureDaemon(resolveSettings({}), deps);
-      const body = await request(port, 'POST', '/search', { query: command.query, limit: command.limit }, deps);
+      const body = await work('/search', { query: command.query, limit: command.limit }, deps);
       return renderResults(body.results as SearchResult[]);
     }
     case 'start': {

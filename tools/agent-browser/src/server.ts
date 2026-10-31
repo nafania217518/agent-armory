@@ -101,12 +101,17 @@ export async function startServer(deps: DaemonDeps): Promise<RunningServer> {
   const startedAt = new Date();
   const gate = new Semaphore(settings.concurrency);
   let closing: Promise<void> | null = null;
+  let shuttingDown = false;
 
   // An activity holds the idle timer from arrival, so a queued request counts too (TR-12).
   async function activity<T>(fn: () => Promise<T>): Promise<T> {
     idle.begin();
     try {
-      return await gate.run(fn);
+      return await gate.run(() => {
+        // The browser closes before the port; 503 tells the CLI to start a new daemon.
+        if (shuttingDown) throw new HttpError(503, 'daemon is shutting down');
+        return fn();
+      });
     } finally {
       idle.end();
     }
@@ -147,7 +152,8 @@ export async function startServer(deps: DaemonDeps): Promise<RunningServer> {
   };
 
   async function handle(req: IncomingMessage, res: ServerResponse): Promise<void> {
-    const path = new URL(req.url ?? '/', 'http://localhost').pathname;
+    const path = URL.parse(req.url ?? '/', 'http://localhost')?.pathname;
+    if (path === undefined) return send(res, 400, { error: 'request target is not a valid url' });
     // A Host check stops DNS rebinding; a JSON content type forces a CORS preflight the daemon never answers.
     if (req.headers.host !== `127.0.0.1:${port}` && req.headers.host !== `localhost:${port}`) {
       return send(res, 403, { error: 'host must be 127.0.0.1 or localhost' });
@@ -170,7 +176,10 @@ export async function startServer(deps: DaemonDeps): Promise<RunningServer> {
   }
 
   const server = createServer((req, res) => void handle(req, res));
-  const askShutdown = () => deps.onShutdown?.();
+  const askShutdown = () => {
+    shuttingDown = true;
+    deps.onShutdown?.();
+  };
   const idle = new IdleTimer(settings.idleMinutes * 60_000, askShutdown);
 
   function close(): Promise<void> {
