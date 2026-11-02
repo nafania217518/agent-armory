@@ -24,7 +24,7 @@ its context lives. The user decides every write.
   - global: the global hooks and skill location, the pointer in the global context, the
     host profile.
   - project: the project hooks and skill location, the pointer in the project context,
-    the project context sections, the agent cards, and the host profile when missing.
+    the project context sections, the agent cards, and the host profile.
   - session: nothing on disk (section Install).
 - A run MUST follow the sections in order. Project-scope writes MUST run at the Flow step
   "the files" of section Project context.
@@ -74,12 +74,13 @@ tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
 <!-- /armory profile -->
 ```
 
-- The host MUST pick the place of the block, its global context by default, and MUST
-  report the path.
+- The block MUST sit in the context of the scope: the global context in global scope,
+  the project context in project scope. The host MUST report the path. When both
+  blocks exist, the project block wins.
 - A rerun MUST refresh the block between its markers, never add a second one.
-- With no editable place, the block MUST take the global-context fallback, and the
-  report MUST print it for the user to store. In session scope the block MUST stay in
-  context only.
+- With no editable context in the scope, the block MUST take that context's fallback,
+  and the report MUST print it for the user to store. In session scope the block MUST
+  stay in context only.
 - Every actor MUST read the global context and project context paths from the block,
   not from a fixed file name.
 
