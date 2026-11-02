@@ -4,7 +4,7 @@ description: >
   Main-session coding lifecycle from the approved plan to the finish question: task
   branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
   Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 111
+max-lines: 117
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -98,7 +98,13 @@ follows `plan` section Amendments.
      commands or clicks for each.
   8. Cleanup: MUST ask the user whether to keep the plan file and the design docs the
      task added to the repository. Default: keep them.
-  9. Finish: section Finish.
+  9. Done write: when the task has a milestone, MUST make one more commit, the last on
+     the task branch. It MUST mark the task done in the milestone doc. When the task was
+     the milestone's last open one, the same commit MUST also mark the milestone done in
+     `<docs>/DESIGN.md` (`plan` section Levels). It MUST change only status lines, so the
+     re-review of step 4 does not apply. It MUST NOT be committed directly on `<base>`.
+     A task with no milestone MUST skip this step.
+  10. Finish: section Finish.
 
 ## 6. Finish
 

@@ -8,7 +8,7 @@ Planning levels. Branch: `milestone-plan-levels`.
 The three planning horizons of `DESIGN.md` section Planning levels become rules in
 `plan` and `code`, with one template per doc, so that a fresh session can run a
 strategic, milestone or task plan from the skills alone. When the last task lands,
-`DESIGN.md` section 5 holds only the levels table and a pointer to `plan`, and the
+`DESIGN.md` section 5 holds one paragraph and a pointer to `plan` section Levels, and the
 caveat in the project context is gone.
 
 ## Scope
@@ -83,7 +83,7 @@ Format: `<branch> : <what> : <BR list> : <status>`. In execution order.
   BR-11 : done
 - code-done-write : the done write in `code`, the `DESIGN.md` section 5 shrink and
   goal-line fix, the caveat removal, the done writes of this milestone : BR-7, BR-10,
-  BR-13 : open
+  BR-13 : done
 
 ## Risks
 
@@ -104,5 +104,5 @@ Format: `<branch> : <what> : <BR list> : <status>`. In execution order.
 - A fresh session that loads `plan` alone can run each of the three levels: the
   acceptance check is one dry run per level, read-only, stopped before the first
   write.
-- `<docs>/DESIGN.md` section Planning levels is the table plus one pointer line, and
+- `<docs>/DESIGN.md` section Planning levels is one paragraph plus one pointer line, and
   the project context `## Caveats` has no planning-level line.

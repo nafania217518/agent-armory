@@ -8,7 +8,7 @@
   "plugins": [
     {
       "name": "armory",
-      "description": "core, plan, delegate, code, implement, test, review, audit, research and setup skills: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
+      "description": "core, plan, delegate, code, implement, test, review, audit, research and setup skills with coder, reviewer, researcher, writer and planner agent templates and the strategic, milestone and task plan templates: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
       "source": "./",
       "category": "productivity"
     }

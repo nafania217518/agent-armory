@@ -66,7 +66,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | Home | RULES sections | Loaded by |
 |---|---|---|
 | `core` | 1, 2, 3, 4; the one-line Fable MUST of 23 | the hook or the pointer; every armory skill, so every actor |
-| `plan` | 5 (push back), 6 | main session; `planner`, drafting part only |
+| `plan` + templates `strategic.md`, `milestone.md`, `task.md` | 5 (push back), 6 | main session; `planner`, drafting part only |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
 | `code` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
 | `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder; main session when it codes itself |
@@ -93,35 +93,10 @@ The skills are the truth; the plan files under `docs/plans/` hold the execution 
 
 ## 5. Planning levels
 
-Three horizons, one `plan` skill. The skill holds the shared flow (plan mode, quizzes,
-research, approval, amendments, drafting) and one levels table; the three doc formats
-are templates under the skill. The level comes from the argument, else from the first
-question. The rules live in `plan` and `code` once milestone `plan-levels` lands; until
-then this section is the only record.
+Planning has three horizons: strategic, milestone and task. One `plan` skill covers all
+three, with one template per doc.
 
-| Level | Doc | Branch | Holds | Ids |
-|---|---|---|---|---|
-| strategic | `<docs>/DESIGN.md`, edited in place | `design-<topic>`, merged after approval | required: Decisions (dated, with dropped alternatives) and Milestones (name, one-line goal, status); the rest is free | none |
-| milestone | `<docs>/milestones/<name>.md` | `milestone-<name>`, merged after approval | fixed: parent line, Goal, Scope in and out, Requirements (`BR` list), Tasks (ordered, branch names, status), Risks, Done criteria | `BR-n` |
-| task | `<docs>/plans/<branch>.md` | the task branch | parent line, `TR` list with tests, test scope, overrides, accepted debt | `TR-n (<milestone>/BR-m)` |
-
-- Chain: each doc names its parent in its first lines and references parent facts,
-  never restates them. `DESIGN.md` is enough to start a milestone plan in a fresh
-  session; a milestone doc is enough to start each of its task plans.
-- Strategic planning stops at the milestone list and has no testable item. A milestone
-  plan is a separate run.
-- `BR` lives in the milestone doc. A one-off task with no milestone keeps its own `BR`
-  list in the plan file.
-- A task plan file always exists, also when the milestone doc leaves no open point
-  (zero quiz rounds), because `code` and the `req:` markers depend on it.
-- Status has one home per fact: milestone status only in `DESIGN.md`, task status only
-  in the milestone doc. Values: open, done, dropped. The final commit on a task branch,
-  before the merge question, marks the task done; when that task was the milestone's
-  last open one, the same commit marks the milestone done. No commit on base.
-- An amendment goes to the level that owns the fact. A task that finds a `BR` gap
-  amends the milestone doc on its own task branch, after the user's yes. A milestone
-  that finds an architecture gap re-enters plan mode at the strategic level on a design
-  branch.
+The rules: `plan` section Levels; the done write: `code` section Task end.
 
 ## 6. Decisions
 
@@ -180,14 +155,17 @@ One dated line per decision, with the dropped alternatives.
 - 2026-11-02: this file is reworked, not rewritten: the status line and Sources leave,
   Dropped and the dated lines become Decisions, the rule map and the context template
   stay as free sections. Dropped: add only; rewrite from scratch.
+- 2026-11-02: section Planning levels holds one paragraph and a pointer at `plan`
+  section Levels, no table, so the levels table has one home. Dropped: the table plus a
+  pointer.
 
 ## 7. Milestones
 
-Format: `<name> : <one-line goal> : <status>`; status is open, done or dropped. The
-milestone doc is `docs/milestones/<name>.md`.
+Format: `<name> : <one-line goal> : <status>`; the status values are in `plan`
+section Levels. The milestone doc is `docs/milestones/<name>.md`.
 
 - plan-levels : the three planning levels in `plan`, the three doc templates, the done
-  write in `code`, the milestones folder in `setup` : open
+  write in `code` : done
 
 ## 8. Open
 
