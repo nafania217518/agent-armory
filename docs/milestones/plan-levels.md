@@ -66,19 +66,24 @@ Each `BR` is checked by reading the skill, by `lint`, or by a dry run of the lev
 - BR-11: the `plan` sections that other skills name (The plan, Amendments, Plan file,
   Self-review and approval) MUST keep their names, or every reference MUST be updated
   in the same commit.
-- BR-12: once BR-1 to BR-9 hold, `<docs>/DESIGN.md` section Planning levels MUST hold
-  only the levels table and one line that points at `plan`, and the planning-level
-  caveat MUST be removed from the project context `## Caveats`.
+- BR-12 (replaced by BR-13): once BR-1 to BR-9 hold, `<docs>/DESIGN.md` section
+  Planning levels MUST hold only the levels table and one line that points at `plan`,
+  and the planning-level caveat MUST be removed from the project context `## Caveats`.
+- BR-13: once BR-1 to BR-9 hold, `<docs>/DESIGN.md` section Planning levels MUST hold
+  one paragraph and one line that points at `plan` section Levels, and the
+  planning-level caveat MUST be removed from the project context `## Caveats`.
 
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order.
 
-- plan-levels-skill : the `plan` skill rework and the three templates : BR-1, BR-2,
-  BR-3, BR-4, BR-5, BR-6, BR-8, BR-9, BR-10, BR-11 : open
+- plan-levels-skill : the `plan` skill rework, the three templates, the `delegate`
+  section Briefs reference and the part-to-section references in `core`, `delegate`
+  and `review` : BR-1, BR-2, BR-3, BR-4, BR-5, BR-6, BR-8, BR-9, BR-10,
+  BR-11 : done
 - code-done-write : the done write in `code`, the `DESIGN.md` section 5 shrink and
   goal-line fix, the caveat removal, the done writes of this milestone : BR-7, BR-10,
-  BR-12 : open
+  BR-13 : open
 
 ## Risks
 

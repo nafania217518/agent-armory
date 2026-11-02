@@ -55,7 +55,9 @@ The profile and the project context live where the host put them; every actor re
 Skills symlinked into a host's skill location point at the clone path; moving the clone breaks them : skills/setup/SKILL.md
 `setup` section Project context keeps Flow, Questions, Answer checks and Write as subsections; references to `setup` section Write, Flow or Answer checks resolve to them : skills/setup/SKILL.md
 `core-context.sh` prints the plain `core` body when its input names no SubagentStart event; a non-Claude host hook gets that plain form : scripts/core-context.sh
-The planning-level rules live only in DESIGN.md until milestone plan-levels lands; plan and code do not hold them yet : docs/DESIGN.md
+`DESIGN.md` section Planning levels repeats `plan` section Levels, and `code` lacks the done write, until milestone plan-levels lands : docs/DESIGN.md
+The `plan` templates are not checked by `lint`; `skill-sizes.mjs` counts only `SKILL.md` : scripts/skill-sizes.mjs
+The template headings carry no number, but this repo's `DESIGN.md` numbers its headings; a match by section name must ignore the number : docs/DESIGN.md
 
 ## Rules
 

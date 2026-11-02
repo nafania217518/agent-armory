@@ -90,9 +90,9 @@ finding.
   is unused.
 - A `tech-debt:` marker (`implement` section The smallest complete change) that is a
   decision MUST NOT be reported, unless the expected load already crosses its limit. In
-  a review, a marker is a decision only when the plan's Accepted tech debt part names it
-  (`plan` section The plan); one the diff adds that is not a decision MUST be reported as
-  Should fix. In an audit, a marker that names its limit is a decision.
+  a review, a marker is a decision only when the plan's Accepted tech debt section names
+  it (`plan` section The plan); one the diff adds that is not a decision MUST be reported
+  as Should fix. In an audit, a marker that names its limit is a decision.
 - MUST propose the smallest fix that works. SHOULD prefer fixes that delete code. MUST
   NOT add layers, frameworks or config the problem does not need.
 - MUST NOT report style taste, "consider", or vague worries.

@@ -19,7 +19,7 @@ them (section Host terms).
 - MUST and MUST NOT have one exception: the approved plan MAY override a design rule, a
   MUST rule included, because the user approved it. Design rules: section Design
   principles; `implement` sections The smallest complete change and Domain, boundaries
-  and state. The plan's Overrides part names each override (`plan` section The plan).
+  and state. The plan's Overrides section names each override (`plan` section The plan).
 - A SHOULD rule is on by default. The agent MAY bypass it for one task only, with a
   reasonable cause or after the user approves. Section Reports records each bypass, and
   an override only when it is made during the work.
