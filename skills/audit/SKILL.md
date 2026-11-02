@@ -29,7 +29,8 @@ section Look for), `review` section Check before you report, and the finding for
 - MUST find the expected load.
 - MUST trace the main flows end to end. MUST read these fully: input from users, money,
   auth, data writes, background jobs, anything shared between processes.
-- Big repo: SHOULD go deep where a mistake costs the most, not file by file.
+- Big repo: SHOULD go deep where a mistake costs the most, not file by file. SHOULD
+  read first the files that `git log` shows changing most often.
 
 ## 2. Audit-only checks
 

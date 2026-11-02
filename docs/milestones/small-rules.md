@@ -62,7 +62,7 @@ Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the stat
 values are in the armory `plan` skill, section Levels.
 
 - small-rules-edits : the four items and the `setup` fact moves : BR-1, BR-2, BR-3,
-  BR-4, BR-5, BR-6, BR-7 : open
+  BR-4, BR-5, BR-6, BR-7 : done
 
 ## Risks
 

@@ -119,10 +119,10 @@ A human reads every line you write. `review` section Look for checks these rules
 
 ## 7. Gates per commit
 
-The gate list and the project context's lines are in `setup` section Write.
+The gates and their commands are in the project context `## Gates` and `## Commands`.
 
-- `coverage`: MUST run the command and never compute a number yourself. The threshold
-  is in `setup` section Answer checks.
+- `coverage`: MUST run the command and never compute a number yourself. The build
+  tools hold the threshold.
 - `owasp`: MUST run the command, then read the changed code against the current OWASP
   Top 10.
 - Per commit: `lint` and `unit`, when `on`, MUST pass, except a failure that already

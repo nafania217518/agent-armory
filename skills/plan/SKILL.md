@@ -148,8 +148,8 @@ Drafting; the planner runs only Drafting.
 
 - After the approval, the main session MUST cut the level's branch (section Levels,
   column Branch) from `<base>` with the commands of `code` section Branch and plan file.
-- It MUST then write the level's doc at its Doc path as the first commit; `setup`
-  section Write sets `<docs>`. The requirements MUST NOT go into a separate file.
+- It MUST then write the level's doc at its Doc path as the first commit; `core`
+  section Host terms sets `<docs>`. The requirements MUST NOT go into a separate file.
 - A task run MUST write its plan file also after zero quiz rounds.
 - Right after that commit, the main session MUST write the caveats into the project
   context `## Caveats`: for a task run, the doc's caveats; for a strategic or milestone

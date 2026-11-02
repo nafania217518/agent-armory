@@ -69,13 +69,13 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `core` | 1, 2, 3, 4; the one-line Fable MUST of 23 | the hook or the pointer; every armory skill, so every actor |
 | `plan` + templates `strategic.md`, `milestone.md`, `task.md` | 5 (push back), 6 | main session; `planner`, drafting part only |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
-| `code` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
+| `code` + template `pr.md` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
 | `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder; main session when it codes itself |
 | `test` | 13 | coder, reviewer, planner, auditor |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
-| `setup` | 21, 22; templates `AGENTS.md` and five agent cards | main session |
+| `setup` | 21, 22; templates `AGENTS.md` and five agent cards | main session, when the user starts it (user-only) |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
@@ -192,7 +192,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - adopt-mp-rules : seven rule edits from mattpocock/skills in `plan`, `test`, `review`
   and the glossary format : done
 - small-rules : a PR body template, churn-first audit reading, rules for writing
-  skills, `setup` as a user-only skill : open
+  skills, `setup` as a user-only skill : done
 - new-skills : the `debug` and `retro` skills : open
 
 ## 8. Open

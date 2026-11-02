@@ -6,8 +6,8 @@
 
 ## Commands
 
-Format: `<check>: <command>`. The armory `setup` skill, section Write, holds the
-rules; `implement` section Gates per commit says how to run them.
+Format: `<check>: <command>`; `implement` section Gates per commit says how to run
+them.
 
 - lint: {{LINT}}
 - owasp: {{OWASP}}

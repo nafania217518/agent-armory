@@ -1,9 +1,11 @@
 ---
 name: setup
 description: >
-  Set up armory on the host you run in, in one scope: global, project or session. Asks
-  the host what it can do, the user what to install, then writes and reports. Use for
-  "set up armory", "setup", "/setup", "init project", "add the project agents".
+  User-only: the model MUST NOT load this skill on its own; it MUST ask the user to
+  start it instead. Sets up armory on the host you run in, in one scope: global,
+  project or session. Asks the host what it can do, the user what to install, then
+  writes and reports. Use for "/setup", "set up armory", "add the project agents".
+disable-model-invocation: true
 max-lines: 215
 ---
 
@@ -81,8 +83,6 @@ tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
 - With no editable context in the scope, the block MUST take that context's fallback,
   and the report MUST print it for the user to store. In session scope the block MUST
   stay in context only.
-- Every actor MUST read the global context and project context paths from the block,
-  not from a fixed file name.
 
 ## 5. Install
 
@@ -145,7 +145,7 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - No repo: MUST run `git init` and `git commit --allow-empty -m "Start the repository"`
   on the default branch before the task branch.
 - `plan` does not apply: no plan mode, no plan file. Caveat writes: `code` section
-  Caveats.
+  Caveats, with the task branch in the place of the plan-file commit.
 
 ### Questions
 
@@ -184,7 +184,7 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - The host MUST write the sections into its project context and MUST report the path.
 - Documentation MUST live in the docs folder, `<docs>`. Only the README stays at the root.
 - The project context `## Rules` MUST hold the line `Documentation lives in <folder>`
-  (default `docs/`). Every actor resolves `<docs>` from that line.
+  (default `docs/`).
 - The project context MUST have these sections: `## What this is` (first, one paragraph
   on what the project is), `## Commands`, `## Gates`, `## Test levels`, `## Glossary`,
   `## Caveats`, `## Rules` (project-only rules).

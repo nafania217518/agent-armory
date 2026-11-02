@@ -10,8 +10,8 @@ the templates and the hooks. The design is in `docs/DESIGN.md`.
 
 ## Commands
 
-Format: `<check>: <command>`. The armory `setup` skill, section Write, holds the
-rules; `implement` section Gates per commit says how to run them.
+Format: `<check>: <command>`; `implement` section Gates per commit says how to run
+them.
 
 - lint: claude plugin validate . && claude plugin validate .claude-plugin/plugin.json && node scripts/skill-sizes.mjs
 - unit: node --test scripts/
@@ -54,16 +54,23 @@ A `SKILL.md` with CRLF line ends, or a leading `---` with trailing spaces, count
 Skill frontmatter carries the non-standard key `max-lines`; `claude plugin validate` accepts it : skills/core/SKILL.md
 The `browse` skill lives in the agent-browser plugin; `research` loads it by name, so a session needs both plugins : skills/research/SKILL.md
 `claude plugin validate .` warns that `CLAUDE.md` at the plugin root is not loaded as plugin context; validation still passes : CLAUDE.md
-The profile and the project context live where the host put them; every actor reads their paths from the profile block, not from a fixed file name : skills/setup/SKILL.md
+The profile and the project context live where the host put them; every actor reads their paths from the profile block, not from a fixed file name : skills/core/SKILL.md
 Skills symlinked into a host's skill location point at the clone path; moving the clone breaks them : skills/setup/SKILL.md
 `setup` section Project context keeps Flow, Questions, Answer checks and Write as subsections; references to `setup` section Write, Flow or Answer checks resolve to them : skills/setup/SKILL.md
 `core-context.sh` prints the plain `core` body when its input names no SubagentStart event; a non-Claude host hook gets that plain form : scripts/core-context.sh
 The `plan` templates are not checked by `lint`; `skill-sizes.mjs` counts only `SKILL.md` : scripts/skill-sizes.mjs
 The template headings carry no number, but this repo's `DESIGN.md` numbers its headings; a match by section name must ignore the number : docs/DESIGN.md
 Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
+On Claude Code, `disable-model-invocation: true` hides `setup` from the model and from subagents; only the user's `/armory:setup` loads it : skills/setup/SKILL.md
 
 ## Rules
 
 Project-only rules. The armory skills hold the rest.
 
 - Documentation lives in docs/
+- A skill description MUST name each distinct case once; synonyms of one case MUST
+  become one trigger.
+- A skill line that the model already follows by default MUST be deleted, as a whole
+  sentence.
+- Each step in a skill MUST name a done condition that an agent can check.
+- A new or edited `MUST NOT` rule MUST also name the behavior to do instead.

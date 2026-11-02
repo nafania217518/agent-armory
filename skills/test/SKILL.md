@@ -28,7 +28,7 @@ What to test, at which level, and how.
 ## 2. Levels
 
 Each level MUST cover what its line says, in every project. A project adds to these
-lines in its project context (`setup` section Write).
+lines in its project context `## Test levels`.
 
 - unit: one unit (a function, a class, or a small cluster), fast, runs on every change.
   Frontend unit tests with the backend stubbed are `unit`.

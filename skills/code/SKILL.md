@@ -46,8 +46,7 @@ caveat slot, the caveat format, the subagent ban and the recorded items are in `
 section Reports.
 
 - The main session MUST write each caveat it receives after the plan-file commit into
-  the project context `## Caveats` immediately. In project setup, the task branch takes
-  the place of that commit (`setup` section Flow).
+  the project context `## Caveats` immediately.
 
 ## 3. Running the plan
 
@@ -110,3 +109,5 @@ follows `plan` section Amendments.
 
 - MUST ask the user whether to push, open a PR, merge into `<base>`, or stop. Section
   Branch and plan file guards each push and merge.
+- A PR body MUST take the sections, order and format lines of `templates/pr.md`,
+  relative to this skill.
