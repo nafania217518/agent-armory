@@ -72,7 +72,7 @@ The main session follows this skill for each spawn of a project agent.
 - Each report MUST hold the recorded-items slot and the caveat slot of `core` section
   Reports.
 - Each agent returns its card's report. The coder and the debugger also return
-  `stuck: <why>`; the researcher, `sources disagree` or a missing command.
+  `stuck: <why>`; the researcher, `sources disagree`.
 - A bug whose cause neither the plan nor a diagnose-only report names MUST go to the
   debugger, not the coder. So MUST a coder's `stuck: cause unknown`; it MUST NOT get the
   retry of section Re-spawn and retry.
@@ -136,8 +136,7 @@ The main session follows this skill for each spawn of a project agent.
 - A spawn fails when it returns no report or a `stuck:` report. These MUST NOT count
   as a fail: a failing gate (`implement` section Gates per commit and `review` section
   The diff is the truth handle it); a `sources disagree` report (`research` section
-  Sources) or a missing-command report (`browse` of the agent-browser plugin, section
-  When the command is missing), whose section sets the re-spawn.
+  Sources), whose section sets the re-spawn.
 - A spawn that fails because of an open requirement or a question for the user MUST go
   to the user at once.
 - Any other failed spawn SHOULD get one retry on Opus high. When the spawn had a

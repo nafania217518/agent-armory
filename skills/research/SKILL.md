@@ -23,10 +23,8 @@ How to check a claim against sources. The main session delegates; the researcher
   types or the repo docs do not settle it.
 - The main session MUST delegate web search and page reading to an agent on a research
   row (`delegate` section Models). Raw page text MUST NOT enter the main context.
-- The agent MUST load the `browse` skill of the agent-browser plugin and return only
-  the result of section Result.
-- A subagent MUST run `agent-browser` itself (`delegate` section What each agent
-  returns). It MUST cut the output as `browse` section Commands sets.
+- The agent MUST return only the result of section Result. A subagent MUST do the web
+  work itself (`delegate` section What each agent returns).
 
 ## 2. Sources
 

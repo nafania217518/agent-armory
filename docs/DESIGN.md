@@ -87,7 +87,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | debugger | `core`, `debug`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
 | auditor | `core`, `audit`, `review`, `test` |
-| researcher | `core`, `research`, `browse` (agent-browser plugin) |
+| researcher | `core`, `research` |
 | planner | `core`, `plan`, `test` |
 | writer | `core` |
 
@@ -184,6 +184,9 @@ One dated line per decision, with the dropped alternatives.
   `disable-model-invocation: true`, and its description says that the model must not
   load it on its own; other hosts read only that text. Dropped: a new host term with a
   fallback in `core` section Host terms.
+- 2026-11-02: web search and page reading use the host's own web tools, under the
+  `research` rules; no live file names the `browse` skill. Dropped: a `web tool` host
+  term; keeping the ban on the built-in web search.
 
 ## 7. Milestones
 

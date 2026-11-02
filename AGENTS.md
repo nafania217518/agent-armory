@@ -53,7 +53,6 @@ A `SKILL.md` with CRLF line ends counts as missing `max-lines` : scripts/skill-s
 A `SKILL.md` whose leading `---` has trailing spaces counts as missing `max-lines` : scripts/skill-sizes.mjs
 A control character in `skills/core/SKILL.md` other than tab, CR and LF breaks the SubagentStart JSON of `core-context.sh` : scripts/core-context.sh
 `claude plugin validate` accepts the non-standard skill frontmatter key `max-lines` : skills/core/SKILL.md
-A session that runs `research` needs the agent-browser plugin, which holds the `browse` skill : skills/research/SKILL.md
 `claude plugin validate .` passes with a warning that the root `CLAUDE.md` is not plugin context : CLAUDE.md
 The profile and the project context live where the host put them : skills/core/SKILL.md
 Moving the armory clone breaks the skills symlinked into a host's skill location : skills/setup/SKILL.md

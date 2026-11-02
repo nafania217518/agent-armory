@@ -48,9 +48,7 @@ them (section Host terms).
 - A tracked background task or a spawned agent MUST stop as soon as it is no longer
   needed, by stop tool, timer or any other means. One left running MUST have a valid
   reason, stated in the report. `code` section Task end checks only these kinds.
-- MUST NOT use the built-in web search. For a web search or a page read, MUST load the
-  `browse` skill of the agent-browser plugin and follow it. The main session delegates
-  web work (`research` section When to research); a subagent does it itself.
+- Web search and page reading MUST follow `research` section When to research.
 
 ## 4. Design principles
 

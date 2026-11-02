@@ -5,10 +5,6 @@ and the workflows. The design is in [docs/DESIGN.md](docs/DESIGN.md). The skills
 terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host that reads a
 `SKILL.md`.
 
-Web search and page reading moved to the agent-browser plugin:
-<https://github.com/nafania217518/agent-browser>. Its `browse` skill loads as
-`/agent-browser:browse`.
-
 ## Skills
 
 | Skill | What it does | Loaded by |
