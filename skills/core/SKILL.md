@@ -124,9 +124,7 @@ them (section Host terms).
   sections MUST stay in the run and in the report. Its `## Rules` line `Documentation
   lives in <folder>` sets `<docs>` for every actor.
 
-The host profile binds each term on the host and names the paths of the global context
-and the project context; `setup` writes it. Every actor MUST read the global context and
-project context paths from the profile, not from a fixed file name.
+The host profile binds each term on the host; `setup` writes it.
 
 Outside this section, every skill uses these terms and skill names; it MUST NOT name a
 host's own tool or file.

@@ -66,10 +66,6 @@ its context lives. The user decides every write.
 
 ```
 <!-- armory profile -->
-host: <name> <version>
-date: <YYYY-MM-DD>
-global context: <path, or none>
-project context: <path, or none>
 terms: one line per term of core section Host terms, "<term>: <binding, or fallback>"
 capabilities: one line per tool of the self-report, "<tool>: supported, or <fallback>"
 tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
@@ -109,7 +105,7 @@ tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
   When the host cannot follow links, `setup` MUST copy them.
 - The host MUST render the six cards of `templates/agents/` (next to this file), one
   per project agent (`delegate` section What each agent returns), into its agent format
-  at the agent location of the host profile. With no agent format, the cards MUST take
+  at the agent location of self-report item 5. With no agent format, the cards MUST take
   the agent-card fallback. The fields are name, description, model, effort and
   isolation. `{{MODEL}}` MUST be the id that section Model mapping gives for the tier
   of the card's default row (`delegate` section Models), the tier name on Claude Code.
