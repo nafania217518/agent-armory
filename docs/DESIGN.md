@@ -201,7 +201,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
   self-review, a line-width check and a skill-list check, a plugin-lag caveat, gates
   per commit in the agent cards : done
 - lean-reports : one fact per caveat line, a worktree for each parallel coder,
-  subagent reports cut to the card's items : open
+  subagent reports cut to the card's items and required returns : done
 
 ## 8. Open
 

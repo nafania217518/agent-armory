@@ -4,7 +4,7 @@ description: >
   Always-on base rules for every armory actor: rule words, writing, questions, background
   tasks, web access, design principles, the Fable guard, report slots, host terms. Use
   for "/core".
-max-lines: 131
+max-lines: 134
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -81,8 +81,14 @@ them (section Host terms).
   slot, `Caveats:`: each caveat as one caveat line, or `no caveat`. A caveat is anything
   a later reader of the code would not expect: a changed default, a pinned version pair,
   a deprecated call, a limit.
+- A subagent report MUST hold only the items of its card's report format, the two
+  slots, and the returns other armory rules require. It MUST NOT narrate the steps,
+  restate the brief, or paste file content, a diff or command output that none of these
+  asks for. It MUST point to code by `path:lines` or commit SHA instead.
 - A caveat line, in a report or in the project context `## Caveats`, MUST take the
   format `SHORT_DESCRIPTION : <file>` (`SHORT_DESCRIPTION : —` when no file exists yet).
+  It MUST hold one fact. A caveat with two facts MUST become two lines, or one line with
+  only the fact a reader would not expect.
 - A finding that the output already numbers MUST be referenced by its number in the
   recorded-items slot, not repeated.
 - These items MUST be recorded during the task: each SHOULD bypass and each override

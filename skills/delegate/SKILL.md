@@ -29,8 +29,8 @@ The main session follows this skill for each spawn of a project agent.
 
 ## 2. Delegation and worktrees
 
-- Coding agents that run at once SHOULD each run in their own worktree, else its
-  fallback.
+- Coding agents that run at once MUST each run in their own worktree. Without worktrees,
+  they MUST run one at a time (`core` section Host terms).
 - Two agents that run at once MUST NOT edit the same file.
 - A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
   task branch (the coder card sets the reset).
