@@ -107,7 +107,7 @@ tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
   between `<!-- armory core -->` and `<!-- /armory core -->`, so a rerun can refresh it.
 - Skills MUST reach the host by symlink from the armory clone into its skill location.
   When the host cannot follow links, `setup` MUST copy them.
-- The host MUST render the five cards of `templates/agents/` (next to this file), one
+- The host MUST render the six cards of `templates/agents/` (next to this file), one
   per project agent (`delegate` section What each agent returns), into its agent format
   at the agent location of the host profile. With no agent format, the cards MUST take
   the agent-card fallback. The fields are name, description, model, effort and

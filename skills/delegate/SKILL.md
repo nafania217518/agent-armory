@@ -5,7 +5,7 @@ description: >
   returns, model and effort per spawn, the Fable question, re-spawn and retry. Loaded by
   `plan` and `code` before a spawn. Use for "delegate", "spawn an agent", "which
   model", "write a brief", "/delegate".
-max-lines: 140
+max-lines: 149
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -38,6 +38,8 @@ The main session follows this skill for each spawn of a project agent.
   task branch, run `lint` and `unit`, then remove the worktree. `code` section Review
   loop sets the review that follows.
 - This merge MAY run without the user's yes.
+- A diagnose-only debugger result MUST NOT be merged: the main session keeps its
+  `debug-<id>` branch and removes the worktree.
 - A worktree with uncommitted work MUST wait for the user's decision when no retry
   follows (section Re-spawn and retry) or the retry fails too.
 
@@ -46,12 +48,12 @@ The main session follows this skill for each spawn of a project agent.
 - A coding or review brief MUST hold: the full text of each `TR` it covers, quoted from
   the plan file, and of each `BR` it covers, quoted from the milestone doc, or from the
   plan file for a task with no milestone (`plan` section Plan file); the test-scope list
-  (`test` section Test scope), from the plan for a coding brief and from the coder report
-  for a review brief; the project context lines of `## Commands`, `## Gates`, `## Test
-  levels` (the unit style included), `## Rules` and `## Caveats` that apply; which skills
-  or skill sections the agent loads; the task branch and `<base>` (`code` section Branch
-  and plan file); the plan's Overrides and Accepted tech debt sections (`plan` section The
-  plan).
+  (`test` section Test scope), from the plan for a coding brief and from the coder or
+  debugger report for a review brief; the project context lines of `## Commands`,
+  `## Gates`, `## Test levels` (the unit style included), `## Rules` and `## Caveats`
+  that apply; which skills or skill sections the agent loads; the task branch and
+  `<base>` (`code` section Branch and plan file); the plan's Overrides and Accepted tech
+  debt sections (`plan` section The plan).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. A re-review brief MUST hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
@@ -62,15 +64,23 @@ The main session follows this skill for each spawn of a project agent.
 
 ## 4. What each agent returns
 
-- The project agents MUST be these five: coder, reviewer, researcher, writer and
-  planner. Each card `skills/setup/templates/agents/<agent>.md` holds the role rules
+- The project agents MUST be these six: coder, debugger, reviewer, researcher, writer
+  and planner. Each card `skills/setup/templates/agents/<agent>.md` holds the role rules
   and the report format.
 - Only the main session MAY delegate. A subagent cannot spawn agents, so it MUST do the
   work of its brief itself.
 - Each report MUST hold the recorded-items slot and the caveat slot of `core` section
   Reports.
-- Each agent returns its card's report. The coder also returns `stuck: <why>`; the
-  researcher, `sources disagree` or a missing command.
+- Each agent returns its card's report. The coder and the debugger also return
+  `stuck: <why>`; the researcher, `sources disagree` or a missing command.
+- A bug whose cause neither the plan nor a diagnose-only report names MUST go to the
+  debugger, not the coder. So MUST a coder's `stuck: cause unknown`; it MUST NOT get the
+  retry of section Re-spawn and retry.
+- The main session MUST name the debugger's flow in the brief: diagnose only when the
+  user asks for the cause; the fix flow when the user asks for a fix, or for a coder's
+  `stuck: cause unknown`. When the request is unclear, it MUST ask the user. A fix after
+  a diagnose-only run MUST go to the coder, with the cause, the loop command, the
+  proposed fix outline and the debug branch in the brief.
 
 ## 5. Models
 
@@ -86,9 +96,9 @@ The main session follows this skill for each spawn of a project agent.
 
 | Task | Model | Effort |
 |---|---|---|
-| Coding from a brief (TDD), a fix whose cause the plan names included | Opus | low |
+| Coding from a brief (TDD), a fix whose cause the plan or a diagnose-only report names included | Opus | low |
 | Coding, trivial change | Sonnet | low |
-| Debugging: a bug whose cause the plan does not name | Opus | high |
+| Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
 | Refactoring; code review, any diff size; audit; planner: any draft | Opus | high |
 | Writing or summary, restating given facts | Sonnet | low |
 | Writing or reading that needs judgment | Opus | effort map |
@@ -98,9 +108,9 @@ The main session follows this skill for each spawn of a project agent.
 | Trivial task, light reading | Sonnet | low |
 | Frontier task | the Fable question | — |
 
-- Default rows: coder "Coding from a brief" (Opus low); reviewer and planner (Opus
-  high); researcher "one fact" and writer "restating" (Sonnet low). A spawn MAY
-  override the default with another row.
+- Default rows: coder "Coding from a brief" (Opus low); debugger "Debugging" (Opus
+  high); reviewer and planner (Opus high); researcher "one fact" and writer
+  "restating" (Sonnet low). A spawn MAY override the default with another row.
 - The table MUST be read with these definitions:
   - Trivial change: no new branch, loop or data shape (renames, typos, config values,
     copy edits, code moved as is, a change given in full in the brief). Trivial task:

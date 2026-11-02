@@ -19,11 +19,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   fallback when neither hook nor pointer ran.
 - `setup` writes the pointer into the host's context for the chosen scope; the user
   keeps personal items there.
-- The skill set has ten skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `review`, `audit`, `research` and `setup`. The skills other than `core` hold
-  the workflows.
-- The project agents are five: `coder`, `reviewer`, `researcher`, `writer` and
-  `planner`. The plugin ships their templates, not agent files; `setup` writes the
+- The skill set has eleven skills: `core`, `plan`, `delegate`, `code`, `implement`,
+  `test`, `debug`, `review`, `audit`, `research` and `setup`. The skills other than
+  `core` hold the workflows.
+- The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
+  and `planner`. The plugin ships their templates, not agent files; `setup` writes the
   files into each project.
 - The agent files a project holds are generated instances of the plugin templates,
   which are the single source.
@@ -70,18 +70,20 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `plan` + templates `strategic.md`, `milestone.md`, `task.md` | 5 (push back), 6 | main session; `planner`, drafting part only |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
 | `code` + template `pr.md` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
-| `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder; main session when it codes itself |
-| `test` | 13 | coder, reviewer, planner, auditor |
+| `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger; main session when it codes itself |
+| `test` | 13 | coder, debugger, reviewer, planner, auditor |
+| `debug` | none (new) | debugger; main session when it debugs itself |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
-| `setup` | 21, 22; templates `AGENTS.md` and five agent cards | main session, when the user starts it (user-only) |
+| `setup` | 21, 22; templates `AGENTS.md` and six agent cards | main session, when the user starts it (user-only) |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
 |---|---|
 | main session, full task | `core` (the hook or the pointer), `plan`, `delegate`, `code` |
 | coder | `core`, `implement`, `test` |
+| debugger | `core`, `debug`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
 | auditor | `core`, `audit`, `review`, `test` |
 | researcher | `core`, `research`, `browse` (agent-browser plugin) |

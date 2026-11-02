@@ -16,7 +16,8 @@ The main session follows this skill after `plan` section Self-review and approva
 Spawns follow `delegate`. The coding rules are in `implement` and `test`.
 
 - No approved plan: MUST run `plan` first.
-- When the main session codes itself, it MUST load `implement` and `test`.
+- When the main session codes itself, it MUST load `implement` and `test`; for a bug
+  whose cause neither the plan nor a diagnose-only report names, also `debug`.
 
 ## 1. Branch and plan file
 
@@ -59,8 +60,8 @@ follows `plan` section Amendments.
 
 ## 4. Review loop
 
-- The reviewer MUST run on each coder result: its diff, after the merge when the coder
-  ran in a worktree.
+- The reviewer MUST run on each coder or fix-flow debugger result: its diff, after the
+  merge when the agent ran in a worktree.
 - After a review, the main session MUST have each Must fix item fixed (`delegate`
   section Context), run the reviewer on the fix commits, and repeat until no Must fix
   remains.
@@ -96,7 +97,8 @@ follows `plan` section Amendments.
   7. Acceptance: MUST ask the user which items they want to try by hand, with the exact
      commands or clicks for each.
   8. Cleanup: MUST ask the user whether to keep the plan file and the design docs the
-     task added to the repository. Default: keep them.
+     task added to the repository. Default: keep them. It MUST also ask, for each
+     `debug-<id>` branch, whether to delete or keep it.
   9. Done write: when the task has a milestone, MUST make one more commit, the last on
      the task branch. It MUST mark the task done in the milestone doc. When the task was
      the milestone's last open one, the same commit MUST also mark the milestone done in

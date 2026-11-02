@@ -4,9 +4,9 @@
 
 Personal agent skills, packaged as the `armory` plugin. The skills under `skills/`
 hold the rules for every armory actor: `core`, `plan`, `delegate`, `code`, `implement`,
-`test`, `review`, `audit`, `research` and `setup`. The skills use host terms (`core`
-section Host terms) and run on any host that reads a `SKILL.md`. The plugin also ships
-the templates and the hooks. The design is in `docs/DESIGN.md`.
+`test`, `debug`, `review`, `audit`, `research` and `setup`. The skills use host terms
+(`core` section Host terms) and run on any host that reads a `SKILL.md`. The plugin
+also ships the templates and the hooks. The design is in `docs/DESIGN.md`.
 
 ## Commands
 
@@ -62,6 +62,8 @@ The `plan` templates are not checked by `lint`; `skill-sizes.mjs` counts only `S
 The template headings carry no number, but this repo's `DESIGN.md` numbers its headings; a match by section name must ignore the number : docs/DESIGN.md
 Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
 On Claude Code, `disable-model-invocation: true` hides `setup` from the model and from subagents; only the user's `/armory:setup` loads it : skills/setup/SKILL.md
+The plugin manifests list the skills and the agents in three `description` strings (one in `plugin.json`, two in `marketplace.json`); a new skill or agent must update all three : .claude-plugin/plugin.json
+In a linked worktree, git refuses to check out a branch that another worktree holds, so a subagent can never be on the task branch itself : skills/debug/SKILL.md
 
 ## Rules
 

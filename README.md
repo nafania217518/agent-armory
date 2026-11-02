@@ -17,8 +17,9 @@ Web search and page reading moved to the agent-browser plugin:
 | `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session; `planner` |
 | `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
 | `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
-| `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `reviewer`; main session when it codes itself |
-| `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `reviewer`, `planner`, auditor |
+| `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `debugger`, `reviewer`; main session when it codes itself |
+| `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `debugger`, `reviewer`, `planner`, auditor |
+| `debug` | Diagnosis of a bug whose cause is not known: feedback loop, hypotheses, probes, cleanup. | `debugger`; main session when it debugs itself |
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
@@ -32,6 +33,7 @@ Web search and page reading moved to the agent-browser plugin:
 | Agent | Role | Default model | Effort |
 |---|---|---|---|
 | `coder` | Implements one coding brief with TDD, in its own worktree. | Opus | low |
+| `debugger` | Diagnoses one bug whose cause is not known, and fixes it in the fix flow, in its own worktree. | Opus | high |
 | `reviewer` | Reviews a change or audits a repo. Changes no tracked file. | Opus | high |
 | `researcher` | Answers one technical question from sources. | Sonnet | low |
 | `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |

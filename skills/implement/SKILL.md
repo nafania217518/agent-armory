@@ -3,8 +3,8 @@ name: implement
 description: >
   The coder's rules: scope before you write, the smallest complete change, readability,
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
-  the gates per commit, atomic commits. Loaded by the coder card and by `code`;
-  "/implement".
+  the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
+  `code`; "/implement".
 max-lines: 145
 ---
 
@@ -13,8 +13,8 @@ Load the `core` skill first when its rules are not in your context.
 
 # implement
 
-How to write code, for the coder or the main session when it codes. The reviewer judges
-code against it. Test rules: `test`.
+How to write code, for the coder, the debugger, or the main session when it codes. The
+reviewer judges code against it. Test rules: `test`.
 
 ## 1. Before you write
 
@@ -102,6 +102,11 @@ A human reads every line you write. `review` section Look for checks these rules
   the shared code. A guard that only hides the crash MUST NOT count as a fix.
 - After two failed fixes that share one premise, MUST write the premise in one sentence
   and remove it. MUST NOT start a third fix before that.
+- A coder that still has no cause after that MUST report `stuck: cause unknown`, with
+  the premise it removed.
+- When the brief names a debug branch, MUST NOT merge it; MUST write the fix on the
+  task branch instead. MAY copy its loop test, without the debug prefix and the skip,
+  as the regression test.
 - Refactoring: MUST pin what the code does with a test, change the structure, then prove
   the behavior did not change.
 - SHOULD sequence work into small units. Finish and check one before you start the next.
