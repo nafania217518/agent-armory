@@ -158,6 +158,16 @@ One dated line per decision, with the dropped alternatives.
 - 2026-11-02: section Planning levels holds one paragraph and a pointer at `plan`
   section Levels, no table, so the levels table has one home. Dropped: the table plus a
   pointer.
+- 2026-11-02: adopt seven rule edits from mattpocock/skills
+  (<https://github.com/mattpocock/skills>, commit 4ae2317, MIT) as milestone
+  `adopt-mp-rules`: quiz rounds ordered by prerequisites, with facts looked up and not
+  asked; glossary work during the quiz; a test for when a decision earns a line; one
+  test, then its code; vertical slices and expand–contract; the deletion test; six
+  Fowler smells. Dropped: its `research`, `to-spec`, `implement`, `implement-spec`,
+  `triage` and `wayfinder` skills (armory covers them); `mocking.md`; `handoff`;
+  `wait-what`; `teach`, `prototype`, `wizard`, `to-questionnaire` and the misc and
+  in-progress skills; the two-axis review in separate subagents; grilling in plain text
+  instead of the question tool.
 
 ## 7. Milestones
 
@@ -166,6 +176,8 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 
 - plan-levels : the three planning levels in `plan`, the three doc templates, the done
   write in `code` : done
+- adopt-mp-rules : seven rule edits from mattpocock/skills in `plan`, `test`, `review`
+  and the glossary format : open
 
 ## 8. Open
 
@@ -179,3 +191,13 @@ Four edge cases from the last check:
   commit.
 - Glossary: no rule says how the glossary rule applies when the main session codes
   itself.
+
+Not decided yet, from mattpocock/skills (decision of 2026-11-02):
+
+- a `debug` skill, from `diagnosing-bugs`;
+- a `retro` skill or a Task-end step, from `retro`;
+- a PR body template in `code` section Finish, from `pr`;
+- a project rule for writing skills, from `writing-for-agents`;
+- churn-first reading in `audit` section Map first, from `improve-codebase-architecture`;
+- `setup` as a user-invoked skill;
+- a hook that blocks a push and a commit on `<base>`.
