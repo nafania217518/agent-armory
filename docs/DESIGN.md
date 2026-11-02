@@ -197,6 +197,9 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - small-rules : a PR body template, churn-first audit reading, rules for writing
   skills, `setup` as a user-only skill : done
 - new-skills : the `debug` and `retro` skills : done
+- retro-fixes : the five follow-ups of the 2026-11-02 retro: a flow walk in `plan`
+  self-review, a line-width check and a skill-list check, a plugin-lag caveat, gates
+  per commit in the agent cards : open
 
 ## 8. Open
 
