@@ -55,8 +55,10 @@ lines in its project context (`setup` section Write).
 ## 4. TDD
 
 - You MUST write the failing test for every requirement before the code, except one with
-  `tests: none`. You MUST see it fail for the expected reason, then MUST make the
-  smallest change that passes it.
+  `tests: none`. You MUST work one test at a time: write it, see it fail for the
+  expected reason, make the smallest change that passes it, and only then write the
+  next test. A test that passes on its first run MUST fail once you break the code it
+  covers; you MUST then undo the break.
 - A requirement where an honest test is impractical MUST NOT get a bad test. The plan
   MUST decide it: the plan item carries the line `tests: none, <why>`.
 - A coder that finds a planned test impractical MUST NOT drop it. That is a requirement
@@ -65,6 +67,8 @@ lines in its project context (`setup` section Write).
 - A test MUST call the code through its public interface, as its user does, and check
   what that user sees.
 - A test that still passes when every function returns nothing MUST be thrown out.
+- An expected value MUST come from a source independent of the code: a literal, a worked
+  example, the spec. A test MUST NOT compute its expected value the way the code does.
 - You MUST NOT assert the order of internal calls, or test private methods or trivial
   code (a getter, a pass-through, code with no branch).
 - The happy path, each edge case the requirement touches (`review` section Look for,
