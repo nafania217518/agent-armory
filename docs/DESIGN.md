@@ -199,7 +199,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - new-skills : the `debug` and `retro` skills : done
 - retro-fixes : the five follow-ups of the 2026-11-02 retro: a flow walk in `plan`
   self-review, a line-width check and a skill-list check, a plugin-lag caveat, gates
-  per commit in the agent cards : open
+  per commit in the agent cards : done
 
 ## 8. Open
 

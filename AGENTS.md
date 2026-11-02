@@ -13,7 +13,7 @@ plugin also ships the templates and the hooks. The design is in `docs/DESIGN.md`
 Format: `<check>: <command>`; `implement` section Gates per commit says how to run
 them.
 
-- lint: claude plugin validate . && claude plugin validate .claude-plugin/plugin.json && node scripts/skill-sizes.mjs
+- lint: claude plugin validate . && claude plugin validate .claude-plugin/plugin.json && node scripts/skill-sizes.mjs && node scripts/doc-checks.mjs
 - unit: node --test scripts/
 
 ## Gates
@@ -58,13 +58,16 @@ The profile and the project context live where the host put them; every actor re
 Skills symlinked into a host's skill location point at the clone path; moving the clone breaks them : skills/setup/SKILL.md
 `setup` section Project context keeps Flow, Questions, Answer checks and Write as subsections; references to `setup` section Write, Flow or Answer checks resolve to them : skills/setup/SKILL.md
 `core-context.sh` prints the plain `core` body when its input names no SubagentStart event; a non-Claude host hook gets that plain form : scripts/core-context.sh
-The `plan` templates are not checked by `lint`; `skill-sizes.mjs` counts only `SKILL.md` : scripts/skill-sizes.mjs
+The `plan` templates get only the width check from `lint`; `skill-sizes.mjs` counts only `SKILL.md` : scripts/skill-sizes.mjs
 The template headings carry no number, but this repo's `DESIGN.md` numbers its headings; a match by section name must ignore the number : docs/DESIGN.md
 Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
 On Claude Code, `disable-model-invocation: true` hides `setup` and `retro` from the model and from subagents; only the user's `/armory:setup` or `/armory:retro` loads them : skills/setup/SKILL.md
 The plugin manifests list the skills and the agents in three `description` strings (one in `plugin.json`, two in `marketplace.json`); a new skill or agent must update all three : .claude-plugin/plugin.json
 In a linked worktree, git refuses to check out a branch that another worktree holds, so a subagent can never be on the task branch itself : skills/debug/SKILL.md
 The installed armory plugin can lag this repo; a brief here names the repo path of each skill it loads and, for an agent card, its template path : .claude-plugin/plugin.json
+`doc-checks.mjs` finds each list by fixed marker text; a reworded start marker reports `not found`, a reworded end marker, or one split across two lines, runs the region to the end of its text : scripts/doc-checks.mjs
+An unreadable list file reports `<list>: not found`, not `cannot read`; only the width check names an unreadable file : scripts/doc-checks.mjs
+A dangling `docs/DESIGN.md` symlink skips its width check without a failure line; only the two DESIGN.md lists report `not found` : scripts/doc-checks.mjs
 
 ## Rules
 
