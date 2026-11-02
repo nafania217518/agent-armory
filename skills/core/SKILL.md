@@ -84,9 +84,9 @@ them (section Host terms).
   restate the brief, or paste file content, a diff or command output that none of these
   asks for. It MUST point to code by `path:lines` or commit SHA instead.
 - A caveat line, in a report or in the project context `## Caveats`, MUST take the
-  format `SHORT_DESCRIPTION : <file>` (`SHORT_DESCRIPTION : —` when no file exists yet).
-  It MUST hold one fact. A caveat with two facts MUST become two lines, or one line with
-  only the fact a reader would not expect.
+  format `- SHORT_DESCRIPTION : <file>`, a list item, or `- SHORT_DESCRIPTION : —` when
+  no file exists yet. It MUST hold one fact. A caveat with two facts MUST become two
+  lines, or one line with only the fact a reader would not expect.
 - A finding that the output already numbers MUST be referenced by its number in the
   recorded-items slot, not repeated.
 - These items MUST be recorded during the task: each SHOULD bypass and each override
