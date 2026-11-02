@@ -23,6 +23,7 @@ Web search and page reading moved to the agent-browser plugin:
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
+| `retro` | Retrospective on the current session: ranked findings on what to change in the project or in armory. Changes no file. | main session, when the user starts it |
 | `setup` | Sets up armory on the host you run in: global, project or session scope; asks the host what it can do and the user what to install; writes the project context and the agents. | main session |
 
 ## Agents

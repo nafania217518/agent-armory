@@ -19,9 +19,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   fallback when neither hook nor pointer ran.
 - `setup` writes the pointer into the host's context for the chosen scope; the user
   keeps personal items there.
-- The skill set has eleven skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `debug`, `review`, `audit`, `research` and `setup`. The skills other than
-  `core` hold the workflows.
+- The skill set has twelve skills: `core`, `plan`, `delegate`, `code`, `implement`,
+  `test`, `debug`, `review`, `audit`, `research`, `retro` and `setup`. The skills other
+  than `core` hold the workflows.
 - The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
   and `planner`. The plugin ships their templates, not agent files; `setup` writes the
   files into each project.
@@ -76,6 +76,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
+| `retro` | none (new) | main session, when the user starts it (user-only) |
 | `setup` | 21, 22; templates `AGENTS.md` and six agent cards | main session, when the user starts it (user-only) |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
@@ -195,7 +196,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
   and the glossary format : done
 - small-rules : a PR body template, churn-first audit reading, rules for writing
   skills, `setup` as a user-only skill : done
-- new-skills : the `debug` and `retro` skills : open
+- new-skills : the `debug` and `retro` skills : done
 
 ## 8. Open
 
