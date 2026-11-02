@@ -42,7 +42,8 @@ Unit style: {{UNIT_STYLE}}
 
 ## Glossary
 
-Format: `Term : one-line meaning`
+Format: `Term : one-line meaning`, plus `. Avoid: <synonyms>` when a synonym was rejected.
+A line MUST hold only a term of the project's domain, with no implementation detail.
 
 ## Caveats
 

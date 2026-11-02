@@ -7,7 +7,7 @@ description: >
   for a new task, "plan this", "make a plan", "plan a milestone", "design doc", "design
   this change", a changed requirement, "/plan", and from the code skill when no plan
   exists.
-max-lines: 177
+max-lines: 194
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -43,6 +43,8 @@ Drafting; the planner runs only Drafting.
   first quiz round MUST ask which milestone the task belongs to, or none.
 - A strategic run MUST have no testable item. It MUST stop at the milestone list; each
   milestone plan MUST be a separate run.
+- A strategic run SHOULD add a decision line only when the decision is hard to reverse,
+  surprising without context and the result of a real trade-off.
 - When `<docs>/DESIGN.md` is missing, a strategic run MUST create it from the template.
   Else it MUST edit the file in place and keep its free sections.
 - Milestone status MUST live only in `<docs>/DESIGN.md`. Task status MUST live only in
@@ -71,7 +73,15 @@ Drafting; the planner runs only Drafting.
 - The tech quiz MUST follow: stack, data, interfaces, constraints, test levels, risks,
   acceptance.
 - Each topic MUST be covered when, and only when, it is relevant to the task.
-- A quiz MUST NOT ask a fact the parent doc settles.
+- A round MUST ask only the questions whose prerequisite answers are in. A question that
+  depends on another open question of the round MUST wait for a later round.
+- A quiz MUST NOT ask a fact that the parent doc, the repo, a tool or an agent can
+  settle: the main session MUST find it. A running lookup MUST hold back only the
+  questions that depend on it.
+- During a quiz, the main session MUST name a term that conflicts with the project
+  context `## Glossary`, MUST propose a precise term for a vague or overloaded one, and
+  MUST check each claim the user makes about the code against the code, naming any
+  contradiction.
 - A task run MAY have zero quiz rounds when its parent doc leaves no open point.
 - An unknown (a library, API, model or domain fact) MUST go to research (`research`
   section When to research), then, when needed, to a quiz on the findings and next steps.
@@ -103,6 +113,10 @@ Drafting; the planner runs only Drafting.
   Rule words) and its reason.
 - The plan MUST list the `TR` items in execution order; an item that a later item's gate
   command needs MUST come first. Each `tests:` line MUST follow `test` section TDD.
+- Each milestone task and each `TR` SHOULD be a vertical slice: a thin path through
+  every layer it needs, checkable on its own. A preparatory refactor SHOULD come first.
+  A change that breaks callers across the codebase SHOULD use expand–contract: add the
+  new form, move the callers in batches, remove the old form.
 - The plan MUST hold the test-scope list (`test` section Test scope).
 - The items, their `tests:` lines and the test-scope list SHOULD come as a draft from the
   planner (section Drafting), which loads `test` and `implement`. A main session that
@@ -140,6 +154,9 @@ Drafting; the planner runs only Drafting.
 - Right after that commit, the main session MUST write the caveats into the project
   context `## Caveats`: for a task run, the doc's caveats; for a strategic or milestone
   run, the caveats found during planning.
+- In the same step, the main session MUST write each term the quiz settled into the
+  project context `## Glossary`, in its format line. A plan template MUST NOT hold a
+  glossary section.
 - A strategic or milestone run MUST end with the merge question of `code` section Finish
   for its branch.
 

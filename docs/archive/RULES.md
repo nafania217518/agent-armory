@@ -774,7 +774,9 @@ Output: [P] [Q]
   `## Glossary`, `## Caveats`, `## Rules` (project-only rules). [A] [Q] [S]
 - `## Test levels` MUST hold only what the project adds to or changes in the level lines
   of section 13, and its unit style. [Q]
-- The glossary format MUST be `Term : one-line meaning`. [A] [Q]
+- The glossary format MUST be `Term : one-line meaning`, plus `. Avoid: <synonyms>` when
+  a synonym was rejected. A line MUST hold only a term of the project's domain, with no
+  implementation detail. [A] [Q]
 - The caveat format MUST be `SHORT_DESCRIPTION : <file>`, or
   `SHORT_DESCRIPTION : —` when no file exists yet. [A] [Q]
 

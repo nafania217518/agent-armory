@@ -54,7 +54,8 @@ host, which writes them where it loads project context. Sections:
   project turns them on). No other rule has a project switch.
 - `## Test levels`: only what the project adds to or changes in the level lines of
   `test` section Levels, and the unit style (sociable or solitary).
-- `## Glossary`: `Term : one-line meaning`.
+- `## Glossary`: `Term : one-line meaning`, with an optional
+  `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).

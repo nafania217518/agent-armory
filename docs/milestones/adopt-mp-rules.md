@@ -18,8 +18,7 @@ In:
 
 - `plan`: section Quizzes (A1 rounds and lookups, A2 glossary work), section Levels or
   Self-review and approval (A3 decision test), sections Levels and The plan (A5
-  slices); the templates under `skills/plan/templates/` where a settled term needs a
-  home.
+  slices); section Plan file (the glossary write).
 - The glossary format line: `skills/setup/templates/AGENTS.md`, its restatement in
   `docs/DESIGN.md` section 3, and this repo's project context `## Glossary` line.
 - `test`: section TDD (A4).
@@ -32,6 +31,7 @@ Out:
 - `implement`: no new rule; the deletion test lives in `review` only.
 - Any skill not named above, beyond a reference that a renamed or moved section forces.
 - Existing glossary lines: they stay valid without an `Avoid:` field.
+- Template glossary sections (BR-14).
 
 ## Requirements
 
@@ -47,9 +47,9 @@ Each `BR` is checked by reading the skill, by `lint`, or by a dry run of a quiz.
   `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST
   check each claim the user makes about the code against the code and name any
   contradiction.
-- BR-4: each term settled in a quiz MUST go into the planning doc. The main session
-  MUST write it into `## Glossary` right after the doc's first commit. No repo file is
-  written before the approval.
+- BR-4 (replaced by BR-14): each term settled in a quiz MUST go into the planning doc.
+  The main session MUST write it into `## Glossary` right after the doc's first commit.
+  No repo file is written before the approval.
 - BR-5: the glossary format MUST be `Term : one-line meaning`, with an optional
   `. Avoid: <synonyms>` for rejected synonyms. A glossary line MUST hold only a term
   of the project's domain, with no implementation detail.
@@ -75,14 +75,17 @@ Each `BR` is checked by reading the skill, by `lint`, or by a dry run of a quiz.
 - BR-12: `lint` MUST pass. A skill MAY raise its `max-lines`.
 - BR-13: a renamed section or a changed format line MUST have every reference and
   restatement updated in the same commit.
+- BR-14: the main session MUST write each term settled in a quiz into the project
+  context `## Glossary`, right after the doc's first commit, at every level. No
+  template gets a glossary section. No repo file is written before the approval.
 
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
 values are in the armory `plan` skill, section Levels.
 
-- plan-quiz-rules : A1, A2, A3, A5 in `plan` and its templates; the glossary format
-  line : BR-1, BR-2, BR-3, BR-4, BR-5, BR-6, BR-7, BR-12, BR-13 : open
+- plan-quiz-rules : A1, A2, A3, A5 in `plan`; the glossary format line : BR-1, BR-2,
+  BR-3, BR-5, BR-6, BR-7, BR-12, BR-13, BR-14 : done
 - test-tdd-rules : A4 in `test` : BR-8, BR-9, BR-12, BR-13 : open
 - review-smell-rules : A6, A7 in `review` : BR-10, BR-11, BR-12, BR-13 : open
 
@@ -92,8 +95,6 @@ values are in the armory `plan` skill, section Levels.
 
 - `review` sits at 129 of 134 `max-lines`; A6 and A7 raise it and the reviewer and
   auditor load sets (`DESIGN.md` section 4).
-- BR-4 adds a home for settled terms to the fixed templates; the template section
-  lists in `DESIGN.md` and in finished plan files then differ from new ones.
 - BR-8 refines `test` section TDD, first bullet; the two lines must not contradict.
 
 ## Done criteria
