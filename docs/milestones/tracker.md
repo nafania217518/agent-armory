@@ -78,10 +78,11 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
 - BR-12: a `code` run with a tracker bound MUST claim its task item as its first
   tracker write. When the item is already assigned to another person, it MUST stop and
   ask the user: take it over, pick another frontier task, or stop.
-- BR-13: with a tracker bound, the done write of `code` section Task end MUST comment
-  on the task item with the branch, the merge commit or PR link and the plan file path,
-  then set the item done. When it was the milestone's last open task, it MUST also set
-  the milestone item done. It MUST make no repo commit for status.
+- BR-13 (replaced by BR-18): with a tracker bound, the done write of `code` section
+  Task end MUST comment on the task item with the branch, the merge commit or PR link
+  and the plan file path, then set the item done. When it was the milestone's last open
+  task, it MUST also set the milestone item done. It MUST make no repo commit for
+  status.
 - BR-14: with a tracker bound, a brief MUST quote each `BR` it covers from the tracker
   item that holds it, read at brief time (`delegate` section Briefs).
 - BR-15: with no tracker bound, every armory flow MUST behave as before this milestone.
@@ -89,6 +90,22 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   `max-lines`.
 - BR-17: a changed fact or rule MUST have every reference and restatement updated in
   the same commit.
+- BR-18: with a tracker bound, the done write of `code` section Task end MUST comment
+  on the task item with the branch, the merge commit or PR link and the plan file path,
+  and MUST make no repo commit for status. The `## Tracker` binding MUST say whether
+  work closes through a PR merge. When it does not, the done write MUST set the task
+  item done, and the milestone item too when it was the milestone's last open task.
+  When it does, the done write MUST add the PR's closing reference for the task item,
+  and for the milestone item when it was the last open task, and MUST NOT set either
+  done itself.
+- BR-19: before a run's first tracker create, the main session MUST check that the
+  binding targets the project's own tracker, and MUST ask the user when it points
+  elsewhere, such as a fork's upstream or another organization.
+- BR-20: a run that creates several items MUST create the blockers first, then add the
+  blocked-by edges and the cross-references in a second pass, with real ids. It MUST
+  NOT write a placeholder id.
+- BR-21: a report or an item text MUST name a tracker item by its title, with its link
+  inside, not by a bare id.
 
 ## Tasks
 
@@ -96,13 +113,13 @@ Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the stat
 values are in the armory `plan` skill, section Levels.
 
 - tracker-term : the `tracker` term and its rules in `core`; the probe and
-  `## Tracker` in `setup` and its template : BR-1, BR-2, BR-3, BR-4, BR-16, BR-17 :
-  open
+  `## Tracker` in `setup` and its template, the target check : BR-1, BR-2, BR-3, BR-4,
+  BR-16, BR-17, BR-19 : open
 - tracker-plan : the tracker variant of each plan level, start from an item, listed
-  writes, lone-task `BR`, parent line, frontier : BR-5, BR-6, BR-7, BR-8, BR-9, BR-10,
-  BR-11, BR-16, BR-17 : open
+  writes, lone-task `BR`, parent line, frontier, create order, items named by title :
+  BR-5, BR-6, BR-7, BR-8, BR-9, BR-10, BR-11, BR-16, BR-17, BR-20, BR-21 : open
 - tracker-code : the claim, the tracker done write, briefs from tracker items, then
-  both dry runs : BR-12, BR-13, BR-14, BR-15, BR-16, BR-17 : open
+  both dry runs : BR-12, BR-14, BR-15, BR-16, BR-17, BR-18 : open
 
 ## Risks
 
@@ -122,10 +139,11 @@ values are in the armory `plan` skill, section Levels.
 
 - Each `BR` is met, checked by reading, by `lint`, by `unit` or by a dry run.
 - GitHub dry run on a new private repo, repo skills read by path: `setup` binds
-  `## Tracker` through `gh`; a strategic run creates a milestone item; a milestone run
-  creates task child items with blocked-by edges; a task run claims, codes, comments
-  and closes the task, and closes the milestone at its last task; each agent-written
-  body and comment starts with the AI marker.
+  `## Tracker` through `gh`; the first create checks the target; a strategic run
+  creates a milestone item; a milestone run creates task child items, blockers before
+  their blocked-by edges; a task run claims, codes, comments and closes the task, and
+  closes the milestone at its last task; each agent-written body and comment starts
+  with the AI marker.
 - Docs dry run: one task run on a scratch repo with no tracker follows today's flow.
 - All three tasks are done, and the done write marks the milestone done in
   `docs/DESIGN.md` (`code` section Task end).
