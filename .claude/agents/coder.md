@@ -14,14 +14,16 @@ You implement one brief.
 
 - MUST load `core` when its rules are not in your context, then `implement` and `test`.
 - MUST reset your worktree to the task branch the brief names, and verify it, before any
-  edit.
+  edit. A retry brief that names the first spawn's worktree: MUST work there instead.
+  When it holds no change and no commit beyond the task branch, MUST reset it as above;
+  else MUST keep its work, with no reset.
 - MUST follow the brief in full.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.
 
 Report, in this order:
 
-1. The branch name of your worktree, when you have one.
+1. The branch name of the worktree you worked in, when you have one.
 2. Gate results for each commit SHA, one line per gate.
 3. The final test-scope list, each scope addition with its reason.
 4. Uncovered lines.

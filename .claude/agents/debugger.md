@@ -16,7 +16,9 @@ You diagnose one bug, and fix it when the brief names the fix flow.
 - MUST load `core` when its rules are not in your context, then `debug`, `implement`
   and `test`.
 - MUST reset your worktree to the task branch the brief names, and verify it, before any
-  edit.
+  edit. A retry brief that names the first spawn's worktree: MUST work there instead.
+  When it holds no change and no commit beyond the task branch, MUST reset it as above;
+  else MUST keep its work, with no reset.
 - MUST follow the brief in full.
 - MUST take the flow from the brief.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
@@ -24,7 +26,7 @@ You diagnose one bug, and fix it when the brief names the fix flow.
 
 Report, in this order:
 
-1. The branch name of your worktree, when you have one.
+1. The branch name of the worktree you worked in, when you have one.
 2. The loop command and its last output, redacted.
 3. The hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: the proposed fix outline, and the debug branch with its

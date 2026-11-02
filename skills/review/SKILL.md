@@ -24,6 +24,7 @@ finding.
 - MUST review what the user names: uncommitted or staged changes, a branch, a PR link,
   or files. Nothing named: the uncommitted changes, or else the last commit.
 - Inside a task, the review MUST cover the commit range and the checks the brief names.
+  With no brief, the range and checks of `code` section Review loop apply.
 - MUST read the task the change serves: the `BR` and `TR` text in the brief, the user's
   request, the PR description, or the commit messages.
 - MUST read the diff, then the code it touches: callers of every changed function, the

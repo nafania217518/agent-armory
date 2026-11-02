@@ -187,6 +187,14 @@ One dated line per decision, with the dropped alternatives.
 - 2026-11-02: web search and page reading use the host's own web tools, under the
   `research` rules; no live file names the `browse` skill. Dropped: a `web tool` host
   term; keeping the ban on the built-in web search.
+- 2026-11-03: close the four open edge cases. Retry worktree: `delegate`
+  section Re-spawn and retry already runs the retry in the first worktree. Main-session
+  review: a review with no brief takes the range and checks of `code` section Review
+  loop (`review` section Understand first). Writer commits: no review per result and no
+  gate run of their own, by design; the whole-task checks of the final review cover
+  them. Glossary: a main session that codes writes the term
+  itself, by default. Dropped: a reviewer run on each writer result; a glossary rule
+  for the main session.
 
 ## 7. Milestones
 
@@ -208,13 +216,4 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 
 ## 8. Open
 
-Four edge cases from the last check:
-
-- Retry worktree: a retry spawn with `isolation: worktree` gets a fresh worktree. The
-  first worktree stays behind, and no rule cleans it up.
-- Main-session review: a review that the main session runs inside a task has no brief.
-  No rule says where it takes the commit range from.
-- Writer commits: commits of the writer enter only the final review, not a review per
-  commit.
-- Glossary: no rule says how the glossary rule applies when the main session codes
-  itself.
+No open item.

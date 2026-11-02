@@ -141,5 +141,7 @@ The main session follows this skill for each spawn of a project agent.
   to the user at once.
 - Any other failed spawn SHOULD get one retry on Opus high. When the spawn had a
   worktree, the retry MUST run in it, on its uncommitted work: its brief MUST name the
-  worktree path of the first spawn, since the agent card cuts a fresh one. When the
-  retry fails too, the main session MUST ask the user.
+  worktree path of the first spawn, since the agent card cuts a fresh one. The main
+  session MUST remove that fresh worktree when the retry ends; one with uncommitted work
+  MUST wait for the user's decision. When the retry fails too, the main session MUST
+  ask the user.
