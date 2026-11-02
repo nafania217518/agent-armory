@@ -49,6 +49,13 @@ A line MUST hold only a term of the project's domain, with no implementation det
 
 Format: the caveat line of the armory `core` skill, section Reports
 
+## Tracker
+
+Format: `<verb>: <binding>`, one line per verb of the armory `core` skill, section Host
+terms, term `tracker`, then `target: <the project's own tracker>`.
+
+{{TRACKER}}
+
 ## Rules
 
 Project-only rules. The armory skills hold the rest.

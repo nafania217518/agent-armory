@@ -114,7 +114,7 @@ values are in the armory `plan` skill, section Levels.
 
 - tracker-term : the `tracker` term and its rules in `core`; the probe and
   `## Tracker` in `setup` and its template, the target check : BR-1, BR-2, BR-3, BR-4,
-  BR-16, BR-17, BR-19 : open
+  BR-16, BR-17, BR-19 : done
 - tracker-plan : the tracker variant of each plan level, start from an item, listed
   writes, lone-task `BR`, parent line, frontier, create order, items named by title :
   BR-5, BR-6, BR-7, BR-8, BR-9, BR-10, BR-11, BR-16, BR-17, BR-20, BR-21 : open

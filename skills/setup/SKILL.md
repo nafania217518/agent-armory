@@ -6,7 +6,7 @@ description: >
   project or session. Asks the host what it can do, the user what to install, then
   writes and reports. Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 215
+max-lines: 216
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -66,7 +66,7 @@ its context lives. The user decides every write.
 
 ```
 <!-- armory profile -->
-terms: one line per term of core section Host terms, "<term>: <binding, or fallback>"
+terms: one line per core host term except tracker, "<term>: <binding, or fallback>"
 capabilities: one line per tool of the self-report, "<tool>: supported, or <fallback>"
 tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
 <!-- /armory profile -->
@@ -160,6 +160,11 @@ Project scope only. `setup` hands these sections to the host, which writes them.
      with the level names fixed [none], and the unit style [`sociable`].
   6. Other gates that are `off`, each with a reason [all `on`].
   7. Project-only rules, as MUST or SHOULD lines [none].
+  8. Tracker [the docs fallback].
+- Before the round, `setup` MUST probe the host's connections (MCP servers and CLIs)
+  for a tracker. It MUST propose a binding for each verb of `core` section Host terms,
+  term `tracker`, and its target. It MUST prove the binding with one live read (list
+  or read) against the target, with no write. A failed read MUST count as no fit.
 - One round MUST show the prefilled set, item by item, and ask the user to confirm or
   edit it. As a free-text question, it goes as a plain message (`core` section Writing
   and questions). A further round MUST come only from section Answer checks.
@@ -174,6 +179,8 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - The `coverage` command MUST fail below the threshold set in the build tools (default
   90% per core module), through a fail-under setting. Else MUST ask for it, or set the
   gate `off` with a reason.
+- With no tracker fit, or a verb unbound, `setup` MUST ask the user how to reach the
+  tracker or that verb, or keep the docs fallback.
 
 ### Write
 
@@ -184,6 +191,8 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - The project context MUST have these sections: `## What this is` (first, one paragraph
   on what the project is), `## Commands`, `## Gates`, `## Test levels`, `## Glossary`,
   `## Caveats`, `## Rules` (project-only rules).
+- `## Tracker` is the one optional section. It MUST be written only for a bound
+  tracker. With the docs fallback, the section and its format line MUST be dropped.
 - `## Commands`, `## Gates`, `## Glossary` and `## Caveats` MUST take the format lines
   of `templates/AGENTS.md`. `## Glossary` and `## Caveats` MUST start empty, with them.
 - A gate's command MUST carry the gate's name. `run` is not a gate. The gates MUST be:

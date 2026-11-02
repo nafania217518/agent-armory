@@ -75,6 +75,8 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A reworded end marker, or one split across two lines, makes `doc-checks.mjs` run the list region to the end of its text : scripts/doc-checks.mjs
 - An unreadable list file reports `<list>: not found`, not `cannot read` : scripts/doc-checks.mjs
 - A dangling `docs/DESIGN.md` symlink skips its width check without a failure line : scripts/doc-checks.mjs
+- `doc-checks.mjs` skips the width check for lines inside a code fence : scripts/doc-checks.mjs
+- `## Tracker` is optional, so the required-sections list of `setup` section Write does not name it : skills/setup/SKILL.md
 
 ## Rules
 

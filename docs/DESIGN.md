@@ -60,8 +60,8 @@ host, which writes them where it loads project context. Sections:
 - `## Glossary`: `Term : one-line meaning`, with an optional
   `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.
-- `## Tracker`: optional; one line per tracker verb with its binding. Absent: the repo
-  docs hold the plan facts.
+- `## Tracker`: optional; one line per tracker verb with its binding, then the
+  `target:` line. Absent: the repo docs hold the plan facts.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
 
