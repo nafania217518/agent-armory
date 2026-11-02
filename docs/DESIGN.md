@@ -200,8 +200,8 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - retro-fixes : the five follow-ups of the 2026-11-02 retro: a flow walk in `plan`
   self-review, a line-width check and a skill-list check, a plugin-lag caveat, gates
   per commit in the agent cards : done
-- lean-reports : one fact per caveat line, a SHOULD worktree fallback with own-file
-  commits, subagent reports cut to the card's items : open
+- lean-reports : one fact per caveat line, a worktree for each parallel coder,
+  subagent reports cut to the card's items : open
 
 ## 8. Open
 
