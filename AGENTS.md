@@ -45,6 +45,12 @@ A line MUST hold only a term of the project's domain, with no implementation det
 
 User-only skill : a skill that only the user starts; the model does not load it on its own.
 
+Tracker : the external system that holds the milestones, the tasks and their status. Avoid: issue tracker, ticket tracker
+
+Tracker item : one milestone or task as a record in the tracker. Avoid: ticket, issue
+
+Frontier : the open tasks whose blockers are all done
+
 ## Caveats
 
 Format: the caveat line of the armory `core` skill, section Reports

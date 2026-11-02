@@ -31,6 +31,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   holds project facts and project-only rules (`setup` section Project context).
 - The skills use host terms (`core` section Host terms), bound per host by the profile
   that `setup` writes.
+- The `tracker` host term binds per project, in the project context `## Tracker`, not
+  in the host profile. With no binding, the repo docs take its place (`core` section
+  Host terms).
 
 ## 2. Rule strength
 
@@ -57,6 +60,8 @@ host, which writes them where it loads project context. Sections:
 - `## Glossary`: `Term : one-line meaning`, with an optional
   `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.
+- `## Tracker`: optional; one line per tracker verb with its binding. Absent: the repo
+  docs hold the plan facts.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
 
@@ -100,7 +105,11 @@ The skills are the truth; the plan files under `docs/plans/` hold the execution 
 Planning has three horizons: strategic, milestone and task. One `plan` skill covers all
 three, with one template per doc.
 
-The rules: `plan` section Levels; the done write: `code` section Task end.
+With a tracker bound, the milestone list, each milestone (scope and `BR` list), its
+tasks and every status live in the tracker. The repo keeps this file's architecture and
+decisions and the task plan files.
+
+The rules: `plan` section Levels; the claim and the done write: `code`.
 
 ## 6. Decisions
 
@@ -195,6 +204,22 @@ One dated line per decision, with the dropped alternatives.
   them. Glossary: a main session that codes writes the term
   itself, by default. Dropped: a reviewer run on each writer result; a glossary rule
   for the main session.
+- 2026-11-03: a bound tracker owns the milestone list, each milestone with its scope and
+  `BR` list, the tasks with blocked-by edges, and all status; the repo keeps `DESIGN.md`
+  architecture and decisions and the task plan files with `TR`; repo docs stay the
+  fallback, and armory itself stays on them. Model: mattpocock/skills
+  (<https://github.com/mattpocock/skills>, commit 4ae2317). Dropped: status only in the
+  tracker; tasks and status only, with the milestone doc in the repo; a milestone list
+  in `DESIGN.md` beside tracker status; a `BR` snapshot in the plan file; a triage flow;
+  migration of existing milestone docs; armory on GitHub Issues.
+- 2026-11-03: skills reach the tracker through abstract verbs of a `tracker` host term,
+  bound in the project context `## Tracker`; `setup` probes the host's connections (MCP
+  servers, CLIs) and asks the user when none fits. Only the main session writes to the
+  tracker; the approved plan covers the writes it lists; every agent write carries an
+  AI marker; an unreachable tracker stops the run. Dropped: a separate adapter file
+  (mattpocock's `docs/agents/issue-tracker.md`); prose-only bindings; shipped seed
+  bindings for GitHub or GitLab; a per-project write switch; a yes per write; writes
+  from subagents; a queue of pending writes when the tracker is down.
 
 ## 7. Milestones
 
@@ -213,6 +238,9 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
   per commit in the agent cards : done
 - lean-reports : one fact per caveat line, a worktree for each parallel coder,
   subagent reports cut to the card's items and required returns : done
+- tracker : a bound tracker owns milestones, tasks and status: the `tracker` term in
+  `core`, its binding by `setup`, tracker paths in `plan`, `code` and `delegate`, and a
+  dry run on a scratch GitHub repo : open
 
 ## 8. Open
 
