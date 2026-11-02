@@ -87,7 +87,7 @@ values are in the armory `plan` skill, section Levels.
 - plan-quiz-rules : A1, A2, A3, A5 in `plan`; the glossary format line : BR-1, BR-2,
   BR-3, BR-5, BR-6, BR-7, BR-12, BR-13, BR-14 : done
 - test-tdd-rules : A4 in `test` : BR-8, BR-9, BR-12, BR-13 : done
-- review-smell-rules : A6, A7 in `review` : BR-10, BR-11, BR-12, BR-13 : open
+- review-smell-rules : A6, A7 in `review` : BR-10, BR-11, BR-12, BR-13 : done
 
 `test-tdd-rules` and `review-smell-rules` edit different files; they MAY run at once.
 

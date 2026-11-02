@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 134
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -56,7 +56,7 @@ finding.
 ## 3. Look for
 
 - Findings MUST follow this order of importance: correct, safe, holds under load, tested,
-  fast, lean, readable.
+  fast, lean, well shaped, readable.
 - A review and an audit MUST cover each class:
 
 1. Bug: wrong result, crash, missed edge case (empty, zero, last item, rounding, time
@@ -75,12 +75,31 @@ finding.
    - reuse: the repo already has this helper (name the path); two helpers do one job
    - stdlib / native: stdlib or platform does it; a dependency does what a few lines can
    - yagni: an abstraction with one implementation, a factory with one product, a
-     wrapper that only passes calls through, config nobody sets
+     wrapper that only passes calls through, config nobody sets. Deletion test: delete
+     the module in thought; complexity that vanishes marks a pass-through, complexity
+     that returns in every caller marks a module that earns its place. A seam with one
+     adapter is hypothetical; a second adapter makes it real.
    - merge: near-copies that must change together
    - split: a function with unrelated jobs, hard to read or test. Split by job, not lines.
    - unrequested (review only): a change the task did not ask for: a refactor, a
      rename, reformatting, a fix outside the scope. Fix: revert it.
-7. Readability: code that breaks a rule of `implement` section Readability.
+7. Shape: code in the wrong place or form. Each smell is a judgement call. A `## Rules`
+   line in the project context that allows the pattern MUST remove the finding, unless
+   the code also breaks an `implement` MUST.
+   - Feature Envy: a function uses another unit's data more than its own. Fix: move it
+     to that data.
+   - Data Clumps: the same fields or parameters travel together. Fix: one type for them.
+   - Primitive Obsession: a primitive or a string stands for a domain concept and lets
+     an illegal value in (`implement` section Domain, boundaries and state). Fix: a
+     small type of its own.
+   - Shotgun Surgery: one change edits many scattered places. Fix: gather what changes
+     together into one module.
+   - Message Chains: a caller reaches through objects it does not own, as in
+     `order.customer().address().city()`. Fix: one method on the first object hides the
+     walk.
+   - Repeated Switches: the same switch on one type in several places. Fix: one shared
+     map, or polymorphism.
+8. Readability: code that breaks a rule of `implement` section Readability.
 
 ## 4. Check before you report
 
@@ -111,9 +130,10 @@ finding.
   - Must fix: bug, security, data loss, breaks at the expected load, an `on` gate
     failure that the change introduced.
   - Should fix: risky code without a test, real slowness, duplication, a function that
-    mixes jobs, code that should not exist or is hard to read; process findings, unless
-    one hides a bug: a breach of a `test` rule (a missing or wrong `req:` marker, a test
-    case changed outside the scope), a commit message not matching the diff, a stray file.
+    mixes jobs, code that should not exist, a smell (class Shape), code that is hard to
+    read; process findings, unless one hides a bug: a breach of a `test` rule (a missing
+    or wrong `req:` marker, a test case changed outside the scope), a commit message not
+    matching the diff, a stray file.
   - Nice to have: small speed-ups, shorter forms.
 - A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
   it misleads a reader into a wrong action, else Should fix.

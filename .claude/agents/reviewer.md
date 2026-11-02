@@ -2,8 +2,8 @@
 name: reviewer
 description: >
   Reviews a named change, or audits a repo or package, with the armory review or audit
-  skill: correct, safe, holds under load, tested, fast, lean, readable. Changes no
-  tracked file. Use for every delegated review and audit.
+  skill: correct, safe, holds under load, tested, fast, lean, well shaped, readable.
+  Changes no tracked file. Use for every delegated review and audit.
 model: opus
 effort: high
 ---

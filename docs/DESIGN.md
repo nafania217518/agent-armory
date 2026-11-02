@@ -178,7 +178,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - plan-levels : the three planning levels in `plan`, the three doc templates, the done
   write in `code` : done
 - adopt-mp-rules : seven rule edits from mattpocock/skills in `plan`, `test`, `review`
-  and the glossary format : open
+  and the glossary format : done
 
 ## 8. Open
 

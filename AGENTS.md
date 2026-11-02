@@ -58,6 +58,7 @@ Skills symlinked into a host's skill location point at the clone path; moving th
 `core-context.sh` prints the plain `core` body when its input names no SubagentStart event; a non-Claude host hook gets that plain form : scripts/core-context.sh
 The `plan` templates are not checked by `lint`; `skill-sizes.mjs` counts only `SKILL.md` : scripts/skill-sizes.mjs
 The template headings carry no number, but this repo's `DESIGN.md` numbers its headings; a match by section name must ignore the number : docs/DESIGN.md
+Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
 
 ## Rules
 
