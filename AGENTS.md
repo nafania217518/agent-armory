@@ -64,6 +64,7 @@ Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line 
 On Claude Code, `disable-model-invocation: true` hides `setup` and `retro` from the model and from subagents; only the user's `/armory:setup` or `/armory:retro` loads them : skills/setup/SKILL.md
 The plugin manifests list the skills and the agents in three `description` strings (one in `plugin.json`, two in `marketplace.json`); a new skill or agent must update all three : .claude-plugin/plugin.json
 In a linked worktree, git refuses to check out a branch that another worktree holds, so a subagent can never be on the task branch itself : skills/debug/SKILL.md
+The installed armory plugin can lag this repo; a brief here names the repo path of each skill it loads and, for an agent card, its template path : .claude-plugin/plugin.json
 
 ## Rules
 

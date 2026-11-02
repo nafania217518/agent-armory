@@ -66,7 +66,7 @@ Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the stat
 values are in the armory `plan` skill, section Levels.
 
 - retro-rules : the flow walk, the plugin-lag caveat, gates per commit in the cards :
-  BR-1, BR-2, BR-3, BR-7, BR-8 : open
+  BR-1, BR-2, BR-3, BR-7, BR-8 : done
 - doc-checks : the width check and the list check in one lint script : BR-4, BR-5,
   BR-6, BR-7, BR-8 : open
 

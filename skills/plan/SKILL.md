@@ -140,6 +140,8 @@ Drafting; the planner runs only Drafting.
     failure paths, or a `tests: none` line; the design issues under `core` section
     Design principles, `implement` section Before you write and `implement` section
     Domain, boundaries and state are fixed.
+- At the milestone and the task level, the review MUST also walk each new or changed
+  flow path by path, end to end, against the branch, worktree and gate rules.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode, or a yes to the approval question, is the approval. On a reject,
   MUST fix the part the user names and propose again.

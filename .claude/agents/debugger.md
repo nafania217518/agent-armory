@@ -29,7 +29,7 @@ Report, in this order:
 3. The hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: the proposed fix outline, and the debug branch with its
    commits (`debug` section 6).
-5. Gate results, one line per gate.
+5. Gate results for each commit SHA, one line per gate.
 6. The final test-scope list, each scope addition with its reason.
 7. Uncovered lines.
 8. What you skipped.

@@ -22,7 +22,7 @@ You implement one brief.
 Report, in this order:
 
 1. The branch name of your worktree, when you have one.
-2. Gate results, one line per gate.
+2. Gate results for each commit SHA, one line per gate.
 3. The final test-scope list, each scope addition with its reason.
 4. Uncovered lines.
 5. What you skipped.
