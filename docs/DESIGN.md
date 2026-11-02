@@ -1,24 +1,14 @@
 # agent-armory design
 
-Status: the split is done on branch `rebuild-skills`. The ten skills under `skills/`
-are the single source of the rules. `docs/archive/RULES.md` is the pre-split record; it
-is reference only. This file holds the decisions from the requirement quiz of
-2026-10-30 and the review quiz of 2026-10-31, and the map of where each rule lives.
+The skills under `skills/` are the single source of the rules. This file holds the
+architecture: where each rule lives, how strong a rule is, the shape of the project
+context, the planning levels, the dated decisions, the milestones and the open points.
+What the project is: the project context `## What this is`. `docs/archive/RULES.md` is
+the pre-split record; it is reference only.
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-## 1. Sources
-
-Processed in this order. Each later source adds to the earlier ones.
-
-| Source | Where |
-|---|---|
-| Existing rules | `~/.claude/CLAUDE.md` rules 1–8 (they move to `core`, section 2), and the project `AGENTS.md` |
-| ub-mode | <https://raw.githubusercontent.com/unclebob/ub-mode/refs/heads/master/SKILL.md> |
-| ponytail | <https://github.com/dietrichgebert/ponytail>: `ponytail`, `ponytail-review`, `ponytail-audit`, `ponytail-debt` |
-| Archived armory skills | the old skills and agents, archived under `docs/archive/` during the rebuild and deleted after it; the items the user kept in the gap quiz went into `docs/archive/RULES.md` |
-
-## 2. Rule homes
+## 1. Rule homes
 
 - The always-on rules live in one `core` skill, the single source. The global rules 1–8
   are part of it.
@@ -29,24 +19,20 @@ Processed in this order. Each later source adds to the earlier ones.
   fallback when neither hook nor pointer ran.
 - `setup` writes the pointer into the host's context for the chosen scope; the user
   keeps personal items there.
-- `core` changes two of the old global rules. It merges KISS into Occam's razor
-  (rule 8), and it states rule 1 with MUST.
 - The skill set has ten skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `review`, `audit`, `research` and `setup`. The skills other
-  than `core` hold the workflows.
+  `test`, `review`, `audit`, `research` and `setup`. The skills other than `core` hold
+  the workflows.
 - The project agents are five: `coder`, `reviewer`, `researcher`, `writer` and
-  `planner`. The plugin ships their templates, not agent files; `setup` writes
-  the files into each project.
+  `planner`. The plugin ships their templates, not agent files; `setup` writes the
+  files into each project.
 - The agent files a project holds are generated instances of the plugin templates,
   which are the single source.
 - The project context (AGENTS.md, CLAUDE.md or a rules file, where the host loads it)
   holds project facts and project-only rules (`setup` section Project context).
-- On 2026-10-31 the `browse` skill and the tool moved to the agent-browser plugin repo;
-  `research` loads `/agent-browser:browse`.
-- 2026-10-31: the skills use host terms (`core` section Host terms), bound per host by
-  the profile that `setup` writes; `setup` replaces `init-project`.
+- The skills use host terms (`core` section Host terms), bound per host by the profile
+  that `setup` writes.
 
-## 3. Rule strength
+## 2. Rule strength
 
 Every rule carries one RFC 2119 word.
 
@@ -56,7 +42,7 @@ Every rule carries one RFC 2119 word.
 | SHOULD / SHOULD NOT | on by default | the agent, for one task, with a reasonable cause or after the user approves; the user rules on each bypass at task end (`code` section Task end) |
 | MAY | optional | the agent |
 
-## 4. The project context template
+## 3. The project context template
 
 The template is `skills/setup/templates/AGENTS.md`. `setup` hands its sections to the
 host, which writes them where it loads project context. Sections:
@@ -73,12 +59,7 @@ host, which writes them where it loads project context. Sections:
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
 
-Removed: the `## Models` table, the plan executor tags, and the separate requirements
-file under `docs/`. One model table for all projects lives in `delegate` section Models
-instead. The plan file `<docs>/plans/<task-branch>.md` stays; it holds the requirements
-(`plan` section Plan file).
-
-## 5. Where each rule lives
+## 4. Where each rule lives
 
 RULES sections are the sections of `docs/archive/RULES.md`.
 
@@ -108,35 +89,107 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 
 The size of a load set is the sum of the `max-lines` fields of its skills.
 
-The skills are the truth; `docs/plans/rebuild-skills.md` holds the execution record.
+The skills are the truth; the plan files under `docs/plans/` hold the execution records.
 
-## 6. Dropped
+## 5. Planning levels
 
-- ub-mode: the tools crapper, dryer and mutator and the ideas behind them (CRAP score,
-  duplication rank, mutation testing); "push to the main line"; the Work → Right →
-  Practice frame (the content is kept, grouped by topic).
-- ponytail: the levels lite, full and ultra (only ultra's push-back rule is kept);
-  `ponytail-gain`; the debt ledger as its own skill; a custom marker word; the
-  `git blame` owner; saving the ledger to a file; "never split into helpers that exist
-  only to make a function shorter"; "one small test" (TDD replaces it).
-- Existing rules: the per-project models table (one shared table replaces it,
-  `delegate` section Models), the plan executor tags, the separate requirements file
-  (the plan file is back and holds the requirements, `plan` section Plan file), the
-  base-rule copy in `AGENTS.md`, and the per-project switch that turned off any SHOULD
-  rule (a per-task bypass replaces it, `core` section Rule words).
-- Archived armory skills (`docs/archive/`): the plan levels none, min and full (every
-  plan covers each topic when relevant); the session-model check in review and audit;
-  the setup questions on the models table and the web rule; the per-project model table
-  (the `{{MODEL}}` and `{{EFFORT}}` template fields are back as placeholders that setup
-  fills from the default row per agent, `delegate` section Models); the plan item
-  count per model; the separate rule "the unit suite runs after every change" (the
-  per-commit `unit` gate covers it); "ask all setup questions at once" (rounds until no
-  open point remains replace it).
-- Quiz of 2026-10-30: the `worktree-per-agent` and `delegate` gates (now plain SHOULD
-  rules, `delegate` section Delegation and worktrees); renaming of test levels (the
-  names are fixed); the audit cap of 20 findings.
+Three horizons, one `plan` skill. The skill holds the shared flow (plan mode, quizzes,
+research, approval, amendments, drafting) and one levels table; the three doc formats
+are templates under the skill. The level comes from the argument, else from the first
+question. The rules live in `plan` and `code` once milestone `plan-levels` lands; until
+then this section is the only record.
 
-## 7. Open
+| Level | Doc | Branch | Holds | Ids |
+|---|---|---|---|---|
+| strategic | `<docs>/DESIGN.md`, edited in place | `design-<topic>`, merged after approval | required: Decisions (dated, with dropped alternatives) and Milestones (name, one-line goal, status); the rest is free | none |
+| milestone | `<docs>/milestones/<name>.md` | `milestone-<name>`, merged after approval | fixed: parent line, Goal, Scope in and out, Requirements (`BR` list), Tasks (ordered, branch names, status), Risks, Done criteria | `BR-n` |
+| task | `<docs>/plans/<branch>.md` | the task branch | parent line, `TR` list with tests, test scope, overrides, accepted debt | `TR-n (<milestone>/BR-m)` |
+
+- Chain: each doc names its parent in its first lines and references parent facts,
+  never restates them. `DESIGN.md` is enough to start a milestone plan in a fresh
+  session; a milestone doc is enough to start each of its task plans.
+- Strategic planning stops at the milestone list and has no testable item. A milestone
+  plan is a separate run.
+- `BR` lives in the milestone doc. A one-off task with no milestone keeps its own `BR`
+  list in the plan file.
+- A task plan file always exists, also when the milestone doc leaves no open point
+  (zero quiz rounds), because `code` and the `req:` markers depend on it.
+- Status has one home per fact: milestone status only in `DESIGN.md`, task status only
+  in the milestone doc. Values: open, done, dropped. The final commit on a task branch,
+  before the merge question, marks the task done; when that task was the milestone's
+  last open one, the same commit marks the milestone done. No commit on base.
+- An amendment goes to the level that owns the fact. A task that finds a `BR` gap
+  amends the milestone doc on its own task branch, after the user's yes. A milestone
+  that finds an architecture gap re-enters plan mode at the strategic level on a design
+  branch.
+
+## 6. Decisions
+
+One dated line per decision, with the dropped alternatives.
+
+- 2026-10-30: rebuild the skills from four sources, in this order, each later source
+  adding to the earlier ones: the existing rules (`~/.claude/CLAUDE.md` rules 1–8, now
+  in `core`, and the project `AGENTS.md`); ub-mode
+  (<https://raw.githubusercontent.com/unclebob/ub-mode/refs/heads/master/SKILL.md>);
+  ponytail (<https://github.com/dietrichgebert/ponytail>: `ponytail`, `ponytail-review`,
+  `ponytail-audit`, `ponytail-debt`); the archived armory skills (archived under
+  `docs/archive/` during the rebuild, deleted after it; the items kept in the gap quiz
+  went into `docs/archive/RULES.md`). Record: `docs/plans/rebuild-skills.md`.
+- 2026-10-30: `core` merges KISS into Occam's razor (global rule 8) and states global
+  rule 1 with MUST.
+- 2026-10-30, from ub-mode: dropped the tools crapper, dryer and mutator and the ideas
+  behind them (CRAP score, duplication rank, mutation testing); "push to the main
+  line"; the Work → Right → Practice frame (the content is kept, grouped by topic).
+- 2026-10-30, from ponytail: dropped the levels lite, full and ultra (only ultra's
+  push-back rule is kept); `ponytail-gain`; the debt ledger as its own skill; a custom
+  marker word; the `git blame` owner; saving the ledger to a file; "never split into
+  helpers that exist only to make a function shorter"; "one small test" (TDD replaces
+  it).
+- 2026-10-30, from the existing rules: dropped the per-project models table (one shared
+  table replaces it, `delegate` section Models), the plan executor tags, the separate
+  requirements file (the plan file holds the requirements, `plan` section Plan file),
+  the base-rule copy in `AGENTS.md`, and the per-project switch that turned off any
+  SHOULD rule (a per-task bypass replaces it, `core` section Rule words). The project
+  context lost the `## Models` table with them.
+- 2026-10-30, from the archived armory skills: dropped the plan levels none, min and
+  full (depth levels; every plan covers each topic when relevant); the session-model
+  check in review and audit; the setup questions on the models table and the web rule;
+  the per-project model table (the `{{MODEL}}` and `{{EFFORT}}` template fields are
+  placeholders that setup fills from the default row per agent, `delegate` section
+  Models); the plan item count per model; the separate rule "the unit suite runs after
+  every change" (the per-commit `unit` gate covers it); "ask all setup questions at
+  once" (rounds until no open point remains replace it).
+- 2026-10-30, quiz: dropped the `worktree-per-agent` and `delegate` gates (now plain
+  SHOULD rules, `delegate` section Delegation and worktrees); renaming of test levels
+  (the names are fixed); the audit cap of 20 findings.
+- 2026-10-31: the `browse` skill and the tool moved to the agent-browser plugin repo;
+  `research` loads `/agent-browser:browse`.
+- 2026-10-31: the skills use host terms (`core` section Host terms), bound per host by
+  the profile that `setup` writes; `setup` replaces `init-project`. Record:
+  `docs/plans/setup-skill.md`.
+- 2026-11-02: three planning horizons, section Planning levels. These are horizon
+  levels, not the depth levels dropped on 2026-10-30. Dropped: `BR` in the task plan
+  once a milestone exists; git-only status with no status field; status for every
+  level in one doc; three skills `design`, `milestone` and `plan`; the strategic edit on
+  the first task branch; the milestone doc on the design branch or on the first task
+  branch; a strategic run that continues into the first milestone; a fixed section set
+  for `DESIGN.md` (only Decisions and Milestones are required); a free section set for
+  the milestone doc; a status "in progress"; a milestone amendment on its own branch; a
+  docs-only commit on base for the done write; a lazy done write at the next planning
+  run.
+- 2026-11-02: this file is reworked, not rewritten: the status line and Sources leave,
+  Dropped and the dated lines become Decisions, the rule map and the context template
+  stay as free sections. Dropped: add only; rewrite from scratch.
+
+## 7. Milestones
+
+Format: `<name> : <one-line goal> : <status>`; status is open, done or dropped. The
+milestone doc is `docs/milestones/<name>.md`.
+
+- plan-levels : the three planning levels in `plan`, the three doc templates, the done
+  write in `code`, the milestones folder in `setup` : open
+
+## 8. Open
 
 Four edge cases from the last check:
 
