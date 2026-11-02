@@ -43,6 +43,8 @@ scripts in `scripts/`: `unit`.
 Format: `Term : one-line meaning`, plus `. Avoid: <synonyms>` when a synonym was rejected.
 A line MUST hold only a term of the project's domain, with no implementation detail.
 
+User-only skill : a skill that only the user starts; the model does not load it on its own.
+
 ## Caveats
 
 Format: `SHORT_DESCRIPTION : <file>`, or `SHORT_DESCRIPTION : —` when no file exists yet
