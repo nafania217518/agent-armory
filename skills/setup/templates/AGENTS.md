@@ -51,8 +51,8 @@ Format: the caveat line of the armory `core` skill, section Reports
 
 ## Tracker
 
-Format: `<verb>: <binding>`, one line per verb of the armory `core` skill, section Host
-terms, term `tracker`, then `target: <the project's own tracker>`.
+Format: `<verb>: <binding>`, one line per bound verb of the armory `core` skill,
+section Host terms, term `tracker`, then `target: <the project's own tracker>`.
 
 {{TRACKER}}
 

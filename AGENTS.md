@@ -49,7 +49,7 @@ Tracker : the external system that holds the milestones, the tasks and their sta
 
 Tracker item : one milestone or task as a record in the tracker. Avoid: ticket, issue
 
-Frontier : the open tasks whose blockers are all done
+Ready task : an open task whose blockers are all done and that no one has claimed. Avoid: frontier
 
 ## Caveats
 
@@ -77,6 +77,7 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A dangling `docs/DESIGN.md` symlink skips its width check without a failure line : scripts/doc-checks.mjs
 - `doc-checks.mjs` skips the width check for lines inside a code fence : scripts/doc-checks.mjs
 - `## Tracker` is optional, so the required-sections list of `setup` section Write does not name it : skills/setup/SKILL.md
+- An optional tracker verb the tracker lacks stays unbound with no `setup` question : skills/setup/SKILL.md
 
 ## Rules
 

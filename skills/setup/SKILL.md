@@ -6,7 +6,7 @@ description: >
   project or session. Asks the host what it can do, the user what to install, then
   writes and reports. Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 216
+max-lines: 217
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -163,8 +163,9 @@ Project scope only. `setup` hands these sections to the host, which writes them.
   8. Tracker [the docs fallback].
 - Before the round, `setup` MUST probe the host's connections (MCP servers and CLIs)
   for a tracker. It MUST propose a binding for each verb of `core` section Host terms,
-  term `tracker`, and its target. It MUST prove the binding with one live read (list
-  or read) against the target, with no write. A failed read MUST count as no fit.
+  term `tracker`, and its target. It MUST bind an optional verb only when the tracker
+  has it. It MUST prove the binding with one live read (list or read) against the
+  target, with no write. A failed read MUST count as no fit.
 - One round MUST show the prefilled set, item by item, and ask the user to confirm or
   edit it. As a free-text question, it goes as a plain message (`core` section Writing
   and questions). A further round MUST come only from section Answer checks.
@@ -179,8 +180,8 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - The `coverage` command MUST fail below the threshold set in the build tools (default
   90% per core module), through a fail-under setting. Else MUST ask for it, or set the
   gate `off` with a reason.
-- With no tracker fit, or a verb unbound, `setup` MUST ask the user how to reach the
-  tracker or that verb, or keep the docs fallback.
+- With no tracker fit, or a required verb unbound, `setup` MUST ask the user how to
+  reach the tracker or that verb, or keep the docs fallback.
 
 ### Write
 

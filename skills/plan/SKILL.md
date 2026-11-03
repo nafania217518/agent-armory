@@ -7,7 +7,7 @@ description: >
   for a new task, "plan this", "make a plan", "plan a milestone", "design doc", "design
   this change", a changed requirement, "/plan", and from the code skill when no plan
   exists.
-max-lines: 194
+max-lines: 230
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -49,6 +49,27 @@ Drafting; the planner runs only Drafting.
   Else it MUST edit the file in place and keep its free sections.
 - Milestone status MUST live only in `<docs>/DESIGN.md`. Task status MUST live only in
   the milestone doc. The status values MUST be open, done and dropped.
+- With a tracker bound in the project context `## Tracker` (`core` section Host terms),
+  each level MUST follow this tracker variant. The variant replaces only the repo-doc
+  rules it names; the table and the rules above MUST stay the docs fallback.
+  - strategic: `<docs>/DESIGN.md` keeps its architecture and decisions and MUST hold no
+    milestone list. Each new milestone MUST become a top-level tracker item. A run that
+    creates `DESIGN.md` from `templates/strategic.md` MUST drop its Milestones section.
+  - milestone: the milestone item body MUST take the sections of
+    `templates/milestone.md` except the parent line and Tasks. Each task MUST become a
+    child item of the milestone item. Its body MUST be the `<what> : <BR list>` of the
+    Tasks format line. Blocked-by edges MUST give the task order.
+  - Status MUST live only in the tracker.
+  - A milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. A task
+    run MUST read its milestone item, body and comments, first.
+  - A run MAY start from an existing tracker item. It MUST then read the item's body and
+    comments first and take the item as its milestone or its task. Else it MUST create
+    the items only after the approval.
+  - A task run with no task named MUST take the first ready task in the milestone item's
+    child order: open, every blocker done, no assignee.
+  - A task's branch MUST be the tracker's branch name for its item when the binding has
+    that verb, else `<item id>-<title slug>`. The plan file path MUST be the branch with
+    each `/` replaced by `-`.
 
 ## 2. Before the plan
 
@@ -95,7 +116,8 @@ Drafting; the planner runs only Drafting.
 - In a milestone run, or a task run with no milestone, each testable business answer
   MUST become a `BR` in the item format of `templates/milestone.md`.
 - A `BR` MUST live in the milestone doc. A task with no milestone MUST keep its own `BR`
-  list in the plan file.
+  list in the plan file. With a tracker bound (section Levels, tracker variant), it MUST
+  keep that list in its own task item body, and the plan file only the `TR` list.
 - A task run under a milestone MUST NOT add a `BR`. A `BR` gap MUST go to section
   Amendments.
 - In a task run, each testable tech answer MUST become a `TR` in the item format of
@@ -133,7 +155,8 @@ Drafting; the planner runs only Drafting.
 - Before proposing, MUST review the doc with the check of its level:
   - strategic: the doc has no testable item; every milestone line has a goal; every new
     milestone line has the status open; every new decision line carries its date and
-    its dropped alternatives.
+    its dropped alternatives. With a tracker bound, the check MUST read the planned
+    milestone items (a goal, status open) in place of the milestone lines.
   - milestone: each `BR` is testable and sits in exactly one task's `BR` list. A
     gate-type `BR`, such as one for `lint`, MAY sit in several.
   - task: every `BR` of the task has a `TR`; every `TR` has tests for its edge cases and
@@ -142,6 +165,9 @@ Drafting; the planner runs only Drafting.
     Domain, boundaries and state are fixed.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
+- With a tracker bound (section Levels, tracker variant), the proposal MUST list each
+  tracker write the run will make: creates, body edits, links, edges, comments and
+  status sets. A task run MUST also list the claim and the done write of its `code` run.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode, or a yes to the approval question, is the approval. On a reject,
   MUST fix the part the user names and propose again.
@@ -159,8 +185,18 @@ Drafting; the planner runs only Drafting.
 - In the same step, the main session MUST write each term the quiz settled into the
   project context `## Glossary`, in its format line. A plan template MUST NOT hold a
   glossary section.
-- A strategic or milestone run MUST end with the merge question of `code` section Finish
-  for its branch.
+- A strategic or milestone run with a branch MUST end with the merge question of `code`
+  section Finish for its branch.
+- With a tracker bound (section Levels, tracker variant), a strategic or milestone run
+  MUST follow this rule in place of the branch and doc-commit bullets above. It MUST
+  create its items after the approval. A milestone run MUST write no milestone doc.
+  Such a run MUST cut its level's branch only when it writes a repo file (`DESIGN.md`,
+  the glossary or the caveats); that write MUST be its first commit. Else it
+  MUST skip the branch and the merge question. A new milestone item body MUST hold its
+  one-line goal.
+- A run that creates several tracker items MUST create the blockers first. It MUST then
+  add the blocked-by edges and the cross-references in a second pass, with real ids. It
+  MUST NOT write a placeholder id; it MUST wait for the real id instead.
 
 ## 8. Amendments
 
@@ -170,8 +206,8 @@ Drafting; the planner runs only Drafting.
   with the new text, through the question tool, else its fallback. The one exception, the
   `TR` of a defect in built code (below), needs no approval: it repairs approved work.
 - An amendment MUST go to the doc that owns the fact (section Levels).
-- A `BR` gap found in a task run MUST amend the milestone doc on the task branch, after
-  the user's yes.
+- A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
+  milestone doc on the task branch, or the milestone item with a tracker bound.
 - A change to the design MUST go back to plan mode: quizzes, plan, approval. A redesign
   the user approves is such a change.
 - An architecture gap MUST re-enter plan mode at the strategic level, on a
@@ -181,6 +217,9 @@ Drafting; the planner runs only Drafting.
 - The main session MUST allocate every new id. A subagent MUST NOT allocate one.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
+- With a tracker bound (section Levels, tracker variant), the owning doc is the owning
+  item. After the user's yes, the main session MUST write the new id and the
+  `(replaced by <new id>)` mark into the item body before the next brief.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
 
 ## 9. Drafting

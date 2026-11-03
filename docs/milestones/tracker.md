@@ -38,18 +38,19 @@ Out:
 
 Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
 
-- BR-1: `core` section Host terms MUST define the `tracker` term with its verbs: read
-  an item (body and comments), list an item's children, create an item, link a child
-  to its parent, add a blocked-by edge, claim (assign to the user), comment, and set
-  the status open, done or dropped. Its binding MUST live in the project context
-  `## Tracker`, not in the host profile. Its fallback MUST be the repo docs of `plan`
-  section Levels.
-- BR-2: `core` MUST hold the tracker rules next to the term: only the main session
-  writes to the tracker, and a subagent MAY read; each write MUST be one the approved
-  plan lists, or MUST get the user's yes first; each item body and comment an agent
-  writes MUST start with one fixed AI marker line; a run MUST NOT edit a parent item it
-  did not create; when a bound tracker is unreachable, the run MUST stop before the
-  tracker step and ask the user, and MUST NOT fall back to the repo docs.
+- BR-1 (replaced by BR-28): `core` section Host terms MUST define the `tracker` term
+  with its verbs: read an item (body and comments), list an item's children, create an
+  item, link a child to its parent, add a blocked-by edge, claim (assign to the user),
+  comment, and set the status open, done or dropped. Its binding MUST live in the
+  project context `## Tracker`, not in the host profile. Its fallback MUST be the repo
+  docs of `plan` section Levels.
+- BR-2 (replaced by BR-22): `core` MUST hold the tracker rules next to the term: only
+  the main session writes to the tracker, and a subagent MAY read; each write MUST be
+  one the approved plan lists, or MUST get the user's yes first; each item body and
+  comment an agent writes MUST start with one fixed AI marker line; a run MUST NOT edit
+  a parent item it did not create; when a bound tracker is unreachable, the run MUST
+  stop before the tracker step and ask the user, and MUST NOT fall back to the repo
+  docs.
 - BR-3: `setup` in project scope MUST probe the host's connections (MCP servers and
   CLIs) for a tracker, propose a binding for each verb of BR-1, and ask the user to
   confirm or edit it. When no connection fits, it MUST ask the user how to reach the
@@ -62,8 +63,8 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   milestone list. Milestone: the milestone item body takes the sections of
   `templates/milestone.md` except Tasks; each task becomes a child item with its
   blocked-by edges. Status MUST live only in the tracker.
-- BR-6: with a tracker bound, a milestone run MUST cut its branch only when it writes a
-  repo file.
+- BR-6 (replaced by BR-26): with a tracker bound, a milestone run MUST cut its branch
+  only when it writes a repo file.
 - BR-7: a plan run MAY start from an existing tracker item; it MUST read the item's
   body and comments first and take the item as its milestone or task. Else it MUST
   create the items only after the approval.
@@ -73,11 +74,12 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   own task item; the plan file keeps the `TR` list.
 - BR-10: with a tracker bound, the task plan file's parent line MUST name the task item
   and its milestone item.
-- BR-11: with a tracker bound, the next task of a milestone MUST come from the
-  frontier: the open tasks whose blockers are all done and that no one has claimed.
-- BR-12: a `code` run with a tracker bound MUST claim its task item as its first
-  tracker write. When the item is already assigned to another person, it MUST stop and
-  ask the user: take it over, pick another frontier task, or stop.
+- BR-11 (replaced by BR-24): with a tracker bound, the next task of a milestone MUST
+  come from the frontier: the open tasks whose blockers are all done and that no one has
+  claimed.
+- BR-12 (replaced by BR-25): a `code` run with a tracker bound MUST claim its task item
+  as its first tracker write. When the item is already assigned to another person, it
+  MUST stop and ask the user: take it over, pick another frontier task, or stop.
 - BR-13 (replaced by BR-18): with a tracker bound, the done write of `code` section
   Task end MUST comment on the task item with the branch, the merge commit or PR link
   and the plan file path, then set the item done. When it was the milestone's last open
@@ -106,6 +108,47 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   NOT write a placeholder id.
 - BR-21: a report or an item text MUST name a tracker item by its title, with its link
   inside, not by a bare id.
+- BR-22 (replaced by BR-23): `core` MUST hold the tracker rules next to the term: only
+  the main session writes to the tracker, and a subagent MAY read; each write MUST be
+  one the approved plan lists, or MUST get the user's yes first; each item body and
+  comment an agent writes MUST start with one fixed AI marker line; a run MUST NOT edit
+  a parent item it did not create, except to write an amendment the user approved
+  (`plan` section Amendments); when a bound tracker is unreachable, the run MUST stop
+  before the tracker step and ask the user, and MUST NOT fall back to the repo docs.
+- BR-23 (replaced by BR-29): `core` MUST hold the tracker rules next to the term: only
+  the main session writes to the tracker, and a subagent MAY read; each write MUST be
+  one the approved plan lists, or MUST get the user's yes first; each item body and
+  comment an agent writes MUST start with one fixed AI marker line; a run MUST NOT edit
+  a parent item (an item above the one the run plans or codes), except to write an
+  amendment the user approved (`plan` section Amendments); a run that starts from an
+  existing item MUST keep the item's text and add its own sections below it; when a
+  bound tracker is unreachable, the run MUST stop before the tracker step and ask the
+  user, and MUST NOT fall back to the repo docs.
+- BR-24: with a tracker bound, the next task of a milestone MUST be the first ready task
+  in the milestone item's child order: open, every blocker done, no assignee.
+- BR-25: a `code` run with a tracker bound MUST claim its task item as its first tracker
+  write. When the item is already assigned to another person, it MUST stop and ask the
+  user: take it over, pick another ready task, or stop.
+- BR-26: with a tracker bound, a strategic or milestone run MUST cut its branch only
+  when it writes a repo file. A new milestone item body MUST hold its one-line goal.
+- BR-27: with a tracker bound, a task's branch MUST be the branch name the tracker gives
+  its item, when the `## Tracker` binding has that optional verb (branch name); else
+  `<item id>-<title slug>`. The plan file path follows the branch.
+- BR-28: `core` section Host terms MUST define the `tracker` term with its verbs: read
+  an item (body and comments), list an item's children, create an item, edit an item
+  body, link a child to its parent, add a blocked-by edge, claim (assign to the user),
+  comment, and set the status open, done or dropped. Its binding MUST live in the
+  project context `## Tracker`, not in the host profile. Its fallback MUST be the repo
+  docs of `plan` section Levels.
+- BR-29: `core` MUST hold the tracker rules next to the term: only the main session
+  writes to the tracker, and a subagent MAY read; each write MUST be one the approved
+  plan lists, or MUST get the user's yes first; each item body, added section and
+  comment an agent writes MUST start with one fixed AI marker line; a run MUST NOT edit
+  the body of a parent item (an item above the one the run plans or codes), except to
+  write an amendment the user approved (`plan` section Amendments); a run that starts
+  from an existing item MUST keep the item's text and add its own sections below it;
+  when a bound tracker is unreachable, the run MUST stop before the tracker step and ask
+  the user, and MUST NOT fall back to the repo docs.
 
 ## Tasks
 
@@ -116,10 +159,11 @@ values are in the armory `plan` skill, section Levels.
   `## Tracker` in `setup` and its template, the target check : BR-1, BR-2, BR-3, BR-4,
   BR-16, BR-17, BR-19 : done
 - tracker-plan : the tracker variant of each plan level, start from an item, listed
-  writes, lone-task `BR`, parent line, frontier, create order, items named by title :
-  BR-5, BR-6, BR-7, BR-8, BR-9, BR-10, BR-11, BR-16, BR-17, BR-20, BR-21 : open
-- tracker-code : the claim, the tracker done write, briefs from tracker items, then
-  both dry runs : BR-12, BR-14, BR-15, BR-16, BR-17, BR-18 : open
+  writes, lone-task `BR`, parent line, ready task, create order, items named by title,
+  branch name : BR-5, BR-7, BR-8, BR-9, BR-10, BR-16, BR-17, BR-20, BR-21, BR-24, BR-26,
+  BR-27, BR-28, BR-29 : done
+- tracker-code : the claim, the tracker done write, briefs from tracker items, then both
+  dry runs : BR-14, BR-15, BR-16, BR-17, BR-18, BR-25 : open
 
 ## Risks
 
