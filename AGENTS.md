@@ -88,7 +88,16 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A docs-mode milestone can be marked done by `code` step 9 or by the `plan` milestone-done sweep : skills/plan/SKILL.md
 - Triage finds inbound items by the absence of the armory AI marker at the body start : skills/triage/SKILL.md
 - The `setup` probe proposes the triage label lines only when every label verb is bound : skills/setup/SKILL.md
-- A matched prior rejection plus a "reconsider" answer gives an item two asks: step 2, then step 5 : skills/triage/SKILL.md
+- A step-2 match plus a reconsider or distinct answer gives an item two asks: step 2, then step 5 : skills/triage/SKILL.md
+- A tracker read binding made before triage-fixes may return an item without its labels : skills/core/SKILL.md
+- A duplicate of an open `accepted` item gets the status `dropped`, so the tracker shows it as rejected, not as a duplicate : skills/triage/SKILL.md
+- A quick override skips step 4, so it does not look for a conflict between two other open `accepted` items : skills/triage/SKILL.md
+- A quick override the user declines writes nothing, so an inbound item stays in attention bucket 1 : skills/triage/SKILL.md
+- With a step-4 conflict kept in favor of the accepted item, the step-5 recommended outcome is unspecified : skills/triage/SKILL.md
+- Triage checks a conflict between two other open `accepted` items only when both are related to or match the item : skills/triage/SKILL.md
+- A bug claim against an open accepted `BR` is a step-2 match, so a quick override on it first meets the step-2 duplicate-or-distinct ask : skills/triage/SKILL.md
+- A category named in a quick-override request overrides the step-3 bug-claim rule with no warning : skills/triage/SKILL.md
+- A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md
 - A GitHub `list items` binding must search `reason:"not planned"` for dropped, because `--state closed` mixes done and dropped : skills/setup/SKILL.md
 
 ## Rules

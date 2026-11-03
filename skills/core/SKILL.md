@@ -124,12 +124,12 @@ them (section Host terms).
   sections MUST stay in the run and in the report. Its `## Rules` line `Documentation
   lives in <folder>` sets `<docs>` for every actor.
 - tracker: the system that holds the milestones, the tasks and their status (`plan`
-  section Levels). Verbs: read an item (body and comments), list an item's children,
-  in order, each with its status, assignee and blockers, create an item, edit an item
-  body, link a child to its parent, add a blocked-by edge, claim (assign to the user),
-  comment, set the status open, done or dropped; optional: branch name (a read of the
-  tracker's branch name for an item, with no side effect), and the label verbs: list
-  items (by status and label), list labels, set labels (add or remove) and create
+  section Levels). Verbs: read an item (body, comments and labels), list an item's
+  children, in order, each with its status, assignee and blockers, create an item, edit
+  an item body, link a child to its parent, add a blocked-by edge, claim (assign to the
+  user), comment, set the status open, done or dropped; optional: branch name (a read of
+  the tracker's branch name for an item, with no side effect), and the label verbs:
+  list items (by status and label), list labels, set labels (add or remove) and create
   label. The project context `## Tracker` binds each verb, the target, the
   `closes by PR merge:` line and the `label <role>: <label>` lines (`triage`), not the
   host profile. Fallback: the repo docs of `plan` section Levels.
