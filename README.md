@@ -20,6 +20,7 @@ terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host tha
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
 | `retro` | Retrospective on the current session: ranked findings on what to change in the project or in armory. Changes no file. | main session, when the user starts it |
+| `triage` | Triage of inbound tracker items on a bound tracker: attention list, one item at a time, a recommended outcome, then the approved writes. Changes no repo file. | main session, when the user starts it |
 | `setup` | Sets up armory on the host you run in: global, project or session scope; asks the host what it can do and the user what to install; writes the project context and the agents. | main session |
 
 ## Agents

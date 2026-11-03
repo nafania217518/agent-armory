@@ -6,7 +6,7 @@ description: >
   project or session. Asks the host what it can do, the user what to install, then
   writes and reports. Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 223
+max-lines: 226
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -169,8 +169,11 @@ Project scope only. `setup` hands these sections to the host, which writes them.
   term `tracker`, its target, and the `closes by PR merge:` line of `templates/AGENTS.md`
   (the closing reference form the probe finds, else `no`). It MUST bind an optional
   verb only when the tracker has it; a tracker that can only create a branch MUST leave
-  the branch name verb unbound. It MUST prove the binding with one live read (list or
-  read) against the target, with no write. A failed read MUST count as no fit.
+  the branch name verb unbound. Only when it binds every label verb, it MUST propose
+  the five `label <role>: <label>` lines of `triage`. Each MUST default to an existing
+  label of the same name first, then one of the same meaning, else the role name. The
+  probe MUST prove the binding with one live read (list or read) against the target,
+  with no write. A failed read MUST count as no fit.
 - One round MUST show the prefilled set, item by item, and ask the user to confirm or
   edit it. As a free-text question, it goes as a plain message (`core` section Writing
   and questions). A further round MUST come only from section Answer checks.

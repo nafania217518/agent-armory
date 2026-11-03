@@ -4,9 +4,10 @@
 
 Personal agent skills, packaged as the `armory` plugin. The skills under `skills/`
 hold the rules for every armory actor: `core`, `plan`, `delegate`, `code`, `implement`,
-`test`, `debug`, `review`, `audit`, `research`, `retro` and `setup`. The skills use host
-terms (`core` section Host terms) and run on any host that reads a `SKILL.md`. The
-plugin also ships the templates and the hooks. The design is in `docs/DESIGN.md`.
+`test`, `debug`, `review`, `audit`, `research`, `retro`,
+`triage` and `setup`. The skills use host terms (`core` section Host terms) and run
+on any host that reads a `SKILL.md`. The plugin also ships the templates and the
+hooks. The design is in `docs/DESIGN.md`.
 
 ## Commands
 
@@ -51,6 +52,10 @@ Tracker item : one milestone or task as a record in the tracker. Avoid: ticket, 
 
 Ready task : an open task whose blockers are all done and that no one has claimed. Avoid: frontier
 
+Inbound item : an open tracker item opened outside an armory run that carries no triage state yet.
+
+Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
+
 ## Caveats
 
 Format: the caveat line of the armory `core` skill, section Reports
@@ -66,7 +71,7 @@ Format: the caveat line of the armory `core` skill, section Reports
 - `lint` checks only the width of the skill templates, not their size : scripts/doc-checks.mjs
 - A match of a template heading by section name must ignore the number that this repo's `DESIGN.md` adds : docs/DESIGN.md
 - Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
-- On Claude Code, only the user's `/armory:setup` or `/armory:retro` loads `setup` or `retro` : skills/setup/SKILL.md
+- On Claude Code, only the user's `/armory:setup`, `/armory:retro` or `/armory:triage` loads `setup`, `retro` or `triage` : skills/setup/SKILL.md
 - A new skill or agent must update every list in `LISTS` of `doc-checks.mjs`, not only the plugin manifests : scripts/doc-checks.mjs
 - A subagent in a linked worktree cannot check out the task branch while another worktree holds it : skills/debug/SKILL.md
 - The installed armory plugin can lag this repo : .claude-plugin/plugin.json
@@ -81,6 +86,10 @@ Format: the caveat line of the armory `core` skill, section Reports
 - With a PR and a closing reference form, the `code` run sets no tracker item done; the PR merge closes them : skills/code/SKILL.md
 - GitHub gives an item's branch name only by creating the linked branch, so its binding leaves that verb unbound : skills/setup/SKILL.md
 - A docs-mode milestone can be marked done by `code` step 9 or by the `plan` milestone-done sweep : skills/plan/SKILL.md
+- Triage finds inbound items by the absence of the armory AI marker at the body start : skills/triage/SKILL.md
+- The `setup` probe proposes the triage label lines only when every label verb is bound : skills/setup/SKILL.md
+- A matched prior rejection plus a "reconsider" answer gives an item two asks: step 2, then step 5 : skills/triage/SKILL.md
+- A GitHub `list items` binding must search `reason:"not planned"` for dropped, because `--state closed` mixes done and dropped : skills/setup/SKILL.md
 
 ## Rules
 

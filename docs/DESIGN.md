@@ -19,9 +19,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   fallback when neither hook nor pointer ran.
 - `setup` writes the pointer into the host's context for the chosen scope; the user
   keeps personal items there.
-- The skill set has twelve skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `debug`, `review`, `audit`, `research`, `retro` and `setup`. The skills other
-  than `core` hold the workflows.
+- The skill set has thirteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
+  `test`, `debug`, `review`, `audit`, `research`, `retro`,
+  `triage` and `setup`. The skills other than `core` hold the workflows.
 - The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
   and `planner`. The plugin ships their templates, not agent files; `setup` writes the
   files into each project.
@@ -61,7 +61,8 @@ host, which writes them where it loads project context. Sections:
   `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.
 - `## Tracker`: optional; one line per bound verb with its binding, then the
-  `target:` line and the `closes by PR merge:` line. Absent: the repo docs hold the
+  `target:` line, the `closes by PR merge:` line and, with the label verbs bound, one
+  `label <role>: <label>` line per `triage` role. Absent: the repo docs hold the
   plan facts.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
@@ -83,12 +84,14 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
 | `retro` | none (new) | main session, when the user starts it (user-only) |
+| `triage` | none (new) | main session, when the user starts it (user-only) |
 | `setup` | 21, 22; templates `AGENTS.md` and six agent cards | main session, when the user starts it (user-only) |
 | agent cards | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
 |---|---|
 | main session, full task | `core` (the hook or the pointer), `plan`, `delegate`, `code` |
+| main session, triage | `core` (the hook or the pointer), `triage` |
 | coder | `core`, `implement`, `test` |
 | debugger | `core`, `debug`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
@@ -221,6 +224,13 @@ One dated line per decision, with the dropped alternatives.
   (mattpocock's `docs/agents/issue-tracker.md`); prose-only bindings; shipped seed
   bindings for GitHub or GitLab; a per-project write switch; a yes per write; writes
   from subagents; a queue of pending writes when the tracker is down.
+- 2026-11-03: adopt a user-only `triage` skill on a bound tracker. It reverses the
+  2026-11-02 drop of mattpocock's `triage`, the `tracker` milestone's Scope Out item
+  "a triage flow and its labels", and the 2026-11-03 tracker decision's drop of a
+  triage flow. Dropped: three of mattpocock's five states (ready-for-agent,
+  ready-for-human, wontfix); the Agent Brief comment; `.out-of-scope/` files;
+  reproduction during triage; PRs as a request surface; fixed label names; label
+  creation in `setup`.
 
 ## 7. Milestones
 

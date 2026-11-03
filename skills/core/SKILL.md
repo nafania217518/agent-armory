@@ -4,7 +4,7 @@ description: >
   Always-on base rules for every armory actor: rule words, writing, questions, background
   tasks, web access, design principles, the Fable guard, report slots, host terms. Use
   for "/core".
-max-lines: 157
+max-lines: 159
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -128,8 +128,10 @@ them (section Host terms).
   in order, each with its status, assignee and blockers, create an item, edit an item
   body, link a child to its parent, add a blocked-by edge, claim (assign to the user),
   comment, set the status open, done or dropped; optional: branch name (a read of the
-  tracker's branch name for an item, with no side effect). The project context
-  `## Tracker` binds each verb, the target and the `closes by PR merge:` line, not the
+  tracker's branch name for an item, with no side effect), and the label verbs: list
+  items (by status and label), list labels, set labels (add or remove) and create
+  label. The project context `## Tracker` binds each verb, the target, the
+  `closes by PR merge:` line and the `label <role>: <label>` lines (`triage`), not the
   host profile. Fallback: the repo docs of `plan` section Levels.
   - A subagent MAY read the tracker but MUST NOT write to it. It MUST report a needed
     write to the main session instead.
