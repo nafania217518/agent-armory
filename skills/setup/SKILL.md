@@ -6,7 +6,7 @@ description: >
   project or session. Asks the host what it can do, the user what to install, then
   writes and reports. Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 217
+max-lines: 223
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -110,9 +110,9 @@ tiers: fable=<id>, opus=<id>, sonnet=<id>, haiku=<id>
   isolation. `{{MODEL}}` MUST be the id that section Model mapping gives for the tier
   of the card's default row (`delegate` section Models), the tier name on Claude Code.
   `{{EFFORT}}` MUST be that row's effort. Drop a placeholder line left empty.
-- In project scope, one question per run MUST ask whether the host files that `setup`
-  writes inside the repo (hook config, skill links) are local and ignored by git, or
-  committed with relative paths.
+- In project scope, when it installs the hook or the skills in the repo, one question
+  per run MUST ask whether the host files that `setup` writes inside the repo (hook
+  config, skill links) are local and ignored by git, or committed with relative paths.
 - In session scope, `setup` MUST NOT write any file or ask the install question. It
   MUST load `core` and the host profile into context. It MUST print the manual steps
   per part of the project scope inside a repo, else of the global scope.
@@ -135,9 +135,12 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - MUST load `code` for the branch, `delegate` for the default rows and `test` for the
   levels, each by skill load.
 - In a repo the order MUST be: the questions (section Questions); the user's yes to
-  write the files; a task branch (`code` section Branch and plan file); the files (every
-  write of section Install, the project context sections included); a commit of the
-  files; the report; the finish question (`code` section Finish).
+  write the files; the task branch `setup-armory` (`code` section Branch and plan
+  file); the files (every write of section Install, the project context sections
+  included); a commit of the files; the report; the finish question (`code` section
+  Finish).
+- When `setup-armory` exists, `setup` MUST delete and cut it again if it is merged into
+  `<base>`, else cut `setup-armory-<n>` with the next free `<n>`.
 - No repo: MUST run `git init` and `git commit --allow-empty -m "Start the repository"`
   on the default branch before the task branch.
 - `plan` does not apply: no plan mode, no plan file. Caveat writes: `code` section
@@ -163,9 +166,11 @@ Project scope only. `setup` hands these sections to the host, which writes them.
   8. Tracker [the docs fallback].
 - Before the round, `setup` MUST probe the host's connections (MCP servers and CLIs)
   for a tracker. It MUST propose a binding for each verb of `core` section Host terms,
-  term `tracker`, and its target. It MUST bind an optional verb only when the tracker
-  has it. It MUST prove the binding with one live read (list or read) against the
-  target, with no write. A failed read MUST count as no fit.
+  term `tracker`, its target, and the `closes by PR merge:` line of `templates/AGENTS.md`
+  (the closing reference form the probe finds, else `no`). It MUST bind an optional
+  verb only when the tracker has it; a tracker that can only create a branch MUST leave
+  the branch name verb unbound. It MUST prove the binding with one live read (list or
+  read) against the target, with no write. A failed read MUST count as no fit.
 - One round MUST show the prefilled set, item by item, and ask the user to confirm or
   edit it. As a free-text question, it goes as a plain message (`core` section Writing
   and questions). A further round MUST come only from section Answer checks.
@@ -180,8 +185,9 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 - The `coverage` command MUST fail below the threshold set in the build tools (default
   90% per core module), through a fail-under setting. Else MUST ask for it, or set the
   gate `off` with a reason.
-- With no tracker fit, or a required verb unbound, `setup` MUST ask the user how to
-  reach the tracker or that verb, or keep the docs fallback.
+- With no tracker fit, a required verb unbound, or no `closes by PR merge:` value,
+  `setup` MUST ask the user how to reach the tracker, that verb or that value, or keep
+  the docs fallback.
 
 ### Write
 

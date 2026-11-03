@@ -61,7 +61,8 @@ host, which writes them where it loads project context. Sections:
   `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.
 - `## Tracker`: optional; one line per bound verb with its binding, then the
-  `target:` line. Absent: the repo docs hold the plan facts.
+  `target:` line and the `closes by PR merge:` line. Absent: the repo docs hold the
+  plan facts.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
 
@@ -240,7 +241,7 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
   subagent reports cut to the card's items and required returns : done
 - tracker : a bound tracker owns milestones, tasks and status: the `tracker` term in
   `core`, its binding by `setup`, tracker paths in `plan`, `code` and `delegate`, and a
-  dry run on a scratch GitHub repo : open
+  dry run on a scratch GitHub repo : done
 
 ## 8. Open
 

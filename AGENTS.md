@@ -78,6 +78,9 @@ Format: the caveat line of the armory `core` skill, section Reports
 - `doc-checks.mjs` skips the width check for lines inside a code fence : scripts/doc-checks.mjs
 - `## Tracker` is optional, so the required-sections list of `setup` section Write does not name it : skills/setup/SKILL.md
 - An optional tracker verb the tracker lacks stays unbound with no `setup` question : skills/setup/SKILL.md
+- With a PR and a closing reference form, the `code` run sets no tracker item done; the PR merge closes them : skills/code/SKILL.md
+- GitHub gives an item's branch name only by creating the linked branch, so its binding leaves that verb unbound : skills/setup/SKILL.md
+- A docs-mode milestone can be marked done by `code` step 9 or by the `plan` milestone-done sweep : skills/plan/SKILL.md
 
 ## Rules
 

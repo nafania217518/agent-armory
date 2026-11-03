@@ -47,13 +47,15 @@ The main session follows this skill for each spawn of a project agent.
 
 - A coding or review brief MUST hold: the full text of each `TR` it covers, quoted from
   the plan file, and of each `BR` it covers, quoted from the milestone doc, or from the
-  plan file for a task with no milestone (`plan` section Plan file); the test-scope list
-  (`test` section Test scope), from the plan for a coding brief and from the coder or
-  debugger report for a review brief; the project context lines of `## Commands`,
-  `## Gates`, `## Test levels` (the unit style included), `## Rules` and `## Caveats`
-  that apply; which skills or skill sections the agent loads; the task branch and
-  `<base>` (`code` section Branch and plan file); the plan's Overrides and Accepted tech
-  debt sections (`plan` section The plan).
+  plan file for a task with no milestone (`plan` section Plan file), or with a tracker
+  bound (`plan` section Levels, tracker variant), from the item that holds it (the
+  milestone item, or the task item for a task with no milestone), read at brief time;
+  the test-scope list (`test` section Test scope), from the plan for a coding brief and
+  from the coder or debugger report for a review brief; the project context lines of
+  `## Commands`, `## Gates`, `## Test levels` (the unit style included), `## Rules` and
+  `## Caveats` that apply; which skills or skill sections the agent loads; the task
+  branch and `<base>` (`code` section Branch and plan file); the plan's Overrides and
+  Accepted tech debt sections (`plan` section The plan).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. A re-review brief MUST hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context

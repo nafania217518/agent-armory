@@ -87,19 +87,20 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   status.
 - BR-14: with a tracker bound, a brief MUST quote each `BR` it covers from the tracker
   item that holds it, read at brief time (`delegate` section Briefs).
-- BR-15: with no tracker bound, every armory flow MUST behave as before this milestone.
+- BR-15 (replaced by BR-32): with no tracker bound, every armory flow MUST behave as
+  before this milestone.
 - BR-16: `lint` and `unit` MUST pass on every commit. A skill MAY raise its
   `max-lines`.
 - BR-17: a changed fact or rule MUST have every reference and restatement updated in
   the same commit.
-- BR-18: with a tracker bound, the done write of `code` section Task end MUST comment
-  on the task item with the branch, the merge commit or PR link and the plan file path,
-  and MUST make no repo commit for status. The `## Tracker` binding MUST say whether
-  work closes through a PR merge. When it does not, the done write MUST set the task
-  item done, and the milestone item too when it was the milestone's last open task.
-  When it does, the done write MUST add the PR's closing reference for the task item,
-  and for the milestone item when it was the last open task, and MUST NOT set either
-  done itself.
+- BR-18 (replaced by BR-31): with a tracker bound, the done write of `code` section Task
+  end MUST comment on the task item with the branch, the merge commit or PR link and the
+  plan file path, and MUST make no repo commit for status. The `## Tracker` binding MUST
+  say whether work closes through a PR merge. When it does not, the done write MUST set
+  the task item done, and the milestone item too when it was the milestone's last open
+  task. When it does, the done write MUST add the PR's closing reference for the task
+  item, and for the milestone item when it was the last open task, and MUST NOT set
+  either done itself.
 - BR-19: before a run's first tracker create, the main session MUST check that the
   binding targets the project's own tracker, and MUST ask the user when it points
   elsewhere, such as a fork's upstream or another organization.
@@ -149,6 +150,35 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   from an existing item MUST keep the item's text and add its own sections below it;
   when a bound tracker is unreachable, the run MUST stop before the tracker step and ask
   the user, and MUST NOT fall back to the repo docs.
+- BR-30 (replaced by BR-33): the defects that the tracker dry run found outside the
+  tracker rules MUST be fixed: the `<base>` lookup falls back to `git remote set-head
+  origin -a` when `origin/HEAD` is missing; the task branch is cut with `--no-track`;
+  `setup` asks the local-or-committed question only when it installs the hook or the
+  skills in the repo; the `setup` task branch is `setup-armory`, and a docs-fallback
+  task with no milestone takes a slug of its title as its branch; a run that reads a
+  milestone whose tasks are all done MUST mark the milestone done.
+- BR-31: with a tracker bound, the done write of `code` section Task end MUST comment on
+  the task item with the branch, the plan file path, and the merge commit (the merged
+  HEAD commit on a fast-forward) or the PR link, and MUST make no repo commit for
+  status. The `## Tracker` binding MUST say whether work closes through a PR merge. On a
+  merge into `<base>`, it MUST set the task item done, and the milestone item too when
+  it was the last open task. On a PR with a closing reference form, the PR body MUST
+  carry the closing reference for the task item, and for the milestone item when it was
+  the last open task, and the run MUST NOT set either done itself. On a PR with `closes
+  by PR merge: no`, the run MUST set the items done only when it merges the PR itself
+  after the user's yes; else its report MUST say that the items stay open.
+- BR-32 (replaced by BR-34): with no tracker bound, every armory flow MUST behave as
+  before this milestone, except for the fixes of BR-30.
+- BR-33: the defects that the tracker dry run found outside the tracker rules MUST be
+  fixed: the `<base>` lookup falls back to `git remote set-head origin -a` when
+  `origin/HEAD` is missing; the task branch is cut with `--no-track`; `setup` asks the
+  local-or-committed question only when it installs the hook or the skills in the repo;
+  the `setup` task branch is `setup-armory`, and a docs-fallback task with no milestone
+  takes a slug of its title as its branch; a task-level plan run or a code run that adds
+  no task to a milestone and reads that all its tasks are done MUST mark the milestone
+  done.
+- BR-34: with no tracker bound, every armory flow MUST behave as before this milestone,
+  except for the fixes of BR-33.
 
 ## Tasks
 
@@ -163,7 +193,7 @@ values are in the armory `plan` skill, section Levels.
   branch name : BR-5, BR-7, BR-8, BR-9, BR-10, BR-16, BR-17, BR-20, BR-21, BR-24, BR-26,
   BR-27, BR-28, BR-29 : done
 - tracker-code : the claim, the tracker done write, briefs from tracker items, then both
-  dry runs : BR-14, BR-15, BR-16, BR-17, BR-18, BR-25 : open
+  dry runs : BR-14, BR-16, BR-17, BR-25, BR-31, BR-33, BR-34 : done
 
 ## Risks
 
@@ -177,7 +207,7 @@ values are in the armory `plan` skill, section Levels.
   after.
 - `gh` needs 2.94+ for sub-issues and blocked-by edges; 2.103.0 is installed.
 - The installed plugin lags the repo: the dry runs read the repo skills by path.
-- BR-15 covers every flow, but only the docs dry run and reading check it.
+- BR-34 covers every flow, but only the docs dry run and reading check it.
 
 ## Done criteria
 

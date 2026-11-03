@@ -12,3 +12,6 @@ Format: `Before: <a failing test run, an output or a screenshot>`, then
 
 Format: `Door: <one-way | two-way>` and one line on why, then
 `Blast radius: <what the merge can affect>`.
+
+Optional last lines: one closing line per item, the `closes by PR merge:` form with the
+item's id filled in (armory `code` skill, section Finish).

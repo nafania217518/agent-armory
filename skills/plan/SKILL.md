@@ -7,7 +7,7 @@ description: >
   for a new task, "plan this", "make a plan", "plan a milestone", "design doc", "design
   this change", a changed requirement, "/plan", and from the code skill when no plan
   exists.
-max-lines: 230
+max-lines: 239
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -41,6 +41,8 @@ Drafting; the planner runs only Drafting.
   the strategic level MUST add it first.
 - A task run MUST take its milestone from the request. When the request names none, the
   first quiz round MUST ask which milestone the task belongs to, or none.
+- With no tracker bound, a task with no milestone MUST take a slug of its title as its
+  branch.
 - A strategic run MUST have no testable item. It MUST stop at the milestone list; each
   milestone plan MUST be a separate run.
 - A strategic run SHOULD add a decision line only when the decision is hard to reverse,
@@ -49,6 +51,10 @@ Drafting; the planner runs only Drafting.
   Else it MUST edit the file in place and keep its free sections.
 - Milestone status MUST live only in `<docs>/DESIGN.md`. Task status MUST live only in
   the milestone doc. The status values MUST be open, done and dropped.
+- A task-level plan run or a code run that adds no task to a milestone and reads that
+  all its tasks are done MUST mark the milestone done: a status-line edit in
+  `<docs>/DESIGN.md`, or, with a tracker bound, a status write under the `core` tracker
+  write rule.
 - With a tracker bound in the project context `## Tracker` (`core` section Host terms),
   each level MUST follow this tracker variant. The variant replaces only the repo-doc
   rules it names; the table and the rules above MUST stay the docs fallback.
@@ -56,9 +62,10 @@ Drafting; the planner runs only Drafting.
     milestone list. Each new milestone MUST become a top-level tracker item. A run that
     creates `DESIGN.md` from `templates/strategic.md` MUST drop its Milestones section.
   - milestone: the milestone item body MUST take the sections of
-    `templates/milestone.md` except the parent line and Tasks. Each task MUST become a
-    child item of the milestone item. Its body MUST be the `<what> : <BR list>` of the
-    Tasks format line. Blocked-by edges MUST give the task order.
+    `templates/milestone.md` except the title line, the parent line and Tasks, and
+    except `## Goal` when the item already holds its one-line goal. Each task MUST
+    become a child item of the milestone item. Its body MUST be the `<what> : <BR list>`
+    of the Tasks format line. Blocked-by edges MUST give the task order.
   - Status MUST live only in the tracker.
   - A milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. A task
     run MUST read its milestone item, body and comments, first.
@@ -176,6 +183,8 @@ Drafting; the planner runs only Drafting.
 
 - After the approval, the main session MUST cut the level's branch (section Levels,
   column Branch) from `<base>` with the commands of `code` section Branch and plan file.
+- With a tracker bound, a task run MUST first make the claim of `code` section Branch
+  and plan file, before it cuts the task branch.
 - It MUST then write the level's doc at its Doc path as the first commit; `core`
   section Host terms sets `<docs>`. The requirements MUST NOT go into a separate file.
 - A task run MUST write its plan file also after zero quiz rounds.

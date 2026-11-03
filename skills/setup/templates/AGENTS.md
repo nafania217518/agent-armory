@@ -52,7 +52,8 @@ Format: the caveat line of the armory `core` skill, section Reports
 ## Tracker
 
 Format: `<verb>: <binding>`, one line per bound verb of the armory `core` skill,
-section Host terms, term `tracker`, then `target: <the project's own tracker>`.
+section Host terms, term `tracker`, then `target: <the project's own tracker>`, then
+`closes by PR merge: <no | the closing reference form, e.g. Closes #<id>>`.
 
 {{TRACKER}}
 

@@ -4,7 +4,7 @@ description: >
   Main-session coding lifecycle from the approved plan to the finish question: task
   branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
   Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 117
+max-lines: 137
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -26,18 +26,24 @@ worktree branch into the task branch is in `delegate` section Delegation and wor
 
 - MUST work on one branch per task.
 - `<base>` MUST mean the same branch in every armory skill: with a remote, `origin/HEAD`
-  (first command below); without one, the local default branch (`main` or `master`,
-  whichever exists), else the current branch.
+  (first command below; when it finds none, the fallback command, then the lookup
+  again); without one, or when the fallback also fails (a remote with no commits), the
+  local default branch (`main` or `master`, whichever exists), else the current branch.
 - The tech quiz MAY confirm `<base>` when it is unclear.
 - MUST cut the task branch from `<base>`. With a remote, MUST run `git fetch origin`
   first.
+- With a tracker bound (`plan` section Levels, tracker variant), the run MUST claim its
+  task item as its first tracker write, before it cuts the task branch. When the item
+  is assigned to another person, the run MUST stop and ask the user: take it over, pick
+  another ready task, or stop.
 - MUST NOT commit to `<base>`.
 - MUST ask the user before any push, and before any merge into `<base>`, PR merges too.
 
 ```
 git symbolic-ref --short refs/remotes/origin/HEAD
+git remote set-head origin -a    # fallback: no origin/HEAD
 git fetch origin
-git switch -c <task-branch> <base>
+git switch --no-track -c <task-branch> <base>
 ```
 
 ## 2. Caveats
@@ -104,8 +110,21 @@ follows `plan` section Amendments.
      the milestone's last open one, the same commit MUST also mark the milestone done in
      `<docs>/DESIGN.md` (`plan` section Levels). It MUST change only status lines, so the
      re-review of step 4 does not apply. It MUST NOT be committed directly on `<base>`.
-     A task with no milestone MUST skip this step.
+     A task with no milestone MUST skip this step. With a tracker bound, step 11
+     MUST replace this step.
   10. Finish: section Finish.
+  11. Tracker done write, with a tracker bound: after the Finish answer, MUST comment
+      on the task item with the branch, the plan file path and, when they exist, the
+      PR link and the merge commit (the merged HEAD commit on a fast-forward). It MUST
+      make no repo commit for status. "The items" MUST mean the task item, and the
+      milestone item too when the task was its last open one. Per Finish answer:
+      - merge into `<base>`: MUST set the items done;
+      - PR, with a closing reference form in `closes by PR merge:`: the run MUST
+        leave the status to the PR merge;
+      - PR, with `closes by PR merge: no`: MUST set the items done only when the run
+        merges the PR itself after the user's yes; else the report MUST say that the
+        items stay open;
+      - push only or stop: MUST comment only; the task item MUST keep its claim.
 
 ## 6. Finish
 
@@ -113,3 +132,6 @@ follows `plan` section Amendments.
   Branch and plan file guards each push and merge.
 - A PR body MUST take the sections, order and format lines of `templates/pr.md`,
   relative to this skill.
+- With a tracker bound and a closing reference form in `closes by PR merge:`, the PR
+  body MUST end with one closing line per item of section Task end, step 11: that form
+  with the item's id filled in. Else it MUST hold no closing line.
