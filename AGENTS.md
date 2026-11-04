@@ -88,17 +88,22 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A docs-mode milestone can be marked done by `code` step 9 or by the `plan` milestone-done sweep : skills/plan/SKILL.md
 - Triage finds inbound items by the absence of the armory AI marker at the body start : skills/triage/SKILL.md
 - The `setup` probe proposes the triage label lines only when every label verb is bound : skills/setup/SKILL.md
-- A step-2 match plus a reconsider or distinct answer gives an item two asks: step 2, then step 5 : skills/triage/SKILL.md
+- A duplicate-check match plus a distinct answer gives an item two asks: step 1, then step 4 : skills/triage/SKILL.md
 - A tracker read binding made before triage-fixes may return an item without its labels : skills/core/SKILL.md
-- A duplicate of an open `accepted` item gets the status `dropped`, so the tracker shows it as rejected, not as a duplicate : skills/triage/SKILL.md
-- A quick override skips step 4, so it does not look for a conflict between two other open `accepted` items : skills/triage/SKILL.md
+- A duplicate of an open item gets the status `dropped`, so the tracker shows it as rejected, not as a duplicate : skills/triage/SKILL.md
 - A quick override the user declines writes nothing, so an inbound item stays in attention bucket 1 : skills/triage/SKILL.md
-- With a step-4 conflict kept in favor of the accepted item, the step-5 recommended outcome is unspecified : skills/triage/SKILL.md
-- Triage checks a conflict between two other open `accepted` items only when both are related to or match the item : skills/triage/SKILL.md
-- A bug claim against an open accepted `BR` is a step-2 match, so a quick override on it first meets the step-2 duplicate-or-distinct ask : skills/triage/SKILL.md
-- A category named in a quick-override request overrides the step-3 bug-claim rule with no warning : skills/triage/SKILL.md
+- A bug report that asks for what an open `accepted` item's `BR` lines fix is a duplicate-check match, so a quick override on it first meets the duplicate ask : skills/triage/SKILL.md
+- A category named in a quick-override request overrides the bug definition with no warning : skills/triage/SKILL.md
 - A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md
 - A GitHub `list items` binding must search `reason:"not planned"` for dropped, because `--state closed` mixes done and dropped : skills/setup/SKILL.md
+- An open item left distinct at the duplicate check stays open when a later `accepted` item covers it in full; it meets triage again only as `needs-triage`, as `needs-info` with a reply, or when the user names it : skills/triage/SKILL.md
+- A quick override skips step 4, so a named `accepted` outcome goes through for an item that the project already gives or open `accepted` items cover : skills/triage/SKILL.md
+- A conflict settled for the new output leaves the other `accepted` item's `BR` lines unchanged, so two open `accepted` items fix one input two ways : skills/triage/SKILL.md
+- A quick-override `accepted` runs no step 3, so its `## Requirements` section names no conflict : skills/triage/SKILL.md
+- Step 4 still offers `accepted` for an item that the project already gives : skills/triage/SKILL.md
+- Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
+- Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
+- A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
 
 ## Rules
 
