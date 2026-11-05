@@ -1,11 +1,11 @@
 ---
 name: setup
 description: >
-  Sets up armory on the host you run in, in one scope: global or
-  project. Probes the hook, asks the user what to install, then writes and reports.
+  Sets up armory in the current project on the host you run in. Probes the hook, asks
+  the user what to install, then writes and reports.
   Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 168
+max-lines: 163
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -15,38 +15,33 @@ Load the `core` skill first when its rules are not in your context.
 
 The main session sets up armory on its host. The user decides every write.
 
-## 1. Invocation and scope
+## 1. Invocation
 
-- The invocation MUST be `setup [global|project]`. One run MUST cover one scope.
-- With no scope given, the first question MUST ask it through the question tool (`core`
-  section Host terms). The recommended option MUST be `project` in a repo, else `global`.
-- Each scope MUST touch only its own items:
-  - global: the global hooks and skill location, the pointer in the global context.
-  - project: the project hooks and skill location, the pointer in the project context,
-    the project context sections, the agent cards.
-- A run MUST follow the sections in order. Project-scope writes MUST run at the Flow step
-  "the files" of section Project context.
+- The invocation MUST be `setup`. One run MUST set up armory in the current project:
+  the project hooks and skill location, the pointer in the project context, the project
+  context sections, the agent cards.
+- A run MUST follow the sections in order. The writes MUST run at the Flow step "the
+  files" of section Project context.
 
 ## 2. Self-report
 
-- Before any other step, the host MUST probe the `core` hook. The hook term MUST count
-  as bound only when the probe finds the `core` text in the starting context of a
-  session and of a spawned agent; a config entry alone MUST NOT count.
+- Before any other step, the main session MUST probe the `core` hook. The hook term
+  MUST count as bound only when the probe finds the `core` text in the starting context
+  of a session and of a spawned agent; a config entry alone MUST NOT count.
 - The user MUST see the probe result and confirm or correct it. The run MUST NOT go on
   before that answer.
 
 ## 3. Install
 
-- The parts MUST be these, each only in the scopes of section Invocation and scope:
-  (a) core injection; (b) the skills, reachable by the host; (c) the agent cards, in the
-  host's format; (d) project scope only, the project context sections (section Project
-  context).
+- The parts MUST be these: (a) core injection; (b) the skills, reachable by the host;
+  (c) the agent cards, in the host's format; (d) the project context sections (section
+  Project context).
 - Before any write, `setup` MUST ask the install question per part through the question
   tool. Part (a) MUST offer "hook plus pointer" (recommended), "pointer only" and
   "stop". Parts (b) to (d) MUST offer "install" (recommended) and "stop". "stop" MUST
   leave the part out; the run MUST go on to the next part. `setup` MUST install only
-  the chosen parts, in the chosen scope.
-- The pointer MUST be one line in the context of the scope: "At session start, load
+  the chosen parts.
+- The pointer MUST be one line in the project context: "At session start, load
   the armory `core` skill." The line MUST sit at the top of that context, before the
   first section.
 - `setup` MUST name `scripts/core-context.sh` of the armory clone as the hook command
@@ -54,13 +49,13 @@ The main session sets up armory on its host. The user decides every write.
 - An embedded copy of `core` MAY go into the context only when the user asks for it,
   between `<!-- armory core -->` and `<!-- /armory core -->`, so a rerun can refresh it.
 - Skills MUST reach the host by symlink from the armory clone into its skill location.
-- The host MUST render the six cards of `templates/agents/` (next to this file), one
-  per project agent (`delegate` section What each agent returns), into its agent format
-  at its agent location. The fields are name, description, model, effort and
-  isolation. `{{MODEL}}` MUST be the tier name of the card's default row (`delegate`
-  section Models). `{{EFFORT}}` MUST be that row's effort. Drop a placeholder line left
-  empty.
-- In project scope, when it installs the hook or the skills in the repo, one question
+- The main session MUST render the six card templates of `templates/agents/` (next to this
+  file), one per project agent (`delegate` section What each agent returns), into the
+  host's agent format at its agent location. The fields are name, description, model,
+  effort and isolation. `{{MODEL}}` MUST be the model value of the card's
+  default row (`delegate` section Models). `{{EFFORT}}` MUST be that row's effort. Drop
+  a placeholder line left empty.
+- When it installs the hook or the skills in the repo, one question
   per run MUST ask whether the host files that `setup` writes inside the repo (hook
   config, skill links) are local and ignored by git, or committed with relative paths.
 - After the writes, `setup` MUST list every write back, with its part and path.
@@ -73,12 +68,12 @@ The main session sets up armory on its host. The user decides every write.
 
 ## 4. Project context
 
-Project scope only. `setup` hands these sections to the host, which writes them.
+The main session writes these sections (section Write).
 
 ### Flow
 
 - MUST load `code` for the branch, `delegate` for the default rows and `test` for the
-  levels, each by skill load.
+  levels.
 - In a repo the order MUST be: the questions (section Questions); the user's yes to
   write the files; the task branch `setup-armory` (`code` section Branch and plan
   file); the files (every write of section Install, the project context sections
@@ -139,7 +134,7 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 
 ### Write
 
-- The host MUST write the sections into its project context and MUST report the path.
+- The main session MUST write the sections into the project context and report the path.
 - Documentation MUST live in the docs folder, `<docs>`. Only the README stays at the root.
 - The project context `## Rules` MUST hold the line `Documentation lives in <folder>`
   (default `docs/`).
@@ -163,6 +158,6 @@ Project scope only. `setup` hands these sections to the host, which writes them.
 
 ## 5. Report
 
-- The report MUST hold: the scope; what was installed per part, with paths, the
-  project context path included; usage notes (how to load each skill on this host, and
-  how to rerun or refresh); in project scope, also the gates that are `off`.
+- The report MUST hold: what was installed per part, with paths, the project context
+  path included; usage notes (how to load each skill on this host, and how to rerun or
+  refresh); the gates that are `off`.

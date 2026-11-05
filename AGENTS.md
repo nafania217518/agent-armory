@@ -59,15 +59,21 @@ Project-only rules. The armory skills hold the rest.
 Format: `Term : one-line meaning`, plus `. Avoid: <synonyms>` when a synonym was rejected.
 A line MUST hold only a term of the project's domain, with no implementation detail.
 
+Actor : the main session or a subagent.
+
+Main session : the session the user talks to; only it asks the user and spawns subagents.
+
+Subagent : an agent that the main session spawns; it reports back and cannot reach the user.
+
 User-only skill : a skill that only the user starts; the model does not load it on its own.
 
-Tracker : the external system that holds the milestones, the tasks and their status. Avoid: issue tracker, ticket tracker
+Tracker : the system of the `core` host term `tracker`. Avoid: issue tracker, ticket tracker
 
-Tracker item : one milestone or task as a record in the tracker. Avoid: ticket, issue
+Tracker item : one milestone, task or item opened outside an armory run, as a record in the tracker. Avoid: ticket, issue
 
-Ready task : an open task whose blockers are all done and that no one has claimed. Avoid: frontier
+Ready task : an open task whose blockers are all done and that has no assignee. Avoid: frontier
 
-Inbound item : an open tracker item opened outside an armory run that carries no triage state yet.
+Inbound item : an open tracker item opened outside an armory run and not yet `accepted` or dropped.
 
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
 
@@ -104,4 +110,5 @@ Format: the caveat line of the armory `core` skill, section Reports
 - This repo's `.claude/agents/` cards are tracked rendered copies, so a card template edit must also edit them : .claude/agents/coder.md
 - The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
 - On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
-- The hook output of `core` reaches a session or a subagent only as a 2 KB preview, with the full text in a file : scripts/core-context.sh
+- `wc -m` counts bytes in the C locale, so it reports 10,004 for a 9,998-character `core` : scripts/core-context.sh
+- Claude Code caps hook output at 10,000 characters and passes only a 2,000-character preview above it : scripts/core-context.test.mjs

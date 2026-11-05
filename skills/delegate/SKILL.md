@@ -5,7 +5,7 @@ description: >
   returns, model and effort per spawn, the Fable question, re-spawn and retry. Loaded by
   `plan` and `code` before a spawn. Use for "delegate", "spawn an agent", "which
   model", "write a brief", "/delegate".
-max-lines: 148
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -56,7 +56,9 @@ The main session follows this skill for each spawn of a project agent.
   plan file); the plan's Overrides and Accepted tech debt sections (`plan` section The
   plan).
 - A review brief MUST also hold the commit range and, for a final review, the
-  whole-task checks. A re-review brief MUST hold the findings sent to fix.
+  whole-task checks. An audit brief MUST hold the audit target (`audit` section Map
+  first) in place of the range and the task items. A re-review brief MUST hold the
+  findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
   the agent needs.
 - The `core` rules reach every subagent through the hook, else the pointer. A brief
@@ -66,8 +68,8 @@ The main session follows this skill for each spawn of a project agent.
 ## 4. What each agent returns
 
 - The project agents MUST be these six: coder, debugger, reviewer, researcher, writer
-  and planner. Each card `skills/setup/templates/agents/<agent>.md` holds the role rules
-  and the report format.
+  and planner. Each card template `skills/setup/templates/agents/<agent>.md` holds the
+  role rules and the report format.
 - Only the main session MAY delegate. A subagent cannot spawn agents, so it MUST do the
   work of its brief itself.
 - Each report MUST hold the recorded-items slot and the caveat slot of `core` section

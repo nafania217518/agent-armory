@@ -77,7 +77,7 @@ debugs itself.
   the hypotheses apart.
 - MUST NOT log everything and grep. MUST name the targeted log and the hypothesis it
   tests instead.
-- Each debug log MUST carry one unique prefix for the run, such as `[DEBUG-a4f2]`.
+- Each debug log MUST carry the debug prefix, unique for the run, such as `[DEBUG-a4f2]`.
 - A performance bug MUST get a baseline measurement first, then a bisection.
 - MUST test your own ranking and record a verdict for each hypothesis: confirmed,
   refuted or untested. Done when one hypothesis is confirmed. When all are refuted,
@@ -87,10 +87,10 @@ debugs itself.
 
 - MUST NOT write the fix. MUST end with the report instead.
 - MAY commit debug code (the loop, a harness, tagged logs), only on a branch
-  `debug-<id>` cut from the task branch, where `<id>` is the id of the run's prefix.
+  `debug-<id>` cut from the task branch, where `<id>` is the id of the debug prefix.
   MUST NOT merge it into the task branch; MUST name it in the report instead.
 - Each debug commit subject MUST start with `debug(<id>):`. Each debug commit MUST keep
-  the `on` gates green: a loop test goes in skipped, with the prefix in its name.
+  the `on` gates green: a loop test goes in skipped, with the debug prefix in its name.
 - Done when the report names the confirmed hypothesis, the loop command with its last
   output, a proposed fix outline, and the debug branch with its commits, no debug code
   is left uncommitted, and the checkout is back on the branch the run started on.
@@ -101,6 +101,6 @@ In the fix flow:
 
 - The fix MUST follow `implement` section Fixing and refactoring. The minimised repro
   MUST become its regression test.
-- Done when the original loop passes, a grep for the prefix shows no hit, each
+- Done when the original loop passes, a grep for the debug prefix shows no hit, each
   throwaway harness is deleted, and the commit message of the fix states the confirmed
   hypothesis.

@@ -5,7 +5,7 @@ description: >
   change in the project or in armory so that later sessions go better. Changes no file.
   Use for "/retro", "run a retro".
 disable-model-invocation: true
-max-lines: 70
+max-lines: 71
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -36,8 +36,9 @@ what to change in the project or in armory so that later sessions go better.
     mechanical miss (a fixed pattern, a banned call, a file place) MUST get a check: a
     lint rule, a gate or a hook. A judgement miss MUST get a review rule (`review`, or
     the project context `## Rules`).
-  - Context size and no-op lines. Use when a line of the project context, the global
-    context or a skill changed no behavior, or belongs in a check or a review rule.
+  - Context size and no-op lines. Use when a line of the project context, the user's
+    global context file or a skill changed no behavior, or belongs in a check or a
+    review rule.
   - Tool economy. Use when a cheaper call, model row or tool could replace a costly
     tool call or spawn.
 - Before the class Checks and review rules, SHOULD read the project context `## Gates`

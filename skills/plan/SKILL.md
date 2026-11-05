@@ -31,7 +31,7 @@ Drafting; the planner runs only Drafting.
 |---|---|---|---|---|---|
 | strategic | `<docs>/DESIGN.md`, edited in place | `templates/strategic.md`; other sections free | `design-<topic>` | architecture, dated decisions, the milestone list and milestone status | none |
 | milestone | `<docs>/milestones/<name>.md` | `templates/milestone.md`, fixed | `milestone-<name>` | scope, the `BR` list, the tasks and their status | `BR-n` |
-| task | `<docs>/plans/<branch>.md` | `templates/task.md`, fixed | the task branch | the `TR` list, test scope, overrides, accepted debt | `TR-n` |
+| task | `<docs>/plans/<branch>.md` | `templates/task.md`, fixed | the task branch | the `TR` list, test scope, overrides, accepted tech debt | `TR-n` |
 
 - A milestone or task doc MUST name its parent in its first lines, with the template's
   parent line. It MUST reference a parent fact, not restate it.
@@ -56,7 +56,7 @@ Drafting; the planner runs only Drafting.
   `<docs>/DESIGN.md`, or, with a tracker bound, a status write under the `core` tracker
   write rule.
 - With a tracker bound in the project context `## Tracker` (`core` section Host terms),
-  each level MUST follow this tracker variant. The variant replaces only the repo-doc
+  each level MUST follow this tracker variant. The variant replaces only the docs-fallback
   rules it names; the table and the rules above MUST stay the docs fallback.
   - strategic: `<docs>/DESIGN.md` keeps its architecture and decisions and MUST hold no
     milestone list. Each new milestone MUST become a top-level tracker item. A run that
@@ -194,14 +194,14 @@ Drafting; the planner runs only Drafting.
 - In the same step, the main session MUST write each term the quiz settled into the
   project context `## Glossary`, in its format line. A plan template MUST NOT hold a
   glossary section.
-- A strategic or milestone run with a branch MUST end with the merge question of `code`
+- A strategic or milestone run with a branch MUST end with the finish question of `code`
   section Finish for its branch.
 - With a tracker bound (section Levels, tracker variant), a strategic or milestone run
   MUST follow this rule in place of the branch and doc-commit bullets above. It MUST
   create its items after the approval. A milestone run MUST write no milestone doc.
   Such a run MUST cut its level's branch only when it writes a repo file (`DESIGN.md`,
   the glossary or the caveats); that write MUST be its first commit. Else it
-  MUST skip the branch and the merge question. A new milestone item body MUST hold its
+  MUST skip the branch and the finish question. A new milestone item body MUST hold its
   one-line goal.
 - A run that creates several tracker items MUST create the blockers first. It MUST then
   add the blocked-by edges and the cross-references in a second pass, with real ids. It

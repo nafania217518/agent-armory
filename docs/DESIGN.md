@@ -10,28 +10,28 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 ## 1. Rule homes
 
-- The always-on rules live in one `core` skill, the single source. The global rules 1–8
+- The always-on rules live in one `core` skill, the single source. The user's global rules
   are part of it.
 - Two plugin hooks inject `core` into every session and every subagent
-  (`hooks/hooks.json`, `scripts/core-context.sh`). The host passes only a 2 KB preview
-  of the hook output.
-- Each skill opens with "load `core` when it is not in context"; this line loads the
-  full `core` after the preview, and when neither hook nor pointer ran.
-- `setup` installs the hook or writes the pointer into the host's context for the
-  chosen scope, global or project; the user keeps personal items there.
+  (`hooks/hooks.json`, `scripts/core-context.sh`). The host caps hook output at 10,000
+  characters; `scripts/core-context.test.mjs` guards it.
+- Each skill opens with "load `core` when it is not in context"; this line is the
+  fallback when neither hook nor pointer ran.
+- `setup` installs the hook or writes the pointer into the project context; the
+  user keeps personal items there.
 - The skill set has thirteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
   `test`, `debug`, `review`, `audit`, `research`, `retro`,
   `triage` and `setup`. The skills other than `core` hold the workflows.
 - The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
-  and `planner`. The plugin ships their templates, not agent files; `setup` writes the
-  files into each project.
-- The agent files a project holds are generated instances of the plugin templates,
+  and `planner`. The plugin ships their templates, not agent cards; `setup` writes the
+  cards into each project.
+- The agent cards a project holds are generated instances of the plugin templates,
   which are the single source.
 - The project context (AGENTS.md) holds project facts and project-only rules (`setup`
   section Project context).
 - The skills use host terms (`core` section Host terms) as host-neutral names.
 - The `tracker` host term binds per project, in the project context `## Tracker`. With no
-  binding, the repo docs take its place (`core` section Host terms).
+  binding, the docs fallback takes its place (`core` section Host terms).
 
 ## 2. Rule strength
 
@@ -45,8 +45,8 @@ Every rule carries one RFC 2119 word.
 
 ## 3. The project context template
 
-The template is `skills/setup/templates/AGENTS.md`. `setup` hands its sections to the
-host, which writes them into AGENTS.md. Sections:
+The template is `skills/setup/templates/AGENTS.md`. `setup` writes its sections into
+AGENTS.md. Sections:
 
 - `## What this is`: first; one paragraph on what the project is.
 - `## Commands`: one line per check, with the same name as its gate.
@@ -57,8 +57,8 @@ host, which writes them into AGENTS.md. Sections:
   `test` section Levels, and the unit style (sociable or solitary).
 - `## Tracker`: optional; one line per bound verb with its binding, then the
   `target:` line, the `closes by PR merge:` line and, with the label verbs bound, one
-  `label <role>: <label>` line per `triage` role. Absent: the repo docs hold the
-  plan facts.
+  `label <role>: <label>` line per `triage` role. Absent: the docs fallback holds
+  what the tracker would hold (section Planning levels).
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
 - `## Glossary`: `Term : one-line meaning`, with an optional
@@ -76,15 +76,15 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
 | `code` + template `pr.md` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
 | `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger; main session when it codes itself |
-| `test` | 13 | coder, debugger, reviewer, planner, auditor |
+| `test` | 13 | coder, debugger, reviewer, planner |
 | `debug` | none (new) | debugger; main session when it debugs itself |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
-| `setup` | 21, 22; templates `AGENTS.md` and six agent cards | main session, when the user starts it (user-only) |
-| agent cards | 16 (role rules, report format, default model row) | the spawn |
+| `setup` | 21, 22; templates `AGENTS.md` and six card templates | main session, when the user starts it (user-only) |
+| card templates | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
 |---|---|
@@ -93,9 +93,9 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | coder | `core`, `implement`, `test` |
 | debugger | `core`, `debug`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
-| auditor | `core`, `audit`, `review`, `test` |
+| reviewer, audit brief | `core`, `audit`, `review`, `implement`, `test` |
 | researcher | `core`, `research` |
-| planner | `core`, `plan`, `test` |
+| planner | `core`, `plan`, `implement`, `test` |
 | writer | `core` |
 
 The size of a load set is the sum of the `max-lines` fields of its skills.
@@ -243,6 +243,11 @@ One dated line per decision, with the dropped alternatives.
   the host profile and the user-only description text. The hook and its pointer
   fallback stay, and so does the `core` opener, because the hook passes only a 2 KB
   preview of `core`.
+- 2026-11-06: `core` is trimmed under the 10,000-character hook cap (target 9,000 or
+  less) by one tightening pass with garbage removal. Dropped by the user: moving the
+  main-session rules to a second SessionStart file. A unit test guards the cap.
+- 2026-11-06: `setup` keeps only the project; the global scope goes. Dropped: the
+  `global` scope and its scope question.
 
 ## 7. Milestones
 

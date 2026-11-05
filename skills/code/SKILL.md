@@ -60,7 +60,7 @@ section Reports.
 Brief each item as `delegate` section Briefs sets. A requirement change during the work
 follows `plan` section Amendments.
 
-- MUST run the plan items in the plan's order, also when they go to different executors.
+- MUST run the plan items in the plan's order, also across agents and the main session.
 - A finding that blocks the task MUST NOT wait for the recorded-items quiz. It is
   `stuck:` (`delegate` section Re-spawn and retry).
 
@@ -74,7 +74,7 @@ follows `plan` section Amendments.
 - Loop bound: when a loop needs a third round, the main session MUST ask the user first.
 - The final review MUST cover only the commits since the last review, or since `<base>`
   when none ran. It MUST add these whole-task checks on `<base>..HEAD`: each requirement
-  met, the `req:` markers, the work summary against the diff, stray files, the gates.
+  met, the `req:` markers, the agent reports against the diff, stray files, the gates.
 
 ## 5. Task end
 
@@ -114,11 +114,11 @@ follows `plan` section Amendments.
      A task with no milestone MUST skip this step. With a tracker bound, step 11
      MUST replace this step.
   10. Finish: section Finish.
-  11. Tracker done write, with a tracker bound: after the Finish answer, MUST comment
+  11. Tracker done write, with a tracker bound: after the finish answer, MUST comment
       on the task item with the branch, the plan file path and, when they exist, the
       PR link and the merge commit (the merged HEAD commit on a fast-forward). It MUST
       make no repo commit for status. "The items" MUST mean the task item, and the
-      milestone item too when the task was its last open one. Per Finish answer:
+      milestone item too when the task was its last open one. Per finish answer:
       - merge into `<base>`: MUST set the items done;
       - PR, with a closing reference form in `closes by PR merge:`: the run MUST
         leave the status to the PR merge;

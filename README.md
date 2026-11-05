@@ -13,18 +13,18 @@ terms and run on Claude Code.
 | `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
 | `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
 | `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `debugger`, `reviewer`; main session when it codes itself |
-| `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `debugger`, `reviewer`, `planner`, auditor |
+| `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `debugger`, `reviewer`, `planner` |
 | `debug` | Diagnosis of a bug whose cause is not known: feedback loop, hypotheses, probes, cleanup. | `debugger`; main session when it debugs itself |
-| `review` | Review of a change. Lists findings and changes no code. | `reviewer`, auditor |
+| `review` | Review of a change. Lists findings and changes no code. | `reviewer` |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
 | `retro` | Retrospective on the current session: ranked findings on what to change in the project or in armory. Changes no file. | main session, when the user starts it |
 | `triage` | Triage of inbound tracker items on a bound tracker: attention list, one item at a time, a recommended outcome, then the approved writes. Changes no repo file. | main session, when the user starts it |
-| `setup` | Sets up armory: global or project scope; probes the hook and asks the user what to install; writes the project context and the agents. | main session |
+| `setup` | Sets up armory in the current project; probes the hook and asks the user what to install; writes the project context and the agent cards. | main session |
 
 ## Agents
 
-`setup` writes the agents into the host's agent location from the templates in
+`setup` writes the agent cards into the host's agent location from the templates in
 `skills/setup/templates/agents/`.
 
 | Agent | Role | Default model | Effort |
@@ -38,8 +38,8 @@ terms and run on Claude Code.
 
 ## Install
 
-Install the plugin, then run `/armory:setup`. `setup` asks the scope (global or
-project), probes the `core` hook, asks what to install, and prints a report with usage
+Install the plugin, then run `/armory:setup`. `setup` sets up the current project,
+probes the `core` hook, asks what to install, and prints a report with usage
 notes. Add the plugin from GitHub:
 
 ```bash
@@ -77,5 +77,5 @@ parts to 0. It prints the new version.
   context (template in `skills/setup/templates/AGENTS.md`) holds the gates.
 - `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later.
   Below that, add a `CLAUDE.md` with the one line `@AGENTS.md`.
-- The global rules 1–8 live in `core`; the plugin hook, or the hook or pointer that
+- The global rules live in `core`; the plugin hook, or the hook or pointer that
   `setup` installs, loads it.

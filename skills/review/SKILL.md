@@ -35,7 +35,7 @@ finding.
 
 ## 2. The diff is the truth
 
-- MUST check the commit messages or the work summary against the diff. A wrong or
+- MUST check the commit messages or the agent reports against the diff. A wrong or
   missing change MUST be reported.
 - Stray files in the diff (test inputs, outputs, scratch scripts) MUST be reported.
 - MUST run every `on` gate at the range's last commit (a detached worktree when HEAD moved
@@ -127,7 +127,7 @@ finding.
   project context>`; `no command`; `not run (<cause>)`, neither pass nor fail, when an
   `on` gate's command cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
-  `Re-review:` line per earlier finding: `fixed`, `open` or `not re-opened`.
+  `Re-review:` line per earlier finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
   - Must fix: bug, security, data loss, breaks at the expected load, an `on` gate
     failure that the change introduced.
