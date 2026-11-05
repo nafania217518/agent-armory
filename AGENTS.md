@@ -105,26 +105,3 @@ Project-only rules. The armory skills hold the rest.
 - A brief MUST name each skill it loads by its repo path, and each agent card by its
   template path in `skills/setup/templates/agents/`, because the installed plugin can
   lag this repo.
-
-<!-- armory profile -->
-terms:
-- question tool: AskUserQuestion
-- skill load: the Skill tool, name `armory:<skill>`
-- spawn: the Agent tool, `subagent_type` set to the card name
-- agent card: `.claude/agents/<name>.md`, Markdown with YAML frontmatter
-- worktree: `isolation: worktree` on the card or the Agent call
-- plan mode: EnterPlanMode, approval at ExitPlanMode
-- task list: the host task list (the desktop app plan list)
-- hook: the armory plugin `hooks/hooks.json`, SessionStart and SubagentStart, `scripts/core-context.sh`
-- global context: `~/.claude/CLAUDE.md`
-- project context: `CLAUDE.md`, which imports this `AGENTS.md`
-capabilities:
-- question tool: supported
-- shell: supported
-- file write: supported
-- spawn: supported
-- worktree isolation: supported
-- plan mode: supported
-- task list: supported
-tiers: fable=fable, opus=opus, sonnet=sonnet, haiku=haiku
-<!-- /armory profile -->
