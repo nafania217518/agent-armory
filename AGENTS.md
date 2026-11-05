@@ -64,46 +64,29 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A `SKILL.md` whose leading `---` has trailing spaces counts as missing `max-lines` : scripts/skill-sizes.mjs
 - A control character in `skills/core/SKILL.md` other than tab, CR and LF breaks the SubagentStart JSON of `core-context.sh` : scripts/core-context.sh
 - `claude plugin validate` accepts the non-standard skill frontmatter key `max-lines` : skills/core/SKILL.md
-- `claude plugin validate .` passes with a warning that the root `CLAUDE.md` is not plugin context : CLAUDE.md
+- `claude plugin validate .claude-plugin/plugin.json` passes with a warning that the root `CLAUDE.md` is not plugin context : CLAUDE.md
 - Moving the armory clone breaks the skills symlinked into a host's skill location : skills/setup/SKILL.md
 - References to `setup` section Write, Flow or Answer checks resolve to subsections of `setup` section Project context : skills/setup/SKILL.md
-- `core-context.sh` prints the plain `core` body when its input names no SubagentStart event : scripts/core-context.sh
 - `lint` checks only the width of the skill templates, not their size : scripts/doc-checks.mjs
 - A match of a template heading by section name must ignore the number that this repo's `DESIGN.md` adds : docs/DESIGN.md
-- On Claude Code, only the user's `/armory:setup`, `/armory:retro` or `/armory:triage` loads `setup`, `retro` or `triage` : skills/setup/SKILL.md
 - A new skill or agent must update every list in `LISTS` of `doc-checks.mjs`, not only the plugin manifests : scripts/doc-checks.mjs
-- A subagent in a linked worktree cannot check out the task branch while another worktree holds it : skills/debug/SKILL.md
-- The installed armory plugin can lag this repo : .claude-plugin/plugin.json
-- `doc-checks.mjs` finds each list by fixed marker text : scripts/doc-checks.mjs
+- A subagent in a linked worktree cannot check out the task branch while another worktree holds it : skills/setup/templates/agents/coder.md
 - A reworded start marker makes `doc-checks.mjs` report `<list>: not found` : scripts/doc-checks.mjs
 - A reworded end marker, or one split across two lines, makes `doc-checks.mjs` run the list region to the end of its text : scripts/doc-checks.mjs
 - An unreadable list file reports `<list>: not found`, not `cannot read` : scripts/doc-checks.mjs
-- A dangling `docs/DESIGN.md` symlink skips its width check without a failure line : scripts/doc-checks.mjs
-- `doc-checks.mjs` skips the width check for lines inside a code fence : scripts/doc-checks.mjs
-- `## Tracker` is optional, so the required-sections list of `setup` section Write does not name it : skills/setup/SKILL.md
-- An optional tracker verb the tracker lacks stays unbound with no `setup` question : skills/setup/SKILL.md
-- With a PR and a closing reference form, the `code` run sets no tracker item done; the PR merge closes them : skills/code/SKILL.md
-- GitHub gives an item's branch name only by creating the linked branch, so its binding leaves that verb unbound : skills/setup/SKILL.md
-- A docs-mode milestone can be marked done by `code` step 9 or by the `plan` milestone-done sweep : skills/plan/SKILL.md
-- Triage finds inbound items by the absence of the armory AI marker at the body start : skills/triage/SKILL.md
-- The `setup` probe proposes the triage label lines only when every label verb is bound : skills/setup/SKILL.md
-- A duplicate-check match plus a distinct answer gives an item two asks: step 1, then step 4 : skills/triage/SKILL.md
-- A tracker read binding made before triage-fixes may return an item without its labels : skills/core/SKILL.md
+- `doc-checks.mjs` skips the width check for lines inside a code fence and for table rows : scripts/doc-checks.mjs
+- GitHub gives an item's linked branch name only by creating that branch : skills/setup/SKILL.md
+- With no tracker bound, both `code` step 9 and the `plan` section Levels milestone-done rule mark a milestone done : skills/plan/SKILL.md
+- A tracker read binding made before commit c5ce9ea may return an item without its labels : skills/core/SKILL.md
 - A duplicate of an open item gets the status `dropped`, so the tracker shows it as rejected, not as a duplicate : skills/triage/SKILL.md
-- A quick override the user declines writes nothing, so an inbound item stays in attention bucket 1 : skills/triage/SKILL.md
-- A bug report that asks for what an open `accepted` item's `BR` lines fix is a duplicate-check match, so a quick override on it first meets the duplicate ask : skills/triage/SKILL.md
-- A category named in a quick-override request overrides the bug definition with no warning : skills/triage/SKILL.md
 - A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md
 - A GitHub `list items` binding must search `reason:"not planned"` for dropped, because `--state closed` mixes done and dropped : skills/setup/SKILL.md
-- An open item left distinct at the duplicate check stays open when a later `accepted` item covers it in full; it meets triage again only as `needs-triage`, as `needs-info` with a reply, or when the user names it : skills/triage/SKILL.md
-- A quick override skips step 4, so a named `accepted` outcome goes through for an item that the project already gives or open `accepted` items cover : skills/triage/SKILL.md
-- A conflict settled for the new output leaves the other `accepted` item's `BR` lines unchanged, so two open `accepted` items fix one input two ways : skills/triage/SKILL.md
-- A quick-override `accepted` runs no step 3, so its `## Requirements` section names no conflict : skills/triage/SKILL.md
-- Step 4 still offers `accepted` for an item that the project already gives : skills/triage/SKILL.md
+- No triage step closes an open item that a later `accepted` item covers in full : skills/triage/SKILL.md
+- A quick-override `accepted` meets no conflict check and no already-given check : skills/triage/SKILL.md
 - Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
 - Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
 - A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
-- A host profile written before lean-replies has no `task list` line, so its sessions use the fallback until `setup` reruns : skills/setup/SKILL.md
+- A host profile written before commit d9a8b8a has no `task list` line, so its sessions use the fallback until `setup` reruns : skills/setup/SKILL.md
 - This repo's `.claude/agents/` cards are tracked rendered copies, so a card template edit must also edit them : .claude/agents/coder.md
 - The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
 - On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
@@ -122,3 +105,26 @@ Project-only rules. The armory skills hold the rest.
 - A brief MUST name each skill it loads by its repo path, and each agent card by its
   template path in `skills/setup/templates/agents/`, because the installed plugin can
   lag this repo.
+
+<!-- armory profile -->
+terms:
+- question tool: AskUserQuestion
+- skill load: the Skill tool, name `armory:<skill>`
+- spawn: the Agent tool, `subagent_type` set to the card name
+- agent card: `.claude/agents/<name>.md`, Markdown with YAML frontmatter
+- worktree: `isolation: worktree` on the card or the Agent call
+- plan mode: EnterPlanMode, approval at ExitPlanMode
+- task list: the host task list (the desktop app plan list)
+- hook: the armory plugin `hooks/hooks.json`, SessionStart and SubagentStart, `scripts/core-context.sh`
+- global context: `~/.claude/CLAUDE.md`
+- project context: `CLAUDE.md`, which imports this `AGENTS.md`
+capabilities:
+- question tool: supported
+- shell: supported
+- file write: supported
+- spawn: supported
+- worktree isolation: supported
+- plan mode: supported
+- task list: supported
+tiers: fable=fable, opus=opus, sonnet=sonnet, haiku=haiku
+<!-- /armory profile -->
