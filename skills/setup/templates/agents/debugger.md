@@ -27,13 +27,15 @@ You diagnose one bug, and fix it when the brief names the fix flow.
 Report, in this order:
 
 1. The branch name of the worktree you worked in, when you have one.
-2. The loop command and its last output, redacted.
+2. The loop command.
 3. The hypotheses in rank order, each with its verdict.
-4. In the diagnose-only flow: the proposed fix outline, and the debug branch with its
-   commits (`debug` section 6).
-5. Gate results for each commit SHA, one line per gate.
-6. The final test-scope list, each scope addition with its reason.
-7. Uncovered lines.
-8. What you skipped.
-9. Any risk.
-10. MUST give the two slots of `core` section Reports, with its labels and empty values.
+4. In the diagnose-only flow: the last output of the loop command, redacted, the
+   proposed fix outline, and the debug branch with its commits (`debug` section 6).
+5. Gate results (`implement` section Gates per commit).
+6. Uncovered lines, only when `coverage` is `on`.
+7. What you skipped.
+8. A risk that no recorded item covers.
+9. MUST give the two slots of `core` section Reports, with its labels and empty values.
+
+Before you report, MUST check each line against `core` section Reports and cut each
+line that fails.

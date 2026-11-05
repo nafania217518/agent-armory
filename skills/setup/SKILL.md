@@ -38,7 +38,7 @@ its context lives. The user decides every write.
   (3) skill locations, project and global; (4) the global context and the project
   context: the files it loads on its own, per scope, and whether it can edit them;
   (5) agent format and location, or none; (6) its models and their ids; (7) tools: the
-  question tool, shell, file write, spawn, worktree isolation, plan mode.
+  question tool, shell, file write, spawn, worktree isolation, plan mode, task list.
 - Each claim MUST name a probe the host runs: a path that exists, a command that runs,
   or a config file read. A claim whose probe fails, or that has no probe, MUST count as
   unsupported. Its term MUST take its fallback.

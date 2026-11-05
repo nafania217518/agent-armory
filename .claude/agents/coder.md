@@ -24,9 +24,11 @@ You implement one brief.
 Report, in this order:
 
 1. The branch name of the worktree you worked in, when you have one.
-2. Gate results for each commit SHA, one line per gate.
-3. The final test-scope list, each scope addition with its reason.
-4. Uncovered lines.
-5. What you skipped.
-6. Any risk.
-7. MUST give the two slots of `core` section Reports, with its labels and empty values.
+2. Gate results (`implement` section Gates per commit).
+3. Uncovered lines, only when `coverage` is `on`.
+4. What you skipped.
+5. A risk that no recorded item covers.
+6. MUST give the two slots of `core` section Reports, with its labels and empty values.
+
+Before you report, MUST check each line against `core` section Reports and cut each
+line that fails.

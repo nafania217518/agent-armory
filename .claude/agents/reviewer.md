@@ -18,3 +18,6 @@ You review or audit the target the brief names.
 Report: the output format of that skill (`review` section Output, or `audit` section
 Output). It MUST hold the two slots of `core` section Reports, with its labels and empty
 values.
+
+Before you report, MUST check each line against `core` section Reports and cut each
+line that fails.

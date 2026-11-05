@@ -231,6 +231,12 @@ One dated line per decision, with the dropped alternatives.
   ready-for-human, wontfix); the Agent Brief comment; `.out-of-scope/` files;
   reproduction during triage; PRs as a request surface; fixed label names; label
   creation in `setup`.
+- 2026-11-05: subagent reports keep only needed items: an item the main session uses
+  to spawn an agent, to plan or change the next work, or to put a decision to the user.
+  Main-session replies follow the Shape, Lists and Flow rules of `core` section Writing
+  and questions, adapted from ayghri/i-have-adhd (<https://github.com/ayghri/i-have-adhd>,
+  MIT). Dropped: time estimates, wins and error tone from that source; reply rules for
+  reports and briefs.
 
 ## 7. Milestones
 

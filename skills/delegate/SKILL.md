@@ -5,7 +5,7 @@ description: >
   returns, model and effort per spawn, the Fable question, re-spawn and retry. Loaded by
   `plan` and `code` before a spawn. Use for "delegate", "spawn an agent", "which
   model", "write a brief", "/delegate".
-max-lines: 149
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -50,12 +50,13 @@ The main session follows this skill for each spawn of a project agent.
   plan file for a task with no milestone (`plan` section Plan file), or with a tracker
   bound (`plan` section Levels, tracker variant), from the item that holds it (the
   milestone item, or the task item for a task with no milestone), read at brief time;
-  the test-scope list (`test` section Test scope), from the plan for a coding brief and
-  from the coder or debugger report for a review brief; the project context lines of
-  `## Commands`, `## Gates`, `## Test levels` (the unit style included), `## Rules` and
-  `## Caveats` that apply; which skills or skill sections the agent loads; the task
-  branch and `<base>` (`code` section Branch and plan file); the plan's Overrides and
-  Accepted tech debt sections (`plan` section The plan).
+  the test-scope list (`test` section Test scope), from the plan; for a review brief,
+  also each scope addition with its reason, from the coder or debugger recorded-items
+  slot; the project context lines of `## Commands`, `## Gates`, `## Test levels` (the
+  unit style included), `## Rules` and `## Caveats` that apply; which skills or skill
+  sections the agent loads; the task branch and `<base>` (`code` section Branch and
+  plan file); the plan's Overrides and Accepted tech debt sections (`plan` section The
+  plan).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. A re-review brief MUST hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context

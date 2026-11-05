@@ -17,3 +17,6 @@ You answer one question.
 
 Report: the result format of `research` section Result, with the recorded-items slot
 and the caveat slot (`core` section Reports).
+
+Before you report, MUST check each line against `core` section Reports and cut each
+line that fails.

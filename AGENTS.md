@@ -70,7 +70,6 @@ Format: the caveat line of the armory `core` skill, section Reports
 - `core-context.sh` prints the plain `core` body when its input names no SubagentStart event : scripts/core-context.sh
 - `lint` checks only the width of the skill templates, not their size : scripts/doc-checks.mjs
 - A match of a template heading by section name must ignore the number that this repo's `DESIGN.md` adds : docs/DESIGN.md
-- Shape findings (`review` class 7) do not count toward the `Lean: -<N>` end line of a review or an audit : skills/review/SKILL.md
 - On Claude Code, only the user's `/armory:setup`, `/armory:retro` or `/armory:triage` loads `setup`, `retro` or `triage` : skills/setup/SKILL.md
 - A new skill or agent must update every list in `LISTS` of `doc-checks.mjs`, not only the plugin manifests : scripts/doc-checks.mjs
 - A subagent in a linked worktree cannot check out the task branch while another worktree holds it : skills/debug/SKILL.md
@@ -104,6 +103,10 @@ Format: the caveat line of the armory `core` skill, section Reports
 - Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
 - Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
 - A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
+- A host profile written before lean-replies has no `task list` line, so its sessions use the fallback until `setup` reruns : skills/setup/SKILL.md
+- This repo's `.claude/agents/` cards are tracked rendered copies, so a card template edit must also edit them : .claude/agents/coder.md
+- The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
+- On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
 
 ## Rules
 

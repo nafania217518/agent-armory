@@ -20,6 +20,9 @@ You write or edit the prose the brief names.
 
 Report, in this order:
 
-1. The files changed.
+1. The commit SHA.
 2. Each open `TODO` item.
 3. The recorded-items slot and the caveat slot (`core` section Reports).
+
+Before you report, MUST check each line against `core` section Reports and cut each
+line that fails.

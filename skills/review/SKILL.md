@@ -119,12 +119,13 @@ finding.
 
 ## 5. Output
 
-- MUST start with `What this change does:` in two or three sentences, and the load
-  assumed. Then MUST give `Gates:`, one line per gate: `pass`; `fail <one line>`;
-  `fail <one line>, exists on <base>`, no blocker; `(per <who> at <commit>)` after `pass`
-  or `fail` for a run by another agent; `off <reason from the project context>`;
-  `no command`; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
-  cannot run (a file the range lacks: name the commit that adds it).
+- A reviewer subagent on a task's commit range MUST start with the load assumed only.
+  Any other review MUST start with `What this change does:` in two or three sentences,
+  and the load assumed. Then MUST give `Gates:`, one line per gate: `pass`; `fail <one
+  line>`; `fail <one line>, exists on <base>`, no blocker; `(per <who> at <commit or
+  range>)` after `pass` or `fail` for a run by another agent; `off <reason from the
+  project context>`; `no command`; `not run (<cause>)`, neither pass nor fail, when an
+  `on` gate's command cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per earlier finding: `fixed`, `open` or `not re-opened`.
 - Findings MUST come in three groups, empty groups skipped:
@@ -139,12 +140,11 @@ finding.
 - A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
   it misleads a reader into a wrong action, else Should fix.
 - Each finding MUST have a number across all groups, a bold title with `file:lines` (or
-  `commit <sha>`), then four parts of one or two short sentences each: What this is,
-  Problem, Fix, If we skip it.
+  `commit <sha>`), then three parts of one or two short sentences each: Problem, Fix,
+  If we skip it.
 - Then MUST give `Answers:`, one line per question or listed check the brief asks the
   reviewer to judge, or `no question`; then the two slots of `core` section Reports.
 - MUST end with these lines, in this order: `Verdict: Ship.` or
-  `Verdict: fix 1 and 3 first.`; `Lean: -<N> lines possible.` when lean or readability
-  findings exist, `<N>` the lines they would delete; `Not checked:` one line on what
-  mattered and could not be checked, each `per` and `not run` gate included, or `nothing`.
+  `Verdict: fix 1 and 3 first.`; `Not checked:` one line on what mattered and could
+  not be checked, each `per` and `not run` gate included, or `nothing`.
 - Nothing found: one line on what was checked MUST replace the groups; `Re-review:` stays.

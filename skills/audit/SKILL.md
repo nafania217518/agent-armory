@@ -64,7 +64,6 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:'
 - Then MUST give the findings, the tech-debt ledger, the recorded-items slot and the
   caveat slot (`core` section Reports).
 - MUST end with these lines, in this order: `Verdict:` one line (`Verdict: healthy.`, or
-  what to fix first); `Lean: -<N> lines, -<M> dependencies possible.` when lean findings
-  exist; `Not checked:` the parts not read or not run.
+  what to fix first); `Not checked:` the parts not read or not run.
 - Nothing found: MUST give `What this repo does:`, `Gates:`, the ledger, one line on
   what was checked and the two slots. The end lines follow, with `Verdict: healthy.`

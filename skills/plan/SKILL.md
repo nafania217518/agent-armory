@@ -2,11 +2,11 @@
 name: plan
 description: >
   Pre-work at three levels: strategic (the design doc and its milestone list), milestone
-  (scope, BR-n requirements, task list) and task (TR-n requirements, the plan file). Plan
-  mode, quizzes, self-review, approval, amendments, and the planner's drafting part. Use
-  for a new task, "plan this", "make a plan", "plan a milestone", "design doc", "design
-  this change", a changed requirement, "/plan", and from the code skill when no plan
-  exists.
+  (scope, BR-n requirements, the tasks and their status) and task (TR-n requirements,
+  the plan file). Plan mode, quizzes, self-review, approval, amendments, and the
+  planner's drafting part. Use for a new task, "plan this", "make a plan", "plan a
+  milestone", "design doc", "design this change", a changed requirement, "/plan", and
+  from the code skill when no plan exists.
 max-lines: 239
 ---
 
@@ -30,7 +30,7 @@ Drafting; the planner runs only Drafting.
 | Level | Doc | Template | Branch | Holds | Ids |
 |---|---|---|---|---|---|
 | strategic | `<docs>/DESIGN.md`, edited in place | `templates/strategic.md`; other sections free | `design-<topic>` | architecture, dated decisions, the milestone list and milestone status | none |
-| milestone | `<docs>/milestones/<name>.md` | `templates/milestone.md`, fixed | `milestone-<name>` | scope, the `BR` list, the task list and task status | `BR-n` |
+| milestone | `<docs>/milestones/<name>.md` | `templates/milestone.md`, fixed | `milestone-<name>` | scope, the `BR` list, the tasks and their status | `BR-n` |
 | task | `<docs>/plans/<branch>.md` | `templates/task.md`, fixed | the task branch | the `TR` list, test scope, overrides, accepted debt | `TR-n` |
 
 - A milestone or task doc MUST name its parent in its first lines, with the template's

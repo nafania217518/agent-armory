@@ -4,7 +4,7 @@ description: >
   Main-session coding lifecycle from the approved plan to the finish question: task
   branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
   Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 137
+max-lines: 138
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -97,9 +97,10 @@ follows `plan` section Amendments.
      reviewer on each such commit that is not a pure revert.
   5. Quiz loop: MUST repeat steps 3 and 4 while a re-review in step 4 adds a new
      recorded item. The loop bound (section Review loop) applies.
-  6. The report MUST hold, in this order: the requirements with their ids and status;
-     the gate results, one line per gate; what was skipped or not checked; the recorded
-     items with the quiz answers; any risk the user must know.
+  6. The report MUST hold, in this order: a one-line outcome; the met requirements in
+     one line by id range (`TR-1..TR-7 met`), then each unmet one with its id and
+     status; the gate results, one line per gate; what was skipped or not checked; each
+     recorded item with only its applied answer; any risk the user must know.
   7. Acceptance: MUST ask the user which items they want to try by hand, with the exact
      commands or clicks for each.
   8. Cleanup: MUST ask the user whether to keep the plan file and the design docs the

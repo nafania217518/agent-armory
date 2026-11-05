@@ -82,7 +82,7 @@ lines in its project context `## Test levels`.
 - A scope addition is the one exception to the ban on unrequested changes (`implement`
   section The smallest complete change). It MUST be a failing test proven missed from
   the list (`implement` section Tests while coding), or a duplicate higher-level test on
-  the touched behavior (section Pyramid). It MUST carry its reason in the list.
+  the touched behavior (section Pyramid). Its recorded item MUST carry its reason.
 - The reviewer MUST check the reason and the code of each scope addition, and decide
   whether a rework is needed.
 

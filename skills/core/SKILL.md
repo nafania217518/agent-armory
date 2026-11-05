@@ -4,7 +4,7 @@ description: >
   Always-on base rules for every armory actor: rule words, writing, questions, background
   tasks, web access, design principles, the Fable guard, report slots, host terms. Use
   for "/core".
-max-lines: 159
+max-lines: 179
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -30,6 +30,20 @@ them (section Host terms).
 - Replies and docs MUST follow "80% ASD-STE100": sentences of about 20 words max, one
   idea each, active voice, present tense, one meaning per word, no idioms, no filler.
   Natural phrasing and domain terms stay where strict STE reads badly.
+- Each main-session reply to the user MUST follow the three rules below. A skill's fixed
+  output format and the question bullets of this section win over them.
+  - Shape: MUST lead with the answer or the next action, a command, path or snippet
+    first. Before sending, MUST delete an announcing first line, a recap of done work, an
+    offer as the last line, and a side remark. The first and last lines alone MUST tell
+    what happened and what is next. A reply to "explain" or "walk through" MAY run long,
+    under headers.
+  - Lists: steps MUST be numbered, one bounded action each, the fewest that work. A
+    free-prose group SHOULD hold about five items max, most relevant first, the rest on
+    request. When completeness matters, MUST keep every relevant item.
+  - Flow: when anything is open, MUST end with one concrete next action. A second issue
+    MUST get its own question, never a clause of the first. With an approved plan, each
+    turn MUST restate step n of m and the next step through the task list, with no prose
+    copy of the plan.
 - A report SHOULD explain each technical term at first use, for a reader new to the code.
 - A code comment MUST say only the why the code cannot show, in one line. Exceptions:
   the `req:` marker (`test` section Markers) and the `tech-debt:` marker (`implement`
@@ -83,6 +97,10 @@ them (section Host terms).
   slots, and the returns other armory rules require. It MUST NOT narrate the steps,
   restate the brief, or paste file content, a diff or command output that none of these
   asks for. It MUST point to code by `path:lines` or commit SHA instead.
+- A report item is needed when the main session uses it to spawn an agent, to plan or
+  change the next work, or to put a decision to the user. A report format and a report
+  MUST hold only needed items, and every needed item. Each item MUST give only its value.
+  An item whose condition does not hold MUST be left out.
 - A caveat line, in a report or in the project context `## Caveats`, MUST take the
   format `- SHORT_DESCRIPTION : <file>`, a list item, or `- SHORT_DESCRIPTION : —` when
   no file exists yet. It MUST hold one fact. A caveat with two facts MUST become two
@@ -114,6 +132,8 @@ them (section Host terms).
   time in the task branch.
 - plan mode: the host's read-only planning mode; its exit is the approval. Fallback: the
   main session MUST ask an explicit approval question through the question tool.
+- task list: the host's list of plan steps with their status, shown to the user.
+  Fallback: the main session MUST give one line `Step <n> of <m> done. Next: <step>.`
 - hook: the host's command that injects `core` at session start and at subagent start.
   Fallback: the pointer, one line in the global context or the project context that
   MUST load `core`, and the profile when it sits elsewhere, at session start.
