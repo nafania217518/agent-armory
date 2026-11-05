@@ -1,12 +1,11 @@
 ---
 name: retro
 description: >
-  User-only: the model MUST NOT load this skill on its own; it MUST ask the user to
-  start it instead. Retrospective on the current session: ranked findings on what to
+  Retrospective on the current session: ranked findings on what to
   change in the project or in armory so that later sessions go better. Changes no file.
   Use for "/retro", "run a retro".
 disable-model-invocation: true
-max-lines: 72
+max-lines: 70
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.

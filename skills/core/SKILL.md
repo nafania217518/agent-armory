@@ -4,7 +4,7 @@ description: >
   Always-on base rules for every armory actor: rule words, writing, questions, background
   tasks, web access, design principles, the Fable guard, report slots, host terms. Use
   for "/core".
-max-lines: 179
+max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -119,30 +119,21 @@ them (section Host terms).
 
 ## 7. Host terms
 
-- question tool: the host's structured way to ask the user. Fallback: the main session
-  MUST ask in plain text, one round at a time, with numbered options and the default
-  marked.
-- skill load: the host's way to load a skill by name. Fallback: the agent MUST read the
-  skill file from the armory clone.
-- spawn: the host's way to run a subagent from an agent card. Fallback: the main session
-  MUST do that work itself under the card's rules.
+- question tool: the host's structured way to ask the user.
+- skill load: the host's way to load a skill by name.
+- spawn: the host's way to run a subagent from an agent card.
 - agent card: the host's agent definition file, rendered from an armory template.
-  Fallback: the card's rules MUST live as a section of the project context.
-- worktree: an isolated checkout per coding agent. Fallback: coders MUST run one at a
-  time in the task branch.
-- plan mode: the host's read-only planning mode; its exit is the approval. Fallback: the
-  main session MUST ask an explicit approval question through the question tool.
+- worktree: an isolated checkout per coding agent.
+- plan mode: the host's read-only planning mode; its exit is the approval.
 - task list: the host's list of plan steps with their status, shown to the user.
-  Fallback: the main session MUST give one line `Step <n> of <m> done. Next: <step>.`
 - hook: the host's command that injects `core` at session start and at subagent start.
   Fallback: the pointer, one line in the global context or the project context that
-  MUST load `core`, and the profile when it sits elsewhere, at session start.
-- global context: the file or setting the host loads in every session. Fallback: when
-  none is editable, the profile MUST stay in the run and in the report.
-- project context: the file the host loads for a project (`AGENTS.md`, `CLAUDE.md`, a
-  rules file); the skills MUST name its sections. Fallback: when none is editable, the
-  sections MUST stay in the run and in the report. Its `## Rules` line `Documentation
-  lives in <folder>` sets `<docs>` for every actor.
+  MUST load `core` at session start.
+- global context: the file the host loads in every session.
+- project context: the file the host loads for a project (`AGENTS.md`, plus a
+  `CLAUDE.md` with the line `@AGENTS.md`, which Claude Code below 2.1.277 needs to load
+  it); the skills MUST name its sections. Its `## Rules` line `Documentation lives in
+  <folder>` sets `<docs>` for every actor.
 - tracker: the system that holds the milestones, the tasks and their status (`plan`
   section Levels). Verbs: read an item (body, comments and labels), list an item's
   children, in order, each with its status, assignee and blockers, create an item, edit
@@ -151,8 +142,8 @@ them (section Host terms).
   the tracker's branch name for an item, with no side effect), and the label verbs:
   list items (by status and label), list labels, set labels (add or remove) and create
   label. The project context `## Tracker` binds each verb, the target, the
-  `closes by PR merge:` line and the `label <role>: <label>` lines (`triage`), not the
-  host profile. Fallback: the repo docs of `plan` section Levels.
+  `closes by PR merge:` line and the `label <role>: <label>` lines (`triage`).
+  Fallback: the repo docs of `plan` section Levels.
   - A subagent MAY read the tracker but MUST NOT write to it. It MUST report a needed
     write to the main session instead.
   - Each write MUST be one that the approved plan lists. Any other write MUST get the
@@ -172,8 +163,6 @@ them (section Host terms).
     existing item MUST keep the item's text and add its own sections below it.
   - When a bound tracker is unreachable, the run MUST stop before the tracker step and
     ask the user. It MUST NOT fall back to the repo docs.
-
-The host profile binds each term except `tracker` on the host; `setup` writes it.
 
 Outside this section, every skill uses these terms and skill names; it MUST NOT name a
 host's own tool or file.

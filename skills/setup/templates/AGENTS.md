@@ -40,15 +40,6 @@ Unit style: {{UNIT_STYLE}}
 
 {{LEVEL_CHANGES}}
 
-## Glossary
-
-Format: `Term : one-line meaning`, plus `. Avoid: <synonyms>` when a synonym was rejected.
-A line MUST hold only a term of the project's domain, with no implementation detail.
-
-## Caveats
-
-Format: the caveat line of the armory `core` skill, section Reports
-
 ## Tracker
 
 Format: `<verb>: <binding>`, one line per bound verb of the armory `core` skill,
@@ -65,3 +56,12 @@ Project-only rules. The armory skills hold the rest.
 
 - Documentation lives in {{DOCS}}
 {{PROJECT_RULES}}
+
+## Glossary
+
+Format: `Term : one-line meaning`, plus `. Avoid: <synonyms>` when a synonym was rejected.
+A line MUST hold only a term of the project's domain, with no implementation detail.
+
+## Caveats
+
+Format: the caveat line of the armory `core` skill, section Reports

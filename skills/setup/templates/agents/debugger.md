@@ -26,7 +26,7 @@ You diagnose one bug, and fix it when the brief names the fix flow.
 
 Report, in this order:
 
-1. The branch name of the worktree you worked in, when you have one.
+1. The branch name of your worktree.
 2. The loop command.
 3. The hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: the last output of the loop command, redacted, the

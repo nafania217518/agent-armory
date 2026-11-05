@@ -1,12 +1,11 @@
 ---
 name: triage
 description: >
-  User-only: the model MUST NOT load this skill on its own; it MUST ask the user to
-  start it instead. Triage of inbound tracker items on a bound tracker: the attention
+  Triage of inbound tracker items on a bound tracker: the attention
   list, one item at a time, a recommended category and outcome, then the writes the user
   approves. Changes no repo file. Use for "/triage", "triage the tracker".
 disable-model-invocation: true
-max-lines: 98
+max-lines: 97
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.

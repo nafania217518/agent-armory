@@ -2,8 +2,7 @@
 
 Personal agent skills, packaged as the `armory` plugin. The skills hold the rules
 and the workflows. The design is in [docs/DESIGN.md](docs/DESIGN.md). The skills use host
-terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host that reads a
-`SKILL.md`.
+terms and run on Claude Code.
 
 ## Skills
 
@@ -21,7 +20,7 @@ terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host tha
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
 | `retro` | Retrospective on the current session: ranked findings on what to change in the project or in armory. Changes no file. | main session, when the user starts it |
 | `triage` | Triage of inbound tracker items on a bound tracker: attention list, one item at a time, a recommended outcome, then the approved writes. Changes no repo file. | main session, when the user starts it |
-| `setup` | Sets up armory on the host you run in: global, project or session scope; asks the host what it can do and the user what to install; writes the project context and the agents. | main session |
+| `setup` | Sets up armory: global or project scope; probes the hook and asks the user what to install; writes the project context and the agents. | main session |
 
 ## Agents
 
@@ -39,13 +38,9 @@ terms and run on Claude Code, Codex CLI, Cursor, GitHub Copilot and any host tha
 
 ## Install
 
-Clone the repo. Then run `setup` from your host; on a host without the skill loaded,
-point the host at `skills/setup/SKILL.md` in the clone. `setup` asks the scope (global,
-project or session), reports what the host can do, asks what to install, and prints a
-report with usage notes.
-
-On Claude Code, install the plugin first, then run `/armory:setup`. Add the plugin from
-GitHub:
+Install the plugin, then run `/armory:setup`. `setup` asks the scope (global or
+project), probes the `core` hook, asks what to install, and prints a report with usage
+notes. Add the plugin from GitHub:
 
 ```bash
 /plugin marketplace add nafania217518/agent-armory
@@ -63,7 +58,7 @@ Then install:
 /plugin install armory@agent-armory
 ```
 
-The skills then load by name; on Claude Code as `/armory:<name>`.
+The skills then load by name as `/armory:<name>`.
 
 ## Release
 
@@ -80,7 +75,7 @@ parts to 0. It prints the new version.
 
 - Rules use RFC 2119 words. `core` defines what MUST, SHOULD and MAY mean. The project
   context (template in `skills/setup/templates/AGENTS.md`) holds the gates.
-- On Claude Code, `AGENTS.md` without a `CLAUDE.md` needs version 2.1.277 or later.
+- `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later.
   Below that, add a `CLAUDE.md` with the one line `@AGENTS.md`.
 - The global rules 1–8 live in `core`; the plugin hook, or the hook or pointer that
   `setup` installs, loads it.

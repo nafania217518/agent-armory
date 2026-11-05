@@ -23,7 +23,7 @@ You implement one brief.
 
 Report, in this order:
 
-1. The branch name of the worktree you worked in, when you have one.
+1. The branch name of your worktree.
 2. Gate results (`implement` section Gates per commit).
 3. Uncovered lines, only when `coverage` is `on`.
 4. What you skipped.

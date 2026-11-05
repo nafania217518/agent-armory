@@ -80,8 +80,8 @@ Drafting; the planner runs only Drafting.
 
 ## 2. Before the plan
 
-- The main session itself MUST run plan mode (else its fallback: the approval question,
-  `core` section Host terms), the quizzes and the approval.
+- The main session itself MUST run plan mode, the quizzes and the
+  approval.
 - Planning spawns researchers and the planner: MUST load `delegate` first.
 - The quizzes, the planning research and the plan MUST run in plan mode. Research during
   coding does not.
@@ -176,7 +176,7 @@ Drafting; the planner runs only Drafting.
   tracker write the run will make: creates, body edits, links, edges, comments and
   status sets. A task run MUST also list the claim and the done write of its `code` run.
 - An open question MUST go to one more quiz round.
-- Exiting plan mode, or a yes to the approval question, is the approval. On a reject,
+- Exiting plan mode is the approval. On a reject,
   MUST fix the part the user names and propose again.
 
 ## 7. Plan file
@@ -212,7 +212,7 @@ Drafting; the planner runs only Drafting.
 - A requirement that changes during work, or needs the user's answer, MUST stop the work
   until the user's yes.
 - An added or changed requirement MUST get a new id and MUST go to the user for approval,
-  with the new text, through the question tool, else its fallback. The one exception, the
+  with the new text, through the question tool. The one exception, the
   `TR` of a defect in built code (below), needs no approval: it repairs approved work.
 - An amendment MUST go to the doc that owns the fact (section Levels).
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the

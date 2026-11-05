@@ -12,13 +12,13 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 - The always-on rules live in one `core` skill, the single source. The global rules 1–8
   are part of it.
-- On Claude Code, two plugin hooks inject `core` into every session and every subagent
-  (`hooks/hooks.json`, `scripts/core-context.sh`). On other hosts, `setup` installs the
-  host's hook or the pointer (`core` section Host terms).
-- Each skill opens with "load `core` when it is not in context"; this line is the
-  fallback when neither hook nor pointer ran.
-- `setup` writes the pointer into the host's context for the chosen scope; the user
-  keeps personal items there.
+- Two plugin hooks inject `core` into every session and every subagent
+  (`hooks/hooks.json`, `scripts/core-context.sh`). The host passes only a 2 KB preview
+  of the hook output.
+- Each skill opens with "load `core` when it is not in context"; this line loads the
+  full `core` after the preview, and when neither hook nor pointer ran.
+- `setup` installs the hook or writes the pointer into the host's context for the
+  chosen scope, global or project; the user keeps personal items there.
 - The skill set has thirteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
   `test`, `debug`, `review`, `audit`, `research`, `retro`,
   `triage` and `setup`. The skills other than `core` hold the workflows.
@@ -27,13 +27,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   files into each project.
 - The agent files a project holds are generated instances of the plugin templates,
   which are the single source.
-- The project context (AGENTS.md, CLAUDE.md or a rules file, where the host loads it)
-  holds project facts and project-only rules (`setup` section Project context).
-- The skills use host terms (`core` section Host terms), bound per host by the profile
-  that `setup` writes.
-- The `tracker` host term binds per project, in the project context `## Tracker`, not
-  in the host profile. With no binding, the repo docs take its place (`core` section
-  Host terms).
+- The project context (AGENTS.md) holds project facts and project-only rules (`setup`
+  section Project context).
+- The skills use host terms (`core` section Host terms) as host-neutral names.
+- The `tracker` host term binds per project, in the project context `## Tracker`. With no
+  binding, the repo docs take its place (`core` section Host terms).
 
 ## 2. Rule strength
 
@@ -48,7 +46,7 @@ Every rule carries one RFC 2119 word.
 ## 3. The project context template
 
 The template is `skills/setup/templates/AGENTS.md`. `setup` hands its sections to the
-host, which writes them where it loads project context. Sections:
+host, which writes them into AGENTS.md. Sections:
 
 - `## What this is`: first; one paragraph on what the project is.
 - `## Commands`: one line per check, with the same name as its gate.
@@ -57,15 +55,15 @@ host, which writes them where it loads project context. Sections:
   project turns them on). No other rule has a project switch.
 - `## Test levels`: only what the project adds to or changes in the level lines of
   `test` section Levels, and the unit style (sociable or solitary).
-- `## Glossary`: `Term : one-line meaning`, with an optional
-  `. Avoid: <synonyms>`; domain terms only.
-- `## Caveats`: the caveat line of `core` section Reports.
 - `## Tracker`: optional; one line per bound verb with its binding, then the
   `target:` line, the `closes by PR merge:` line and, with the label verbs bound, one
   `label <role>: <label>` line per `triage` role. Absent: the repo docs hold the
   plan facts.
 - `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
   (`setup` section Write).
+- `## Glossary`: `Term : one-line meaning`, with an optional
+  `. Avoid: <synonyms>`; domain terms only.
+- `## Caveats`: the caveat line of `core` section Reports.
 
 ## 4. Where each rule lives
 
@@ -237,6 +235,14 @@ One dated line per decision, with the dropped alternatives.
   and questions, adapted from ayghri/i-have-adhd (<https://github.com/ayghri/i-have-adhd>,
   MIT). Dropped: time estimates, wins and error tone from that source; reply rules for
   reports and briefs.
+- 2026-11-05: `setup` serves Claude Code only, with host-neutral wording. Dropped: the
+  session scope, the host profile, the model mapping and the other-host lines. The
+  project context puts `## Glossary` and `## Caveats` last, because they change most
+  often.
+- 2026-11-05: the skills serve Claude Code only. Dropped: the host-capability fallbacks,
+  the host profile and the user-only description text. The hook and its pointer
+  fallback stay, and so does the `core` opener, because the hook passes only a 2 KB
+  preview of `core`.
 
 ## 7. Milestones
 

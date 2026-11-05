@@ -6,7 +6,7 @@ Personal agent skills, packaged as the `armory` plugin. The skills under `skills
 hold the rules for every armory actor: `core`, `plan`, `delegate`, `code`, `implement`,
 `test`, `debug`, `review`, `audit`, `research`, `retro`,
 `triage` and `setup`. The skills use host terms (`core` section Host terms) and run
-on any host that reads a `SKILL.md`. The plugin also ships the templates and the
+on Claude Code. The plugin also ships the templates and the
 hooks. The design is in `docs/DESIGN.md`.
 
 ## Commands
@@ -38,6 +38,21 @@ Unit style: sociable
 
 Surfaces: The plugin skills and templates: no test level; `lint` checks them. The
 scripts in `scripts/`: `unit`.
+
+## Rules
+
+Project-only rules. The armory skills hold the rest.
+
+- Documentation lives in docs/
+- A skill description MUST name each distinct case once; synonyms of one case MUST
+  become one trigger.
+- A skill line that the model already follows by default MUST be deleted, as a whole
+  sentence.
+- Each step in a skill MUST name a done condition that an agent can check.
+- A new or edited `MUST NOT` rule MUST also name the behavior to do instead.
+- A brief MUST name each skill it loads by its repo path, and each agent card by its
+  template path in `skills/setup/templates/agents/`, because the installed plugin can
+  lag this repo.
 
 ## Glossary
 
@@ -86,22 +101,7 @@ Format: the caveat line of the armory `core` skill, section Reports
 - Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
 - Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
 - A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
-- A host profile written before commit d9a8b8a has no `task list` line, so its sessions use the fallback until `setup` reruns : skills/setup/SKILL.md
 - This repo's `.claude/agents/` cards are tracked rendered copies, so a card template edit must also edit them : .claude/agents/coder.md
 - The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
 - On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
-
-## Rules
-
-Project-only rules. The armory skills hold the rest.
-
-- Documentation lives in docs/
-- A skill description MUST name each distinct case once; synonyms of one case MUST
-  become one trigger.
-- A skill line that the model already follows by default MUST be deleted, as a whole
-  sentence.
-- Each step in a skill MUST name a done condition that an agent can check.
-- A new or edited `MUST NOT` rule MUST also name the behavior to do instead.
-- A brief MUST name each skill it loads by its repo path, and each agent card by its
-  template path in `skills/setup/templates/agents/`, because the installed plugin can
-  lag this repo.
+- The hook output of `core` reaches a session or a subagent only as a 2 KB preview, with the full text in a file : scripts/core-context.sh

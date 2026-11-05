@@ -5,7 +5,7 @@ description: >
   returns, model and effort per spawn, the Fable question, re-spawn and retry. Loaded by
   `plan` and `code` before a spawn. Use for "delegate", "spawn an agent", "which
   model", "write a brief", "/delegate".
-max-lines: 150
+max-lines: 148
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -19,18 +19,16 @@ The main session follows this skill for each spawn of a project agent.
 
 - The main session SHOULD stay small: it delegates intensive reading (many files, long
   files, wide searches) and other bulk work to agents, and keeps only what they return.
-  It SHOULD delegate coding, review and writing to the project agents through a spawn,
-  else its fallback (`core` section Host terms).
+  It SHOULD delegate coding, review and writing to the project agents through a spawn.
 - When the main session wrote code in the task, every review MUST go to a reviewer
-  agent through a spawn, else its fallback. A bypass of the delegation rule above MUST
+  agent through a spawn. A bypass of the delegation rule above MUST
   NOT cover it.
 - In any other task, a main session that bypasses the delegation rule for a review
   MUST load `review` and run it itself.
 
 ## 2. Delegation and worktrees
 
-- Coding agents that run at once MUST each run in their own worktree. Without worktrees,
-  they MUST run one at a time (`core` section Host terms).
+- Coding agents that run at once MUST each run in their own worktree.
 - Two agents that run at once MUST NOT edit the same file.
 - A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
   task branch (the coder card sets the reset).
@@ -61,7 +59,7 @@ The main session follows this skill for each spawn of a project agent.
   whole-task checks. A re-review brief MUST hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
   the agent needs.
-- The `core` rules reach every subagent through the hook, else its fallback. A brief
+- The `core` rules reach every subagent through the hook, else the pointer. A brief
   MUST NOT repeat them or claim `core` is in context; the agent loads it when the hook
   did not.
 
@@ -87,8 +85,8 @@ The main session follows this skill for each spawn of a project agent.
 
 ## 5. Models
 
-- Fable, Opus, Sonnet and Haiku are tier names; the host profile (`setup`) maps each to
-  a model id of the host.
+- Fable, Opus, Sonnet and Haiku are tier names; each name in lower case is the model
+  value of a spawn and of an agent card.
 - Each subagent spawn SHOULD use the model and effort of its row in the table below
   (`core` section Rule words covers a bypass). The user picks the main session model.
 - A task that no row names SHOULD run on Opus, with effort from the effort map.
@@ -130,7 +128,7 @@ The main session follows this skill for each spawn of a project agent.
 ## 6. The Fable question
 
 - A frontier task, or a user request for Fable, MUST go through the Fable question: a
-  question through the question tool, else its fallback, with the options Opus high
+  question through the question tool, with the options Opus high
   (default, first), Opus max, Fable high, Fable max. `core` section Models requires the
   user's yes for any run on Fable.
 
