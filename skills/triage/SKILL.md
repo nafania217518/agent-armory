@@ -14,7 +14,7 @@ Load the `core` skill first when its rules are not in your context.
 # triage
 
 The main session sorts tracker items that people open outside an armory run, before a
-`plan` task run picks them up. It works only on the tracker (`core` section Host terms,
+`plan` run picks them up. It works only on the tracker (`core` section Host terms,
 term `tracker`), with no branch and no plan mode. It MUST write no repo file.
 
 ## 1. Start
@@ -26,7 +26,7 @@ term `tracker`), with no branch and no plan mode. It MUST write no repo file.
   `enhancement`. Each maps to its `label <role>: <label>` line. A triaged open item
   MUST carry exactly one state role and one category role.
 - On the user's no to a missing role label, MUST stop and name it.
-- Done when every verb and label line is bound, and every role label exists.
+- Done when every label verb and label line is bound, and every role label exists.
 
 ## 2. Attention list
 
@@ -46,7 +46,7 @@ the project fixes (an `accepted` item's `BR` lines, a done milestone, the docs o
 tests). Any other item, a mixed one included, is an enhancement.
 
 1. Duplicate check: MUST compare the item with the `dropped` items and the open items
-   with a state role, an `accepted` item by its `BR` lines only. On a match, MUST ask
+   outside bucket 1, an item with `BR` lines by those lines only. On a match, MUST ask
    once: duplicate of a match (up to three, the best first) or distinct. A duplicate
    MUST be rejected with a reason that links the match, and ends the item. Done when no
    item matches or the user chose.
@@ -62,8 +62,8 @@ tests). Any other item, a mixed one included, is an enhancement.
 4. MUST ask one call with two questions, the category and then the outcome, each option
    with its writes in short. The message text MUST hold the reasons, the related items,
    the `BR` lines when `accepted` is an option, and the drafted rejection reason.
-   Rejected MUST be recommended when the project already gives the item or open
-   `accepted` items cover it. With a point left to the reporter, MUST NOT offer
+   Rejected MUST be recommended when the project already gives the item or open items
+   with `BR` lines cover it. With a point left to the reporter, MUST NOT offer
    `accepted`; MUST offer the other outcomes. Done when the user chose and its writes
    are made.
 
@@ -72,8 +72,8 @@ tests). Any other item, a mixed one included, is an enhancement.
 - `accepted`: the state and category labels, and a `## Requirements` section below the
   item's text, with `BR` lines in the format of `plan` `templates/milestone.md` section
   Requirements, without its `Format:` line. The `BR` lines MUST hold only what no open
-  `accepted` item already fixes; the section MUST link each such item and name each
-  conflict the user settled. A later `plan` task run starts from the item.
+  item with `BR` lines already fixes; the section MUST link each such item and name each
+  conflict the user settled. A later `plan` milestone or task run starts from the item.
 - `needs-info`: the state and category labels, and a comment `## Triage notes`: what is
   established, and what the reporter still needs to give.
 - `needs-triage`: the state and category labels only.

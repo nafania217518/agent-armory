@@ -41,9 +41,9 @@ The main session sets up armory on its host. The user decides every write.
   "stop". Parts (b) to (d) MUST offer "install" (recommended) and "stop". "stop" MUST
   leave the part out; the run MUST go on to the next part. `setup` MUST install only
   the chosen parts.
-- The pointer MUST be one line in the project context: "At session start, load
-  the armory `core` skill." The line MUST sit at the top of that context, before the
-  first section.
+- The pointer MUST be one line in the project context: "At session start, load the
+  armory `core` skill when its rules are not in your context." The line MUST sit at
+  the top of that context, before the first section.
 - `setup` MUST name `scripts/core-context.sh` of the armory clone as the hook command
   candidate. It prints `core` as plain stdout when its input names no hook event.
 - An embedded copy of `core` MAY go into the context only when the user asks for it,
@@ -83,8 +83,7 @@ The main session writes these sections (section Write).
   `<base>`, else cut `setup-armory-<n>` with the next free `<n>`.
 - No repo: MUST run `git init` and `git commit --allow-empty -m "Start the repository"`
   on the default branch before the task branch.
-- `plan` does not apply: no plan mode, no plan file. Caveat writes: `code` section
-  Caveats, with the task branch in the place of the plan-file commit.
+- `plan` does not apply: no plan mode, no plan file.
 
 ### Questions
 
@@ -135,7 +134,6 @@ The main session writes these sections (section Write).
 ### Write
 
 - The main session MUST write the sections into the project context and report the path.
-- Documentation MUST live in the docs folder, `<docs>`. Only the README stays at the root.
 - The project context `## Rules` MUST hold the line `Documentation lives in <folder>`
   (default `docs/`).
 - The project context MUST have these sections, in this order: `## What this is` (one
@@ -144,15 +142,17 @@ The main session writes these sections (section Write).
 - `## Tracker` is the one optional section. It MUST be written only for a bound
   tracker. With the docs fallback, the section and its format line MUST be dropped.
 - `## Commands`, `## Gates`, `## Glossary` and `## Caveats` MUST take the format lines
-  of `templates/AGENTS.md`. `## Glossary` and `## Caveats` MUST start empty, with them.
+  of `templates/AGENTS.md`. `## Glossary` MUST start empty, with its format line.
+  `## Caveats` MUST hold its format line and the caveats the run found.
 - A gate's command MUST carry the gate's name. `run` is not a gate. The gates MUST be:
   `lint`, `owasp`, `unit`, `integration`, `coverage` (default `on`); `contract`,
   `functional`, `e2e` (default `off (not chosen)` until turned on).
 - The project context MUST NOT copy the global rules or the armory rules, the `test`
   level lines included. `## Test levels` MUST hold only what the project adds to or
   changes in those lines, and its unit style.
-- MUST NOT overwrite an existing project context or agent card. MUST show what exists
-  and stop. MUST add only the missing parts, and only when the user says so.
+- MUST NOT overwrite an existing project context or agent card without the user's yes
+  on the shown diff. MUST show that diff instead; on a no, MUST add only the missing
+  parts the user approves.
 - Fill `templates/AGENTS.md` from the answers. Drop a command line with no command and
   any placeholder line left empty.
 

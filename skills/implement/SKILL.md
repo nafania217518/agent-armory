@@ -19,7 +19,7 @@ reviewer judges code against it. Test rules: `test`.
 ## 1. Before you write
 
 - MUST read the task and the code it touches.
-- MUST list every place the change must reach: callers, tests, fixtures, config,
+- MUST list every place the change must reach: callers, fixtures, config,
   exports. That is the scope. Extra features are not.
 - MUST check what the change can break for users: data it would destroy or expose,
   callers that stop working.
@@ -27,9 +27,9 @@ reviewer judges code against it. Test rules: `test`.
 - Design misfit: when a new requirement does not fit the design, SHOULD ask what you
   would build had it been there from the start. When that differs from the plan, the
   coder MUST still follow the plan and MUST record the misfit with its reasoning (`core`
-  section Reports). It MAY stop and report at once when going on wastes significant
-  work. On the user's yes, the change goes back to plan mode (`plan` section
-  Amendments); the new design SHOULD ship in pieces.
+  section Reports). It MAY stop and report `stuck: <misfit>` at once when going on
+  wastes significant work. On the user's yes, the change goes back to plan mode (`plan`
+  section Amendments); the new design SHOULD ship in pieces.
 - When the plan cannot be followed at all, the coder MUST stop and report `stuck:` (the
   coder agent card).
 
@@ -45,16 +45,16 @@ reviewer judges code against it. Test rules: `test`.
   5. One line a reader gets at a glance? One line.
   6. Otherwise: the minimum code that works.
 - MUST ship the smallest complete change, once you know everything it must touch. MUST
-  finish every caller, test and fixture that the change breaks. A one-liner that needs
+  finish every caller and fixture that the change breaks. A one-liner that needs
   decoding MUST NOT count as small.
 - MUST limit the change to the scope (section Before you write) and the approved plan.
   MUST NOT make unrequested changes: refactors, renames, reformatting, fixes outside
   the scope. The one exception is the scope addition (`test` section Test scope).
-- A bug found outside the scope MUST NOT be fixed. It MUST be recorded as an
-  out-of-scope finding.
-- MUST NOT add an abstraction, wrapper, type conversion, option, config, boilerplate or
-  "for later" code that nobody asked for.
-- SHOULD keep values in the form the platform already gives.
+- A bug that neither the brief nor its plan item names, and that your change did not
+  introduce, MUST NOT be fixed. It MUST be recorded as an out-of-scope finding
+  instead, or reported as `stuck: <bug>` when it blocks the work.
+- MUST NOT add an abstraction, wrapper, option, config, boilerplate or "for later" code
+  that nobody asked for. MUST follow the ladder (above) instead.
 - MUST keep the structure the codebase already has: its layers, interfaces and
   conventions, unless the approved plan changes them (`core` section Rule words). Code
   that is already clear and local MUST stay as it is.
@@ -82,8 +82,6 @@ A human reads every line you write. `review` section Look for checks these rules
 ## 4. Domain, boundaries and state
 
 - Domain structure and types MUST make illegal states and values impossible to write.
-- SHOULD report each new domain term. The main session writes it into the project
-  context `## Glossary`, so two agents never edit that file at once.
 - MUST check and parse outside data once, where it enters. Inside, trust it.
 - SHOULD keep the business logic in pure functions.
 - MUST NOT silence the compiler.
@@ -96,10 +94,10 @@ A human reads every line you write. `review` section Look for checks these rules
 
 ## 5. Fixing and refactoring
 
-- MUST fix the root cause of each bug in scope (bugs outside it: section The smallest
-  complete change). A bug report or an own finding MUST first get a test that reproduces
-  it. Then MUST grep every caller of the function you touch and fix the cause once, in
-  the shared code. A guard that only hides the crash MUST NOT count as a fix.
+- MUST fix the root cause of each bug the brief or its plan item names (other bugs:
+  section The smallest complete change). It MUST first get a test that reproduces it.
+  Then MUST grep every caller of the function you touch and fix the cause once, in the
+  shared code. A guard that only hides the crash MUST NOT count as a fix.
 - After two failed fixes that share one premise, MUST write the premise in one sentence
   and remove it. MUST NOT start a third fix before that.
 - A coder that still has no cause after that MUST report `stuck: cause unknown`, with
@@ -114,7 +112,7 @@ A human reads every line you write. `review` section Look for checks these rules
 ## 6. Tests while coding
 
 - MUST change only the test cases on the test-scope list. A new case in an existing file
-  is an addition, not a change outside the scope.
+  is not a change outside the scope.
 - A test outside the list that the change makes fail MUST count as a bug the change
   introduced. MUST fix the code so the test passes. A test that already fails on
   `<base>`: section Gates per commit.

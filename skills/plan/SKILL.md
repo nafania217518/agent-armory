@@ -7,7 +7,7 @@ description: >
   planner's drafting part. Use for a new task, "plan this", "make a plan", "plan a
   milestone", "design doc", "design this change", a changed requirement, "/plan", and
   from the code skill when no plan exists.
-max-lines: 239
+max-lines: 240
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -36,7 +36,8 @@ Drafting; the planner runs only Drafting.
 - A milestone or task doc MUST name its parent in its first lines, with the template's
   parent line. It MUST reference a parent fact, not restate it.
 - A milestone run MUST read `<docs>/DESIGN.md` first. A task run MUST read its milestone
-  doc first.
+  doc first. Each MUST read it on `<base>`; when `<base>` lacks it, the run MUST ask the
+  user to merge the parent branch first.
 - A milestone name MUST match a line of `<docs>/DESIGN.md` section Milestones. With none,
   the strategic level MUST add it first.
 - A task run MUST take its milestone from the request. When the request names none, the
@@ -64,14 +65,16 @@ Drafting; the planner runs only Drafting.
   - milestone: the milestone item body MUST take the sections of
     `templates/milestone.md` except the title line, the parent line and Tasks, and
     except `## Goal` when the item already holds its one-line goal. Each task MUST
-    become a child item of the milestone item. Its body MUST be the `<what> : <BR list>`
+    become a child item of the milestone item. Its body MUST hold the `<what> : <BR list>`
     of the Tasks format line. Blocked-by edges MUST give the task order.
   - Status MUST live only in the tracker.
   - A milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. A task
     run MUST read its milestone item, body and comments, first.
   - A run MAY start from an existing tracker item. It MUST then read the item's body and
     comments first and take the item as its milestone or its task. Else it MUST create
-    the items only after the approval.
+    the items only after the approval. An item that holds its own `## Requirements`
+    (`triage` section Outcomes) MUST be the milestone of a milestone run, or a task with
+    no milestone of a task run, with no milestone question.
   - A task run with no task named MUST take the first ready task in the milestone item's
     child order: open, every blocker done, no assignee.
   - A task's branch MUST be the tracker's branch name for its item when the binding has
@@ -217,6 +220,7 @@ Drafting; the planner runs only Drafting.
 - An amendment MUST go to the doc that owns the fact (section Levels).
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
+- A task that its milestone doc does not list MUST get its Tasks line as an amendment.
 - A change to the design MUST go back to plan mode: quizzes, plan, approval. A redesign
   the user approves is such a change.
 - An architecture gap MUST re-enter plan mode at the strategic level, on a
@@ -226,9 +230,6 @@ Drafting; the planner runs only Drafting.
 - The main session MUST allocate every new id. A subagent MUST NOT allocate one.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
-- With a tracker bound (section Levels, tracker variant), the owning doc is the owning
-  item. After the user's yes, the main session MUST write the new id and the
-  `(replaced by <new id>)` mark into the item body before the next brief.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
 
 ## 9. Drafting

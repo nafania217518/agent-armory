@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 124
+max-lines: 125
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -27,14 +27,15 @@ What to test, at which level, and how.
 
 ## 2. Levels
 
-Each level MUST cover what its line says, in every project. A project adds to these
-lines in its project context `## Test levels`.
+Each level MUST cover what its line says. The project context `## Test levels` MAY add to
+or change these lines; that section MUST win.
 
 - unit: one unit (a function, a class, or a small cluster), fast, runs on every change.
   Frontend unit tests with the backend stubbed are `unit`.
 - integration: narrow, one integration point at a time (a real database, the file
   system, one separate service or its double), at the boundary of the service. The test
-  MUST start the real part, trigger the code that uses it, and check the result there.
+  MUST start the real part or the service double, trigger the code that uses it, and
+  check the result there.
 - contract: consumer-driven contract tests for each interface with a separate service.
   The consumer MUST write the contract; the provider MUST verify it. It keeps the
   doubles of `integration` honest.
@@ -50,7 +51,8 @@ lines in its project context `## Test levels`.
 - The project MUST pick `sociable` (real collaborators; doubles only for remote,
   non-deterministic, slow or side-effecting ones) or `solitary` (every collaborator
   doubled). Default: `sociable`.
-- You SHOULD stub queries, and verify a call only when the call is the behavior.
+- A double SHOULD stub a query. A test SHOULD verify a call only when the call is the
+  behavior.
 
 ## 4. TDD
 

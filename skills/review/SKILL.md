@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 150
+max-lines: 153
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -35,8 +35,8 @@ finding.
 
 ## 2. The diff is the truth
 
-- MUST check the commit messages or the agent reports against the diff. A wrong or
-  missing change MUST be reported.
+- MUST check the commit messages against the diff. A wrong or missing change MUST be
+  reported.
 - Stray files in the diff (test inputs, outputs, scratch scripts) MUST be reported.
 - MUST run every `on` gate at the range's last commit (a detached worktree when HEAD moved
   past it), or take the run the brief hands over; `owasp` reading included (`implement`
@@ -50,8 +50,8 @@ finding.
   MUST be reported, unless its plan item says `tests: none`.
 - A marker whose task branch or id the task does not have MUST be reported. This check
   MUST scan only the lines the diff adds or changes.
-- Test cases changed outside the declared test scope MUST be reported. `test` section
-  Test scope sets how to check a scope addition.
+- Test cases changed outside the test-scope list and its recorded scope additions MUST
+  be reported. `test` section Test scope sets how to check a scope addition.
 - When the diff touches tests, MUST apply `test` section Review checks.
 
 ## 3. Look for
@@ -113,6 +113,8 @@ finding.
   a review, a marker is a decision only when the plan's Accepted tech debt section names
   it (`plan` section The plan); one the diff adds that is not a decision MUST be reported
   as Should fix. In an audit, a marker that names its limit is a decision.
+- A finding on a design rule that the plan's Overrides section names MUST NOT be
+  reported. MUST check the code against that override instead.
 - MUST propose the smallest fix that works. SHOULD prefer fixes that delete code. MUST
   NOT add layers, frameworks or config the problem does not need.
 - MUST NOT report style taste, "consider", or vague worries.
@@ -127,24 +129,25 @@ finding.
   project context>`; `no command`; `not run (<cause>)`, neither pass nor fail, when an
   `on` gate's command cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
-  `Re-review:` line per earlier finding: `fixed`, `open` or `not re-opened` (withdrawn).
+  `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
   - Must fix: bug, security, data loss, breaks at the expected load, an `on` gate
-    failure that the change introduced.
+    failure that the change introduced, a requirement not met.
   - Should fix: risky code without a test, real slowness, duplication, a function that
     mixes jobs, code that should not exist, a smell (class Shape), code that is hard to
     read; process findings, unless one hides a bug: a breach of a `test` rule (a missing
     or wrong `req:` marker, a test case changed outside the scope), a commit message not
-    matching the diff, a stray file.
+    matching the diff, a stray file, an `on` gate with no command, a changed file no
+    gate covers, a `TR` that traces to no `BR`.
   - Nice to have: small speed-ups, shorter forms.
 - A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
   it misleads a reader into a wrong action, else Should fix.
 - Each finding MUST have a number across all groups, a bold title with `file:lines` (or
   `commit <sha>`), then three parts of one or two short sentences each: Problem, Fix,
   If we skip it.
-- Then MUST give `Answers:`, one line per question or listed check the brief asks the
-  reviewer to judge, or `no question`; then the two slots of `core` section Reports.
-- MUST end with these lines, in this order: `Verdict: Ship.` or
-  `Verdict: fix 1 and 3 first.`; `Not checked:` one line on what mattered and could
-  not be checked, each `per` and `not run` gate included, or `nothing`.
+- Then MUST give `Answers:` when the brief asks a question or names a check for the
+  reviewer to judge, one line per item; then the two slots of `core` section Reports.
+- MUST end with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`, then `Not checked:`
+  in one line when something that mattered was not checked; each `per` and `not run`
+  gate counts.
 - Nothing found: one line on what was checked MUST replace the groups; `Re-review:` stays.

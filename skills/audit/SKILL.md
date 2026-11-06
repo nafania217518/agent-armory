@@ -17,8 +17,8 @@ The reviewer runs an audit on an audit brief; the main session runs it when the 
 asks. Load `review`, `test` and `implement` first. The audit MUST apply these `review`
 rules to a whole repo or package: the full-report and read-only rules (`review` section
 Understand first, first bullet), the order of importance and the classes (`review`
-section Look for), `review` section Check before you report, and the finding format of
-`review` section Output. This skill holds only what differs from a review.
+section Look for), `review` section Check before you report, and the finding groups and
+format of `review` section Output. This skill holds only what differs from a review.
 
 ## 1. Map first
 
@@ -37,9 +37,9 @@ section Look for), `review` section Check before you report, and the finding for
 - Before you call code unused, MUST grep the whole tree, including tests, fixtures,
   config, and string or dynamic references.
 - When the tree has tests, MUST apply `test` sections Pyramid and Review checks to the
-  whole suite: the pyramid shape, duplication across levels.
-- When the `owasp` gate is `on`, MUST run the `owasp` command on the whole tree. Then
-  MUST read the entry points and data writes against the OWASP Top 10.
+  whole suite.
+- When the `owasp` gate is `on`, MUST read the entry points and data writes against the
+  OWASP Top 10.
 
 ## 3. Tech-debt ledger
 
@@ -47,7 +47,7 @@ section Look for), `review` section Check before you report, and the finding for
   comment prefixes for the stack.
 
 ```
-git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:'
+git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:' -- <target>
 ```
 
 - MUST skip hits that are not a deferral.
@@ -60,10 +60,11 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:'
 ## 4. Output
 
 - MUST start with `What this repo does:` in two or three sentences, and the load
-  assumed. Then MUST give the `Gates:` block of `review` section Output.
+  assumed. Then MUST give the `Gates:` block of `review` section Output, each `on` gate
+  run on the whole tree. A gate failure in the target MUST be a Must fix finding.
 - Then MUST give the findings, the tech-debt ledger, the recorded-items slot and the
   caveat slot (`core` section Reports).
-- MUST end with these lines, in this order: `Verdict:` one line (`Verdict: healthy.`, or
-  what to fix first); `Not checked:` the parts not read or not run.
+- MUST end with `Verdict:` in one line (`Verdict: healthy.`, or what to fix first), then
+  `Not checked:` in one line when a part was not read or not run.
 - Nothing found: MUST give `What this repo does:`, `Gates:`, the ledger, one line on
   what was checked and the two slots. The end lines follow, with `Verdict: healthy.`

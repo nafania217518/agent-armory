@@ -32,9 +32,9 @@ The main session follows this skill for each spawn of a project agent.
 - Two agents that run at once MUST NOT edit the same file.
 - A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
   task branch (the coder card sets the reset).
-- When an agent finishes in a worktree, the main session MUST merge its branch into the
-  task branch, run `lint` and `unit`, then remove the worktree. `code` section Review
-  loop sets the review that follows.
+- When a spawn in a worktree does not fail (section Re-spawn and retry), the main
+  session MUST merge its branch into the task branch, run `lint` and `unit`, then remove
+  the worktree. `code` section Review loop sets the review that follows.
 - This merge MAY run without the user's yes.
 - A diagnose-only debugger result MUST NOT be merged: the main session keeps its
   `debug-<id>` branch and removes the worktree.
@@ -44,17 +44,14 @@ The main session follows this skill for each spawn of a project agent.
 ## 3. Briefs
 
 - A coding or review brief MUST hold: the full text of each `TR` it covers, quoted from
-  the plan file, and of each `BR` it covers, quoted from the milestone doc, or from the
-  plan file for a task with no milestone (`plan` section Plan file), or with a tracker
-  bound (`plan` section Levels, tracker variant), from the item that holds it (the
-  milestone item, or the task item for a task with no milestone), read at brief time;
-  the test-scope list (`test` section Test scope), from the plan; for a review brief,
-  also each scope addition with its reason, from the coder or debugger recorded-items
-  slot; the project context lines of `## Commands`, `## Gates`, `## Test levels` (the
-  unit style included), `## Rules` and `## Caveats` that apply; which skills or skill
-  sections the agent loads; the task branch and `<base>` (`code` section Branch and
-  plan file); the plan's Overrides and Accepted tech debt sections (`plan` section The
-  plan).
+  the plan file, and of each `BR` it covers, quoted from the doc or item that holds it
+  (`plan` section Requirements), read at brief time; the test-scope list (`test` section
+  Test scope), from the plan; for a review brief, also each scope addition with its
+  reason, from the coder or debugger recorded-items slot; the project context lines of
+  `## Commands`, `## Gates`, `## Test levels` (the unit style included), `## Rules` and
+  `## Caveats` that apply; which skills or skill sections the agent loads; the task
+  branch and `<base>` (`code` section Branch and plan file); the plan's Overrides and
+  Accepted tech debt sections (`plan` section The plan).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. An audit brief MUST hold the audit target (`audit` section Map
   first) in place of the range and the task items. A re-review brief MUST hold the
@@ -129,10 +126,10 @@ The main session follows this skill for each spawn of a project agent.
 
 ## 6. The Fable question
 
-- A frontier task, or a user request for Fable, MUST go through the Fable question: a
-  question through the question tool, with the options Opus high
-  (default, first), Opus max, Fable high, Fable max. `core` section Models requires the
-  user's yes for any run on Fable.
+- A frontier task, or a user request for Fable, MUST go through the Fable question once
+  per task (its answer covers each later spawn): a question through the question tool,
+  with the options Opus high (default, first), Opus max, Fable high, Fable max. `core`
+  section Models requires the user's yes for any run on Fable.
 
 ## 7. Re-spawn and retry
 

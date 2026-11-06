@@ -32,10 +32,10 @@ what to change in the project or in armory so that later sessions go better.
   - Navigation and information access. Use when the session took long to find a fact,
     or could not reach it. The change: a pointer in the project context or a doc, or
     read access (logs, a tool).
-  - Checks and review rules. Use when a mistake got past a gate or the reviewer. A
-    mechanical miss (a fixed pattern, a banned call, a file place) MUST get a check: a
-    lint rule, a gate or a hook. A judgement miss MUST get a review rule (`review`, or
-    the project context `## Rules`).
+  - Checks and review rules. Use when a mistake was made, or got past a gate or the
+    reviewer. A mechanical miss (a fixed pattern, a banned call, a file place) MUST get
+    a check: a lint rule, a gate or a hook. A judgement miss MUST get a rule where it
+    happened (a skill, an agent card or the project context `## Rules`), or in `review`.
   - Context size and no-op lines. Use when a line of the project context, the user's
     global context file or a skill changed no behavior, or belongs in a check or a
     review rule.
@@ -50,8 +50,7 @@ what to change in the project or in armory so that later sessions go better.
 - Each finding MUST name these fields:
   - class: one of section Finding classes;
   - severity: High, Medium or Low (below);
-  - target: the project or armory;
-  - file: the file to change; for armory, the skill file and its section;
+  - file: the file to change, and its section for a skill;
   - change: what to change in that file;
   - evidence: the step of this session where the miss cost something.
 - Severity MUST follow the cost of the miss. High: the miss gave a wrong result, or
@@ -67,5 +66,6 @@ what to change in the project or in armory so that later sessions go better.
 - No finding: MUST say so and skip the question. One finding: MUST ask yes or no,
   single-select. More than four: MUST split them into questions of 2–4 options, up to
   four questions per call (`core` section Writing and questions).
-- MUST NOT start the task. MUST name each chosen finding as a task to plan instead.
+- MUST NOT start the task or create its item. MUST name each chosen finding as a task to
+  plan instead.
 - Done when the user answered, or no finding exists.

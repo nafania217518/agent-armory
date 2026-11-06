@@ -97,14 +97,14 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   lines, or one line with only the fact a reader would not expect.
 - A finding that the output already numbers MUST be referenced by its number in the
   recorded-items slot, not repeated.
-- These items MUST be recorded during the task: each SHOULD bypass and each override made
-  during the work (section Rule words), scope addition (`test` section Test scope), design
+- These items MUST be recorded during the task: each SHOULD bypass made during the work
+  (section Rule words), scope addition (`test` section Test scope), design
   misfit (`implement` section Before you write), out-of-scope finding (`implement`
   sections The smallest complete change and Gates per commit; `test` section Pyramid), and
   Should fix or Nice to have finding (`review` section Output).
 - The main session MUST make every write to the project context `## Caveats`; a
   subagent MUST NOT write to it. `code` section Caveats sets when the main session
-  writes.
+  writes. Outside a plan or code run, the main session MUST ask the user first.
 
 ## 7. Host terms
 

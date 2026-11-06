@@ -30,9 +30,9 @@ How to check a claim against sources. The main session delegates; the researcher
 
 - MUST read the official documentation, changelog or source code first.
 - When the official source is unclear, old or disputed, SHOULD read at least 3 further
-  independent sources. A copy of the same text MUST NOT count as independent.
-- An agent on the Sonnet research row that meets such a source MUST stop and report
-  `sources disagree`. The main session MUST then re-spawn it on the Opus research row.
+  independent sources. A copy of the same text MUST NOT count as independent. An agent
+  on the Sonnet research row MUST stop there instead and report `sources disagree`. The
+  main session MUST then re-spawn it on the Opus research row.
 - MUST note the date of each source. SHOULD prefer the newest primary source. An older
   primary source SHOULD beat a newer secondary one.
 - When sources disagree, MUST say so, name the source you trust, and say why.
@@ -43,9 +43,4 @@ The result MUST hold, in this order:
 
 1. The claim, in one or two sentences, with its confidence: confirmed, likely, or open.
 2. The sources, one per line: title, URL, date, what it says.
-3. The recorded-items slot and the caveat slot (section Caveats).
-
-## 4. Caveats
-
-`core` section Reports holds the two slots, what counts as a caveat and the line format.
-The main session writes each caveat into the project context (`code` section Caveats).
+3. The recorded-items slot and the caveat slot (`core` section Reports).
