@@ -5,7 +5,7 @@ description: >
   the user what to install, then writes and reports.
   Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 166
+max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -139,6 +139,8 @@ The main session writes these sections (section Write).
 - The main session MUST write the sections into the project context and report the path.
 - The project context `## Rules` MUST hold the line `Documentation lives in <folder>`
   (default `docs/`).
+- An `auto-fix:` answer to question 7 MUST replace the template line
+  `- auto-fix: none`.
 - The project context MUST have these sections, in this order: `## What this is` (one
   paragraph on what the project is), `## Commands`, `## Gates`, `## Test levels`,
   `## Tracker`, `## Rules` (project-only rules), `## Glossary`, `## Caveats`.

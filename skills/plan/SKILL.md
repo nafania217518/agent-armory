@@ -7,7 +7,7 @@ description: >
   planner's drafting part. Use for a new task, "plan this", "make a plan", "plan a
   milestone", "design doc", "design this change", a changed requirement, "/plan", and
   from the code skill when no plan exists.
-max-lines: 240
+max-lines: 246
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -231,6 +231,12 @@ Drafting; the planner runs only Drafting.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
+- When an amendment replaces or removes a term (a profile, a file, a class), the main
+  session MUST grep the owning doc, the plan file and the project context for that
+  term before it asks for the approval. Each requirement line that names the term
+  MUST join that amendment's question, with its new id. At the amendment commit, the
+  main session MUST mark those lines `(replaced by <new id>)` and MUST update each
+  other line that names the term, such as a Risks or a Caveats line.
 
 ## 9. Drafting
 

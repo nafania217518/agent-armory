@@ -21,6 +21,10 @@ How to check a claim against sources. The main session delegates; the researcher
 - A claim that can be outdated is a hypothesis until a source confirms it. It MUST go
   to research when the plan or the code depends on it and the installed source, the
   types or the repo docs do not settle it.
+- A claim about a library's runtime behavior (a default, a thread pool, an order, a
+  version difference) MUST cite its source: the file in the dependency cache, the
+  official docs, or a run. Else it MUST carry the `Unverified:` part (`review` section
+  Output).
 - The main session MUST delegate web search and page reading to an agent on a research
   row (`delegate` section Models). Raw page text MUST NOT enter the main context.
 - The agent MUST return only the result of section Result. A subagent MUST do the web

@@ -18,6 +18,7 @@ You implement one brief.
   When it holds no change and no commit beyond the task branch, MUST reset it as above;
   else MUST keep its work, with no reset.
 - MUST follow the brief in full.
+- A library claim in your report MUST follow `research` section When to research.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.
 

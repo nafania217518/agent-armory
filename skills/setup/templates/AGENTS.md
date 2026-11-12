@@ -52,9 +52,11 @@ with the label verbs bound, `label <role>: <label>`, one per role of the armory
 
 ## Rules
 
-Project-only rules. The armory skills hold the rest.
+Project-only rules. The armory skills hold the rest. The `auto-fix:` values are in the
+armory `code` skill, section Review loop.
 
 - Documentation lives in {{DOCS}}
+- auto-fix: none
 {{PROJECT_RULES}}
 
 ## Glossary

@@ -116,3 +116,4 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A worktree-isolated subagent cannot run git in another agent's worktree, so a retry brief that names the first spawn's worktree cannot be followed : skills/setup/templates/agents/coder.md
 - The `doc-checks.mjs` width check skips `AGENTS.md` and `docs/plans/`, so a 90-character rule on "each changed line" is not enforced there : scripts/doc-checks.mjs
 - A `plan` run from an accepted item leaves to the model where its new `BR` lines go beside triage's `## Requirements` : skills/plan/SKILL.md
+- A caveat line with an unchecked claim has a third field, ` : Unverified: ...`, that the format in `core` section Reports does not show : skills/review/SKILL.md

@@ -52,15 +52,17 @@ AGENTS.md. Sections:
 - `## Commands`: one line per check, with the same name as its gate.
 - `## Gates`: `on`, or `off <reason>`. Gates: `lint`, `owasp`, `unit`, `integration`,
   `coverage`, and the flexible levels `contract`, `functional`, `e2e` (off until the
-  project turns them on). No other rule has a project switch.
+  project turns them on). No other rule has a project switch, except the `## Rules` line
+  `auto-fix:` (`code` section Review loop).
 - `## Test levels`: only what the project adds to or changes in the level lines of
   `test` section Levels, and the unit style (sociable or solitary).
 - `## Tracker`: optional; one line per bound verb with its binding, then the
   `target:` line, the `closes by PR merge:` line and, with the label verbs bound, one
   `label <role>: <label>` line per `triage` role. Absent: the docs fallback holds
   what the tracker would hold (section Planning levels).
-- `## Rules`: project-only rules, and always the line `Documentation lives in <folder>`
-  (`setup` section Write).
+- `## Rules`: project-only rules, always the line `Documentation lives in <folder>`
+  (`setup` section Write), and the template line `auto-fix: none` (`code` section
+  Review loop).
 - `## Glossary`: `Term : one-line meaning`, with an optional
   `. Avoid: <synonyms>`; domain terms only.
 - `## Caveats`: the caveat line of `core` section Reports.

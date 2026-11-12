@@ -4,7 +4,7 @@ description: >
   Main-session coding lifecycle from the approved plan to the finish question: task
   branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
   Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 154
+max-lines: 165
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -53,7 +53,8 @@ caveat slot, the caveat format, the subagent ban and the recorded items are in `
 section Reports.
 
 - The main session MUST write each caveat it receives or finds after the plan-file
-  commit into the project context `## Caveats` immediately.
+  commit into the project context `## Caveats` immediately; a caveat with an
+  `Unverified:` part first gets the check of section Review loop.
 
 ## 3. Running the plan
 
@@ -71,14 +72,20 @@ follows `plan` section Amendments.
 
 - The reviewer MUST run on each coder or fix-flow debugger result: its diff, after the
   merge when the agent ran in a worktree.
-- After a review, the main session MUST have each Must fix item fixed (`delegate`
-  section Context), run the reviewer on the fix commits, and repeat until no Must fix
-  remains.
-- A finding with an `Unverified:` part (`review` section Output) MUST be checked
-  before a fix brief or the recorded-items quiz: by the main session with one targeted
-  command, or by a coder whose brief says "check the claim first; change nothing if it
-  is false". A false finding MUST be dropped; the task report MUST name it, with the
-  disproving command, in its skipped line (section Task end, step 6).
+- After a review, the main session MUST have each Must fix item and each auto-fix
+  finding fixed (`delegate` section Context), run the reviewer on the fix commits, and
+  repeat until none remains.
+- An auto-fix finding is one of a class that the project context `## Rules` line
+  `auto-fix: <classes>` names: `should` (Should fix) and `nice` (Nice to have), or
+  `none`. A missing line MUST mean `none`.
+- A finding or a caveat with an `Unverified:` part (`review` section Output, `research`
+  section When to research) MUST be checked before a fix brief, the recorded-items quiz
+  or a `## Caveats` write: by the main session with one targeted command, by a coder
+  whose brief says "check the claim first; change nothing if it is false", or, when a
+  web source can settle the claim, by a researcher (`research` section When to
+  research). A false finding or caveat MUST be dropped; the task report MUST name it,
+  with the disproving command or source, in its skipped line (section Task end, step
+  6). A claim the check does not settle MUST keep its `Unverified:` part.
 - Loop bound: when a loop needs a third round, the main session MUST ask the user first.
 - The final review MUST cover only the commits since the last review, or since `<base>`
   when none ran. It MUST add these whole-task checks on `<base>..HEAD`: each requirement
@@ -94,7 +101,8 @@ follows `plan` section Amendments.
   - other SHOULD bypass made during the work: accept, or undo if possible;
   - out-of-scope finding or design misfit: fix as an amendment, make it a follow-up, or
     ignore;
-  - Should fix or Nice to have finding: fix now, make it a follow-up, or ignore.
+  - Should fix or Nice to have finding: fix now, make it a follow-up, or ignore; an
+    auto-fix finding (section Review loop) MUST skip the quiz.
 - A follow-up MUST be a new open tracker item; the quiz answer is the yes to that
   create. With no tracker bound, it MUST be a line in the task report.
 - The main session MUST take these steps in this order:
@@ -147,6 +155,9 @@ follows `plan` section Amendments.
   Branch and plan file guards each push and merge.
 - A merge into `<base>` MUST merge into the local default branch. With a remote, the
   main session MUST then ask a separate question whether to push that branch.
+- After a push to a branch with an open PR, the main session MUST compare the PR body
+  with the plan (the `TR` range, the design lines) and the latest gate results, and
+  MUST update each stale line in the same step. The push yes covers that edit.
 - A PR body MUST take the sections, order and format lines of `templates/pr.md`,
   relative to this skill.
 - With a tracker bound and a closing reference form in `closes by PR merge:`, the PR
