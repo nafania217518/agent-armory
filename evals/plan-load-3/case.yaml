@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: plan-load-3
+runs: 1
+execution:
+  prompt: "Plan a milestone for the billing rewrite."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: plan-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?plan"'
+    min: 1

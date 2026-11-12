@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: code-skip-1
+runs: 1
+execution:
+  prompt: "Make a plan for adding dark mode; don't write any code yet."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: code-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?code"'
+    min: 0
+    max: 0

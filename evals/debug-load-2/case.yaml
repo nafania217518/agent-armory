@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: debug-load-2
+runs: 1
+execution:
+  prompt: "The checkout test fails about one run in ten and I have no idea why. Find the cause."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: debug-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?debug"'
+    min: 1

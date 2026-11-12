@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: test-load-1
+runs: 1
+execution:
+  prompt: "I want to write this feature TDD style; which test rules apply?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: test-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?test"'
+    min: 1

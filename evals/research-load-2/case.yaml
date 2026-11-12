@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: research-load-2
+runs: 1
+execution:
+  prompt: "Is this still true: Postgres 17 removed vacuum_defer_cleanup_age?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: research-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?research"'
+    min: 1

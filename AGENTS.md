@@ -117,3 +117,11 @@ Format: the caveat line of the armory `core` skill, section Reports
 - A `plan` run from an accepted item leaves to the model where its new `BR` lines go beside triage's `## Requirements` : skills/plan/SKILL.md
 - A caveat line with an unchecked claim has a third field, ` : Unverified: ...`, that the format in `core` section Reports does not show : skills/review/SKILL.md
 - A CRLF `skills/core/SKILL.md` makes `core-context.sh` exit 1 with "missing or has no body", because `/^---$/` does not match `---\r` : scripts/core-context.sh
+- A worktree-isolated subagent cannot run `claude plugin eval`, because the guard refuses a command with the word `eval` : skills/setup/templates/agents/coder.md
+- A new model-loaded skill fails `lint` until it has 3 load and 1 skip eval cases : scripts/doc-checks.mjs
+- A `prompt.md`-only eval case is valid for `claude plugin eval`, but the `lint` eval-coverage check does not count it : scripts/doc-checks.mjs
+- A `tool_order` grader passes only when both tools are called, so it cannot assert that a skill is not loaded : evals/
+- `core-load-1` copies the `core` description trigger "show the armory base rules" almost word for word, so it tests little : evals/core-load-1/case.yaml
+- `review-skip-1` reuses the `debug-load-2` prompt almost word for word : evals/review-skip-1/case.yaml
+- `core` needs only 1 load eval case, so its coverage failure reads "core: fewer than 1 load evals" : scripts/doc-checks.mjs
+- The `core` test fixture in `doc-checks.test.mjs` edits the skill list texts by string replace, so a reworded list breaks it : scripts/doc-checks.test.mjs

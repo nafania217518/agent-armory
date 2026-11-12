@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: debug-load-1
+runs: 1
+execution:
+  prompt: "Users get logged out at random and nobody knows why; diagnose it."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: debug-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?debug"'
+    min: 1

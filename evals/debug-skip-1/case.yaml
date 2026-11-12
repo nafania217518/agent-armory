@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: debug-skip-1
+runs: 1
+execution:
+  prompt: "Review my PR for the retry logic."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: debug-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?debug"'
+    min: 0
+    max: 0

@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: delegate-load-2
+runs: 1
+execution:
+  prompt: "Write a brief to spawn an agent that adds the CSV export."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: delegate-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?delegate"'
+    min: 1

@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: implement-load-3
+runs: 1
+execution:
+  prompt: "Which checks must pass on each commit under the armory coding rules?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: implement-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?implement"'
+    min: 1

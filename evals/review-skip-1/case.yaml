@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: review-skip-1
+runs: 1
+execution:
+  prompt: "The checkout test fails one run in ten; find the cause."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: review-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?review"'
+    min: 0
+    max: 0

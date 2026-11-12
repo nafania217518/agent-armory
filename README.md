@@ -71,6 +71,34 @@ node scripts/bump-version.mjs <major|minor|patch>
 It raises that part of the version in `.claude-plugin/plugin.json` and sets the lower
 parts to 0. It prints the new version.
 
+## Evals
+
+The suite in `evals/` checks skill triggers only: does a prompt load the right skill?
+Each model-loaded skill has 3 load cases (`core` 1: the hook injects it),
+`evals/<skill>-load-<n>/case.yaml`, and 1 skip case, `evals/<skill>-skip-<n>/case.yaml`,
+whose near-miss prompt must not load it. `lint` fails when a skill lacks them.
+
+A run costs money, so it stays manual. Run it from the repo root on one model:
+
+```bash
+claude plugin eval . --ablation none --runs 3 --no-publish --model haiku --max-cost-usd 25
+claude plugin eval . --ablation none --runs 3 --no-publish --model sonnet --max-cost-usd 25
+claude plugin eval . --ablation none --runs 3 --no-publish --model opus --max-cost-usd 25
+```
+
+One run per case is noisy: on Opus a load case can miss once and pass on the next run.
+Treat a case as a real miss only when it fails on most of its 3 runs. The command still
+exits 1 when any case scores below 1.0 (`--threshold`, default 1.0), so read the
+per-case scores, not the exit code. An Opus run costs about $17 (114 runs at about
+$0.15).
+
+`--ablation none` is needed: under the default two arms, `tool: Skill` graders do not
+score. Results go to `evals/results/`, which git ignores.
+
+The eval child gets no keychain login. Export `CLAUDE_CODE_OAUTH_TOKEN` (from
+`claude setup-token`) or `ANTHROPIC_API_KEY` in the shell that runs the command,
+never in a tracked file.
+
 ## Notes
 
 - Rules use RFC 2119 words. `core` defines what MUST, SHOULD and MAY mean. The project

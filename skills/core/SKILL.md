@@ -2,7 +2,7 @@
 name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
-  session and subagent start. Use for "/core".
+  session and subagent start. Use for "/core" and "show the armory base rules".
 max-lines: 149
 ---
 

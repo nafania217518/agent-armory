@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: implement-load-1
+runs: 1
+execution:
+  prompt: "Which coding rules apply to a safe refactor of this module?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: implement-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?implement"'
+    min: 1

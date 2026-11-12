@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: research-skip-1
+runs: 1
+execution:
+  prompt: "Audit this repo for security holes."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: research-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?research"'
+    min: 0
+    max: 0

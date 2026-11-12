@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: code-load-2
+runs: 1
+execution:
+  prompt: "Fix the off-by-one bug in the pagination helper."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: code-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?code"'
+    min: 1

@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: review-load-3
+runs: 1
+execution:
+  prompt: "Is this over-engineered? Look at my change to the cache layer."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: review-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?review"'
+    min: 1

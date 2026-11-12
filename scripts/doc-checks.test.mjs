@@ -55,6 +55,14 @@ function writeRepo(changes = {}) {
   for (const [rel, text] of Object.entries({ ...listTexts(), ...changes })) {
     writeFile(rel, text);
   }
+  for (const skill of ['plan', 'code', 'delegate']) writeEvals(skill);
+}
+
+// The 3 load cases and 1 skip case that the eval-coverage check asks of a skill.
+function writeEvals(skill) {
+  for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+    writeFile(`evals/${skill}-${name}/case.yaml`, 'name: x\n');
+  }
 }
 
 function run(args = [], cwd = tmpDir) {
@@ -376,6 +384,89 @@ describe('doc-checks', () => {
       const r = run([tmpDir], tmpdir());
       assert.equal(r.status, 1);
       assert.equal(r.stderr, 'docs/milestones/m.md:1: 91 > 90\n');
+    });
+  });
+
+  // req: skill-evals/TR-1
+  describe('eval coverage', () => {
+    beforeEach(() => writeRepo());
+
+    test('full_coverage_passes', () => {
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stderr, '');
+    });
+
+    test('two_load_dirs_fail', () => {
+      rmSync(join(tmpDir, 'evals/code-load-3'), { recursive: true });
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'code: fewer than 3 load evals\n');
+    });
+
+    test('no_skip_dir_fails', () => {
+      rmSync(join(tmpDir, 'evals/plan-skip-1'), { recursive: true });
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'plan: no skip eval\n');
+    });
+
+    test('user_only_skill_needs_no_evals', () => {
+      writeFile('skills/delegate/SKILL.md', '---\nname: delegate\n'
+        + 'disable-model-invocation: true\n---\n'
+        + listTexts()['skills/delegate/SKILL.md']);
+      for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+        rmSync(join(tmpDir, `evals/delegate-${name}`), { recursive: true });
+      }
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stderr, '');
+    });
+
+    test('dir_without_case_yaml_does_not_count', () => {
+      rmSync(join(tmpDir, 'evals/code-load-3/case.yaml'));
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'code: fewer than 3 load evals\n');
+    });
+
+    // req: skill-evals/TR-11
+    test('core_with_one_load_and_one_skip_passes', () => {
+      const t = listTexts();
+      const addCore = (text) => text.replaceAll('plan, code and delegate', 'core, plan, code and delegate');
+      writeRepo({
+        '.claude-plugin/plugin.json': addCore(t['.claude-plugin/plugin.json']),
+        '.claude-plugin/marketplace.json': addCore(t['.claude-plugin/marketplace.json']),
+        'docs/DESIGN.md': t['docs/DESIGN.md'].replace('three skills: `plan`', 'four skills: `core`, `plan`'),
+        'AGENTS.md': t['AGENTS.md'].replace('actor: `plan`', 'actor: `core`, `plan`'),
+        'README.md': t['README.md'].replace('| `plan`', '| `core` | Rules. |\n| `plan`'),
+      });
+      writeFile('skills/core/SKILL.md', '---\nname: core\n---\nbody\n');
+      writeFile('evals/core-load-1/case.yaml', 'name: x\n');
+      writeFile('evals/core-skip-1/case.yaml', 'name: x\n');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stderr, '');
+    });
+
+    // req: skill-evals/TR-11
+    test('other_skill_with_one_load_still_fails', () => {
+      rmSync(join(tmpDir, 'evals/code-load-3'), { recursive: true });
+      rmSync(join(tmpDir, 'evals/code-load-2'), { recursive: true });
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'code: fewer than 3 load evals\n');
+    });
+
+    test('no_evals_dir_reports_every_skill', () => {
+      rmSync(join(tmpDir, 'evals'), { recursive: true });
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, [
+        'code: fewer than 3 load evals', 'code: no skip eval',
+        'delegate: fewer than 3 load evals', 'delegate: no skip eval',
+        'plan: fewer than 3 load evals', 'plan: no skip eval', '',
+      ].join('\n'));
     });
   });
 

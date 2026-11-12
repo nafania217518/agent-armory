@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: plan-skip-1
+runs: 1
+execution:
+  prompt: "Explain how the pagination helper works."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: plan-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?plan"'
+    min: 0
+    max: 0

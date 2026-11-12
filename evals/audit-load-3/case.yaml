@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: audit-load-3
+runs: 1
+execution:
+  prompt: "List the tech debt in this package."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: audit-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?audit"'
+    min: 1

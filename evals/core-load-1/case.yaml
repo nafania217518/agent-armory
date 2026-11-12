@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: core-load-1
+runs: 1
+execution:
+  prompt: "Show me the armory base rules."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: core-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?core"'
+    min: 1

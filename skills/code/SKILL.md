@@ -2,9 +2,10 @@
 name: code
 description: >
   Runs a coding task from the approved plan to the merge or PR: task branch, coder briefs,
-  review and fix loop, task report, finish question. Use on every coding task: "/code",
-  "implement", "fix", "refactor", "add a feature".
-max-lines: 168
+  review and fix loop, task report, finish question. Load it before the first code
+  search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
+  feature".
+max-lines: 169
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.

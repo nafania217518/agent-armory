@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: core-skip-1
+runs: 1
+execution:
+  prompt: "What test levels does armory use, and when is TDD required?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: core-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?core"'
+    min: 0
+    max: 0

@@ -2,7 +2,7 @@
 name: delegate
 description: >
   How the main session spawns project agents: the brief, the worktree, the model and
-  effort per spawn, and retries. Loaded by `plan` and `code` before a spawn. Use for
+  effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
 max-lines: 150
 ---

@@ -210,6 +210,35 @@ function cardFailures(root) {
   return failures;
 }
 
+function isModelLoaded(root, skill) {
+  const text = readFileSync(path.join(root, 'skills', skill, 'SKILL.md'), 'utf8');
+  const front = text.startsWith('---\n') ? text.slice(4, text.indexOf('\n---', 4)) : '';
+  return !/^disable-model-invocation:\s*true\s*$/m.test(front);
+}
+
+function evalCount(root, skill, kind) {
+  const dir = path.join(root, 'evals');
+  if (!existsSync(dir)) return 0;
+  const pattern = new RegExp(`^${skill}-${kind}-\\d+$`);
+  return readdirSync(dir)
+    .filter((name) => pattern.test(name) && existsSync(path.join(dir, name, 'case.yaml')))
+    .length;
+}
+
+// The hook injects `core`, so one load case is enough for it.
+const LOAD_CASES = (skill) => (skill === 'core' ? 1 : 3);
+
+function evalFailures(root) {
+  return skillNames(root)
+    .sort()
+    .filter((skill) => isModelLoaded(root, skill))
+    .flatMap((skill) => [
+      ...(evalCount(root, skill, 'load') < LOAD_CASES(skill)
+        ? [`${skill}: fewer than ${LOAD_CASES(skill)} load evals`] : []),
+      ...(evalCount(root, skill, 'skip') < 1 ? [`${skill}: no skip eval`] : []),
+    ]);
+}
+
 function main() {
   const args = process.argv.slice(2);
   if (args.length > 1) {
@@ -221,6 +250,7 @@ function main() {
     ...widthFiles(root).flatMap((rel) => widthFailures(root, rel)),
     ...listFailures(root),
     ...cardFailures(root),
+    ...evalFailures(root),
   ];
   for (const failure of failures) process.stderr.write(`${failure}\n`);
   process.exit(failures.length > 0 ? 1 : 0);

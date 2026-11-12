@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: plan-load-2
+runs: 1
+execution:
+  prompt: "Design doc for moving our jobs to a queue, please."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: plan-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?plan"'
+    min: 1

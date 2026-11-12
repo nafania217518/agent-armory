@@ -1,0 +1,14 @@
+schema_version: "1.1"
+name: audit-skip-1
+runs: 1
+execution:
+  prompt: "Review the last commit I made to the login handler."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: audit-not-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?audit"'
+    min: 0
+    max: 0

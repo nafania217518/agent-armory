@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: audit-load-1
+runs: 1
+execution:
+  prompt: "Audit this codebase and give me a ranked list of what is wrong."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: audit-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?audit"'
+    min: 1
