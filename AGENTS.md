@@ -107,7 +107,6 @@ Format: the caveat line of the armory `core` skill, section Reports
 - Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
 - Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
 - A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
-- This repo's `.claude/agents/` cards are tracked rendered copies, so a card template edit must also edit them : .claude/agents/coder.md
 - The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
 - On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
 - `wc -m` counts bytes in the C locale, so it reports 10,004 for a 9,998-character `core` : scripts/core-context.sh
@@ -117,3 +116,4 @@ Format: the caveat line of the armory `core` skill, section Reports
 - The `doc-checks.mjs` width check skips `AGENTS.md` and `docs/plans/`, so a 90-character rule on "each changed line" is not enforced there : scripts/doc-checks.mjs
 - A `plan` run from an accepted item leaves to the model where its new `BR` lines go beside triage's `## Requirements` : skills/plan/SKILL.md
 - A caveat line with an unchecked claim has a third field, ` : Unverified: ...`, that the format in `core` section Reports does not show : skills/review/SKILL.md
+- A CRLF `skills/core/SKILL.md` makes `core-context.sh` exit 1 with "missing or has no body", because `/^---$/` does not match `---\r` : scripts/core-context.sh

@@ -189,6 +189,27 @@ function listFailures(root) {
   });
 }
 
+function cardBody(file) {
+  return readFileSync(file, 'utf8')
+    .split('\n')
+    .filter((line) => !line.startsWith('model:') && !line.startsWith('effort:'))
+    .join('\n');
+}
+
+function cardFailures(root) {
+  const dir = path.join(root, '.claude', 'agents');
+  if (!existsSync(dir)) return [];
+  const failures = [];
+  for (const file of readdirSync(dir).filter((f) => f.endsWith('.md')).sort()) {
+    const template = path.join(root, 'skills', 'setup', 'templates', 'agents', file);
+    if (!existsSync(template)) continue;
+    if (cardBody(path.join(dir, file)) !== cardBody(template)) {
+      failures.push(`${file.slice(0, -3)}: rendered copy differs from template`);
+    }
+  }
+  return failures;
+}
+
 function main() {
   const args = process.argv.slice(2);
   if (args.length > 1) {
@@ -199,6 +220,7 @@ function main() {
   const failures = [
     ...widthFiles(root).flatMap((rel) => widthFailures(root, rel)),
     ...listFailures(root),
+    ...cardFailures(root),
   ];
   for (const failure of failures) process.stderr.write(`${failure}\n`);
   process.exit(failures.length > 0 ? 1 : 0);

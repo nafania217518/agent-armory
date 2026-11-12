@@ -1,10 +1,10 @@
 ---
 name: code
 description: >
-  Main-session coding lifecycle from the approved plan to the finish question: task
-  branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
-  Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 165
+  Runs a coding task from the approved plan to the merge or PR: task branch, coder briefs,
+  review and fix loop, task report, finish question. Use on every coding task: "/code",
+  "implement", "fix", "refactor", "add a feature".
+max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -107,7 +107,8 @@ follows `plan` section Amendments.
   create. With no tracker bound, it MUST be a line in the task report.
 - The main session MUST take these steps in this order:
   1. MUST run the final review and its fix loop (section Review loop).
-  2. MUST run the recorded-items quiz, then apply the answers.
+  2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
+     item has its applied answer.
   3. After any commit since the last review: MUST run `lint` and `unit` again, and the
      reviewer on each such commit that is not a pure revert.
   4. Quiz loop: MUST repeat steps 2 and 3 while a re-review in step 3 adds a new
@@ -115,17 +116,18 @@ follows `plan` section Amendments.
   5. Stray-task check: MUST check each task in the scope of `core` section Tools and
      background tasks. One that still runs with no valid reason is a stray task: MUST
      stop it, report it as a finding, and write a caveat on its cause (section Caveats).
-     After that caveat commit, MUST run `lint` and `unit`; it gets no re-review.
+     After that caveat commit, MUST run `lint` and `unit`; it gets no re-review. Done
+     when no stray task runs.
   6. The report MUST hold, in this order: a one-line outcome; the met requirements in
      one line by id range (`TR-1..TR-7 met`), then each unmet one with its id and
      status; the gate results, one line per gate; what was skipped or not checked; each
      recorded item with only its applied answer; any risk the user must know.
   7. Acceptance: MUST ask the user which items they want to try by hand, with the exact
-     commands or clicks for each.
+     commands or clicks for each. Done when the user has answered.
   8. Cleanup: MUST ask the user whether to keep the plan file and the design docs the
      task added to the repository. Default: keep them. It MUST also ask, for each
      `debug-<id>` branch, whether to delete or keep it. After a cleanup commit, MUST
-     run `lint` and `unit`; it gets no re-review.
+     run `lint` and `unit`; it gets no re-review. Done when the user has answered.
   9. Done write: when the task has a milestone, MUST make one more commit, the last on
      the task branch. It MUST mark the task done in the milestone doc. When the task was
      the milestone's last open one, the same commit MUST also mark the milestone done in
@@ -152,7 +154,8 @@ follows `plan` section Amendments.
 ## 6. Finish
 
 - MUST ask the user whether to push, open a PR, merge into `<base>`, or stop. Section
-  Branch and plan file guards each push and merge.
+  Branch and plan file guards each push and merge. The recommended option MUST be a PR
+  when the repo has a remote, else a merge into `<base>`.
 - A merge into `<base>` MUST merge into the local default branch. With a remote, the
   main session MUST then ask a separate question whether to push that branch.
 - After a push to a branch with an open PR, the main session MUST compare the PR body

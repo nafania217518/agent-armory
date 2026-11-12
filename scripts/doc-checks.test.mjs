@@ -156,6 +156,40 @@ describe('doc-checks', () => {
     });
   });
 
+  // req: best-practices-fixes/TR-8
+  describe('rendered cards', () => {
+    const template =
+      '---\nname: coder\nmodel: {{MODEL}}\neffort: {{EFFORT}}\n---\nBody line.\n';
+    const render = (model, effort) =>
+      template.replace('{{MODEL}}', model).replace('{{EFFORT}}', effort);
+
+    beforeEach(() => {
+      writeRepo();
+      writeFile('skills/setup/templates/agents/coder.md', template);
+    });
+
+    test('equal_copy_passes', () => {
+      writeFile('.claude/agents/coder.md', render('opus', 'high'));
+      assert.equal(run().status, 0);
+    });
+
+    test('changed_body_line_fails_naming_the_card', () => {
+      writeFile('.claude/agents/coder.md', template.replace('Body line.', 'Other line.'));
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'coder: rendered copy differs from template\n');
+    });
+
+    test('only_model_and_effort_differ_passes', () => {
+      writeFile('.claude/agents/coder.md', render('haiku', 'low'));
+      assert.equal(run().status, 0);
+    });
+
+    test('no_agents_dir_means_no_check', () => {
+      assert.equal(run().status, 0);
+    });
+  });
+
   // req: doc-checks/TR-2
   describe('name lists', () => {
     test('skill_missing_from_readme_skills_fails', () => {
@@ -329,7 +363,8 @@ describe('doc-checks', () => {
 
     test('claude_agents_is_width_checked', () => {
       writeRepo();
-      writeFile('.claude/agents/coder.md', `${'a'.repeat(91)}\n`);
+      writeFile('skills/setup/templates/agents/coder.md', 'model: x\n');
+      writeFile('.claude/agents/coder.md', `model: ${'a'.repeat(84)}\n`);
       const r = run();
       assert.equal(r.status, 1);
       assert.equal(r.stderr, '.claude/agents/coder.md:1: 91 > 90\n');

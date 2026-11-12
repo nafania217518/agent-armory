@@ -1,4 +1,7 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
+import { copyFileSync, mkdirSync, mkdtempSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -35,4 +38,28 @@ describe('core-context.sh output cap', () => {
     assert.ok(context.trimStart().startsWith(FIRST_LINE), 'SubagentStart context does not start with core');
     assert.ok(context.length <= HOOK_OUTPUT_LIMIT, overLimitMessage(context.length));
   });
+});
+
+// req: best-practices-fixes/TR-7
+describe('core-context.sh with no core body', () => {
+  const MESSAGE = 'core-context.sh: skills/core/SKILL.md is missing or has no body';
+  for (const [name, input] of [
+    ['SessionStart', '{}'],
+    ['SubagentStart', '{"hook_event_name":"SubagentStart"}'],
+  ]) {
+    test(`${name} fails loudly: stderr message, empty stdout, exit 1`, () => {
+      const dir = mkdtempSync(join(tmpdir(), 'core-ctx-'));
+      try {
+        mkdirSync(join(dir, 'scripts'));
+        const copy = join(dir, 'scripts', 'core-context.sh');
+        copyFileSync(scriptPath, copy);
+        const r = spawnSync('sh', [copy], { input, encoding: 'utf8' });
+        assert.equal(r.status, 1);
+        assert.equal(r.stdout, '');
+        assert.ok(r.stderr.includes(MESSAGE), `stderr was: ${r.stderr}`);
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    });
+  }
 });

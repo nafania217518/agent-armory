@@ -1,10 +1,9 @@
 ---
 name: delegate
 description: >
-  How the main session hands work to project agents: context, worktrees, briefs,
-  returns, model and effort per spawn, the Fable question, re-spawn and retry. Loaded by
-  `plan` and `code` before a spawn. Use for "delegate", "spawn an agent", "which
-  model", "write a brief", "/delegate".
+  How the main session spawns project agents: the brief, the worktree, the model and
+  effort per spawn, and retries. Loaded by `plan` and `code` before a spawn. Use for
+  "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
 max-lines: 150
 ---
 
@@ -54,8 +53,8 @@ The main session follows this skill for each spawn of a project agent.
   Accepted tech debt sections (`plan` section The plan).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. An audit brief MUST hold the audit target (`audit` section Map
-  first) in place of the range and the task items. A re-review brief MUST hold the
-  findings sent to fix.
+  first) in place of the range and the task's requirements. A re-review brief MUST
+  hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
   the agent needs.
 - The `core` rules reach every subagent through the hook, else the pointer. A brief

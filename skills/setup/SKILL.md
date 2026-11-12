@@ -1,9 +1,9 @@
 ---
 name: setup
 description: >
-  Sets up armory in the current project on the host you run in. Probes the hook, asks
-  the user what to install, then writes and reports.
-  Use for "/setup", "set up armory", "add the project agents".
+  Sets up armory in the current project: probes the hook, asks the user what to install,
+  then writes the project context and the agent cards. Use for "/setup", "set up armory",
+  "add the project agents".
 disable-model-invocation: true
 max-lines: 168
 ---

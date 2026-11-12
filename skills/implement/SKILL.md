@@ -4,7 +4,7 @@ description: >
   The coder's rules: scope before you write, the smallest complete change, readability,
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
-  `code`; "/implement".
+  `code`; "/implement". For a coding request from the user, load `code` instead.
 max-lines: 148
 ---
 
@@ -75,8 +75,6 @@ reviewer judges code against it. Test rules: `test`.
 A human reads every line you write. `review` section Look for checks these rules.
 
 - Names of variables, functions and classes MUST say what they hold or do.
-- Lines SHOULD stay under 120–140 characters, with spacing.
-- A long signature or call SHOULD put one argument per line, unless it hurts readability.
 - High-level code SHOULD be short and read as the steps: one function that calls private
   helpers with clear names, not one long function.
 - SHOULD prefer chaining over a declarative mess, unless it hurts readability. A chain

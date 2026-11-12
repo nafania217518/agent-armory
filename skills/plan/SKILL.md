@@ -1,12 +1,11 @@
 ---
 name: plan
 description: >
-  Pre-work at three levels: strategic (the design doc and its milestone list), milestone
-  (scope, BR-n requirements, the tasks and their status) and task (TR-n requirements,
-  the plan file). Plan mode, quizzes, self-review, approval, amendments, and the
-  planner's drafting part. Use for a new task, "plan this", "make a plan", "plan a
-  milestone", "design doc", "design this change", a changed requirement, "/plan", and
-  from the code skill when no plan exists.
+  Plans work in plan mode before any edit, at three levels: strategic (design doc and
+  milestones), milestone (scope and BR requirements) and task (TR requirements and the
+  plan file), with quizzes and the user's approval. Use for a new task, "plan this", "make
+  a plan", "plan a milestone", "design doc", "design this change", a changed requirement,
+  "/plan", and from the code skill when no plan exists.
 max-lines: 246
 ---
 
@@ -214,9 +213,9 @@ Drafting; the planner runs only Drafting.
 
 - A requirement that changes during work, or needs the user's answer, MUST stop the work
   until the user's yes.
-- An added or changed requirement MUST get a new id and MUST go to the user for approval,
+- An added or changed requirement MUST get a new id and MUST go to the user for a yes,
   with the new text, through the question tool. The one exception, the
-  `TR` of a defect in built code (below), needs no approval: it repairs approved work.
+  `TR` of a defect in built code (below), needs no yes: it repairs approved work.
 - An amendment MUST go to the doc that owns the fact (section Levels).
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
@@ -233,7 +232,7 @@ Drafting; the planner runs only Drafting.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
 - When an amendment replaces or removes a term (a profile, a file, a class), the main
   session MUST grep the owning doc, the plan file and the project context for that
-  term before it asks for the approval. Each requirement line that names the term
+  term before it asks the user. Each requirement line that names the term
   MUST join that amendment's question, with its new id. At the amendment commit, the
   main session MUST mark those lines `(replaced by <new id>)` and MUST update each
   other line that names the term, such as a Risks or a Caveats line.

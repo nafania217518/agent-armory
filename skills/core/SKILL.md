@@ -1,9 +1,8 @@
 ---
 name: core
 description: >
-  Always-on base rules for the main session and every subagent: rule words, writing,
-  questions, background tasks, web access, design principles, models, report slots,
-  host terms. Use for "/core".
+  Always-on base rules for the main session and every subagent; the hook injects them at
+  session and subagent start. Use for "/core".
 max-lines: 149
 ---
 
