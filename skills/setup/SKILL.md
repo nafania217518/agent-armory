@@ -5,7 +5,7 @@ description: >
   the user what to install, then writes and reports.
   Use for "/setup", "set up armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 163
+max-lines: 166
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -130,6 +130,9 @@ The main session writes these sections (section Write).
 - With no tracker fit, a required verb unbound, or no `closes by PR merge:` value,
   `setup` MUST ask the user how to reach the tracker, that verb or that value, or keep
   the docs fallback.
+- Each formatting or style rule of question 7 MUST pass the style-rule check of
+  `implement` section Before you write.
+  Else MUST ask the user to change the rule, drop it, or move it into that config.
 
 ### Write
 

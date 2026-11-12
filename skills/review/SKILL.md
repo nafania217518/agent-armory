@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 153
+max-lines: 157
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -108,6 +108,9 @@ finding.
   result".
 - MUST re-read the lines and confirm: the caller exists, the value can be empty, the code
   is unused.
+- MAY run one compile or one test that settles a claim before reporting it, also when
+  the brief hands over the gate run. A claim it cannot settle takes the `Unverified:`
+  part (section Output).
 - A `tech-debt:` marker (`implement` section The smallest complete change) that is a
   decision MUST NOT be reported, unless the expected load already crosses its limit. In
   a review, a marker is a decision only when the plan's Accepted tech debt section names
@@ -144,7 +147,8 @@ finding.
   it misleads a reader into a wrong action, else Should fix.
 - Each finding MUST have a number across all groups, a bold title with `file:lines` (or
   `commit <sha>`), then three parts of one or two short sentences each: Problem, Fix,
-  If we skip it.
+  If we skip it. A finding whose claim the reviewer could not check MUST add a fourth
+  part: `Unverified: <the command that settles it>`.
 - Then MUST give `Answers:` when the brief asks a question or names a check for the
   reviewer to judge, one line per item; then the two slots of `core` section Reports.
 - MUST end with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`, then `Not checked:`

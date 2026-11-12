@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement".
-max-lines: 147
+max-lines: 148
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -23,6 +23,9 @@ reviewer judges code against it. Test rules: `test`.
   exports. That is the scope. Extra features are not.
 - MUST check what the change can break for users: data it would destroy or expose,
   callers that stop working.
+- Before adding or applying a formatting or style rule, MUST check the project's linter
+  and formatter config for a rule that enforces it or undoes it. A mechanical style
+  rule SHOULD go into that config, not into the project context `## Rules`.
 - A vague request SHOULD get the smallest version that does the core job.
 - Design misfit: when a new requirement does not fit the design, SHOULD ask what you
   would build had it been there from the start. When that differs from the plan, the

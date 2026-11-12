@@ -4,7 +4,7 @@ description: >
   Main-session coding lifecycle from the approved plan to the finish question: task
   branch, caveat writes, plan run, review and fix loop, task end, push and merge guard.
   Use on every coding task: "/code", "implement", "fix", "refactor", "add a feature".
-max-lines: 149
+max-lines: 154
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -74,6 +74,11 @@ follows `plan` section Amendments.
 - After a review, the main session MUST have each Must fix item fixed (`delegate`
   section Context), run the reviewer on the fix commits, and repeat until no Must fix
   remains.
+- A finding with an `Unverified:` part (`review` section Output) MUST be checked
+  before a fix brief or the recorded-items quiz: by the main session with one targeted
+  command, or by a coder whose brief says "check the claim first; change nothing if it
+  is false". A false finding MUST be dropped; the task report MUST name it, with the
+  disproving command, in its skipped line (section Task end, step 6).
 - Loop bound: when a loop needs a third round, the main session MUST ask the user first.
 - The final review MUST cover only the commits since the last review, or since `<base>`
   when none ran. It MUST add these whole-task checks on `<base>..HEAD`: each requirement
