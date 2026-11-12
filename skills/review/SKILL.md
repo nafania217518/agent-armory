@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 161
+max-lines: 164
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -81,7 +81,8 @@ finding.
      that returns in every caller marks a module that earns its place. A seam with one
      adapter is hypothetical; a second adapter makes it real.
    - merge: near-copies that must change together
-   - split: a function with unrelated jobs, hard to read or test. Split by job, not lines.
+   - split: a unit with more than one job, hard to read or test (`implement` section
+     Domain, boundaries and state). Split by job, not lines.
    - unrequested (review only): a change the task did not ask for: a refactor, a
      rename, reformatting, a fix outside the scope. Fix: revert it.
 7. Shape: code in the wrong place or form. Each smell is a judgement call. A `## Rules`
@@ -100,6 +101,8 @@ finding.
      walk.
    - Repeated Switches: the same switch on one type in several places. Fix: one shared
      map, or polymorphism.
+   - Fat Interface: a client depends on interface methods it does not use (`implement`
+     section Domain, boundaries and state). Fix: a narrow interface per client.
 8. Readability: code that breaks a rule of `implement` section Readability.
 
 ## 4. Check before you report

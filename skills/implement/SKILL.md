@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 148
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -92,6 +92,10 @@ A human reads every line you write. `review` section Look for checks these rules
   create call MUST be idempotent only when the plan says so.
 - MUST NOT share mutable state that does not need to be shared. Shared state MUST have
   one writer, enforced by the structure.
+- Single responsibility: each new or changed unit (function, class or module) MUST have
+  one job, so it has one reason to change. A unit with two jobs MUST be split by job.
+- Interface segregation: an interface MUST hold only methods its clients use. A client
+  that needs part of a wide interface MUST get its own narrow one instead.
 
 ## 5. Fixing and refactoring
 
