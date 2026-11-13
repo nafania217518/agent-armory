@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 155
+max-lines: 158
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -92,6 +92,8 @@ A human reads every line you write. `review` section Look for checks these rules
   create call MUST be idempotent only when the plan says so.
 - MUST NOT share mutable state that does not need to be shared. Shared state MUST have
   one writer, enforced by the structure.
+- Code that applies an async answer to state (UI, cache, store) MUST key it to the
+  request or input it answers. It MUST drop an answer whose key is not the latest.
 - Single responsibility: each new or changed unit (function, class or module) MUST have
   one job, so it has one reason to change. A unit with two jobs MUST be split by job.
 - Interface segregation: an interface MUST hold only methods its clients use. A client
@@ -139,8 +141,9 @@ The gates and their commands are in the project context `## Gates` and `## Comma
   exists on `<base>` (`code` section Branch and plan file). MUST compare with it to tell.
 - A gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded
   as an out-of-scope finding. `code` section Task end sets the report gates.
-- Gate, build and test output MUST reach your context only as its tail or a grep, and
-  a long file only in line ranges.
+- Gate, build and test output MUST reach your context only as its tail or a grep for
+  FAIL or error, and a long file only by line range or a search. On a failing gate,
+  MUST read only the failing part of its log.
 - Before your report, every `on` gate that the brief does not leave to the main session
   (`delegate` section Briefs) MUST pass, or the report names the failing gate.
 - The report MUST give one line per gate for a commit range when every commit in it

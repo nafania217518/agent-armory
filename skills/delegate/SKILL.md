@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 153
+max-lines: 158
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -27,7 +27,9 @@ The main session follows this skill for each spawn of a project agent.
 
 ## 2. Delegation and worktrees
 
-- Coding agents that run at once MUST each run in their own worktree.
+- The coder and the debugger always work in their own worktree; their cards set it. A
+  brief MUST NOT send them to the main checkout, in words or by an absolute path into
+  it. It MUST name each project script by its path from the worktree root.
 - Two agents that run at once MUST NOT edit the same file.
 - A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
   task branch (the coder and debugger cards set the reset).
@@ -40,7 +42,7 @@ The main session follows this skill for each spawn of a project agent.
 - A diagnose-only debugger result MUST NOT be merged: the main session keeps its
   `debug-<id>` branch and removes the worktree.
 - A worktree with uncommitted work MUST wait for the user's decision when no retry
-  follows (section Re-spawn and retry) or the retry fails too.
+  follows (section Re-spawn and retry) or the last retry fails.
 
 ## 3. Briefs
 
@@ -118,7 +120,8 @@ The main session follows this skill for each spawn of a project agent.
 
 - Default rows: coder "Coding from a brief" (Opus low); debugger "Debugging" (Opus
   high); reviewer and planner (Opus high); researcher "one fact" and writer
-  "restating" (Sonnet low). A spawn MAY override the default with another row.
+  "restating" (Sonnet low). A spawn MAY override the default with another row. A
+  failed spawn retries up the chain of section Re-spawn and retry.
 - The table MUST be read with these definitions:
   - Trivial change: no new branch, loop or data shape (renames, typos, config values,
     copy edits, code moved as is, a change given in full in the brief). Trivial task:
@@ -147,7 +150,9 @@ The main session follows this skill for each spawn of a project agent.
   Sources), whose section sets the re-spawn.
 - A spawn that fails because of an open requirement or a question for the user MUST go
   to the user at once.
-- Any other failed spawn SHOULD get one retry on Opus high. When the failed spawn left
-  work in its worktree, the main session MUST first commit any uncommitted part as a
-  WIP commit on that spawn's branch, name that branch in the retry brief, and remove
-  the first worktree. When the retry fails too, the main session MUST ask the user.
+- Any other failed spawn SHOULD be retried one rung up, once per rung: Haiku or Sonnet
+  → the next tier at the same effort; Opus below `high` → Opus high; Opus high → Fable
+  high (`core` section Models). When the failed spawn left work in its worktree, the
+  main session MUST first commit any uncommitted part as a WIP commit on that spawn's
+  branch, name that branch in the retry brief, and remove the first worktree. When the
+  Fable retry fails, or the user declines it, the main session MUST ask the user.

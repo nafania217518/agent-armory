@@ -22,7 +22,8 @@ Format: `BR-<n>: MUST <behavior>`.
 
 ## Tasks
 
-Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
+Format: `<branch> : <what> : <BR list> : <needs> : <status>`. `<needs>` holds the task
+branches it needs, or `none`. In execution order; the status
 values are in the armory `plan` skill, section Levels.
 
 ## Risks

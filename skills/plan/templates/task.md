@@ -13,7 +13,8 @@ with no milestone `Parent: [<task title>](<link>) (no milestone).`
 ## Requirements
 
 Format: `TR-<n> (<milestone>/BR-<m>, ...): MUST <behavior>`, then an indented `tests:`
-line that names the tests, or `tests: none, <why>`.
+line that names the tests, or `tests: none, <why>`, and an indented `needs:` line: the
+`TR` ids it needs, or `none`.
 
 A task with no milestone lists its own `BR` items first, in the format of the armory
 `plan` skill's `templates/milestone.md`, section Requirements. With a tracker bound, they

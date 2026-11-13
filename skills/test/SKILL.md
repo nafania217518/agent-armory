@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 136
+max-lines: 139
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -106,6 +106,9 @@ or change these lines; that section MUST win.
   The level's command sets what marks its files: directory, suffix, build tag or target.
 - An assertion on an order MUST include at least one pair of items that removing the
   sort or rank step would swap.
+- Test data MUST give each field of one type a distinct value, so a swapped, dropped or
+  wrong-key mapping fails a test: length ≠ width ≠ height; id order ≠ name order ≠
+  insert order.
 - An end-to-end step whose expected UI state equals the previous step's MUST also assert
   on its own response body. A DOM check alone can pass before that response arrives.
 
@@ -123,7 +126,7 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
 ## 8. Determinism
 
 - A test MUST be deterministic: no sleep as a wait, no mutable state shared between
-  tests, no dependence on test order or the clock.
+  tests, no dependence on test order, the clock or unseeded random data.
 - A real timer MAY run in an integration test when the timer is the behavior under test,
   with the shortest wait that proves it.
 

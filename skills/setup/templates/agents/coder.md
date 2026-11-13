@@ -19,6 +19,10 @@ You implement one brief.
   refuses. A retry brief that names a WIP branch: MUST reset to that branch's commit
   in place of the task branch.
 - MUST follow the brief in full.
+- MUST keep command output and file reads small, as `implement` section Gates per
+  commit says.
+- MUST run project scripts from your worktree, by a relative path, also when the brief
+  names an absolute path.
 - A library claim in your report MUST follow `research` section When to research.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.

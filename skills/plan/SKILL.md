@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 280
+max-lines: 292
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -66,7 +66,8 @@ Drafting; the planner runs only Drafting.
     `templates/milestone.md` except the title line, the parent line and Tasks, and
     except `## Goal` when the item already holds its one-line goal. Each task MUST
     become a child item of the milestone item. Its body MUST hold the `<what> : <BR list>`
-    of the Tasks format line. Blocked-by edges MUST give the task order.
+    of the Tasks format line. Blocked-by edges MUST hold the task's needs (section The
+    plan).
   - Status MUST live only in the tracker.
   - A milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. A task
     run MUST read its milestone item, body and comments, first.
@@ -150,6 +151,13 @@ Drafting; the planner runs only Drafting.
   Rule words) and its reason.
 - The plan MUST list the `TR` items in execution order; an item that a later item's gate
   command needs MUST come first. Each `tests:` line MUST follow `test` section TDD.
+- Each `TR` and each milestone task MUST name its needs: the items whose code, contract
+  or data it uses, or `none`. A preferred order alone MUST NOT become a need; such items
+  stay free to run at once.
+- When items build both sides of one interface (an API spec, a module boundary, a
+  service message, a shared type), the plan SHOULD put the contract in its own first
+  item: the spec, the shared types and a contract test or stub. The items on each side
+  then need only that item. A last item joins them through an integration or e2e test.
 - Each milestone task and each `TR` SHOULD be a vertical slice: a thin path through
   every layer it needs, checkable on its own. A preparatory refactor SHOULD come first.
   A change that breaks callers across the codebase SHOULD use expand–contract: add the
@@ -195,6 +203,9 @@ Drafting; the planner runs only Drafting.
     load `TR`.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
+- At the milestone and the task level, the review MUST also check that each need is
+  real and that each interface two items build has its contract item (section The
+  plan).
 - At the task level, the review MUST also walk each new `tests:` case, with its
   expected value, through its own `TR` and the existing rules of its component, in the
   plan and in the code. A case that one of them makes impossible MUST be dropped or
@@ -217,8 +228,9 @@ Drafting; the planner runs only Drafting.
   section Host terms sets `<docs>`. The requirements MUST NOT go into a separate file.
 - A task run MUST write its plan file also after zero quiz rounds.
 - Right after that commit, the main session MUST write the caveats into the project
-  context `## Caveats`: for a task run, the doc's caveats; for a strategic or milestone
-  run, the caveats found during planning.
+  context `## Caveats`: for a task run, the doc's caveats, except one about code that a
+  `TR` of this task still builds or changes (`code` section Caveats); for a strategic
+  or milestone run, the caveats found during planning.
 - In the same step, the main session MUST write each term the quiz settled into the
   project context `## Glossary`, in its format line. A plan template MUST NOT hold a
   glossary section.

@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 168
+max-lines: 170
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -65,7 +65,9 @@ finding.
 
 1. Bug: wrong result, crash, missed edge case (empty, zero, last item, rounding, time
    zones), a caller the change breaks, a fix in one caller while the shared function
-   stays broken, callers that disagree on a return value, one rule applied two ways.
+   stays broken, callers that disagree on a return value, one rule applied two ways, a
+   stale async answer applied over a newer one (`implement` section Domain, boundaries
+   and state).
 2. Risk: security holes (injection, weak randomness, secrets, missing checks on input
    from users), data loss (errors swallowed, writes in the wrong order, no transaction).
 3. Scale: fine for one user, wrong for many: check-then-write races, the same work done

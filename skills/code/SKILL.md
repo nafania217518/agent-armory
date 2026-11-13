@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 180
+max-lines: 183
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -57,8 +57,8 @@ section Reports.
   commit into the project context `## Caveats` immediately, unless the next bullet
   defers it; a caveat with an `Unverified:` part first gets the check of section Review
   loop.
-- A caveat about code that a later `TR` of this task still changes SHOULD wait until
-  that `TR` merges into the task branch; the main session MUST then write it as this
+- A caveat about code that a later `TR` of this task still builds or changes MUST wait
+  until that `TR` merges into the task branch; the main session MUST then write it as this
   section says.
 - Before that write, the main session MUST check the line against `core` section
   Reports, and its claim against the code. A line that fails MUST be split or cut as
@@ -69,8 +69,11 @@ section Reports.
 Brief each item as `delegate` section Briefs sets. A requirement change during the work
 follows `plan` section Amendments.
 
-- MUST start the plan items in the plan's order, also across agents and the main
-  session. An item that needs an earlier item MUST wait for its merge.
+- MUST start each plan item once every item it needs is merged into the task branch.
+  Ready items MAY run at once, each in its own worktree, and MUST start in the plan's
+  order. An item that touches a file a running item touches MUST wait for that item's
+  merge (`delegate` section Delegation and worktrees). A plan with no `needs:` lines
+  runs in the plan's order.
 - A finding that blocks the task MUST NOT wait for the recorded-items quiz. It is
   `stuck:` (`delegate` section Re-spawn and retry).
 - An out-of-scope finding on code this task built is a defect in built code. It MUST
