@@ -2,10 +2,11 @@
 name: setup
 description: >
   Sets up armory in the current project: probes the hook, asks the user what to install,
-  then writes the project context and the agent cards. Use for "/setup", "set up armory",
-  "add the project agents".
+  then writes the project context and the agent cards. When armory is already set up, it
+  only updates the project context and the agent cards. Use for "/setup", "set up
+  armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 168
+max-lines: 175
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -22,6 +23,12 @@ The main session sets up armory on its host. The user decides every write.
   context sections, the agent cards.
 - A run MUST follow the sections in order. The writes MUST run at the Flow step "the
   files" of section Project context.
+- A run in a project that already has armory MUST be an update run: the project
+  context holds the sections of section Write, and the host's agent location holds the
+  six cards. An update run MUST skip sections Self-report and Install, except the card
+  render of section Install. Its Questions round MUST show only the items that the
+  project context lacks; the rest MUST keep their existing values. Section Write sets
+  how each changed file is shown and written.
 
 ## 2. Self-report
 
