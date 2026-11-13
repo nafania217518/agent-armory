@@ -66,4 +66,5 @@ A line MUST hold only a term of the project's domain, with no implementation det
 
 ## Caveats
 
-Format: the caveat line of the armory `core` skill, section Reports
+Format: the caveat line of the armory `core` skill, section Reports, or a topic pointer
+line of the armory `code` skill, section Caveats

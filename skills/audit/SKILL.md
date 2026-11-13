@@ -5,7 +5,7 @@ description: >
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
   One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
   whole repo", "find bloat", "what can I delete", "list the tech debt", "/audit".
-max-lines: 74
+max-lines: 80
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -40,6 +40,15 @@ format of `review` section Output. This skill holds only what differs from a rev
   whole suite.
 - When the `owasp` gate is `on`, MUST read the entry points and data writes against the
   OWASP Top 10.
+- MUST check the caveat base (`code` section Caveats): each pointer names an existing
+  topic file, and each entry's file exists. Each failure MUST be a finding.
+- A drifted entry is one whose file has a commit newer than the entry's line
+  (`git blame` on the line, `git log -1` on the file). The main session MUST check the
+  claims of drifted entries in parallel reviewer spawns, one per topic file, plus one
+  for the root list.
+- Each such spawn MUST return one verdict per entry: holds, false, path moved, or
+  `Unverified: <what settles it>`. The main session MUST add each verdict other than
+  holds to the audit findings.
 
 ## 3. Tech-debt ledger
 

@@ -6,7 +6,7 @@ description: >
   only updates the project context and the agent cards. Use for "/setup", "set up
   armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 175
+max-lines: 178
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -155,7 +155,10 @@ The main session writes these sections (section Write).
   tracker. With the docs fallback, the section and its format line MUST be dropped.
 - `## Commands`, `## Gates`, `## Glossary` and `## Caveats` MUST take the format lines
   of `templates/AGENTS.md`. `## Glossary` MUST start empty, with its format line.
-  `## Caveats` MUST hold its format line and the caveats the run found.
+  `## Caveats` MUST hold its format line. The run MUST place each caveat it found
+  under `code` section Caveats.
+- An update run MUST offer to sort the root `## Caveats` under `code` section Caveats.
+  Its report MUST give the entry count before and after, and each drop.
 - A gate's command MUST carry the gate's name. `run` is not a gate. The gates MUST be:
   `lint`, `owasp`, `unit`, `integration`, `coverage` (default `on`); `contract`,
   `functional`, `e2e` (default `off (not chosen)` until turned on).

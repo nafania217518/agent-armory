@@ -75,6 +75,8 @@ Ready task : an open task whose blockers are all done and that has no assignee. 
 
 Inbound item : an open tracker item opened outside an armory run and not yet `accepted` or dropped.
 
+Caveat base : the project's knowledge base of caveats: root caveats plus topic files.
+
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
 
 ## Caveats

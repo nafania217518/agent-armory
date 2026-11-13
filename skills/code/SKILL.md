@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 183
+max-lines: 201
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -53,16 +53,33 @@ Before the plan-file commit, a caveat goes into the plan (`plan` section The pla
 caveat slot, the caveat format, the subagent ban and the recorded items are in `core`
 section Reports.
 
+The caveat base is the project context `## Caveats` plus the topic files
+`<docs>/caveats/<topic>.md`.
+
 - The main session MUST write each caveat it receives or finds after the plan-file
-  commit into the project context `## Caveats` immediately, unless the next bullet
-  defers it; a caveat with an `Unverified:` part first gets the check of section Review
-  loop.
+  commit into the caveat base immediately, unless the next bullet defers it; a caveat
+  with an `Unverified:` part first gets the check of section Review loop.
 - A caveat about code that a later `TR` of this task still builds or changes MUST wait
   until that `TR` merges into the task branch; the main session MUST then write it as this
   section says.
 - Before that write, the main session MUST check the line against `core` section
-  Reports, and its claim against the code. A line that fails MUST be split or cut as
-  that section says, or dropped when false.
+  Reports, its claim against the code, and its place against the bullets below. A line
+  that fails MUST be split, cut, moved or dropped.
+- A caveat MUST go to the root `## Caveats` only when every task needs it. Else it MUST
+  go to the topic file whose pointer fits, or to a new topic file when none fits.
+- A line that says what to do is a rule: it MUST go to the project context `## Rules`.
+- A caveat that a doc states MUST become a link to that doc section. One that a test, a
+  check or a code comment states MUST be dropped. A duplicate MUST be merged.
+- A topic entry MAY carry one indented line: its cause, its workaround or a doc link.
+- The root `## Caveats` MUST hold one pointer line per topic file:
+  `- <topic>: <when to read it> : <docs>/caveats/<topic>.md`.
+- A topic file over 40 entries MUST be split; an empty one MUST be deleted, with its
+  pointer line.
+- Before the main session briefs or edits work on a file, it MUST read each topic file
+  whose pointer fits that work.
+- Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
+  (`git diff --name-status <base>...HEAD`), the main session MUST re-check the claim,
+  then keep the entry, fix its path or drop it, and apply the bullets above.
 
 ## 3. Running the plan
 
@@ -139,8 +156,9 @@ follows `plan` section Amendments.
      recorded item with only its applied answer; any risk the user must know.
   7. Acceptance: MUST ask the user which items they want to try by hand, with the exact
      commands or clicks for each. Done when the user has answered.
-  8. Cleanup: MUST ask the user whether to keep the plan file and the design docs the
-     task added to the repository. Default: keep them. It MUST also ask, for each
+  8. Cleanup: MUST run the caveat cleanup (section Caveats), then ask the user whether
+     to keep the plan file and the design docs the task added to the repository.
+     Default: keep them. It MUST also ask, for each
      `debug-<id>` branch, whether to delete or keep it. After a cleanup commit, MUST
      run `lint` and `unit`; it gets no re-review. Done when the user has answered.
   9. Done write: when the task has a milestone, MUST make one more commit, the last on

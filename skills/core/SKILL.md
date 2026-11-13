@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 150
+max-lines: 151
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -92,10 +92,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   change the next work, or to put a decision to the user. A report format and a report
   MUST hold only needed items, and every needed item. Each item MUST give only its value.
   An item whose condition does not hold MUST be left out.
-- A caveat line, in a report or in the project context `## Caveats`, MUST take the
-  format `- SHORT_DESCRIPTION : <file>`, a list item, or `- SHORT_DESCRIPTION : —` when
-  no file exists yet. It MUST hold one fact. A caveat with two facts MUST become two
-  lines, or one line with only the fact a reader would not expect.
+- A caveat line, in a report or in the caveat base (`code` section Caveats), MUST take
+  the format `- SHORT_DESCRIPTION : <file>`, a list item, or
+  `- SHORT_DESCRIPTION : —` when no file exists yet. It MUST hold one fact. A caveat
+  with two facts MUST become two lines, or one line with only the fact a reader would
+  not expect.
 - A finding that the output already numbers MUST be referenced by its number in the
   recorded-items slot, not repeated.
 - These items MUST be recorded during the task: each SHOULD bypass made during the work
@@ -103,8 +104,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   misfit (`implement` section Before you write), out-of-scope finding (`implement`
   sections The smallest complete change and Gates per commit; `test` section Pyramid), and
   Should fix or Nice to have finding (`review` section Output).
-- The main session MUST make every write to the project context `## Caveats`; a
-  subagent MUST NOT write to it. `code` section Caveats sets when the main session
+- The main session MUST make every write to the caveat base (`code` section Caveats);
+  a subagent MUST NOT write to it. `code` section Caveats sets when the main session
   writes. Outside a plan or code run, the main session MUST ask the user first.
 
 ## 7. Host terms

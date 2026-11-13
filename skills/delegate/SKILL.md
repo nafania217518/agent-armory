@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 158
+max-lines: 160
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -51,10 +51,11 @@ The main session follows this skill for each spawn of a project agent.
   (`plan` section Requirements), read at brief time; the test-scope list (`test` section
   Test scope), from the plan; for a review brief, also each scope addition with its
   reason, from the coder or debugger recorded-items slot; the project context lines of
-  `## Commands`, `## Gates`, `## Test levels` (the unit style included), `## Rules` and
-  `## Caveats` that apply; which skills or skill sections the agent loads; the task
-  branch and `<base>` (`code` section Branch and plan file); the plan's Overrides and
-  Accepted tech debt sections (`plan` section The plan).
+  `## Commands`, `## Gates`, `## Test levels` (the unit style included), `## Rules` that
+  apply; the paths of the topic files whose pointers fit the brief's work (`code`
+  section Caveats), for the agent to read; which skills or skill sections the agent
+  loads; the task branch and `<base>` (`code` section Branch and plan file); the plan's
+  Overrides and Accepted tech debt sections (`plan` section The plan).
 - In place of quoting a plan section (the `TR` items, the test-scope list, Overrides,
   Accepted tech debt), the brief MAY name the plan file path, the sections that apply and
   the task-branch commit at brief time. A `BR` that lives outside the plan file MUST
@@ -110,6 +111,7 @@ The main session follows this skill for each spawn of a project agent.
 | Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
 | Refactoring; code review, except of a trivial change; audit; planner: any draft | Opus | high |
 | Code review of a trivial change | Sonnet | high |
+| Caveat claim check, one topic file | Sonnet | medium |
 | Writing or summary, restating given facts | Sonnet | low |
 | Writing or reading that needs judgment | Opus | effort map |
 | Research, one fact from an official source | Sonnet | low |

@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 292
+max-lines: 294
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -97,6 +97,8 @@ Drafting; the planner runs only Drafting.
 - On a model below Opus or an effort below `high`, the main session SHOULD suggest a
   switch to the user before planning.
 - Before building, SHOULD push back on any part of the request the need does not justify.
+- Before the first quiz round, the main session MUST read each topic file whose
+  pointer fits the request (`code` section Caveats).
 - Before any edit, MUST quiz the user in rounds until no open point remains (an unclear
   requirement, a choice, an assumption), and wait for the answers. Section Quizzes sets
   the order and topics; `core` section Writing and questions sets the question format.
@@ -227,9 +229,9 @@ Drafting; the planner runs only Drafting.
 - It MUST then write the level's doc at its Doc path as the first commit; `core`
   section Host terms sets `<docs>`. The requirements MUST NOT go into a separate file.
 - A task run MUST write its plan file also after zero quiz rounds.
-- Right after that commit, the main session MUST write the caveats into the project
-  context `## Caveats`: for a task run, the doc's caveats, except one about code that a
-  `TR` of this task still builds or changes (`code` section Caveats); for a strategic
+- Right after that commit, the main session MUST write the caveats into the caveat
+  base (`code` section Caveats): for a task run, the doc's caveats, except one about
+  code that a `TR` of this task still builds or changes; for a strategic
   or milestone run, the caveats found during planning.
 - In the same step, the main session MUST write each term the quiz settled into the
   project context `## Glossary`, in its format line. A plan template MUST NOT hold a
