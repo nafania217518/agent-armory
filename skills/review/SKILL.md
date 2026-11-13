@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 164
+max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -31,7 +31,10 @@ finding.
   functions it calls, the tests, the README.
 - MUST trace the real flow: where data comes in, what is stored, what goes out.
 - When a signature, return value or behavior changes, MUST grep every caller.
-- MUST find the expected load in the repo (README, deploy config); judge scale against it.
+- MUST find the expected load: a figure in `<docs>/DESIGN.md`, else in the README or
+  the deploy config. MUST judge scale against it.
+- When no expected load is stated, MUST NOT assume one. MUST report it missing instead,
+  as Should fix, when the change touches a data-growth path (`plan` section The plan).
 
 ## 2. The diff is the truth
 
@@ -130,12 +133,13 @@ finding.
 
 ## 5. Output
 
-- A reviewer subagent on a task's commit range MUST start with the load assumed only.
-  Any other review MUST start with `What this change does:` in two or three sentences,
-  and the load assumed. Then MUST give `Gates:`, one line per gate: `pass`; `fail <one
-  line>`; `fail <one line>, exists on <base>`, no blocker; `(per <who> at <commit or
-  range>)` after `pass` or `fail` for a run by another agent; `off <reason from the
-  project context>`; `no command`; `not run (<cause>)`, neither pass nor fail, when an
+- A reviewer subagent on a task's commit range MUST start with the expected load, or
+  `none stated`, only. Any other review MUST start with `What this change does:` in two
+  or three sentences, and the expected load, or `none stated`. Then MUST give `Gates:`,
+  one line per gate: `pass`; `fail <one line>`; `fail <one line>, exists on <base>`, no
+  blocker; `(per <who> at <commit or range>)` after `pass` or `fail` for a run by
+  another agent; `off <reason from the project context>`; `no command`;
+  `not run (<cause>)`, neither pass nor fail, when an
   `on` gate's command cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).

@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 176
+max-lines: 180
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -54,8 +54,12 @@ caveat slot, the caveat format, the subagent ban and the recorded items are in `
 section Reports.
 
 - The main session MUST write each caveat it receives or finds after the plan-file
-  commit into the project context `## Caveats` immediately; a caveat with an
-  `Unverified:` part first gets the check of section Review loop.
+  commit into the project context `## Caveats` immediately, unless the next bullet
+  defers it; a caveat with an `Unverified:` part first gets the check of section Review
+  loop.
+- A caveat about code that a later `TR` of this task still changes SHOULD wait until
+  that `TR` merges into the task branch; the main session MUST then write it as this
+  section says.
 - Before that write, the main session MUST check the line against `core` section
   Reports, and its claim against the code. A line that fails MUST be split or cut as
   that section says, or dropped when false.

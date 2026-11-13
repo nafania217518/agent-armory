@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 149
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -80,8 +80,10 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 - Every subagent report MUST hold two slots, each under its label. Recorded-items slot,
   `Recorded items:`: each recorded item with its kind, or `no recorded item`. Caveat slot,
-  `Caveats:`: each caveat as one caveat line, or `no caveat`. A caveat is anything a later
-  reader of the code would not expect.
+  `Caveats:`: each caveat as one caveat line, or `no caveat`. A caveat is a fact
+  that a reader of its file would still not expect: a library or platform behavior, a
+  cross-file coupling or a trap. It MUST NOT restate a plan decision, a requirement or
+  one visible code line; those stay in the plan or the code.
 - A subagent report MUST hold only the items of its card's report format, the two
   slots, and the returns other armory rules require. It MUST NOT narrate the steps,
   restate the brief, or paste file content, a diff or command output that none of these

@@ -91,7 +91,6 @@ Format: the caveat line of the armory `core` skill, section Reports
 - `lint` checks only the width of the skill templates, not their size : scripts/doc-checks.mjs
 - A match of a template heading by section name must ignore the number that this repo's `DESIGN.md` adds : docs/DESIGN.md
 - A new skill or agent must update every list in `LISTS` of `doc-checks.mjs`, not only the plugin manifests : scripts/doc-checks.mjs
-- A subagent in a linked worktree cannot check out the task branch while another worktree holds it : skills/setup/templates/agents/coder.md
 - A reworded start marker makes `doc-checks.mjs` report `<list>: not found` : scripts/doc-checks.mjs
 - A reworded end marker, or one split across two lines, makes `doc-checks.mjs` run the list region to the end of its text : scripts/doc-checks.mjs
 - An unreadable list file reports `<list>: not found`, not `cannot read` : scripts/doc-checks.mjs

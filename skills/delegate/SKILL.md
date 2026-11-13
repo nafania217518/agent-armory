@@ -30,7 +30,7 @@ The main session follows this skill for each spawn of a project agent.
 - Coding agents that run at once MUST each run in their own worktree.
 - Two agents that run at once MUST NOT edit the same file.
 - A worktree a spawn cuts MAY start from the default branch: the brief MUST name the
-  task branch (the coder card sets the reset).
+  task branch (the coder and debugger cards set the reset).
 - When a spawn in a worktree does not fail (section Re-spawn and retry), the main
   session MUST merge its branch into the task branch, run `lint` and `unit`, then remove
   the worktree. `code` section Review loop sets the review that follows.

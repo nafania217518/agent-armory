@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 125
+max-lines: 133
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -60,7 +60,9 @@ or change these lines; that section MUST win.
   `tests: none`. You MUST work one test at a time: write it, see it fail for the
   expected reason, make the smallest change that passes it, and only then write the
   next test. A test that passes on its first run MUST fail once you break the code it
-  covers; you MUST then undo the break.
+  covers; you MUST then undo the break. The break MUST remove what the rule in the test
+  name depends on, such as a branch, an escape or a filter, one rule at a time. A break
+  in other code does not prove the test.
 - A requirement where an honest test is impractical MUST NOT get a bad test. The plan
   MUST decide it: the plan item carries the line `tests: none, <why>`.
 - A coder that finds a planned test impractical MUST NOT drop it. That is a requirement
@@ -68,7 +70,9 @@ or change these lines; that section MUST win.
   why. `delegate` section Re-spawn and retry handles the rest.
 - A test MUST call the code through its public interface, as its user does, and check
   what that user sees.
-- A test that still passes when every function returns nothing MUST be thrown out.
+- A test that still passes when every function returns nothing MUST be thrown out. One
+  exception: a "finds nothing" or "not shown" test MUST have a positive twin, a sibling
+  test on the same data that finds or shows something; it is then kept.
 - An expected value MUST come from a source independent of the code: a literal, a worked
   example, the spec. A test MUST NOT compute its expected value the way the code does.
 - You MUST NOT assert the order of internal calls, or test private methods or trivial
@@ -97,6 +101,10 @@ or change these lines; that section MUST win.
 - A test file MUST be named after the unit under test, in the framework's convention.
 - You SHOULD keep one test file per unit and level; a unit's requirements share it.
   The level's command sets what marks its files: directory, suffix, build tag or target.
+- An assertion on an order MUST include at least one pair of items that removing the
+  sort or rank step would swap.
+- An end-to-end step whose expected UI state equals the previous step's MUST also assert
+  on its own response body. A DOM check alone can pass before that response arrives.
 
 ## 7. Markers
 

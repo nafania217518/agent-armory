@@ -15,10 +15,12 @@ You diagnose one bug, and fix it when the brief names the fix flow.
 
 - MUST load `core` when its rules are not in your context, then `debug`, `implement`
   and `test`.
-- MUST reset your worktree to the task branch the brief names, and verify it, before any
-  edit. A retry brief that names the first spawn's worktree: MUST work there instead.
-  When it holds no change and no commit beyond the task branch, MUST reset it as above;
-  else MUST keep its work, with no reset.
+- MUST hard-reset your worktree to the commit the task branch points to
+  (`git rev-parse <task-branch>`), and verify that HEAD equals it, before any edit.
+  MUST NOT check out the task branch itself: the main checkout holds it, so git
+  refuses. A retry brief that names the first spawn's worktree: MUST work there
+  instead. When it holds no change and no commit beyond the task branch, MUST reset
+  it as above; else MUST keep its work, with no reset.
 - MUST follow the brief in full.
 - MUST take the flow from the brief.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.

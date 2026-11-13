@@ -59,9 +59,10 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:' -- <target>
 
 ## 4. Output
 
-- MUST start with `What this repo does:` in two or three sentences, and the load
-  assumed. Then MUST give the `Gates:` block of `review` section Output, each `on` gate
-  run on the whole tree. A gate failure in the target MUST be a Must fix finding.
+- MUST start with `What this repo does:` in two or three sentences, and the expected
+  load, or `none stated`. Then MUST give the `Gates:` block of `review` section Output,
+  each `on` gate run on the whole tree. A gate failure in the target MUST be a Must fix
+  finding.
 - Then MUST give the findings, the tech-debt ledger, the recorded-items slot and the
   caveat slot (`core` section Reports).
 - MUST end with `Verdict:` in one line (`Verdict: healthy.`, or what to fix first), then

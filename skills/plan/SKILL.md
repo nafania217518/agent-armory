@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 253
+max-lines: 270
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -152,6 +152,17 @@ Drafting; the planner runs only Drafting.
   planner (section Drafting), which loads `test` and `implement`. A main session that
   drafts them itself MUST load both.
 - The plan SHOULD name the gates that apply, when relevant.
+- A data-growth path is a read or write path whose cost grows with stored data: a
+  query, a loop over stored rows, an index build.
+- A `TR` that adds or changes a data-growth path MUST have a load `TR`: the data size,
+  the operations measured and a latency target, such as p95. The figures MUST come from
+  the expected load (`review` section Understand first).
+- When the repo states no expected load, the quiz MUST ask the user for one; section
+  Plan file writes the answer into `<docs>/DESIGN.md`.
+- A load `TR` is the measurement that `core` section Design principles requires before
+  an optimization; it is not itself an optimization.
+- When a load `TR` may gate a later fix, the quiz SHOULD recommend keeping its
+  benchmark as a tagged build target outside every gate, over a throwaway run.
 - Planning SHOULD look for complexity to remove before adding; deletion SHOULD beat
   addition. The plan MAY include that simplification; during coding, the scope rule of
   `implement` section The smallest complete change wins.
@@ -173,9 +184,13 @@ Drafting; the planner runs only Drafting.
     Design principles, `implement` section Before you write and `implement` section
     Domain, boundaries and state are fixed; each claim in Caveats or Stack choices with
     "every", "all", "never" or "only" holds on each file that the `TR` items name, or
-    is narrowed or dropped.
+    is narrowed or dropped; every `TR` on a data-growth path (section The plan) has its
+    load `TR`.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
+- At the task level, the review MUST also walk each new `tests:` case through the
+  existing rules of its component, in the plan and in the code. A case that one of
+  them makes impossible MUST be dropped or rewritten.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
   tracker write the run will make: creates, body edits, links, edges, comments and
   status sets. A task run MUST also list the claim and the done write of its `code` run.
@@ -200,6 +215,8 @@ Drafting; the planner runs only Drafting.
 - In the same step, the main session MUST write each term the quiz settled into the
   project context `## Glossary`, in its format line. A plan template MUST NOT hold a
   glossary section.
+- In the same step, the main session MUST write an expected load that the quiz
+  settled into `<docs>/DESIGN.md`.
 - A strategic or milestone run with a branch MUST end with the finish question of `code`
   section Finish for its branch.
 - With a tracker bound (section Levels, tracker variant), a strategic or milestone run

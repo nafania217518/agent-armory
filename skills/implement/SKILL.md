@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 150
+max-lines: 152
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -112,6 +112,8 @@ A human reads every line you write. `review` section Look for checks these rules
   as the regression test.
 - Refactoring: MUST pin what the code does with a test, change the structure, then prove
   the behavior did not change.
+- A change to what a parameter means, with the same type, MUST rename the function or
+  change the parameter's type. A renamed parameter alone misses a positional caller.
 - SHOULD sequence work into small units. Finish and check one before you start the next.
 
 ## 6. Tests while coding
