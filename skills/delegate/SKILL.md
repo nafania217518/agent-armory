@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 151
+max-lines: 153
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -34,6 +34,8 @@ The main session follows this skill for each spawn of a project agent.
 - When a spawn in a worktree does not fail (section Re-spawn and retry), the main
   session MUST merge its branch into the task branch, run `lint` and `unit`, then remove
   the worktree. `code` section Review loop sets the review that follows.
+- Before it removes an agent worktree, the main session MUST run
+  `git worktree unlock <path>`, since the host locks the worktree for the agent.
 - This merge MAY run without the user's yes.
 - A diagnose-only debugger result MUST NOT be merged: the main session keeps its
   `debug-<id>` branch and removes the worktree.
@@ -61,6 +63,8 @@ The main session follows this skill for each spawn of a project agent.
   hold the findings sent to fix.
 - Any other brief (research, reading, writing) MUST hold the question and the context
   the agent needs.
+- A brief MAY leave an `on` gate to the main session only when the brief's change
+  touches no file that the gate runs.
 - The `core` rules reach every subagent through the hook, else the pointer. A brief
   MUST NOT repeat them or claim `core` is in context; the agent loads it when the hook
   did not.
@@ -100,7 +104,7 @@ The main session follows this skill for each spawn of a project agent.
 | Task | Model | Effort |
 |---|---|---|
 | Coding from a brief (TDD), a fix whose cause the plan or a diagnose-only report names included | Opus | low |
-| Coding, trivial change | Sonnet | low |
+| Coding, trivial change in a few short files, with no e2e or full gate run | Sonnet | low |
 | Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
 | Refactoring; code review, except of a trivial change; audit; planner: any draft | Opus | high |
 | Code review of a trivial change | Sonnet | high |
@@ -143,9 +147,7 @@ The main session follows this skill for each spawn of a project agent.
   Sources), whose section sets the re-spawn.
 - A spawn that fails because of an open requirement or a question for the user MUST go
   to the user at once.
-- Any other failed spawn SHOULD get one retry on Opus high. When the spawn had a
-  worktree, the retry MUST run in it, on its uncommitted work: its brief MUST name the
-  worktree path of the first spawn, since the agent card cuts a fresh one. The main
-  session MUST remove that fresh worktree when the retry ends; one with uncommitted work
-  MUST wait for the user's decision. When the retry fails too, the main session MUST
-  ask the user.
+- Any other failed spawn SHOULD get one retry on Opus high. When the failed spawn left
+  work in its worktree, the main session MUST first commit any uncommitted part as a
+  WIP commit on that spawn's branch, name that branch in the retry brief, and remove
+  the first worktree. When the retry fails too, the main session MUST ask the user.

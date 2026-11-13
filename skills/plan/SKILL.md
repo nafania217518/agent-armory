@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 274
+max-lines: 280
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -42,6 +42,8 @@ Drafting; the planner runs only Drafting.
   first quiz round MUST ask which milestone the task belongs to, or none.
 - With no tracker bound, a task with no milestone MUST take a slug of its title as its
   branch.
+- Each title slug MUST be ASCII: a non-Latin title transliterated, lower case, words
+  joined by `-`.
 - A strategic run MUST have no testable item. It MUST stop at the milestone list; each
   milestone plan MUST be a separate run.
 - A strategic run SHOULD add a decision line only when the decision is hard to reverse,
@@ -193,9 +195,10 @@ Drafting; the planner runs only Drafting.
     load `TR`.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
-- At the task level, the review MUST also walk each new `tests:` case through the
-  existing rules of its component, in the plan and in the code. A case that one of
-  them makes impossible MUST be dropped or rewritten.
+- At the task level, the review MUST also walk each new `tests:` case, with its
+  expected value, through its own `TR` and the existing rules of its component, in the
+  plan and in the code. A case that one of them makes impossible MUST be dropped or
+  rewritten.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
   tracker write the run will make: creates, body edits, links, edges, comments and
   status sets. A task run MUST also list the done write of its `code` run, and the claim
@@ -259,6 +262,9 @@ Drafting; the planner runs only Drafting.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
+- A wrong `tests:` case of a `TR` whose behavior stays MUST get a dated note below the
+  `TR` list that names the `TR` and gives the corrected case. A changed behavior takes
+  a new id (above).
 - When an amendment replaces or removes a term (a profile, a file, a class), the main
   session MUST grep the owning doc, the plan file and the project context for that
   term before it asks the user. Each requirement line that names the term

@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 152
+max-lines: 155
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -139,7 +139,10 @@ The gates and their commands are in the project context `## Gates` and `## Comma
   exists on `<base>` (`code` section Branch and plan file). MUST compare with it to tell.
 - A gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded
   as an out-of-scope finding. `code` section Task end sets the report gates.
-- Before your report, every `on` gate MUST pass, or the report names the failing gate.
+- Gate, build and test output MUST reach your context only as its tail or a grep, and
+  a long file only in line ranges.
+- Before your report, every `on` gate that the brief does not leave to the main session
+  (`delegate` section Briefs) MUST pass, or the report names the failing gate.
 - The report MUST give one line per gate for a commit range when every commit in it
   gives the same result. A commit that differs MUST get its own line.
 

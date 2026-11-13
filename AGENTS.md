@@ -111,7 +111,6 @@ Format: the caveat line of the armory `core` skill, section Reports
 - `wc -m` counts bytes in the C locale, so it reports 10,004 for a 9,998-character `core` : scripts/core-context.sh
 - Claude Code caps hook output at 10,000 characters and passes only a 2,000-character preview above it : scripts/core-context.test.mjs
 - A merge into `<base>` merges into the local default branch with no fast-forward to `origin` first : skills/code/SKILL.md
-- A worktree-isolated subagent cannot run git in another agent's worktree, so a retry brief that names the first spawn's worktree cannot be followed : skills/setup/templates/agents/coder.md
 - The `doc-checks.mjs` width check skips `AGENTS.md` and `docs/plans/`, so a 90-character rule on "each changed line" is not enforced there : scripts/doc-checks.mjs
 - A `plan` run from an accepted item leaves to the model where its new `BR` lines go beside triage's `## Requirements` : skills/plan/SKILL.md
 - A caveat line with an unchecked claim has a third field, ` : Unverified: ...`, that the format in `core` section Reports does not show : skills/review/SKILL.md

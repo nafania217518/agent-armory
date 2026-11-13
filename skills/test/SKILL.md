@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 133
+max-lines: 136
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -85,6 +85,9 @@ or change these lines; that section MUST win.
 
 - The main session MUST write the test-scope list into the plan: the existing test
   cases the change will break, rework or remove, each with the reason.
+- When a change makes a response parse stricter (a new required field included), the
+  list MUST name every test, mock and fixture of that response, also one that would
+  still pass through a failure path.
 - A scope addition is the one exception to the ban on unrequested changes (`implement`
   section The smallest complete change). It MUST be a failing test proven missed from
   the list (`implement` section Tests while coding), or a duplicate higher-level test on
