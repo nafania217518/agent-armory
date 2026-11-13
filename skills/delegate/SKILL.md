@@ -103,7 +103,7 @@ The main session follows this skill for each spawn of a project agent.
 | Coding, trivial change | Sonnet | low |
 | Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
 | Refactoring; code review, except of a trivial change; audit; planner: any draft | Opus | high |
-| Code review of a trivial change | Sonnet | low |
+| Code review of a trivial change | Sonnet | high |
 | Writing or summary, restating given facts | Sonnet | low |
 | Writing or reading that needs judgment | Opus | effort map |
 | Research, one fact from an official source | Sonnet | low |

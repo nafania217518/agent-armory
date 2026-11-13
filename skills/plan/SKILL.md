@@ -1,11 +1,11 @@
 ---
 name: plan
 description: >
-  Plans work in plan mode before any edit, at three levels: strategic (design doc and
-  milestones), milestone (scope and BR requirements) and task (TR requirements and the
-  plan file), with quizzes and the user's approval. Use for a new task, "plan this", "make
-  a plan", "plan a milestone", "design doc", "design this change", a changed requirement,
-  "/plan", and from the code skill when no plan exists.
+  Plans work before any edit, at three levels: strategic (design doc and milestones),
+  milestone (scope and BR requirements) and task (TR requirements and the plan file),
+  with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
+  "make a plan", "plan a milestone", "design doc", "design this change", a changed
+  requirement, "/plan", and from the code skill when no plan exists.
 max-lines: 253
 ---
 
@@ -21,8 +21,7 @@ Drafting; the planner runs only Drafting.
 
 - The level MUST come from the argument `strategic`, `milestone` or `task`. With no
   argument, the first question MUST ask the level.
-- Plan mode MUST start before the level question. The level question MUST come before any
-  quiz round.
+- The level question MUST come before any quiz round.
 - Each level MUST use the doc, template and branch of this table. Template paths are
   relative to this skill.
 
@@ -82,11 +81,11 @@ Drafting; the planner runs only Drafting.
 
 ## 2. Before the plan
 
-- The main session itself MUST run plan mode, the quizzes and the
-  approval.
+- The main session itself MUST run the quizzes, the research and the approval.
 - Planning spawns researchers and the planner: MUST load `delegate` first.
-- The quizzes, the planning research and the plan MUST run in plan mode. Research during
-  coding does not.
+- Until the first proposal, the quizzes, the research and the drafts MUST run outside
+  plan mode. The main session MUST enter plan mode only to propose, after the
+  self-review (section Self-review and approval) passes.
 - On a model below Opus or an effort below `high`, the main session SHOULD suggest a
   switch to the user before planning.
 - Before building, SHOULD push back on any part of the request the need does not justify.
@@ -181,8 +180,10 @@ Drafting; the planner runs only Drafting.
   tracker write the run will make: creates, body edits, links, edges, comments and
   status sets. A task run MUST also list the claim and the done write of its `code` run.
 - An open question MUST go to one more quiz round.
-- Exiting plan mode is the approval. On a reject,
-  MUST fix the part the user names and propose again.
+- Exiting plan mode is the approval. On a reject, MUST fix the part the user names and
+  propose again. A fix that needs only plan edits or a quiz round MUST stay in plan
+  mode. Any other fix MUST first ask the user to switch to auto mode or bypass
+  permissions, and name the work; after it, MUST enter plan mode again.
 
 ## 7. Plan file
 
@@ -228,10 +229,9 @@ Drafting; the planner runs only Drafting.
   open child item body, with the AI marker line above the changed line, or, in the docs
   fallback, to each open task line of the milestone doc. The amendment question MUST
   list these tracker writes.
-- A change to the design MUST go back to plan mode: quizzes, plan, approval. A redesign
-  the user approves is such a change.
-- An architecture gap MUST re-enter plan mode at the strategic level, on a
-  `design-<topic>` branch.
+- A change to the design MUST go back to section Before the plan: quizzes, plan,
+  approval. A redesign the user approves is such a change.
+- An architecture gap MUST re-plan at the strategic level, on a `design-<topic>` branch.
 - A defect in built code MUST get a new `TR-n` and its test (`implement` section Fixing
   and refactoring).
 - The main session MUST allocate every new id. A subagent MUST NOT allocate one.

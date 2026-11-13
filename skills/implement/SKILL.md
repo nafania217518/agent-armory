@@ -31,7 +31,7 @@ reviewer judges code against it. Test rules: `test`.
   would build had it been there from the start. When that differs from the plan, the
   coder MUST still follow the plan and MUST record the misfit with its reasoning (`core`
   section Reports). It MAY stop and report `stuck: <misfit>` at once when going on
-  wastes significant work. On the user's yes, the change goes back to plan mode (`plan`
+  wastes significant work. On the user's yes, the change goes back to planning (`plan`
   section Amendments); the new design SHOULD ship in pieces.
 - When the plan cannot be followed at all, the coder MUST stop and report `stuck:` (the
   coder agent card).

@@ -250,6 +250,10 @@ One dated line per decision, with the dropped alternatives.
   main-session rules to a second SessionStart file. A unit test guards the cap.
 - 2026-11-06: `setup` keeps only the project; the global scope goes. Dropped: the
   `global` scope and its scope question.
+- 2026-11-13: plan mode holds only the proposal. The quizzes, the research and the
+  drafts run before it; on a reject, a fix beyond plan edits or a quiz round asks the
+  user to leave plan mode. Dropped: plan mode from the level question, where each
+  research call needed the user's yes.
 
 ## 7. Milestones
 
