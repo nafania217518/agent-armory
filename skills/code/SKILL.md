@@ -33,10 +33,10 @@ worktree branch into the task branch is in `delegate` section Delegation and wor
 - The tech quiz MAY confirm `<base>` when it is unclear.
 - MUST cut the task branch from `<base>`. With a remote, MUST run `git fetch origin`
   first.
-- With a tracker bound (`plan` section Levels, tracker variant), the run MUST claim its
-  task item as its first write on that item, before it cuts the task branch. When the
-  item is assigned to another person, the run MUST stop and ask the user: take it over,
-  pick another ready task, or stop.
+- With a tracker bound, the task claim follows `plan` section Levels, tracker variant.
+  Just before it cuts the task branch, the run MUST read its task item again. When the
+  item is closed or has an assignee other than the user, the run MUST NOT cut the
+  branch. It MUST stop and ask the user instead: take it over, pick another task, or stop.
 - MUST NOT commit to `<base>`.
 - MUST ask the user before any push, and before any merge into `<base>`, PR merges too.
 

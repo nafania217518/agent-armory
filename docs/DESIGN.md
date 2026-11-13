@@ -113,7 +113,7 @@ With a tracker bound, the milestone list, each milestone (scope and `BR` list), 
 tasks and every status live in the tracker. The repo keeps this file's architecture and
 decisions and the task plan files.
 
-The rules: `plan` section Levels; the claim and the done write: `code`.
+The rules and the claim: `plan` section Levels; the done write: `code`.
 
 ## 6. Decisions
 

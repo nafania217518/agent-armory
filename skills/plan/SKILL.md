@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 270
+max-lines: 274
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -75,6 +75,11 @@ Drafting; the planner runs only Drafting.
     no milestone of a task run, with no milestone question.
   - A task run with no task named MUST take the first ready task in the milestone item's
     child order: open, every blocker done, no assignee.
+  - A task run MUST claim its task item right after it reads the item, before any quiz
+    round or spawn. The user's start request is the yes for this write. When the item is
+    closed or has any assignee, the user included, the run MUST stop and ask the user:
+    take it over, pick another ready task, or stop. A task item the run creates after
+    the approval MUST be claimed right after its create.
   - A task's branch MUST be the tracker's branch name for its item when the binding has
     that verb, else `<item id>-<title slug>`. The plan file path MUST be the branch with
     each `/` replaced by `-`.
@@ -193,7 +198,8 @@ Drafting; the planner runs only Drafting.
   them makes impossible MUST be dropped or rewritten.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
   tracker write the run will make: creates, body edits, links, edges, comments and
-  status sets. A task run MUST also list the claim and the done write of its `code` run.
+  status sets. A task run MUST also list the done write of its `code` run, and the claim
+  of a task item it creates.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode is the approval. On a reject, MUST fix the part the user names and
   propose again. A fix that needs only plan edits or a quiz round MUST stay in plan
@@ -204,8 +210,6 @@ Drafting; the planner runs only Drafting.
 
 - After the approval, the main session MUST cut the level's branch (section Levels,
   column Branch) from `<base>` with the commands of `code` section Branch and plan file.
-- With a tracker bound, a task run MUST first make the claim of `code` section Branch
-  and plan file, before it cuts the task branch.
 - It MUST then write the level's doc at its Doc path as the first commit; `core`
   section Host terms sets `<docs>`. The requirements MUST NOT go into a separate file.
 - A task run MUST write its plan file also after zero quiz rounds.

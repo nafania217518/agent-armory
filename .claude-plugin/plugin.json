@@ -1,6 +1,6 @@
 {
   "name": "armory",
-  "version": "0.2.12",
+  "version": "0.2.13",
   "description": "core, plan, delegate, code, implement, test, debug, review, audit, research, retro, triage and setup skills with coder, debugger, reviewer, researcher, writer and planner agent templates and the strategic, milestone and task plan templates: RFC 2119 rules, test gates, one shared model table, and hooks that inject core.",
   "author": {
     "name": "Oleksii Yakovenko"
