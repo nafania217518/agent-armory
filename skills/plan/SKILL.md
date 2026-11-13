@@ -6,7 +6,7 @@ description: >
   plan file), with quizzes and the user's approval. Use for a new task, "plan this", "make
   a plan", "plan a milestone", "design doc", "design this change", a changed requirement,
   "/plan", and from the code skill when no plan exists.
-max-lines: 246
+max-lines: 253
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -167,11 +167,14 @@ Drafting; the planner runs only Drafting.
     its dropped alternatives. With a tracker bound, the check MUST read the planned
     milestone items (a goal, status open) in place of the milestone lines.
   - milestone: each `BR` is testable and sits in exactly one task's `BR` list. A
-    gate-type `BR`, such as one for `lint`, MAY sit in several.
+    gate-type `BR`, one that applies to every task, such as one for `lint`, MUST sit
+    in every open task's list.
   - task: every `BR` of the task has a `TR`; every `TR` has tests for its edge cases and
     failure paths, or a `tests: none` line; the design issues under `core` section
     Design principles, `implement` section Before you write and `implement` section
-    Domain, boundaries and state are fixed.
+    Domain, boundaries and state are fixed; each claim in Caveats or Stack choices with
+    "every", "all", "never" or "only" holds on each file that the `TR` items name, or
+    is narrowed or dropped.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
@@ -220,6 +223,11 @@ Drafting; the planner runs only Drafting.
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
 - A task that its milestone doc does not list MUST get its Tasks line as an amendment.
+- An amendment that adds a gate-type `BR` (section Self-review and approval) MUST also
+  add it to each open task of the milestone: to the `<what> : <BR list>` line of each
+  open child item body, with the AI marker line above the changed line, or, in the docs
+  fallback, to each open task line of the milestone doc. The amendment question MUST
+  list these tracker writes.
 - A change to the design MUST go back to plan mode: quizzes, plan, approval. A redesign
   the user approves is such a change.
 - An architecture gap MUST re-enter plan mode at the strategic level, on a

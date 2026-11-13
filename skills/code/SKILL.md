@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 169
+max-lines: 176
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -56,6 +56,9 @@ section Reports.
 - The main session MUST write each caveat it receives or finds after the plan-file
   commit into the project context `## Caveats` immediately; a caveat with an
   `Unverified:` part first gets the check of section Review loop.
+- Before that write, the main session MUST check the line against `core` section
+  Reports, and its claim against the code. A line that fails MUST be split or cut as
+  that section says, or dropped when false.
 
 ## 3. Running the plan
 
@@ -76,6 +79,9 @@ follows `plan` section Amendments.
 - After a review, the main session MUST have each Must fix item and each auto-fix
   finding fixed (`delegate` section Context), run the reviewer on the fix commits, and
   repeat until none remains.
+- A commit that only deletes caveat or doc lines a finding's Fix part names, or writes
+  caveat or doc text that a Fix part gives word for word, gets no re-review (a
+  no-re-review commit). The main session MUST still run `lint` and `unit` after it.
 - An auto-fix finding is one of a class that the project context `## Rules` line
   `auto-fix: <classes>` names: `should` (Should fix) and `nice` (Nice to have), or
   `none`. A missing line MUST mean `none`.
@@ -111,7 +117,8 @@ follows `plan` section Amendments.
   2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
      item has its applied answer.
   3. After any commit since the last review: MUST run `lint` and `unit` again, and the
-     reviewer on each such commit that is not a pure revert.
+     reviewer on each such commit that is not a pure revert or a no-re-review commit
+     (section Review loop).
   4. Quiz loop: MUST repeat steps 2 and 3 while a re-review in step 3 adds a new
      recorded item. The loop bound (section Review loop) applies.
   5. Stray-task check: MUST check each task in the scope of `core` section Tools and

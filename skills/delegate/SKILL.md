@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 150
+max-lines: 151
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -51,6 +51,10 @@ The main session follows this skill for each spawn of a project agent.
   `## Caveats` that apply; which skills or skill sections the agent loads; the task
   branch and `<base>` (`code` section Branch and plan file); the plan's Overrides and
   Accepted tech debt sections (`plan` section The plan).
+- In place of quoting a plan section (the `TR` items, the test-scope list, Overrides,
+  Accepted tech debt), the brief MAY name the plan file path, the sections that apply and
+  the task-branch commit at brief time. A `BR` that lives outside the plan file MUST
+  still be quoted.
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. An audit brief MUST hold the audit target (`audit` section Map
   first) in place of the range and the task's requirements. A re-review brief MUST
@@ -98,7 +102,8 @@ The main session follows this skill for each spawn of a project agent.
 | Coding from a brief (TDD), a fix whose cause the plan or a diagnose-only report names included | Opus | low |
 | Coding, trivial change | Sonnet | low |
 | Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
-| Refactoring; code review, any diff size; audit; planner: any draft | Opus | high |
+| Refactoring; code review, except of a trivial change; audit; planner: any draft | Opus | high |
+| Code review of a trivial change | Sonnet | low |
 | Writing or summary, restating given facts | Sonnet | low |
 | Writing or reading that needs judgment | Opus | effort map |
 | Research, one fact from an official source | Sonnet | low |
