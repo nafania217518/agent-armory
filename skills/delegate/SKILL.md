@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 159
+max-lines: 190
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -64,8 +64,10 @@ Main session follows this skill for each spawn of a project agent.
   whole-task checks. An audit brief MUST hold the audit target (`audit` §Map first)
   instead of the range and the task's requirements. A re-review brief MUST hold the
   findings sent to fix.
-- Any other brief (research, reading, writing) MUST hold the question and the context
+- Any other brief (research, reading, writing) MUST hold its questions and the context
   the agent needs.
+- Each brief MUST name the §Models row its task matches, or `no row`; a retry brief
+  MUST also name its rung.
 - A brief MAY leave an `on` gate to main session only when the brief's change touches
   no file the gate runs.
 - `core` rules reach every subagent through the hook, else the pointer. A brief
@@ -105,34 +107,63 @@ Main session follows this skill for each spawn of a project agent.
 
 | Task | Model | Effort |
 |---|---|---|
-| Coding from a brief (TDD), a fix whose cause the plan or a diagnose-only report names included | Opus | low |
-| Coding, trivial change in a few short files, with no e2e or full gate run | Sonnet | low |
+| Coding from a brief (TDD) with the full design: one layer, or a fix whose cause and every site the plan, a review finding or a diagnose-only report names | Opus | low |
+| Coding from a brief (TDD) that leaves design to the coder: a slice of several layers or 3+ TRs, a new script with its tests, a benchmark or measurement, code handling external input or failure paths, a fix that names a fault class but not every site | Opus | medium |
+| Coding locking, transactions, waits on a lock, a signal or a queue from another process or thread, retries or state shared across processes | Opus | high |
+| Coding, trivial change in a few short files, with no integration or e2e gate | Sonnet | low |
 | Debugging: a bug whose cause neither the plan nor a diagnose-only report names | Opus | high |
-| Refactoring; code review, except of a trivial change; audit; planner: any draft | Opus | high |
-| Code review of a trivial change | Sonnet | high |
+| Refactoring; review of a code or doc change; audit; planner: any draft | Opus | high |
+| Refactoring by a pattern or step list given in full (style swap, caller move, one expand–contract batch), behavior pinned by existing tests | Opus | low |
+| Code map for planning: read one area; return path:lines, signatures, data shapes and the tests that pin them | Opus | medium |
+| Code trace: read the code for one reported behavior or one claim about it; return the path:lines that give it, or the gap that leaves it unproven; no run, no fix; not a bug whose cause is unknown (§What each agent returns) | Opus | medium |
 | Caveat claim check, one topic file | Sonnet | medium |
 | Writing or summary, restating given facts | Sonnet | low |
 | Writing or reading that needs judgment | Opus | effort map |
+| Rewriting rule, requirement or contract text to be shorter or clearer, with no change of meaning | Opus | high |
 | Research, one fact from an official source | Sonnet | low |
+| Research, web read: answer the brief's questions from the 1–3 pages it names by URL | Sonnet | medium |
+| Research, 2–5 facts on one subject, each from official docs, a changelog or installed source | Sonnet | medium |
 | Research: sources disagree, many sources, a comparison, a design choice | Opus | high |
 | Trivial task, no reading (run, list, grep, format, gate runs) | Haiku | low |
 | Trivial task, light reading | Sonnet | low |
+| Repeated run of an existing command, call or benchmark, no code change | Sonnet | low |
 | Frontier task | the Fable question | — |
 
-- Default rows: coder "Coding from a brief" (Opus low); debugger "Debugging" (Opus
-  high); reviewer and planner (Opus high); researcher "one fact" and writer
-  "restating" (Sonnet low). A spawn MAY override the default with another row. A
-  failed spawn retries up the chain of §Re-spawn and retry.
+- Default rows: coder "Coding from a brief … full design" (Opus low); debugger
+  "Debugging" (Opus high); reviewer and planner (Opus high); researcher "one fact" and
+  writer "restating" (Sonnet low). A spawn MAY override the default with another row or
+  a retry rung; it MUST then set its model and effort. A failed spawn retries up the
+  chain of §Re-spawn and retry.
 - The table MUST be read with these definitions:
   - Trivial change: no new branch, loop or data shape (renames, typos, config values,
-    copy edits, code moved as is, a change given in full in the brief). Trivial task:
-    mechanical work that needs no judgment.
+    copy edits that state no new behavior and are not rule, requirement or contract
+    text, code moved as is, a change given in full in the brief). Given in full:
+    the brief holds the exact new code or text; a review Fix part that names only an
+    outcome is not given in full. A pattern rewrite across many files is not trivial.
+    Trivial task: mechanical work that needs no judgment.
+  - Full design: the brief gives every interface and failure path, not only test names.
+    A change over 2+ modules, an external API, a poll or schedule, or file-system paths
+    leaves design to the coder, as does each case the leaves-design row lists. A fix
+    whose cause and every site are named stays full design.
+  - Pattern given in full: the brief shows the old and new forms, or every step with its
+    target, and names the file set.
+  - Research sizes: a fact is one claim that one passage of a source states. Many sources:
+    over 3 named pages, over 5 facts, or sources the agent must weigh against each other.
+    A web read holds up to 5 questions. One question on one official page takes the
+    one-fact row.
   - Judgment test: Sonnet when the input holds every fact and the job is to restate it;
-    Opus when the job is to choose, compare, find gaps or decide.
+    Opus when the job is to choose, compare, find gaps or decide. An unchecked library or
+    version fact in the input does not count as held. A rewrite of rule, requirement or
+    contract text is judgment.
+  - Mixed brief: a brief that bundles tasks of several rows takes their highest row, by
+    tier, then by effort. A single task that matches several rows takes the narrowest; a
+    task that matches the "Coding, trivial change" row takes it. A coding task that the
+    locking row names takes that row, unless it takes the trivial row.
   - Frontier task: complex, unusual work that needs a frontier model (pentests, attack
     prevention, complex vulnerabilities, deep reverse engineering, big system design,
     complex analysis from many sources). Triggers: security-critical work, work across
-    many systems, a case that an Opus-high reviewer cannot judge.
+    many systems, a case that an Opus-high reviewer cannot judge, a fix loop on one area
+    where round n's fix causes a new Must fix in round n+1, twice in a row.
 - A task with a frontier trigger MUST count as a frontier task. A planner or researcher
   spawn MUST move to the frontier row when the case is complex or has a trigger.
 

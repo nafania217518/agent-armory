@@ -14,4 +14,4 @@ Format: `Door: <one-way | two-way>` and one line on why, then
 `Blast radius: <what the merge can affect>`.
 
 Optional last lines: one closing line per item: the closing reference form of
-`closes by PR merge:`, with the item's id filled in (armory `code` skill, section Finish).
+`closes by PR merge:`, with the item's id filled in (armory `code` §Finish).

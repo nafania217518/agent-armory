@@ -33,7 +33,7 @@ terms and run on Claude Code.
 | `coder` | Implements one coding brief with TDD, in its own worktree. | Opus | low |
 | `debugger` | Diagnoses one bug whose cause is not known, and fixes it in the fix flow, in its own worktree. | Opus | high |
 | `reviewer` | Reviews a change or audits a repo. Changes no tracked file. | Opus | high |
-| `researcher` | Answers one technical question from sources. | Sonnet | low |
+| `researcher` | Answers the technical questions of one brief from sources. | Sonnet | low |
 | `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |
 | `planner` | Read-only. Drafts a design, a test design or an analysis of options. | Opus | high |
 
