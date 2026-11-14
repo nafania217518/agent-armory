@@ -6,13 +6,9 @@ Parent: `{{DOCS}}/DESIGN.md` §Milestones, line `{{NAME}}`.
 
 {{GOAL}}
 
-## Scope
+With a tracker bound, the item body leaves this section out: the item holds its goal.
 
-In:
-
-- {{IN}}
-
-Out:
+## Out of scope
 
 - {{OUT}}
 
@@ -28,4 +24,5 @@ values are in armory `plan` §Levels.
 
 ## Risks
 
-## Done criteria
+Format: `<risk> : <check>`; `<check>` is the `BR` or task that checks or limits it, or
+the quiz answer that accepts it.

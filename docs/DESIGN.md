@@ -269,6 +269,11 @@ One dated line per decision, with the dropped alternatives.
   name project context sections, leaner reviewer-subagent reports. Dropped: a terse
   report register (research and an A/B test: small saving, reader risk); resuming the
   final review; a project-context probe in `setup`.
+- 2026-11-14: plan-file diet, from 8 plan retros: the plan file holds only the template
+  sections. Dropped: numbered test cases, a plan-lint check, quoting plan sections in
+  briefs, dropped alternatives in Design. Milestone docs and items follow the same
+  rules, without Done criteria and the Scope In list. Dropped: migrating the old
+  milestone docs.
 
 ## 7. Milestones
 

@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 301
+max-lines: 356
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -28,8 +28,8 @@ Drafting; planner runs only Drafting.
 | Level | Doc | Template | Branch | Holds | Ids |
 |---|---|---|---|---|---|
 | strategic | `<docs>/DESIGN.md`, edited in place | `templates/strategic.md`; other sections free | `design-<topic>` | architecture, dated decisions, the milestone list and milestone status | none |
-| milestone | `<docs>/milestones/<name>.md` | `templates/milestone.md`, fixed | `milestone-<name>` | scope, the `BR` list, the tasks and their status | `BR-n` |
-| task | `<docs>/plans/<branch>.md` | `templates/task.md`, fixed | the task branch | the `TR` list, test scope, overrides, accepted tech debt | `TR-n` |
+| milestone | `<docs>/milestones/<name>.md` | `templates/milestone.md`, fixed | `milestone-<name>` | out of scope, the `BR` list, the tasks and their status, risks | `BR-n` |
+| task | `<docs>/plans/<branch>.md` | `templates/task.md`, fixed | the task branch | design, the `TR` list, test scope, risks, overrides, accepted tech debt | `TR-n` |
 
 - Milestone or task doc MUST name its parent in its first lines, with the template's
   parent line. It MUST reference a parent fact, not restate it.
@@ -39,9 +39,8 @@ Drafting; planner runs only Drafting.
 - Milestone name MUST match a line of `<docs>/DESIGN.md` §Milestones. With none, strategic
   level MUST add it first.
 - Task run MUST take its milestone from the request. When request names none, first quiz
-  round MUST ask which milestone the task belongs to, or none.
-- With no tracker bound, a task with no milestone MUST take a slug of its title as its
-  branch.
+  round MUST ask for the task's milestone, or none.
+- With no tracker bound, a task with no milestone MUST take its title slug as its branch.
 - Each title slug MUST be ASCII: a non-Latin title transliterated, lower case, words
   joined by `-`.
 - Strategic run MUST have no testable item. It MUST stop at the milestone list; each
@@ -62,10 +61,9 @@ Drafting; planner runs only Drafting.
     milestone list. Each new milestone MUST become a top-level tracker item. A run that
     creates `DESIGN.md` from `templates/strategic.md` MUST drop its Milestones section.
   - milestone: milestone item body MUST take the sections of `templates/milestone.md`
-    except the title line, parent line and Tasks, and except `## Goal` when the item
-    already holds its one-line goal. Each task MUST become a child item of the milestone
-    item. Its body MUST hold the `<what> : <BR list>` of the Tasks format line. Blocked-by
-    edges MUST hold the task's needs (§The plan).
+    except the title line, parent line, Goal and Tasks. Each task MUST become a child
+    item of the milestone item. Its body MUST hold the `<what> : <BR list>` of the Tasks
+    format line. Blocked-by edges MUST hold the task's needs (§The plan).
   - Status MUST live only in the tracker.
   - Milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. Task run
     MUST read its milestone item, body and comments, first.
@@ -98,7 +96,7 @@ Drafting; planner runs only Drafting.
 - Before the first quiz round, main session MUST read each topic file whose pointer fits
   the request (`code` §Caveats).
 - Before any edit, MUST quiz user in rounds until no open point remains (an unclear
-  requirement, a choice, an assumption), and wait for the answers. §Quizzes sets the order
+  requirement, a choice, an assumption), and wait for answers. §Quizzes sets the order
   and topics; `core` §Writing and questions sets the question format.
 - MUST NOT write any repo file before approval. Planning MUST NOT write code, tests or
   config.
@@ -108,13 +106,13 @@ Drafting; planner runs only Drafting.
 - Business quiz MUST come first: goal, who is affected, done criteria, users, features,
   business rules, out of scope, constraints.
 - Tech quiz MUST follow: stack, data, interfaces, constraints, test levels, risks,
-  acceptance.
+  acceptance. When a plan item repairs a rule breach that the repo holds elsewhere too, it
+  MUST ask: fix all here, a follow-up item, or leave.
 - Each topic MUST be covered when, and only when, it is relevant to the task.
 - A round MUST ask only questions whose prerequisite answers are in. A question that
   depends on another open question of the round MUST wait for a later round.
-- A quiz MUST NOT ask a fact that the parent doc, repo, a tool or an agent can settle:
-  main session MUST find it. A running lookup MUST hold back only the questions that
-  depend on it.
+- A quiz MUST NOT ask a fact the parent doc, repo, a tool or an agent can settle: main
+  session MUST find it. A running lookup MUST hold back only questions that depend on it.
 - During a quiz, main session MUST name a term that conflicts with project context
   `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST check
   each claim user makes about the code against the code, naming any contradiction.
@@ -127,12 +125,13 @@ Drafting; planner runs only Drafting.
 - An answer MUST become a `BR` or `TR` only when testable: a behavior or a measurable
   constraint, such as `TR-5 (BR-2): MUST NOT lock the table for more than 1 s`. A `BR` is
   testable when its `TR` items together prove it. A goal no test can prove MUST go into
-  the doc's Goal section.
+  the doc's Goal section; with a tracker bound, a task plan or a milestone item body MUST
+  leave it to its item.
 - In a milestone run, or a task run with no milestone, each testable business answer MUST
   become a `BR` in the item format of `templates/milestone.md`.
 - A `BR` MUST live in the milestone doc. A task with no milestone MUST keep its own `BR`
-  list in the plan file. With a tracker bound (§Levels, tracker variant), it MUST keep
-  that list in its own task item body, and the plan file only the `TR` list.
+  list in the plan file, or, with a tracker bound (§Levels, tracker variant), in its own
+  task item body. With a tracker bound, plan file MUST hold no `BR` text, only `BR` ids.
 - Task run under a milestone MUST NOT add a `BR`. A `BR` gap MUST go to §Amendments.
 - In a task run, each testable tech answer MUST become a `TR` in the item format of
   `templates/task.md`.
@@ -143,12 +142,33 @@ Drafting; planner runs only Drafting.
 
 ## 5. The plan
 
-- Task plan MUST take the sections, order and format lines of `templates/task.md`. An item
-  of a section other than Requirements MUST NOT go into a `BR` or `TR`.
+- Plan file MUST hold only the sections of `templates/task.md`, in its order, with only
+  their items, each in its section's format line, never a format line or other template
+  text. Each fact MUST sit in one section; another section MUST name it by section or `TR`
+  id, never copy it, figures included.
+- Context, assumptions, dropped alternatives, tracker writes, quiz answers and any other
+  text that serves only the approval MUST stay in the plan-mode proposal.
+- A section with no item MUST be left out, except Requirements and Test scope. A missing
+  Overrides or Accepted tech debt section MUST mean none.
+- The three bullets above MUST also hold for a milestone doc and a milestone item body,
+  with `templates/milestone.md`; there, only Requirements and Tasks stay when empty; a
+  milestone item body also keeps that opening goal line (§Plan file).
+- Requirements MUST hold only `TR` items and the dated notes of §Amendments, beside the
+  `BR` list of §Requirements: no order line, summary, API table or key that restates
+  them, and no `TR` that only says the `on` gates pass; a gate-type `BR` needs no `TR`;
+  each `tests:` line names the gate instead. A `TR` MUST state only its behavior and its
+  indented lines, and MAY hold the exact text it prescribes as an indented block under
+  it; its reason MUST go to Design. An item of another section MUST NOT go into a `BR`
+  or `TR`; it MUST stay in its own section.
 - Overrides section MUST name each design rule the plan overrides (`core` §Rule words) and
   its reason.
+- Each Risks line MUST name the `TR`, or in a milestone the `BR` or task, that checks or
+  limits it, or the quiz answer that accepts it. A risk of failure in behavior the task
+  builds MUST go to a quiz round first.
 - Plan MUST list `TR` items in execution order; an item that a later item's gate command
-  needs MUST come first. Each `tests:` line MUST follow `test` §TDD.
+  needs MUST come first. Each `tests:` line MUST follow `test` §TDD and name a gate by
+  its name, never by its command or a case count. A `TR` that breaks or reworks a test of
+  a gate MUST name that gate in its `tests:` line.
 - Each `TR` and each milestone task MUST name its needs: the items whose code, contract or
   data it uses, or `none`. A preferred order alone MUST NOT become a need; such items stay
   free to run at once.
@@ -164,17 +184,23 @@ Drafting; planner runs only Drafting.
 - Items, their `tests:` lines and the test-scope list SHOULD come as a draft from planner
   (§Drafting), which loads `test` and `implement`. A main session that drafts them itself
   MUST load both.
-- Plan SHOULD name the gates that apply, when relevant.
 - A data-growth path is a read or write path whose cost grows with stored data: a query, a
   loop over stored rows, an index build.
-- A `TR` that adds or changes a data-growth path MUST have a load `TR`: data size,
-  operations measured and a latency target, such as p95. Figures MUST come from the
-  expected load (`review` §Understand first).
-- Before a load `TR` sets an absolute bar on an existing path, plan MUST cite a current
-  value measured on current code. When that value misses the bar or lies within its
-  run-to-run spread, load `TR` MUST compare before and after instead: median of at least 3
-  runs per side, on one machine in one session, with a stated bound, such as +5 ms per
-  query.
+- Each `TR` that adds or changes a data-growth path MUST carry its `load:` line: its load
+  `TR` id, or `load: none, <why>`. A load `TR` MUST state data size, operations measured,
+  each measured query as text or as the rule that draws it from seed data, and a latency
+  target, such as p95. Figures MUST come from the expected load (`review` §Understand
+  first). Its benchmark MUST fail when a measured query returns no row.
+- A `TR` that sets a bar on a measured value MUST cite a current value, measured on
+  current code or a probe, with its spread over at least 3 runs. A bar at the metric's
+  ceiling or floor, or within that spread, MUST change before approval: another metric or
+  data set, or a before-and-after bound (median of at least 3 runs per side, on one
+  machine in one session, such as +5 ms per query).
+- When the task's goal is a measured gain, its measurement item and data MUST come first,
+  with `needs: none`, and MUST run before the first feature item. When the baseline
+  leaves no room for the gain, main session MUST ask user.
+- Measured results MUST go to the task report and the PR body (`code` §Task end, step 6),
+  never to the plan file.
 - When the repo states no expected load, quiz MUST ask user for one; §Plan file writes the
   answer into `<docs>/DESIGN.md`.
 - A load `TR` is the measurement that `core` §Design principles requires before an
@@ -184,7 +210,6 @@ Drafting; planner runs only Drafting.
 - Planning SHOULD look for complexity to remove before adding; deletion SHOULD beat
   addition. Plan MAY include that simplification; during coding, the scope rule of
   `implement` §The smallest complete change wins.
-- In a task run, a caveat found during planning (`core` §Reports) MUST go into the plan.
 
 ## 6. Self-review and approval
 
@@ -196,25 +221,43 @@ Drafting; planner runs only Drafting.
   - milestone: each `BR` is testable and sits in exactly one task's `BR` list. A gate-type
     `BR`, one that applies to every task, such as one for `lint`, MUST sit in every open
     task's list.
-  - task: every `BR` of the task has a `TR`; every `TR` has tests for its edge cases and
-    failure paths, or a `tests: none` line; the design issues under `core` §Design
-    principles, `implement` §Before you write and `implement` §Domain, boundaries and
-    state are fixed; each claim in Caveats or Stack choices with "every", "all", "never"
-    or "only" holds on each file that the `TR` items name, or is narrowed or dropped;
-    every `TR` on a data-growth path (§The plan) has its load `TR`; each absolute bar of a
-    load `TR` cites a current measurement.
+  - task: each line below holds; else the plan is fixed first.
+    - Every `BR` of the task, except a gate-type `BR`, has a `TR`. Every `TR` meets §The
+      plan and has a `tests:` case for each edge case and each failure path it names, or
+      a `tests: none` line.
+    - The design issues under `core` §Design principles, `implement` §Before you write
+      and `implement` §Domain, boundaries and state are fixed.
+    - Each claim in any section with "every", "each", "all", "always", "never" or "only",
+      and each claim on the form of existing data a `TR` reads, holds on each path and
+      file the `TR` touches, queue and retry paths included, by a search; else it is
+      narrowed or dropped. Each file, symbol or step a `TR` prescribes exists and has an
+      effect in the code it names.
+    - Each claim on how a tool, library or platform behaves (a wait, a return value, a
+      call used as a check) rests on a probe run during planning or a cited source; else
+      it goes to a probe or research before the proposal.
+    - Each `TR` that calls an outside part (fs, process, git, network, an engine API)
+      names each failure of that call and its outcome. One that waits, locks or retries
+      names each loop exit: success, timeout, a step that always fails, a half-written
+      state after a crash.
+    - Each bound a `TR` sets (count, length, range) is walked, largest value included,
+      against the domain rules of its data. Each input it reads is walked for missing,
+      empty and malformed values.
+    - Each pair of `TR` items that act in one run states their order or shared state in
+      the later `TR`.
 - At milestone and task level, review MUST also walk each new or changed flow path by
-  path, end to end, against the branch, worktree and gate rules.
+  path, from the command the user runs (gate, CLI, page) to where each output lands,
+  against the branch, worktree and gate rules.
 - At milestone and task level, review MUST also check that each need is real and each
   interface two items build has its contract item (§The plan).
 - At task level, review MUST also walk each new `tests:` case, with its expected value,
-  through its own `TR` and the existing rules of its component, in the plan and the code.
-  A case that one of them makes impossible MUST be dropped or rewritten.
+  through its `TR` and the existing rules of its component, in the plan and code. A case
+  one of them makes impossible MUST be dropped or rewritten. A case whose expected value
+  still holds without its `TR`'s code, a swappable test value included, MUST be rewritten.
 - With a tracker bound (§Levels, tracker variant), proposal MUST list each tracker write
-  the run will make: creates with their labels (a missing role label's create included),
-  body edits, links, edges, comments and status sets, and the create of each follow-up
-  item the plan cites. Task run MUST also list the done write of its `code` run, and the
-  claim of a task item it creates.
+  the run makes: creates with their labels (a missing role label's create included), body
+  edits, links, edges, comments and status sets, and the create of each follow-up item the
+  plan cites. Task run MUST also list the done write of its `code` run, in its form per
+  finish answer (`code` §Task end, step 11), and the claim of a task item it creates.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode is the approval. On a reject, MUST fix the part user names and propose
   again. A fix that needs only plan edits or a quiz round MUST stay in plan mode. Any
@@ -228,14 +271,13 @@ Drafting; planner runs only Drafting.
 - It MUST then write the level's doc at its Doc path as the first commit; `core` §Host
   terms sets `<docs>`. Requirements MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
-- Right after that commit, main session MUST write the caveats into the caveat base
-  (`code` §Caveats): for a task run, the doc's caveats, except one about code that a `TR`
-  of this task still builds or changes; for a strategic or milestone run, caveats found
-  during planning.
-- In the same step, main session MUST write each term the quiz settled into project
-  context `## Glossary`, in its format line. A plan template MUST NOT hold a glossary
-  section.
-- In the same step, main session MUST write an expected load the quiz settled into
+- Right after that commit, main session MUST write the caveats found during planning
+  into the caveat base (`code` §Caveats). A task run MUST hold them in its plan-mode
+  proposal, not its plan file, and MUST skip each one about code that a `TR` of this task
+  builds or changes; the coder's caveat slot reports that one after the build.
+- In that step, main session MUST write each term the quiz settled into project context
+  `## Glossary`, in its format line. A plan template MUST NOT hold a glossary section.
+- In that step, main session MUST write an expected load the quiz settled into
   `<docs>/DESIGN.md`.
 - Strategic or milestone run with a branch MUST end with the finish question of `code`
   §Finish for its branch.
@@ -244,7 +286,8 @@ Drafting; planner runs only Drafting.
   items after approval. Milestone run MUST write no milestone doc. Such a run MUST cut its
   level's branch only when it writes a repo file (`DESIGN.md`, glossary or caveats); that
   write MUST be its first commit. Else it MUST skip the branch and finish question. A new
-  milestone item body MUST hold its one-line goal.
+  milestone item body MUST open with its one-line goal, after the AI marker line and
+  above its sections.
 - With `triage` label lines bound, each item a `plan` or `code` run creates MUST carry
   `accepted` and one category: `bug` for a fix, else `enhancement`. A missing role label
   MUST be created first.
@@ -265,7 +308,7 @@ Drafting; planner runs only Drafting.
 - A `BR` gap found in a task run MUST amend the owning doc, after user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
 - With a tracker bound, an amendment that cites a follow-up item MUST list that item's
-  create in its question and in the plan's tracker writes.
+  create in its question.
 - A task that its milestone doc does not list MUST get its Tasks line as an amendment.
 - An amendment that adds a gate-type `BR` (§Self-review and approval) MUST also add it to
   each open task of the milestone: to the `<what> : <BR list>` line of each open child
@@ -276,23 +319,35 @@ Drafting; planner runs only Drafting.
   redesign user approves is such a change.
 - An architecture gap MUST re-plan at the strategic level, on a `design-<topic>` branch.
 - A defect in built code MUST get a new `TR-n` and its test (`implement` §Fixing and
-  refactoring).
+  refactoring). That `TR` MUST name its fault class and each call site of that class,
+  found by a grep at amendment time.
 - Main session MUST allocate every new id. Subagent MUST NOT allocate one.
-- Before the next brief, main session MUST write each new id and `(replaced by <new id>)`
-  mark into the owning doc and commit it.
-- An old item's id and text MUST NOT be rewritten or renumbered. MUST mark it
-  `(replaced by <new id>)`; the mark covers its old text.
+- Before the next brief, main session MUST commit to the owning doc the new items, each
+  `(replaced by <new id>)` mark, each dated note and the line updates below; no reason or
+  history. The amendment's reason and history MUST go into the commit message, and into
+  the tracker comment when one is written.
+- A replacing item MUST state its full text. A replaced item MUST keep its id line, never
+  renumbered, with the mark `(replaced by <new id>)`; its old text MAY go. Before the
+  plan's first commit, an item that user's yes replaces MAY be rewritten in place.
 - Brief of a `TR` that replaces another MUST tell the coder to re-point each `req:` marker
   of the old id to the new id.
 - A wrong `tests:` case of a `TR` whose behavior stays MUST get a dated note below the
   `TR` list that names the `TR` and gives the corrected case. A changed behavior takes a
   new id (above).
-- When an amendment replaces or removes a term (a profile, a file, a class), main session
-  MUST grep the owning doc, plan file and project context for that term before it asks
-  user. Each requirement line that names the term MUST join that amendment's question,
-  with its new id. At the amendment commit, main session MUST mark those lines
-  `(replaced by <new id>)` and MUST update each line that is not a requirement and names
-  the term, such as a Risks or a Caveats line.
+- When a code run starts on a plan whose commit is behind `<base>`, main session MUST
+  first check each `TR` against `<base>`. Each `TR` that `<base>` already meets MUST get
+  a dated note below the `TR` list. Done when each `TR` is checked.
+- When an amendment replaces or removes a term, id, design choice or figure (a profile,
+  a file, a class, a bound), main session MUST grep the owning doc, plan file and project
+  context for it before it asks user. Each requirement line that names it MUST join that
+  amendment's question, with its new id, and get its `(replaced by <new id>)` mark at the
+  amendment commit. A `needs:` line that names a replaced id MUST be updated in place at
+  that commit, with no new id.
+- At the amendment commit, main session MUST re-read each line that is not a requirement
+  (Goal, Design, Risks, Test scope) and update each one the amendment makes false. An
+  amendment that changes a tested behavior or a data shape MUST add each case it breaks
+  to Test scope in the same commit. A line with an `Unverified:` part that a `TR` proves
+  MUST be deleted.
 
 ## 9. Drafting
 

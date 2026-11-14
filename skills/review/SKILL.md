@@ -24,8 +24,8 @@ against `test` (load both when not in context). "Reported" means listed as a fin
   files. Nothing named: uncommitted changes, or else last commit.
 - Inside a task, review MUST cover the commit range and checks the brief names. With no
   brief, range and checks of `code` §Review loop apply.
-- MUST read the task the change serves: `BR` and `TR` text in the brief, user's request,
-  PR description, or commit messages.
+- MUST read the task the change serves: `BR` text in the brief and the plan sections it
+  names by line range, user's request, PR description, or commit messages.
 - MUST read the diff, then the code it touches: callers of every changed function,
   functions it calls, tests, README.
 - MUST trace the real flow: where data comes in, what is stored, what goes out.

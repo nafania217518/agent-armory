@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 202
+max-lines: 208
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -48,8 +48,9 @@ git switch --no-track -c <task-branch> <base>
 
 ## 2. Caveats
 
-Before the plan-file commit, a caveat goes into the plan (`plan` §The plan). Caveat slot,
-caveat format, subagent ban and recorded items are in `core` §Reports.
+Before the plan-file commit, a caveat goes into the plan-mode proposal (`plan` §Plan
+file). Caveat slot, caveat format, subagent ban and recorded items are in `core`
+§Reports.
 
 Caveat base is the project context `## Caveats` plus topic files
 `<docs>/caveats/<topic>.md`.
@@ -93,6 +94,8 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   `stuck:` (`delegate` §Re-spawn and retry).
 - An out-of-scope finding on code this task built is a defect in built code. It MUST get
   its `TR` before the next brief (`plan` §Amendments), not at the quiz.
+- Before the first brief or edit, MUST run the behind-`<base>` check of `plan`
+  §Amendments.
 
 ## 4. Review loop
 
@@ -135,7 +138,8 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   - Should fix or Nice to have finding: fix now, make it a follow-up, or ignore; an
     auto-fix finding (§Review loop) MUST skip the quiz.
 - A follow-up MUST be a new open tracker item; the quiz answer is the yes to that create.
-  With no tracker bound, it MUST be a line in the task report.
+  With no tracker bound, it MUST be a line in the task report. Its text MUST mark with
+  `Unverified:` each cause that no probe on a clean state confirmed.
 - Main session MUST take these steps in this order:
   1. MUST run the final review and its fix loop (§Review loop).
   2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
@@ -153,15 +157,17 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
      task runs.
   6. Report MUST hold, in this order: a one-line outcome; the met requirements in one
      line by id range (`TR-1..TR-7 met`), then each unmet one with its id and status; the
-     gate results, one line per gate; what was skipped or not checked; each recorded
-     item with only its applied answer; any risk the user must know.
+     gate results, one line per gate; each measured result (`plan` §The plan); what was
+     skipped or not checked; each recorded item with only its applied answer; any risk
+     the user must know.
   7. Acceptance: MUST ask user which items they want to try by hand, with the exact
      commands or clicks for each. Done when user has answered.
-  8. Cleanup: MUST run the caveat cleanup (§Caveats), then ask user whether to keep the
-     plan file and the design docs the task added to the repo. Default: keep them. It
-     MUST also ask, for each `debug-<id>` branch, whether to delete or keep it. After a
-     cleanup commit, MUST run `lint` and `unit`; it gets no re-review. Done when user has
-     answered.
+  8. Cleanup: MUST run the caveat cleanup (§Caveats), then ask user what to keep of the
+     plan file and the design docs the task added to the repo. The recommended option MUST
+     be: keep the design docs, and of the plan file only its Requirements section, which
+     `req:` markers point into. It MUST also ask, for each `debug-<id>` branch, whether
+     to delete or keep it. After a cleanup commit, MUST run `lint` and `unit`; it gets
+     no re-review. Done when user has answered.
   9. Done write: when the task has a milestone, MUST make one more commit, the last on
      the task branch. It MUST mark the task done in the milestone doc. When the task was
      the milestone's last open one, the same commit MUST also mark the milestone done in

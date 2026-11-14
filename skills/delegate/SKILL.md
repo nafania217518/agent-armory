@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 202
+max-lines: 201
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -49,21 +49,20 @@ Main session follows this skill for each spawn of a project agent.
 
 ## 3. Briefs
 
-- A coding or review brief MUST hold: the full text of each `TR` it covers, quoted from
-  the plan file, and of each `BR` it covers, quoted from the doc or item that holds it
-  (`plan` §Requirements), read at brief time; the test-scope list (`test` §Test scope),
-  from the plan; for a review brief, also each scope addition with its reason, from the
-  coder or debugger recorded-items slot; the names of the project context
-  sections and `## Rules` lines that apply, not their text, since the host loads project
-  context into each subagent; paths of
-  topic files whose pointers fit the brief's work (`code` §Caveats), for the agent to
-  read; which skills or skill sections the agent loads; task branch and `<base>`
-  (`code` §Branch and plan file); the plan's Overrides and Accepted tech debt sections
-  (`plan` §The plan).
-- Instead of quoting a plan section (`TR` items, test-scope list, Overrides, Accepted
-  tech debt), the brief MAY name the plan file path, the sections that apply and the
-  task-branch commit at brief time. A `BR` that lives outside the plan file MUST still
-  be quoted.
+- A coding or review brief MUST hold: the plan file path and the task-branch commit at
+  brief time; each plan section that applies (`TR` items, Design, test-scope list,
+  Overrides, Accepted tech debt) by name and line range only, never quoted, for the agent
+  to read, and no word on a section the plan leaves out; the full text of each `BR` it
+  covers that lives outside the plan file, quoted from the doc or item that holds it
+  (`plan` §Requirements), read at brief time; for a review brief, also each scope
+  addition with its reason, from the coder or debugger recorded-items slot; the names of
+  the project context sections and `## Rules` lines that apply, not their text, since
+  the host loads project context into each subagent; paths of topic files whose pointers
+  fit the brief's work (`code` §Caveats), for the agent to read; which skills or skill
+  sections the agent loads; task branch and `<base>` (`code` §Branch and plan file).
+- A brief MUST hold no design choice the plan lacks. It MUST name the gap instead: the
+  coder then records the misfit (`implement` §Before you write), or main session first
+  amends the plan (`plan` §Amendments).
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. An audit brief MUST hold the audit target (`audit` §Map first)
   instead of the range and the task's requirements.
