@@ -15,6 +15,8 @@ Rules for a pass that shrinks skill text with no change of meaning.
   and every not, never, no, only, except, unless and however.
 - MUST write a full rule with its subject, not a fragment, an invented abbreviation
   or an arrow.
+- A line wrap MUST keep each RFC 2119 keyword on one line: `MUST NOT` and `SHOULD NOT`
+  never split across two lines.
 - Each rule MUST keep exactly one RFC 2119 word, its subject and its condition.
 - Done when a reviewer has checked the diff for these points and each change of
   meaning is reverted.

@@ -105,8 +105,8 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
   binding targets the project's own tracker, and MUST ask the user when it points
   elsewhere, such as a fork's upstream or another organization.
 - BR-20: a run that creates several items MUST create the blockers first, then add the
-  blocked-by edges and the cross-references in a second pass, with real ids. It MUST
-  NOT write a placeholder id.
+  blocked-by edges and the cross-references in a second pass, with real ids. It
+  MUST NOT write a placeholder id.
 - BR-21: a report or an item text MUST name a tracker item by its title, with its link
   inside, not by a bare id.
 - BR-22 (replaced by BR-23): `core` MUST hold the tracker rules next to the term: only

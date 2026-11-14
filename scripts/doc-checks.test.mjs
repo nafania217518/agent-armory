@@ -164,6 +164,40 @@ describe('doc-checks', () => {
     });
   });
 
+  describe('split RFC keyword', () => {
+    beforeEach(() => writeRepo());
+    const f = 'skills/plan/templates/task.md';
+
+    test('must_at_line_end_and_not_at_next_start_fails', () => {
+      writeFile(f, 'ok\nAn agent MUST  \n  NOT do it.\n');
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, `${f}:2: split RFC keyword\n`);
+    });
+
+    test('should_at_line_end_and_not_at_next_start_fails', () => {
+      writeFile(f, 'An agent SHOULD\nNOT do it.\n');
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, `${f}:1: split RFC keyword\n`);
+    });
+
+    test('must_not_on_one_line_passes', () => {
+      writeFile(f, 'An agent MUST NOT\ndo it.\n');
+      assert.equal(run().status, 0);
+    });
+
+    test('split_inside_fence_passes', () => {
+      writeFile(f, '```\nAn agent MUST\nNOT do it.\n```\n');
+      assert.equal(run().status, 0);
+    });
+
+    test('partial_words_pass', () => {
+      writeFile(f, 'Pass the MUSTARD\nNOT now. And MUST\nNOTE this. A xMUST\nNOT here.\n');
+      assert.equal(run().status, 0);
+    });
+  });
+
   // req: best-practices-fixes/TR-8
   describe('rendered cards', () => {
     const template =

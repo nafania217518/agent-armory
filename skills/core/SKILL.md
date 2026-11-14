@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 151
+max-lines: 155
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -15,7 +15,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - MUST and MUST NOT have only two exceptions:
   - approved plan MAY override a design rule: §Design principles, and `implement` §The
     smallest complete change and §Domain, boundaries and state;
-  - under user-only `dnd` skill, main session's own answer MAY replace a user question
+  - under user-only `dnd`, main session's own answer MAY replace a user question
     or yes, within the limits `dnd` sets.
 - Agent MAY bypass a SHOULD rule for one task only, with a reasonable cause or after user
   approves.
@@ -24,15 +24,16 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 ## 2. Writing and questions
 
 - Replies and docs MUST follow "80% ASD-STE100": sentences of about 20 words max, one idea
-  each, active voice, present tense, one meaning per word, no idioms, no filler. Natural
-  phrasing and domain terms stay where strict STE reads badly.
+  each, active voice, present tense, one meaning per word, no idioms, no filler, no hedge
+  that carries no doubt. Natural phrasing and domain terms stay where strict STE reads
+  badly.
 - Skill text MAY drop a, an and the where meaning stays.
 - Each main-session reply to user MUST follow the three rules below. A skill's fixed
   output format and this section's question bullets win over them.
   - Shape: MUST lead with the answer or next action, a command, path or snippet first.
-    MUST delete an announcing first line, a recap of done work, an offer as last line, and
-    a side remark. First and last lines alone MUST tell what happened and what is next. A
-    reply to "explain" or "walk through" MAY run long, under headers.
+    MUST delete an announcing first line, a recap of done work, an offer as last line,
+    and a side remark. First and last lines alone MUST tell what happened and what is
+    next. A reply to "explain" or "walk through" MAY run long, under headers.
   - Lists: steps MUST be numbered, one bounded action each, the fewest that work. A
     free-prose group SHOULD hold about five items max, most relevant first, rest on
     request. When completeness matters, MUST keep every relevant item.
@@ -41,8 +42,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
     turn MUST restate step n of m and the next step through host's task list, with no
     prose copy of the plan.
 - A report SHOULD explain each technical term at first use.
-- Code comment MUST say only the why the code cannot show, in one line. Exceptions: the
-  `req:` marker (`test` §Markers) and the `tech-debt:` marker (`implement` §The smallest
+- A reply or report of an error MUST state its cause, fix and `path:line`, or
+  say which is unknown or absent, with no exclamation or apology. A skill's fixed
+  output format wins over it.
+- Code comment MUST say only the why code cannot show, in one line. Exceptions:
+  `req:` marker (`test` §Markers) and `tech-debt:` marker (`implement` §The smallest
   complete change).
 - Main session MUST ask user through the question tool; message text MUST hold only the
   context. Free-text question MAY offer only "Other", or go as a plain message. Subagent
@@ -53,8 +57,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 ## 3. Tools and background tasks
 
 - MUST NOT use `nohup`, `command &` or any other detached shell job for a background task.
-  MUST start it as a tracked background task of the host.
-- Tracked background task or spawned agent MUST stop once it is no longer needed. One left
+  MUST start it as host's tracked background task.
+- Tracked background task or spawned agent MUST stop once no longer needed. One left
   running MUST have a valid reason, stated in the report.
 - Web search and page reading MUST follow `research` §When to research.
 
@@ -67,9 +71,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   SHOULD extract a helper at the third repeat.
 - Big design up front: design MUST be complete and refined before implementation.
 - MUST NOT optimize without a measured problem.
-- Occam's razor + KISS: SHOULD prefer the explanation or solution with the fewest
+- Occam's razor + KISS: SHOULD prefer the explanation or solution with fewest
   elements, so a reader understands it without help.
-- SHOULD get the data shape right before the logic. SHOULD do first what helps every later
+- SHOULD get data shape right before logic. SHOULD do first what helps every later
   phase. SHOULD aim at an end state you can check; a break in the middle MAY happen when
   it is planned and can be undone.
 - Work not obvious at a glance: SHOULD do one unit by hand, then build the tool that does
@@ -86,13 +90,13 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   `Caveats:`: each caveat as one caveat line, or `no caveat`. A caveat is a fact a reader
   of its file would still not expect: a library or platform behavior, a cross-file
   coupling or a trap. It MUST NOT restate a plan decision, a requirement or one visible
-  code line; those stay in the plan or code.
-- Subagent report MUST hold only the items of its card's report format, the two slots, and
+  code line; those stay in plan or code.
+- Subagent report MUST hold only items of its card's report format, both slots, and
   the returns other armory rules require. It MUST NOT narrate steps, restate the brief, or
   paste file content, a diff or command output that none of these asks for. It MUST point
   to code by `path:lines` or commit SHA instead.
 - A report item is needed when main session uses it to spawn an agent, to plan or change
-  the next work, or to put a decision to user. A report format and a report MUST hold only
+  next work, or to put a decision to user. A report format and a report MUST hold only
   needed items, and every needed item. Each item MUST give only its value. An item whose
   condition does not hold MUST be left out.
 - Caveat line, in a report or the caveat base (`code` §Caveats), MUST take the format
@@ -114,14 +118,14 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - question tool: host's structured way to ask user.
 - spawn: host's way to run a subagent from an agent card.
 - agent card: host's agent definition file, rendered from an armory template.
-- worktree: an isolated checkout per coding agent.
+- worktree: isolated checkout per coding agent.
 - plan mode: host's read-only planning mode; its exit is the approval.
 - hook: host's command that injects `core` at session and subagent start. Fallback: the
   pointer (`setup` §Install).
-- project context: the file the host loads for a project (`AGENTS.md`, plus a `CLAUDE.md`
+- project context: file the host loads for a project (`AGENTS.md`, plus a `CLAUDE.md`
   with the line `@AGENTS.md`); skills MUST name its sections. Its `## Rules` line
   `Documentation lives in <folder>` sets `<docs>` for main session and every subagent.
-- tracker: the system that holds milestones, tasks and their status. Verbs: read an item
+- tracker: system that holds milestones, tasks and their status. Verbs: read an item
   (body, comments and labels), list an item's children, in order, each with its status,
   assignee and blockers, create an item, edit an item body, link a child to its parent,
   add a blocked-by edge, claim (assign to the user), comment, set the status open, done or

@@ -23,7 +23,7 @@ function widthFiles(root) {
   ];
 }
 
-function widthFailures(root, rel) {
+function lineFailures(root, rel) {
   let text;
   try {
     text = readFileSync(path.join(root, rel), 'utf8');
@@ -38,6 +38,10 @@ function widthFailures(root, rel) {
     const length = [...line].length;
     if (length > WIDTH && !inFence && !line.startsWith('|')) {
       failures.push(`${rel}:${i + 1}: ${length} > ${WIDTH}`);
+    }
+    const next = lines[i + 1] ?? '';
+    if (!inFence && /\b(MUST|SHOULD)\s*$/.test(line) && /^\s*NOT\b/.test(next)) {
+      failures.push(`${rel}:${i + 1}: split RFC keyword`);
     }
   });
   return failures;
@@ -247,7 +251,7 @@ function main() {
   }
   const root = path.resolve(args[0] ?? '.');
   const failures = [
-    ...widthFiles(root).flatMap((rel) => widthFailures(root, rel)),
+    ...widthFiles(root).flatMap((rel) => lineFailures(root, rel)),
     ...listFailures(root),
     ...cardFailures(root),
     ...evalFailures(root),
