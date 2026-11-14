@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 298
+max-lines: 306
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -174,6 +174,11 @@ Drafting; the planner runs only Drafting.
 - A `TR` that adds or changes a data-growth path MUST have a load `TR`: the data size,
   the operations measured and a latency target, such as p95. The figures MUST come from
   the expected load (`review` section Understand first).
+- Before a load `TR` sets an absolute bar on an existing path, the plan MUST cite a
+  current value measured on the current code. When that value misses the bar or lies
+  within its run-to-run spread, the load `TR` MUST compare before and after instead:
+  the median of at least 3 runs per side, on one machine in one session, with a stated
+  bound, such as +5 ms per query.
 - When the repo states no expected load, the quiz MUST ask the user for one; section
   Plan file writes the answer into `<docs>/DESIGN.md`.
 - A load `TR` is the measurement that `core` section Design principles requires before
@@ -202,7 +207,7 @@ Drafting; the planner runs only Drafting.
     Domain, boundaries and state are fixed; each claim in Caveats or Stack choices with
     "every", "all", "never" or "only" holds on each file that the `TR` items name, or
     is narrowed or dropped; every `TR` on a data-growth path (section The plan) has its
-    load `TR`.
+    load `TR`; each absolute bar of a load `TR` cites a current measurement.
 - At the milestone and the task level, the review MUST also walk each new or changed
   flow path by path, end to end, against the branch, worktree and gate rules.
 - At the milestone and the task level, the review MUST also check that each need is
@@ -214,8 +219,8 @@ Drafting; the planner runs only Drafting.
   rewritten.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
   tracker write the run will make: creates, body edits, links, edges, comments and
-  status sets. A task run MUST also list the done write of its `code` run, and the claim
-  of a task item it creates.
+  status sets, and the create of each follow-up item the plan cites. A task run MUST
+  also list the done write of its `code` run, and the claim of a task item it creates.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode is the approval. On a reject, MUST fix the part the user names and
   propose again. A fix that needs only plan edits or a quiz round MUST stay in plan
@@ -263,6 +268,8 @@ Drafting; the planner runs only Drafting.
 - An amendment MUST go to the doc that owns the fact (section Levels).
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
+- With a tracker bound, an amendment that cites a follow-up item MUST list that item's
+  create in its question and in the plan's tracker writes.
 - A task that its milestone doc does not list MUST get its Tasks line as an amendment.
 - An amendment that adds a gate-type `BR` (section Self-review and approval) MUST also
   add it to each open task of the milestone: to the `<what> : <BR list>` line of each
@@ -277,7 +284,8 @@ Drafting; the planner runs only Drafting.
 - The main session MUST allocate every new id. A subagent MUST NOT allocate one.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
-- An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
+- An old item's id and text MUST NOT be rewritten or renumbered. MUST mark it
+  `(replaced by <new id>)`; the mark covers its old text.
 - The brief of a `TR` that replaces another MUST tell the coder to re-point each
   `req:` marker of the old id to the new id.
 - A wrong `tests:` case of a `TR` whose behavior stays MUST get a dated note below the
@@ -288,7 +296,7 @@ Drafting; the planner runs only Drafting.
   term before it asks the user. Each requirement line that names the term
   MUST join that amendment's question, with its new id. At the amendment commit, the
   main session MUST mark those lines `(replaced by <new id>)` and MUST update each
-  other line that names the term, such as a Risks or a Caveats line.
+  line that is not a requirement and names the term, such as a Risks or a Caveats line.
 
 ## 9. Drafting
 

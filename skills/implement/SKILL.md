@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 160
+max-lines: 163
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -21,6 +21,9 @@ reviewer judges code against it. Test rules: `test`.
 - MUST read the task and the code it touches.
 - MUST list every place the change must reach: callers, fixtures, config,
   exports. That is the scope. Extra features are not.
+- The scope MUST also hold each caveat-base line (`code` section Caveats) that names a
+  file the change touches. MUST re-check its claim and report each false one with its
+  fix, its new file or `drop`; the main session writes it before the review.
 - MUST check what the change can break for users: data it would destroy or expose,
   callers that stop working.
 - Before adding or applying a formatting or style rule, MUST check the project's linter

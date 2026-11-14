@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 139
+max-lines: 141
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -129,6 +129,8 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
   tests, no dependence on test order, the clock or unseeded random data.
 - A real timer MAY run in an integration test when the timer is the behavior under test,
   with the shortest wait that proves it.
+- A benchmark MUST assert that each measured query returns the rows its name promises,
+  at least a non-empty result, so a query that finds nothing fails the run.
 
 ## 9. Review checks
 
