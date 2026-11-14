@@ -5,7 +5,7 @@ description: >
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
   One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
   whole repo", "find bloat", "what can I delete", "list the tech debt", "/audit".
-max-lines: 80
+max-lines: 76
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -13,46 +13,43 @@ Load the `core` skill first when its rules are not in your context.
 
 # audit
 
-The reviewer runs an audit on an audit brief; the main session runs it when the user
-asks. Load `review`, `test` and `implement` first. The audit MUST apply these `review`
-rules to a whole repo or package: the full-report and read-only rules (`review` section
-Understand first, first bullet), the order of importance and the classes (`review`
-section Look for), `review` section Check before you report, and the finding groups and
-format of `review` section Output. This skill holds only what differs from a review.
+Reviewer runs an audit on an audit brief; main session runs it when user asks. Load
+`review`, `test` and `implement` first. Audit MUST apply these `review` rules to a whole
+repo or package: full-report and read-only rules (`review` §Understand first, first
+bullet), order of importance and classes (`review` §Look for), `review` §Check before you
+report, and finding groups and format of `review` §Output. This skill holds only what
+differs from a review.
 
 ## 1. Map first
 
-- MUST audit what the user names: a folder, a package, or the whole repo. Nothing
-  named: the whole repo.
-- MUST read the README, deploy and build config, dependency list, entry points (main,
-  routes, handlers, jobs, CLI commands) and tests.
-- MUST find the expected load.
-- MUST trace the main flows end to end. MUST read these fully: input from users, money,
-  auth, data writes, background jobs, anything shared between processes.
-- Big repo: SHOULD go deep where a mistake costs the most, not file by file. SHOULD
-  read first the files that `git log` shows changing most often.
+- MUST audit what user names: a folder, package or the whole repo. Nothing named: the
+  whole repo.
+- MUST read README, deploy and build config, dependency list, entry points (main, routes,
+  handlers, jobs, CLI commands) and tests.
+- MUST find expected load.
+- MUST trace main flows end to end. MUST read these fully: user input, money, auth, data
+  writes, background jobs, anything shared between processes.
+- Big repo: SHOULD go deep where a mistake costs most, not file by file. SHOULD read
+  first files that `git log` shows changing most often.
 
 ## 2. Audit-only checks
 
-- Before you call code unused, MUST grep the whole tree, including tests, fixtures,
-  config, and string or dynamic references.
-- When the tree has tests, MUST apply `test` sections Pyramid and Review checks to the
-  whole suite.
-- When the `owasp` gate is `on`, MUST read the entry points and data writes against the
-  OWASP Top 10.
-- MUST check the caveat base (`code` section Caveats): each pointer names an existing
-  topic file, and each entry's file exists. Each failure MUST be a finding.
-- A drifted entry is one whose file has a commit newer than the entry's line
-  (`git blame` on the line, `git log -1` on the file). The main session MUST check the
-  claims of drifted entries in parallel reviewer spawns, one per topic file, plus one
-  for the root list.
+- Before calling code unused, MUST grep whole tree, including tests, fixtures, config,
+  and string or dynamic references.
+- When tree has tests, MUST apply `test` §Pyramid and §Review checks to whole suite.
+- When `owasp` gate is `on`, MUST read entry points and data writes against OWASP Top 10.
+- MUST check caveat base (`code` §Caveats): each pointer names an existing topic file,
+  and each entry's file exists. Each failure MUST be a finding.
+- A drifted entry is one whose file has a commit newer than entry's line (`git blame` on
+  the line, `git log -1` on the file). Main session MUST check claims of drifted entries
+  in parallel reviewer spawns, one per topic file, plus one for root list.
 - Each such spawn MUST return one verdict per entry: holds, false, path moved, or
-  `Unverified: <what settles it>`. The main session MUST add each verdict other than
-  holds to the audit findings.
+  `Unverified: <what settles it>`. Main session MUST add each verdict other than holds
+  to audit findings.
 
 ## 3. Tech-debt ledger
 
-- MUST grep the `tech-debt:` markers, skipping `.git` and ignored files. MAY add other
+- MUST grep `tech-debt:` markers, skipping `.git` and ignored files. MAY add other
   comment prefixes for the stack.
 
 ```
@@ -62,19 +59,18 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:' -- <target>
 - MUST skip hits that are not a deferral.
 - MUST give one row per marker, grouped by file:
   `<file>:<line>, <what was simplified>. ceiling: <limit>. upgrade: <trigger>.`
-- A marker with no upgrade trigger MUST get a `no-trigger` tag.
-- MUST end the ledger with `<N> markers, <M> with no trigger.` Nothing found: MUST give
+- Marker with no upgrade trigger MUST get a `no-trigger` tag.
+- MUST end ledger with `<N> markers, <M> with no trigger.` Nothing found: MUST give
   `No tech debt. Clean ledger.`
 
 ## 4. Output
 
-- MUST start with `What this repo does:` in two or three sentences, and the expected
-  load, or `none stated`. Then MUST give the `Gates:` block of `review` section Output,
-  each `on` gate run on the whole tree. A gate failure in the target MUST be a Must fix
-  finding.
-- Then MUST give the findings, the tech-debt ledger, the recorded-items slot and the
-  caveat slot (`core` section Reports).
+- MUST start with `What this repo does:` in two or three sentences, and expected load,
+  or `none stated`. Then MUST give `Gates:` block of `review` §Output, each `on` gate run
+  on whole tree. A gate failure in target MUST be a Must fix finding.
+- Then MUST give findings, tech-debt ledger, recorded-items slot and caveat slot (`core`
+  §Reports).
 - MUST end with `Verdict:` in one line (`Verdict: healthy.`, or what to fix first), then
   `Not checked:` in one line when a part was not read or not run.
-- Nothing found: MUST give `What this repo does:`, `Gates:`, the ledger, one line on
-  what was checked and the two slots. The end lines follow, with `Verdict: healthy.`
+- Nothing found: MUST give `What this repo does:`, `Gates:`, ledger, one line on what was
+  checked and the two slots. End lines follow, with `Verdict: healthy.`

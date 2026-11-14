@@ -8,3 +8,4 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
 - On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
 - A caveat line with an unchecked claim ends with ` : Unverified: ...`, see `review` section Output : skills/review/SKILL.md
+- A worktree agent cannot check out the task branch while the main checkout has it, so it commits on its own branch cut from the task-branch tip : skills/setup/templates/agents/coder.md

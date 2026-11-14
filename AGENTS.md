@@ -52,6 +52,7 @@ armory `code` skill, section Review loop.
   sentence.
 - Each step in a skill MUST name a done condition that an agent can check.
 - A new or edited `MUST NOT` rule MUST also name the behavior to do instead.
+- A tightening pass on a skill MUST follow docs/tightening.md.
 - A brief MUST name each skill it loads by its repo path, and each agent card by its
   template path in `skills/setup/templates/agents/`, because the installed plugin can
   lag this repo.
