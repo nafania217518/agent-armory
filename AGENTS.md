@@ -41,9 +41,11 @@ scripts in `scripts/`: `unit`.
 
 ## Rules
 
-Project-only rules. The armory skills hold the rest.
+Project-only rules. The armory skills hold the rest. The `auto-fix:` values are in the
+armory `code` skill, section Review loop.
 
 - Documentation lives in docs/
+- auto-fix: should
 - A skill description MUST name each distinct case once; synonyms of one case MUST
   become one trigger.
 - A skill line that the model already follows by default MUST be deleted, as a whole
@@ -53,6 +55,10 @@ Project-only rules. The armory skills hold the rest.
 - A brief MUST name each skill it loads by its repo path, and each agent card by its
   template path in `skills/setup/templates/agents/`, because the installed plugin can
   lag this repo.
+- A match of a template heading by section name MUST ignore the number that
+  `docs/DESIGN.md` adds.
+- A GitHub `list items` binding MUST search `reason:"not planned"` for the status
+  dropped, because `--state closed` mixes done and dropped.
 
 ## Glossary
 
@@ -81,47 +87,12 @@ Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (
 
 ## Caveats
 
-Format: the caveat line of the armory `core` skill, section Reports
+Format: the caveat line of the armory `core` skill, section Reports, or a topic pointer
+line of the armory `code` skill, section Caveats
 
-- A `SKILL.md` with CRLF line ends counts as missing `max-lines` : scripts/skill-sizes.mjs
-- A `SKILL.md` whose leading `---` has trailing spaces counts as missing `max-lines` : scripts/skill-sizes.mjs
-- A control character in `skills/core/SKILL.md` other than tab, CR and LF breaks the SubagentStart JSON of `core-context.sh` : scripts/core-context.sh
-- `claude plugin validate` accepts the non-standard skill frontmatter key `max-lines` : skills/core/SKILL.md
-- `claude plugin validate .claude-plugin/plugin.json` passes with a warning that the root `CLAUDE.md` is not plugin context : CLAUDE.md
-- Moving the armory clone breaks the skills symlinked into a host's skill location : skills/setup/SKILL.md
-- References to `setup` section Write, Flow or Answer checks resolve to subsections of `setup` section Project context : skills/setup/SKILL.md
-- `lint` checks only the width of the skill templates, not their size : scripts/doc-checks.mjs
-- A match of a template heading by section name must ignore the number that this repo's `DESIGN.md` adds : docs/DESIGN.md
-- A new skill or agent must update every list in `LISTS` of `doc-checks.mjs`, not only the plugin manifests : scripts/doc-checks.mjs
-- A reworded start marker makes `doc-checks.mjs` report `<list>: not found` : scripts/doc-checks.mjs
-- A reworded end marker, or one split across two lines, makes `doc-checks.mjs` run the list region to the end of its text : scripts/doc-checks.mjs
-- An unreadable list file reports `<list>: not found`, not `cannot read` : scripts/doc-checks.mjs
-- `doc-checks.mjs` skips the width check for lines inside a code fence and for table rows : scripts/doc-checks.mjs
-- GitHub gives an item's linked branch name only by creating that branch : skills/setup/SKILL.md
-- With no tracker bound, both `code` step 9 and the `plan` section Levels milestone-done rule mark a milestone done : skills/plan/SKILL.md
-- A tracker read binding made before commit c5ce9ea may return an item without its labels : skills/core/SKILL.md
-- A duplicate of an open item gets the status `dropped`, so the tracker shows it as rejected, not as a duplicate : skills/triage/SKILL.md
-- A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md
-- A GitHub `list items` binding must search `reason:"not planned"` for dropped, because `--state closed` mixes done and dropped : skills/setup/SKILL.md
-- No triage step closes an open item that a later `accepted` item covers in full : skills/triage/SKILL.md
-- A quick-override `accepted` meets no conflict check and no already-given check : skills/triage/SKILL.md
-- Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
-- Triage leaves the edge cases of a match, a related item, a cover and a conflict to judgment, so two runs can differ on them : skills/triage/SKILL.md
-- A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
-- The main-session reply rules in `core` section 2 reach every subagent through the hook : skills/core/SKILL.md
-- On Claude Code, the host's subagent prompt makes a subagent add a `Files:` list of absolute paths that no card asks for : skills/setup/templates/agents/coder.md
-- `wc -m` counts bytes in the C locale, so it reports 10,004 for a 9,998-character `core` : scripts/core-context.sh
-- Claude Code caps hook output at 10,000 characters and passes only a 2,000-character preview above it : scripts/core-context.test.mjs
-- A merge into `<base>` merges into the local default branch with no fast-forward to `origin` first : skills/code/SKILL.md
-- The `doc-checks.mjs` width check skips `AGENTS.md` and `docs/plans/`, so a 90-character rule on "each changed line" is not enforced there : scripts/doc-checks.mjs
-- A `plan` run from an accepted item leaves to the model where its new `BR` lines go beside triage's `## Requirements` : skills/plan/SKILL.md
-- A caveat line with an unchecked claim has a third field, ` : Unverified: ...`, that the format in `core` section Reports does not show : skills/review/SKILL.md
-- A CRLF `skills/core/SKILL.md` makes `core-context.sh` exit 1 with "missing or has no body", because `/^---$/` does not match `---\r` : scripts/core-context.sh
-- A worktree-isolated subagent cannot run `claude plugin eval`, because the guard refuses a command with the word `eval` : skills/setup/templates/agents/coder.md
-- A new model-loaded skill fails `lint` until it has 3 load and 1 skip eval cases : scripts/doc-checks.mjs
-- A `prompt.md`-only eval case is valid for `claude plugin eval`, but the `lint` eval-coverage check does not count it : scripts/doc-checks.mjs
-- A `tool_order` grader passes only when both tools are called, so it cannot assert that a skill is not loaded : evals/
-- `core-load-1` copies the `core` description trigger "show the armory base rules" almost word for word, so it tests little : evals/core-load-1/case.yaml
-- `review-skip-1` reuses the `debug-load-2` prompt almost word for word : evals/review-skip-1/case.yaml
-- `core` needs only 1 load eval case, so its coverage failure reads "core: fewer than 1 load evals" : scripts/doc-checks.mjs
-- The `core` test fixture in `doc-checks.test.mjs` edits the skill list texts by string replace, so a reworded list breaks it : scripts/doc-checks.test.mjs
+- lint: before editing scripts/skill-sizes.mjs, scripts/doc-checks.mjs or their tests, a skill's frontmatter, or a list text that doc-checks.mjs reads : docs/caveats/lint.md
+- evals: before adding, editing or running a case in evals/ : docs/caveats/evals.md
+- core-and-cards: before editing skills/core/SKILL.md, scripts/core-context.sh or an agent card template in skills/setup/templates/agents/ : docs/caveats/core-and-cards.md
+- setup: before editing skills/setup/SKILL.md or a tracker binding : docs/caveats/setup.md
+- triage: before editing skills/triage/SKILL.md or the plan rule for a run from an accepted item : docs/caveats/triage.md
+- code-and-plan: before editing the milestone-status or Finish rules of skills/code/SKILL.md or skills/plan/SKILL.md, or before a merge into <base> : docs/caveats/code-and-plan.md
