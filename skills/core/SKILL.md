@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 151
+max-lines: 154
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -12,9 +12,12 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 ## 1. Rule words
 
-- MUST and MUST NOT have one exception: the approved plan MAY override a design rule.
-  Design rules: section Design principles; `implement` sections The smallest complete
-  change and Domain, boundaries and state.
+- MUST and MUST NOT have only two exceptions:
+  - the approved plan MAY override a design rule: section Design principles, and
+    `implement` sections The smallest complete change and Domain, boundaries and
+    state;
+  - under the user-only `dnd` skill, the main session's own answer MAY replace a
+    user question or yes, within the limits `dnd` sets.
 - The agent MAY bypass a SHOULD rule for one task only, with a reasonable cause or after
   the user approves.
 - Every rule MUST carry one RFC 2119 word.

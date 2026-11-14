@@ -5,7 +5,7 @@
 Personal agent skills, packaged as the `armory` plugin. The skills under `skills/`
 hold the rules for every armory actor: `core`, `plan`, `delegate`, `code`, `implement`,
 `test`, `debug`, `review`, `audit`, `research`, `retro`,
-`triage` and `setup`. The skills use host terms (`core` section Host terms) and run
+`triage`, `dnd` and `setup`. The skills use host terms (`core` section Host terms) and run
 on Claude Code. The plugin also ships the templates and the
 hooks. The design is in `docs/DESIGN.md`.
 

@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 306
+max-lines: 310
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -218,9 +218,10 @@ Drafting; the planner runs only Drafting.
   plan and in the code. A case that one of them makes impossible MUST be dropped or
   rewritten.
 - With a tracker bound (section Levels, tracker variant), the proposal MUST list each
-  tracker write the run will make: creates, body edits, links, edges, comments and
-  status sets, and the create of each follow-up item the plan cites. A task run MUST
-  also list the done write of its `code` run, and the claim of a task item it creates.
+  tracker write the run will make: creates with their labels (a missing role label's
+  create included), body edits, links, edges, comments and status sets, and the create
+  of each follow-up item the plan cites. A task run MUST also list the done write of its
+  `code` run, and the claim of a task item it creates.
 - An open question MUST go to one more quiz round.
 - Exiting plan mode is the approval. On a reject, MUST fix the part the user names and
   propose again. A fix that needs only plan edits or a quiz round MUST stay in plan
@@ -252,6 +253,9 @@ Drafting; the planner runs only Drafting.
   the glossary or the caveats); that write MUST be its first commit. Else it
   MUST skip the branch and the finish question. A new milestone item body MUST hold its
   one-line goal.
+- With the `triage` label lines bound, each item a `plan` or `code` run creates
+  MUST carry `accepted` and one category: `bug` for a fix, else `enhancement`. A
+  missing role label MUST be created first.
 - A run that creates several tracker items MUST create the blockers first. It MUST then
   add the blocked-by edges and the cross-references in a second pass, with real ids. It
   MUST NOT write a placeholder id; it MUST wait for the real id instead.

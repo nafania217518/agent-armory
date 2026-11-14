@@ -19,9 +19,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   fallback when neither hook nor pointer ran.
 - `setup` installs the hook or writes the pointer into the project context; the
   user keeps personal items there.
-- The skill set has thirteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
+- The skill set has fourteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
   `test`, `debug`, `review`, `audit`, `research`, `retro`,
-  `triage` and `setup`. The skills other than `core` hold the workflows.
+  `triage`, `dnd` and `setup`. The skills other than `core` hold the workflows.
 - The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
   and `planner`. The plugin ships their templates, not agent cards; `setup` writes the
   cards into each project.
@@ -85,6 +85,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `research` | 7 | researcher |
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
+| `dnd` | none (new) | main session, when the user starts it (user-only) |
 | `setup` | 21, 22; templates `AGENTS.md` and six card templates | main session, when the user starts it (user-only) |
 | card templates | 16 (role rules, report format, default model row) | the spawn |
 
@@ -92,6 +93,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 |---|---|
 | main session, full task | `core` (the hook or the pointer), `plan`, `delegate`, `code` |
 | main session, triage | `core` (the hook or the pointer), `triage` |
+| main session, dnd | `core` (the hook or the pointer), `dnd`, `plan`, `delegate`, `code` |
 | coder | `core`, `implement`, `test` |
 | debugger | `core`, `debug`, `implement`, `test` |
 | reviewer | `core`, `review`, `implement`, `test` |
@@ -254,6 +256,15 @@ One dated line per decision, with the dropped alternatives.
   drafts run before it; on a reject, a fix beyond plan edits or a quiz round asks the
   user to leave plan mode. Dropped: plan mode from the level question, where each
   research call needed the user's yes.
+- 2026-11-14: adopt a user-only `dnd` skill: one start question round, then each task
+  of the session runs from `plan` to `code` Finish with no question to the user beyond
+  what the start answers keep, and ends with an answers log. `core` section Rule words
+  points to it. The Finish options are PR + merge, merge into `<base>`, open a PR and
+  local only; each merge is a squash merge. A blocker stop adds a blocked-by edge, or
+  sets `needs-info` with triage notes. Dropped: the names `auto`, `autopilot` and
+  `vibe`; a scope of one task run; an auto-fix question; arguments to `/dnd`; a
+  reviewer question in `dnd`; a `blocked` label (clashes with GitHub's native Blocked
+  status); an `on-hold` triage state.
 
 ## 7. Milestones
 

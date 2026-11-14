@@ -5,7 +5,7 @@ description: >
   list, one item at a time, a recommended category and outcome, then the writes the user
   approves. Changes no repo file. Use for "/triage", "triage the tracker".
 disable-model-invocation: true
-max-lines: 97
+max-lines: 101
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -94,4 +94,8 @@ tests). Any other item, a mixed one included, is an enhancement.
 - A `needs-info` item with a reply MUST go through section Triage one item again. MUST
   NOT ask again a point that the reporter answered in reply to the earlier
   `## Triage notes`; MUST list it as established instead.
-- Done when each point of the earlier notes is marked answered or still open.
+- An item whose body starts with the `core` AI marker line, or with its own
+  `## Requirements`, MUST skip steps 1 and 4 of section Triage one item; once each
+  point is answered, MUST set `accepted` again.
+- Done when each point of the earlier notes is marked answered or still open, and, for
+  such an item, its state label is set back.

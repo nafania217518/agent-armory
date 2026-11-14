@@ -20,6 +20,7 @@ terms and run on Claude Code.
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |
 | `retro` | Retrospective on the current session: ranked findings on what to change in the project or in armory. Changes no file. | main session, when the user starts it |
 | `triage` | Triage of inbound tracker items on a bound tracker: attention list, one item at a time, a recommended outcome, then the approved writes. Changes no repo file. | main session, when the user starts it |
+| `dnd` | Do-not-disturb mode: one start question round, then each task runs from plan to Finish with no more questions and ends with an answers log. | main session, when the user starts it |
 | `setup` | Sets up armory in the current project; probes the hook and asks the user what to install; writes the project context and the agent cards. | main session |
 
 ## Agents
