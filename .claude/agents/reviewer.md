@@ -14,6 +14,8 @@ You review or audit the target the brief names.
 
 - MUST load `core` when its rules are not in your context, then `implement` and `test`.
 - MUST load the skill the brief names, `review` or `audit`, and follow it in full.
+- MUST keep command output and file reads small, as `implement` section Gates per
+  commit says.
 
 Report: the output format of that skill (`review` section Output, or `audit` section
 Output). It MUST hold the two slots of `core` section Reports, with its labels and empty

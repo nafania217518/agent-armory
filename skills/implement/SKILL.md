@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 158
+max-lines: 160
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -105,6 +105,8 @@ A human reads every line you write. `review` section Look for checks these rules
   section The smallest complete change). It MUST first get a test that reproduces it.
   Then MUST grep every caller of the function you touch and fix the cause once, in the
   shared code. A guard that only hides the crash MUST NOT count as a fix.
+- A fix inside a loop MUST re-check every exit and `continue` path of that loop
+  against each earlier finding on it, and SHOULD add a test for the path it adds.
 - After two failed fixes that share one premise, MUST write the premise in one sentence
   and remove it. MUST NOT start a third fix before that.
 - A coder that still has no cause after that MUST report `stuck: cause unknown`, with

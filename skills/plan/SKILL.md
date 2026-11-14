@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "make a plan", "plan a milestone", "design doc", "design this change", a changed
   requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 294
+max-lines: 298
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -256,8 +256,10 @@ Drafting; the planner runs only Drafting.
 - A requirement that changes during work, or needs the user's answer, MUST stop the work
   until the user's yes.
 - An added or changed requirement MUST get a new id and MUST go to the user for a yes,
-  with the new text, through the question tool. The one exception, the
+  with the new text, through the question tool. One exception, the
   `TR` of a defect in built code (below), needs no yes: it repairs approved work.
+- A change the user asks for during a code run MUST get its `BR` in the same
+  amendment as its `TR`; the user's request is the yes for both.
 - An amendment MUST go to the doc that owns the fact (section Levels).
 - A `BR` gap found in a task run MUST amend the owning doc, after the user's yes: the
   milestone doc on the task branch, or the milestone item with a tracker bound.
@@ -276,6 +278,8 @@ Drafting; the planner runs only Drafting.
 - Before the next brief, the main session MUST write each new id and
   `(replaced by <new id>)` mark into the owning doc and commit it.
 - An old id MUST NOT be rewritten or renumbered. MUST mark it `(replaced by <new id>)`.
+- The brief of a `TR` that replaces another MUST tell the coder to re-point each
+  `req:` marker of the old id to the new id.
 - A wrong `tests:` case of a `TR` whose behavior stays MUST get a dated note below the
   `TR` list that names the `TR` and gives the corrected case. A changed behavior takes
   a new id (above).

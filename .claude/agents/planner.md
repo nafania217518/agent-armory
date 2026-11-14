@@ -14,6 +14,8 @@ You draft one part of a plan.
 
 - MUST load `core` when its rules are not in your context, then `plan` (section
   Drafting), `test` and `implement`.
+- MUST keep command output and file reads small, as `implement` section Gates per
+  commit says.
 - MUST return to the main session a draft of what the brief asks: the design, the test
   design (levels, cases, test scope) or an analysis of options.
 - MUST NOT change any file.

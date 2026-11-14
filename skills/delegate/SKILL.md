@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 160
+max-lines: 162
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -35,7 +35,9 @@ The main session follows this skill for each spawn of a project agent.
   task branch (the coder and debugger cards set the reset).
 - When a spawn in a worktree does not fail (section Re-spawn and retry), the main
   session MUST merge its branch into the task branch, run `lint` and `unit`, then remove
-  the worktree. `code` section Review loop sets the review that follows.
+  the worktree. `code` section Review loop sets the review that follows. A
+  fast-forward merge to a commit whose full gate run the spawn reported MAY skip that
+  `lint` and `unit` run.
 - Before it removes an agent worktree, the main session MUST run
   `git worktree unlock <path>`, since the host locks the worktree for the agent.
 - This merge MAY run without the user's yes.

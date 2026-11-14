@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 201
+max-lines: 207
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -63,13 +63,15 @@ The caveat base is the project context `## Caveats` plus the topic files
   until that `TR` merges into the task branch; the main session MUST then write it as this
   section says.
 - Before that write, the main session MUST check the line against `core` section
-  Reports, its claim against the code, and its place against the bullets below. A line
-  that fails MUST be split, cut, moved or dropped.
+  Reports, its claim against the code, with a search of the named file for the fact,
+  and its place against the bullets below. A line that fails MUST be split, cut, moved
+  or dropped.
 - A caveat MUST go to the root `## Caveats` only when every task needs it. Else it MUST
   go to the topic file whose pointer fits, or to a new topic file when none fits.
 - A line that says what to do is a rule: it MUST go to the project context `## Rules`.
 - A caveat that a doc states MUST become a link to that doc section. One that a test, a
-  check or a code comment states MUST be dropped. A duplicate MUST be merged.
+  check, a code comment or a message text states MUST be dropped. A duplicate MUST be
+  merged.
 - A topic entry MAY carry one indented line: its cause, its workaround or a doc link.
 - The root `## Caveats` MUST hold one pointer line per topic file:
   `- <topic>: <when to read it> : <docs>/caveats/<topic>.md`.
@@ -103,9 +105,12 @@ follows `plan` section Amendments.
 - After a review, the main session MUST have each Must fix item and each auto-fix
   finding fixed (`delegate` section Context), run the reviewer on the fix commits, and
   repeat until none remains.
+- A fix (auto-fix or quiz answer) that changes the behavior a `TR` states MUST go
+  through `plan` section Amendments before its fix brief.
 - A commit that only deletes caveat or doc lines a finding's Fix part names, or writes
   caveat or doc text that a Fix part gives word for word, gets no re-review (a
-  no-re-review commit). The main session MUST still run `lint` and `unit` after it.
+  no-re-review commit). The main session MUST still run `lint` and `unit` after it,
+  except where `delegate` section Delegation and worktrees lets a merge skip them.
 - An auto-fix finding is one of a class that the project context `## Rules` line
   `auto-fix: <classes>` names: `should` (Should fix) and `nice` (Nice to have), or
   `none`. A missing line MUST mean `none`.
@@ -140,9 +145,10 @@ follows `plan` section Amendments.
   1. MUST run the final review and its fix loop (section Review loop).
   2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
      item has its applied answer.
-  3. After any commit since the last review: MUST run `lint` and `unit` again, and the
-     reviewer on each such commit that is not a pure revert or a no-re-review commit
-     (section Review loop).
+  3. After any commit since the last review: MUST run the reviewer on each such commit
+     that is not a pure revert or a no-re-review commit (section Review loop), and
+     `lint` and `unit` again, except where `delegate` section Delegation and worktrees
+     lets a merge skip them.
   4. Quiz loop: MUST repeat steps 2 and 3 while a re-review in step 3 adds a new
      recorded item. The loop bound (section Review loop) applies.
   5. Stray-task check: MUST check each task in the scope of `core` section Tools and
