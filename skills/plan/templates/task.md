@@ -10,8 +10,6 @@ with no milestone `Parent: [<task title>](<link>) (no milestone).`
 
 {{GOAL}}
 
-With a tracker bound, the plan leaves this section out: the parent line links the item.
-
 ## Design
 
 Format: one line per decision the `TR` items share (data shape, API, check order, lock
@@ -38,6 +36,8 @@ Format: `<risk> : <check>`; `<check>` is the `TR` that checks or limits it, or t
 answer that accepts it.
 
 ## Accepted tech debt
+
+Format: `<file>:<function> : <tech-debt: marker text>`.
 
 ## Overrides
 

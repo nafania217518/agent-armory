@@ -141,6 +141,26 @@ describe('skill-sizes', () => {
     test('no_frontmatter_exits_1_named', () => {
       expectNamed('max-lines: 50\nbody\n');
     });
+
+    // req: agent-reuse/TR-7
+    test('value_two_spaces_exits_1_named', () => {
+      expectNamed(skillText(' 5', 5));
+    });
+
+    // req: agent-reuse/TR-7
+    test('value_tab_exits_1_named', () => {
+      expectNamed('---\nname: bad\nmax-lines:\t5\n---\nbody\n');
+    });
+
+    // req: agent-reuse/TR-7
+    test('value_no_space_exits_1_named', () => {
+      expectNamed('---\nname: bad\nmax-lines:5\n---\nbody\n');
+    });
+
+    // req: agent-reuse/TR-7
+    test('value_trailing_space_exits_1_named', () => {
+      expectNamed(skillText('5 ', 5));
+    });
   });
 
   // req: rebuild-skills/TR-4

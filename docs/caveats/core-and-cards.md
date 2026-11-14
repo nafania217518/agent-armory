@@ -12,3 +12,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A Bash command whose text holds `git rev-parse`, even inside a heredoc, is refused in a worktree-isolated agent, so edit a card through the file-write tool : skills/setup/templates/agents/coder.md
 - A Haiku self-probe reports the project CLAUDE.md missing from a Claude Code subagent's context; a Sonnet exact-text probe finds it : skills/delegate/SKILL.md
 - A Claude Code subagent spawn costs about 55k tokens before its first tool call : skills/delegate/SKILL.md
+- The hook runs `core-context.sh` from `${CLAUDE_PLUGIN_ROOT}`, so it injects the installed plugin's `core`, not this repo's `skills/core/SKILL.md` : hooks/hooks.json
+- On Claude Code, Edit and Write refuse an existing file not Read first, so each main-session write case needs a read case : skills/core/SKILL.md

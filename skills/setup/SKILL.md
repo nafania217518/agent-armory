@@ -6,7 +6,7 @@ description: >
   only updates the project context and the agent cards. Use for "/setup", "set up
   armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 170
+max-lines: 172
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -25,9 +25,10 @@ Main session sets up armory on its host. User decides every write.
   §Project context.
 - Run in a project that already has armory MUST be an update run: project context holds
   the sections of §Write, and host's agent location holds the six cards. Update run MUST
-  skip §Self-report and §Install, except the card render of §Install. Its Questions round
-  MUST show only items that project context lacks; the rest MUST keep their existing
-  values. §Write sets how each changed file is shown and written.
+  skip §Self-report and §Install, except the card render and the rerun bullet of
+  §Install. Its Questions round MUST show only items that project context lacks; the rest
+  MUST keep their existing values. §Write sets how each changed file is shown and
+  written.
 
 ## 2. Self-report
 
@@ -101,7 +102,8 @@ Main session writes these sections (§Write).
   5. What the project adds to or changes in the level lines of `test` §Levels, with the
      level names fixed [none], and the unit style [`sociable`].
   6. Other gates that are `off`, each with a reason [all `on`].
-  7. Project-only rules, as MUST or SHOULD lines [none].
+  7. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
+     [`none`] (`code` §Review loop).
   8. Tracker [the docs fallback].
 - Before the round, `setup` MUST probe host's connections (MCP servers and CLIs) for a
   tracker. It MUST propose a binding for each verb of `core` §Host terms, term `tracker`,

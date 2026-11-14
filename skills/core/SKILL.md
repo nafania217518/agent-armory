@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 155
+max-lines: 152
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -27,7 +27,6 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   each, active voice, present tense, one meaning per word, no idioms, no filler, no hedge
   that carries no doubt. Natural phrasing and domain terms stay where strict STE reads
   badly.
-- Skill text MAY drop a, an and the where meaning stays.
 - Each main-session reply to user MUST follow the three rules below. A skill's fixed
   output format and this section's question bullets win over them.
   - Shape: MUST lead with the answer or next action, a command, path or snippet first.
@@ -51,8 +50,6 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - Main session MUST ask user through the question tool; message text MUST hold only the
   context. Free-text question MAY offer only "Other", or go as a plain message. Subagent
   MUST report `stuck: <question>` instead.
-- Choice question MUST have 2–4 options, recommended one first. One call MUST hold 1–4
-  questions.
 
 ## 3. Tools and background tasks
 
@@ -61,14 +58,22 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
   running MUST have a valid reason, stated in the report.
 - Web search and page reading MUST follow `research` §When to research.
+- Main session MAY write a repo file only through these named cases: git steps (branch,
+  merge, commit, revert, rm, push), gate runs, a project script that writes no authored
+  text, the plan-level docs (`plan` §Levels, column Doc: write, edit, delete), the
+  project context files and a `setup` run's writes. Each other write MUST go to an agent
+  (`delegate`).
+- Main session MUST NOT read files or diffs. Named cases: agent reports, git output other
+  than a diff, gate output, the plan-level docs and project context files, the templates
+  of the armory skills it fills, a `setup` run's reads, and one targeted command per claim
+  check or lookup (a line range, a grep), its output cut to 20 lines. Each other read MUST
+  go to an agent.
 
 ## 4. Design principles
 
 - YAGNI: MUST NOT design or implement anything not requested.
 - DRY + SSOT: each fact, rule, decision or piece of logic MUST live in exactly one place.
-  Everywhere else MUST reference it.
-- DAMP: test code MAY repeat itself when that reads easier; the one exception to DRY.
-  SHOULD extract a helper at the third repeat.
+  Everywhere else MUST reference it. Test code: `test` §Structure and naming.
 - Big design up front: design MUST be complete and refined before implementation.
 - MUST NOT optimize without a measured problem.
 - Occam's razor + KISS: SHOULD prefer the explanation or solution with fewest
@@ -103,15 +108,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   `- SHORT_DESCRIPTION : <file>`, a list item, or `- SHORT_DESCRIPTION : —` when no file
   exists yet. It MUST hold one fact. A caveat with two facts MUST become two lines, or one
   line with only the fact a reader would not expect.
-- A finding the output already numbers MUST be referenced by its number in the
-  recorded-items slot, not repeated.
-- These items MUST be recorded during the task: each SHOULD bypass made during the work
-  (§Rule words), scope addition (`test` §Test scope), design misfit (`implement` §Before
-  you write), out-of-scope finding (`implement` §The smallest complete change and §Gates
-  per commit; `test` §Pyramid), and Should fix or Nice to have finding (`review` §Output).
-- Main session MUST make every write to the caveat base (`code` §Caveats); subagent
-  MUST NOT write to it. `code` §Caveats sets when main session writes. Outside a plan or
-  code run, main session MUST ask user first.
+- Each SHOULD bypass made during the work (§Rule words) MUST be recorded during the task,
+  and so MUST each item that `implement`, `test` or `review` names as recorded.
+- Main session MUST decide every write to the caveat base (`code` §Caveats); a subagent
+  MUST NOT write to it unless its card allows; it MUST report the caveat in its caveat
+  slot instead. Outside a plan or code run, main session MUST ask user first.
 
 ## 7. Host terms
 
@@ -146,10 +147,6 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
     by a bare id. The PR closing line (`code` §Finish) is exempt.
   - A run MUST NOT edit the body of a parent item (an item above the one the run plans or
     codes), except to write an amendment the user approved (`plan` §Amendments). It MUST
-    comment on that item instead. A run that starts from an existing item MUST keep the
-    item's text and add its own sections below it.
+    comment on that item instead.
   - When a bound tracker is unreachable, the run MUST stop before the tracker step and ask
     user. It MUST NOT use the docs fallback.
-
-Outside this section, every skill uses these terms and skill names; it MUST NOT name a
-host's own tool or file.

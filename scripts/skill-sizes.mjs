@@ -2,7 +2,7 @@ import { lstatSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const USAGE = 'usage: node scripts/skill-sizes.mjs [skills-dir]';
-const MAX = /^max-lines:\s*(\S*)\s*$/;
+const MAX = /^max-lines: (\S*)$/;
 const POSITIVE = /^[1-9]\d*$/;
 
 // The max-lines value from the leading --- block, or undefined.
@@ -63,7 +63,7 @@ function main() {
     const max = maxLines(text);
     process.stdout.write(`${name}: ${lines}/${max ?? '?'}\n`);
     if (max === undefined || !POSITIVE.test(max)) {
-      process.stderr.write(`${name}: max-lines is missing or not a positive integer\n`);
+      process.stderr.write(`${name}: max-lines is missing or not "max-lines: <positive integer>"\n`);
       failed = true;
     } else if (lines > Number(max)) {
       process.stderr.write(`${name}: ${lines} lines, over max-lines ${max}\n`);

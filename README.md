@@ -12,9 +12,9 @@ terms and run on Claude Code.
 | `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session; `planner` |
 | `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
 | `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
-| `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `debugger`, `reviewer`; main session when it codes itself |
+| `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `debugger`, `reviewer` |
 | `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `debugger`, `reviewer`, `planner` |
-| `debug` | Diagnosis of a bug whose cause is not known: feedback loop, hypotheses, probes, cleanup. | `debugger`; main session when it debugs itself |
+| `debug` | Diagnosis of a bug whose cause is not known: feedback loop, hypotheses, probes, cleanup. | `debugger` |
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer` |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
 | `research` | How to research a technical claim: official sources first, dates, disagreements. | `researcher` |

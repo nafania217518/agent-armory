@@ -4,8 +4,8 @@ description: >
   Quality audit of a whole repo or package: bugs, security holes, what breaks under real
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
   One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
-  whole repo", "find bloat", "what can I delete", "list the tech debt", "/audit".
-max-lines: 76
+  whole repo", "what can I delete", "list the tech debt", "/audit".
+max-lines: 77
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -13,7 +13,7 @@ Load the `core` skill first when its rules are not in your context.
 
 # audit
 
-Reviewer runs an audit on an audit brief; main session runs it when user asks. Load
+Reviewer runs an audit on an audit brief; main session sends one when user asks. Load
 `review`, `test` and `implement` first. Audit MUST apply these `review` rules to a whole
 repo or package: full-report and read-only rules (`review` §Understand first, first
 bullet), order of importance and classes (`review` §Look for), `review` §Check before you
@@ -41,8 +41,9 @@ differs from a review.
 - MUST check caveat base (`code` §Caveats): each pointer names an existing topic file,
   and each entry's file exists. Each failure MUST be a finding.
 - A drifted entry is one whose file has a commit newer than entry's line (`git blame` on
-  the line, `git log -1` on the file). Main session MUST check claims of drifted entries
-  in parallel reviewer spawns, one per topic file, plus one for root list.
+  the line, `git log -1` on the file). A reviewer that runs the audit MUST report each
+  drifted entry by `file:line`. Main session MUST then check claims of drifted entries in
+  parallel reviewer spawns, one per topic file, plus one for root list.
 - Each such spawn MUST return one verdict per entry: holds, false, path moved, or
   `Unverified: <what settles it>`. Main session MUST add each verdict other than holds
   to audit findings.

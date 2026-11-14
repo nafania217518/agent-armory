@@ -4,7 +4,7 @@ Rules for a pass that shrinks skill text with no change of meaning.
 
 - MUST drop a phrase that repeats what a name already says: "the `dnd`
   skill" becomes "`dnd`".
-- MAY drop a, an and the where meaning stays (`core` section Writing and questions).
+- MAY drop a, an and the where meaning stays (`AGENTS.md` `## Rules`).
 - MUST delete filler words ("just", "really", "basically", "in fact").
 - MUST shorten a stock phrase: "in order to" becomes "to".
 - SHOULD use the shorter synonym ("use", not "utilize"), except for a

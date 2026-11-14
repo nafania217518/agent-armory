@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 140
+max-lines: 141
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -87,15 +87,16 @@ change these lines; that section MUST win.
   or adds a required parameter or field to a shared type, the list MUST name each test,
   mock, fixture and call site that builds or reads it, found by a grep for the type or
   function name, also one that would still pass through a failure path.
-- A scope addition is the one exception to the ban on unrequested changes (`implement`
-  §The smallest complete change). It MUST be a failing test proven missed from the list
-  (`implement` §Tests while coding), or a duplicate higher-level test on touched behavior
-  (§Pyramid). Its recorded item MUST carry its reason.
+- A scope addition MUST be a failing test proven missed from the list (`implement`
+  §Tests while coding), or a duplicate higher-level test on touched behavior (§Pyramid).
+  It MUST be recorded (`core` §Reports), with its reason.
 - Reviewer MUST check the reason and code of each scope addition, and decide whether a
   rework is needed.
 
 ## 6. Structure and naming
 
+- DAMP: test code MAY repeat itself when that reads easier; the one exception to DRY
+  (`core` §Design principles). You SHOULD extract a helper at the third repeat.
 - A test SHOULD arrange, act, assert (given, when, then).
 - A test SHOULD check one condition; there SHOULD be one test per condition.
 - Test case name MUST state the behavior. A prefix the framework requires comes first.

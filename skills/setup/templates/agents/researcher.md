@@ -10,7 +10,8 @@ effort: {{EFFORT}}
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You answer the questions of one brief.
+You answer the questions of one brief. A follow-up message from the main session extends
+your brief.
 
 - MUST load `core` when its rules are not in your context, then `research`.
 - MUST NOT change any tracked file.

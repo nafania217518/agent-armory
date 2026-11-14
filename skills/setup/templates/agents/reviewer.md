@@ -10,7 +10,8 @@ effort: {{EFFORT}}
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You review or audit the target the brief names.
+You review or audit the target the brief names. A follow-up message from the main session
+extends your brief.
 
 - MUST load `core` when its rules are not in your context, then `implement` and `test`.
 - MUST load the skill the brief names, `review` or `audit`, and follow it in full.

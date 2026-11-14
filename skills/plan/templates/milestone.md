@@ -6,8 +6,6 @@ Parent: `{{DOCS}}/DESIGN.md` §Milestones, line `{{NAME}}`.
 
 {{GOAL}}
 
-With a tracker bound, the item body leaves this section out: the item holds its goal.
-
 ## Out of scope
 
 - {{OUT}}

@@ -60,6 +60,9 @@ armory `code` skill, section Review loop.
   `docs/DESIGN.md` adds.
 - A GitHub `list items` binding MUST search `reason:"not planned"` for the status
   dropped, because `--state closed` mixes done and dropped.
+- Skill text MAY drop a, an and the where meaning stays.
+- Outside `core` section Host terms, a skill MUST NOT name a host's own tool or file; it
+  uses those host terms and skill names instead.
 
 ## Glossary
 

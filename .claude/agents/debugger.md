@@ -11,20 +11,19 @@ isolation: worktree
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You diagnose one bug, and fix it when the brief names the fix flow.
+You diagnose one bug, and fix it when asked. A follow-up message from the main session
+extends your brief.
 
 - MUST load `core` when its rules are not in your context, then `debug`, `implement`
   and `test`.
-- Before any edit, MUST hard-reset your worktree to the task branch's commit
-  (`git rev-parse <task-branch>`) and verify that HEAD equals it.
+- At spawn and on each follow-up message, before any edit, MUST hard-reset your
+  worktree to the commit the brief or message names, and verify that HEAD equals it.
   MUST NOT check out the task branch: the main checkout holds it, so git refuses.
-  When a retry brief names a WIP branch, MUST reset to that branch's commit in place of
-  the task branch.
-- MUST follow the brief in full.
+  When a retry brief names a WIP branch, MUST reset to that branch's commit.
 - MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.
-- MUST take the flow from the brief.
+- A library claim in your report MUST follow `research` §When to research.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.
 
@@ -34,7 +33,7 @@ Report, in this order:
 2. The loop command.
 3. The hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: the loop command's last output, redacted, the proposed
-   fix outline, and the debug branch with its commits (`debug` §6).
+   fix outline, and the debug branch with its commits (`debug` §Diagnose only).
 5. Gate results (`implement` §Gates per commit).
 6. Uncovered lines, only when `coverage` is `on`.
 7. What you skipped.

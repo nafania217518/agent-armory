@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 169
+max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -13,8 +13,8 @@ Load the `core` skill first when its rules are not in your context.
 
 # review
 
-Reviewer, or a main session that reviews itself, judges code against `implement` and tests
-against `test` (load both when not in context). "Reported" means listed as a finding.
+Reviewer judges code against `implement` and tests against `test` (load both when not
+in context). "Reported" means listed as a finding.
 
 ## 1. Understand first
 
@@ -131,15 +131,12 @@ against `test` (load both when not in context). "Reported" means listed as a fin
 
 ## 5. Output
 
-- A reviewer subagent MUST start with `Expected load: <figure>` when one is stated,
-  else with `Gates:`, and MUST leave out `off` gate lines. A review main session runs
-  MUST start with `What this change does:` in two or three sentences, and expected load,
-  or `none stated`. Then MUST give `Gates:`, one line
-  per gate: `pass`; `fail <one line>`; `fail <one line>, exists on <base>`, no blocker;
+- A reviewer MUST start with `Expected load: <figure>` when one is stated, else with
+  `Gates:`, and MUST leave out `off` gate lines. `Gates:` MUST give one line per gate:
+  `pass`; `fail <one line>`; `fail <one line>, exists on <base>`, no blocker;
   `(per <who> at <commit or range>)` after `pass` or `fail` for a run by another agent;
-  `off <reason from the project context>`; `no command`; `not run (<cause>)`, neither pass
-  nor fail, when an `on` gate's command cannot run (a file the range lacks: name the
-  commit that adds it).
+  `no command`; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
+  cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
@@ -160,6 +157,8 @@ against `test` (load both when not in context). "Reported" means listed as a fin
   add one more part:
   `Unverified: <the source or command that settles it>`. In a caveat line (`core`
   §Reports), the part MUST come last, after one more ` : `.
+- Each Should fix and Nice to have finding MUST be recorded (`core` §Reports). The
+  recorded-items slot MUST name a finding by its number, not repeat it.
 - Then MUST give `Answers:` when the brief asks a question or names a check for reviewer
   to judge, one line per item: short plain-fact sentences, up to 10, no prose; then the
   two slots of `core` §Reports.

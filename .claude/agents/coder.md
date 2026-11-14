@@ -10,15 +10,14 @@ isolation: worktree
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You implement one brief.
+You implement one brief. A follow-up message from the main session extends your brief.
 
-- MUST load `core` when its rules are not in your context, then `implement` and `test`.
-- Before any edit, MUST hard-reset your worktree to the task branch's commit
-  (`git rev-parse <task-branch>`) and verify that HEAD equals it.
+- MUST load `core` when its rules are not in your context, then `implement`, `test` and
+  `research` §When to research.
+- At spawn and on each follow-up message, before any edit, MUST hard-reset your
+  worktree to the commit the brief or message names, and verify that HEAD equals it.
   MUST NOT check out the task branch: the main checkout holds it, so git refuses.
-  When a retry brief names a WIP branch, MUST reset to that branch's commit in place of
-  the task branch.
-- MUST follow the brief in full.
+  When a retry brief names a WIP branch, MUST reset to that branch's commit.
 - MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.

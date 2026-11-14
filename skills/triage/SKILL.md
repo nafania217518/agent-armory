@@ -5,7 +5,7 @@ description: >
   list, one item at a time, a recommended category and outcome, then the writes the user
   approves. Changes no repo file. Use for "/triage", "triage the tracker".
 disable-model-invocation: true
-max-lines: 97
+max-lines: 99
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -49,8 +49,9 @@ other item, a mixed one included, is an enhancement.
    duplicate of a match (up to three, best first) or distinct. A duplicate MUST be
    rejected with a reason that links the match, and ends the item. Done when no item
    matches or user chose.
-2. For a bug, MUST read the code, not reproduce the bug, and name the code path or the gap
-   that leaves it unproven. Done when path or gap is named, or the item reports no bug.
+2. For a bug, MUST have an agent read the code, not reproduce the bug, and name the code
+   path or the gap that leaves it unproven. Done when path or gap is named, or the item
+   reports no bug.
 3. MUST ask only open points, each under its `plan` business-quiz topic (`plan`
    §Quizzes): facts the `BR` lines need that the item, code, done milestones, docs and
    tests do not settle. A request for a different output on an input that the project
@@ -91,7 +92,8 @@ other item, a mixed one included, is an enhancement.
   again a point the reporter answered in reply to the earlier `## Triage notes`; MUST
   list it as established instead.
 - An item whose body starts with the `core` AI marker line, or with its own
-  `## Requirements`, MUST skip steps 1 and 4 of §Triage one item; once each point is
-  answered, MUST set `accepted` again.
+  `## Requirements`, MUST skip steps 1 and 4 of §Triage one item. Once each point is
+  answered, it MUST ask user one yes or no question that lists the write, and on a yes
+  set `accepted` again.
 - Done when each point of earlier notes is marked answered or still open, and, for such
-  an item, its state label is set back.
+  an item, user has answered and, on a yes, its state label is set back.

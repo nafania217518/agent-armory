@@ -5,7 +5,7 @@ description: >
   into armory, project and user, so that later sessions go better. Changes no file.
   Use for "/retro", "run a retro".
 disable-model-invocation: true
-max-lines: 88
+max-lines: 89
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -21,8 +21,10 @@ change in the project or in armory so later sessions go better.
 - Main session MUST run it on the current session only.
 - MUST change no file: MUST NOT edit, commit or spawn a coder. MUST list each change as a
   finding instead (§Findings).
-- MUST read the session, and each touched file a finding's evidence needs.
-- Done when the session's steps are read, and each file a finding's evidence needs.
+- MUST read the session, and MUST have an agent read and report each touched file a
+  finding's evidence needs.
+- Done when the session's steps are read, and each file a finding's evidence needs is
+  reported.
 
 ## 2. Finding classes
 
@@ -71,8 +73,7 @@ change in the project or in armory so later sessions go better.
   `project`, `user`. Each round MUST ask, through the question tool and multi-select,
   which findings of that group to act on. It MUST skip a group with no finding.
 - One finding in a group: MUST ask yes or no, single-select. More than four: MUST split
-  them into questions of 2–4 options, up to four questions per call (`core` §Writing and
-  questions).
+  them across several questions.
 - Chosen `armory` findings: in a session on the armory repo, MUST name them as one task
   to plan. In any other repo, MUST write one prompt for an armory session instead.
 - Armory prompt MUST hold, per finding: severity, file and section, problem seen with

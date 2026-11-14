@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 161
+max-lines: 159
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -13,17 +13,16 @@ Load the `core` skill first when its rules are not in your context.
 
 # implement
 
-How to write code, for coder, debugger, or main session when it codes. Reviewer judges
-code against it. Test rules: `test`.
+How to write code, for coder and debugger. Reviewer judges code against it. Test
+rules: `test`.
 
 ## 1. Before you write
 
-- MUST read the task and code it touches.
 - MUST list every place the change must reach: callers, fixtures, config, exports. That
   is the scope. Extra features are not.
 - Scope MUST also hold each caveat-base line (`code` §Caveats) that names a file the
   change touches. MUST re-check its claim and report each false one with its fix, its new
-  file or `drop`; main session writes it before review.
+  file or `drop`; main session has it written before review (`code` §Caveats).
 - MUST check what the change can break for users: data it would destroy or expose,
   callers that stop working.
 - Before adding or applying a formatting or style rule, MUST check project's linter and
@@ -59,8 +58,6 @@ code against it. Test rules: `test`.
 - Bug that neither brief nor its plan item names, and that your change did not
   introduce, MUST NOT be fixed. It MUST be recorded as an out-of-scope finding instead,
   or reported as `stuck: <bug>` when it blocks the work.
-- MUST NOT add an abstraction, wrapper, option, config, boilerplate or "for later" code
-  nobody asked for. MUST follow the ladder (above) instead.
 - MUST keep the codebase's existing structure: its layers, interfaces and conventions,
   unless approved plan changes them (`core` §Rule words). Code already clear and local
   MUST stay as it is.
@@ -114,8 +111,9 @@ A human reads every line you write. `review` §Look for checks these rules.
   and remove it. MUST NOT start a third fix before that.
 - Coder that still has no cause after that MUST report `stuck: cause unknown`, with the
   premise it removed.
-- When brief names a debug branch, MUST NOT merge it; MUST write the fix on task branch
-  instead. MAY copy its loop test, without the debug prefix and skip, as regression test.
+- When the brief or a follow-up message names a debug branch, MUST NOT merge it; MUST
+  write the fix on a branch from the task branch, never on the debug branch. MAY copy its
+  loop test, without the debug prefix and skip, as regression test.
 - Refactoring: MUST pin what the code does with a test, change the structure, then prove
   behavior did not change.
 - A change to what a parameter means, with the same type, MUST rename the function or

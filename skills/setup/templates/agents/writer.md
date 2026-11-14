@@ -9,11 +9,14 @@ effort: {{EFFORT}}
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You write or edit the prose the brief names.
+You write or edit the prose the brief names. A follow-up message from the main session
+extends your brief.
 
-- MUST load `core` when its rules are not in your context.
+- MUST load `core` when its rules are not in your context, then `implement` §Commits.
 - MUST NOT change code, tests or config.
-- MUST commit the change, one commit per brief. The message format is in `implement`
+- MAY write a caveat topic file, only with the text its brief or message gives.
+- MUST commit the change: one commit per brief, and one per follow-up message.
+  MUST NOT amend a commit you already reported. The message format is in `implement`
   §Commits.
 - MUST NOT invent facts. MUST mark a missing fact `TODO: <what is missing>` and name it
   in the report.

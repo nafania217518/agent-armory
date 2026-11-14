@@ -77,9 +77,9 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `plan` + templates `strategic.md`, `milestone.md`, `task.md` | 5 (push back), 6 | main session; `planner`, drafting part only |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
 | `code` + template `pr.md` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
-| `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger; main session when it codes itself |
+| `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger |
 | `test` | 13 | coder, debugger, reviewer, planner |
-| `debug` | none (new) | debugger; main session when it debugs itself |
+| `debug` | none (new) | debugger |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
 | `research` | 7 | researcher |
@@ -274,6 +274,16 @@ One dated line per decision, with the dropped alternatives.
   briefs, dropped alternatives in Design. Milestone docs and items follow the same
   rules, without Done criteria and the Scope In list. Dropped: migrating the old
   milestone docs.
+- 2026-11-14: agent reuse: follow-up work goes to the agent whose output is still
+  open, until that output closes; a change by another actor to its files forces a fresh
+  spawn. Dropped: reuse until task end, a fresh spawn on any new commit, a recorded
+  bypass for word-for-word fixes, a fresh coder after a diagnose-only run.
+- 2026-11-14: lean main session: the main session writes only through git steps, gate
+  runs and scripts, and writes the plan-level docs, project context and `setup` files.
+  It reads only agent reports, git and gate output, the templates it fills, `setup`
+  reads and one claim check or lookup, its output cut to 20 lines. A task scribe takes
+  the caveat topic-file writes. Dropped: a MAY for word-for-word fixes, the main session
+  writing caveat topic files, reads as a SHOULD.
 
 ## 7. Milestones
 

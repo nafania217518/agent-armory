@@ -5,7 +5,7 @@ description: >
   each task runs through plan and code to Finish with no more questions to the user;
   the run answers each question itself and reports every answer. Use for "/dnd".
 disable-model-invocation: true
-max-lines: 62
+max-lines: 66
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -54,9 +54,13 @@ away. It asks once at start, then answers every later question itself.
 - After a stop, MUST go on with next task only when user's request names more work (a
   list, or a query of tracker items); else MUST end the run.
 - Loop bound (`code` §Review loop): MUST end the loop after seventh round. Each open
-  finding MUST become a follow-up.
+  finding MUST become a follow-up item.
+- When an open Must fix finding or a failing `on` gate is left at Finish, run MUST
+  take the stop case above. It MUST NOT merge.
 
 ## 3. Answers log
 
 - MUST record each question the run answers: question, answer, a one-line why.
 - Each task MUST end with `code` task report, then its answers log.
+- With self-approve, MUST also record each tracker write the plan lists (`plan`
+  §Self-review and approval).

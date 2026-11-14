@@ -3,8 +3,8 @@ name: debug
 description: >
   Diagnosis of a bug whose cause is not known: feedback loop, reproduce and minimise,
   ranked hypotheses, one-variable probes, tagged debug logs, cleanup, redaction. Loaded
-  by the debugger card, and by `code` when the main session debugs itself; "/debug".
-max-lines: 102
+  by the debugger card; "/debug".
+max-lines: 103
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -12,9 +12,9 @@ Load the `core` skill first when its rules are not in your context.
 
 # debug
 
-How to find a bug's cause, for debugger or main session when it debugs. It runs in one
-of two flows: diagnose only (§6), or diagnose and fix, the fix flow (§7). Brief names
-the flow, or user's request when main session debugs itself.
+How to find a bug's cause, for debugger. It runs in one of two flows: diagnose only
+(§Diagnose only), or diagnose and fix, the fix flow (§Fix and cleanup). Brief, or a
+later follow-up message, names the flow.
 
 ## 1. Redact
 
@@ -76,15 +76,16 @@ the flow, or user's request when main session debugs itself.
 - Performance bug MUST get a baseline measurement first.
 - MUST test your own ranking and record a verdict for each hypothesis: confirmed,
   refuted or untested. Done when one hypothesis is confirmed. When all are refuted, MUST
-  go back to §4.
+  go back to §Hypotheses.
 
 ## 6. Diagnose only
 
 - MUST NOT write the fix. MUST end with report instead.
 - MUST commit loop when it is a file. MAY commit other debug code (a harness, tagged
-  logs). Each debug commit MUST go only on a branch `debug-<id>` cut from task branch,
-  where `<id>` is the debug prefix's id. MUST NOT merge that branch into task branch;
-  MUST name it in report instead.
+  logs). Each debug commit MUST go only on a branch `debug-<id>` cut from task branch, or,
+  with none, from the branch the brief names, where `<id>` is the debug prefix's id. With
+  neither, debugger MUST report `stuck: base branch for debug-<id>`. MUST NOT merge that
+  branch into task branch; MUST name it in report instead.
 - Each debug commit subject MUST start with `debug(<id>):`. Each debug commit MUST keep
   `on` gates green: a loop test goes in skipped, with debug prefix in its name.
 - Done when report names the confirmed hypothesis, loop command with its last output, a
@@ -97,6 +98,6 @@ In the fix flow:
 
 - Fix MUST follow `implement` §Fixing and refactoring. Minimised repro MUST become its
   regression test.
-- Done when original loop passes, diff against the commit the run started from
-  (untracked files included) holds only the fix and its regression test, and the fix's
-  commit message states the confirmed hypothesis.
+- Done when original loop passes, diff against the commit the run, or its last follow-up
+  message, reset to (untracked files included) holds only the fix and its regression test,
+  and the fix's commit message states the confirmed hypothesis.

@@ -4,9 +4,9 @@ description: >
   Plans work before any edit, at three levels: strategic (design doc and milestones),
   milestone (scope and BR requirements) and task (TR requirements and the plan file),
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
-  "make a plan", "plan a milestone", "design doc", "design this change", a changed
-  requirement, "/plan", and from the code skill when no plan exists.
-max-lines: 356
+  "plan a milestone", "design doc", "design this change", a changed requirement,
+  "/plan", and from the code skill when no plan exists.
+max-lines: 363
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -21,7 +21,6 @@ Drafting; planner runs only Drafting.
 
 - Level MUST come from argument `strategic`, `milestone` or `task`. With no argument,
   first question MUST ask the level.
-- Level question MUST come before any quiz round.
 - Each level MUST use the doc, template and branch of this table. Template paths are
   relative to this skill.
 
@@ -33,9 +32,9 @@ Drafting; planner runs only Drafting.
 
 - Milestone or task doc MUST name its parent in its first lines, with the template's
   parent line. It MUST reference a parent fact, not restate it.
-- Milestone run MUST read `<docs>/DESIGN.md` first. Task run MUST read its milestone doc
-  first. Each MUST read it on `<base>`; when `<base>` lacks it, run MUST ask user to merge
-  the parent branch first.
+- Milestone run MUST first have an agent read `<docs>/DESIGN.md`, and task run its
+  milestone doc, on `<base>`, and report the facts the run needs. When `<base>` lacks
+  the doc, run MUST ask user to merge the parent branch first.
 - Milestone name MUST match a line of `<docs>/DESIGN.md` §Milestones. With none, strategic
   level MUST add it first.
 - Task run MUST take its milestone from the request. When request names none, first quiz
@@ -51,9 +50,11 @@ Drafting; planner runs only Drafting.
   it MUST edit the file in place and keep its free sections.
 - Milestone status MUST live only in `<docs>/DESIGN.md`. Task status MUST live only in the
   milestone doc. Status values MUST be open, done and dropped.
-- Task-level plan run or code run that adds no task to a milestone and reads that all its
-  tasks are done MUST mark the milestone done: a status-line edit in `<docs>/DESIGN.md`,
-  or, with a tracker bound, a status write under `core` tracker write rule.
+- Task-level plan run that adds no task to a milestone and reads that all its tasks are
+  done MUST ask user whether to mark the milestone done. On a yes, it MUST make the
+  status-line edit in `<docs>/DESIGN.md` the first commit of a `design-<topic>` branch,
+  with the finish question of `code` §Finish, or, with a tracker bound, a status write
+  under `core` tracker write rule. A code run MUST keep `code` §Task end, step 9.
 - With a tracker bound in project context `## Tracker` (`core` §Host terms), each level
   MUST follow this tracker variant. The variant replaces only the docs-fallback rules it
   names; the table and rules above MUST stay the docs fallback.
@@ -68,24 +69,26 @@ Drafting; planner runs only Drafting.
   - Milestone name MUST match a top-level tracker item, not a `DESIGN.md` line. Task run
     MUST read its milestone item, body and comments, first.
   - A run MAY start from an existing tracker item. It MUST then read the item's body and
-    comments first and take the item as its milestone or task. Else it MUST create the
-    items only after approval. An item that holds its own `## Requirements` (`triage`
-    §Outcomes) MUST be the milestone of a milestone run, or a task with no milestone of a
-    task run, with no milestone question.
+    comments first, take the item as its milestone or task, and keep the item's text,
+    adding the run's sections below it. Else it MUST create the items only after approval.
+    An item that holds its own `## Requirements` (`triage` §Outcomes) MUST be the
+    milestone of a milestone run, or a task with no milestone of a task run, with no
+    milestone question. That `## Requirements` section MUST be the item's `BR` list; a run
+    MUST add each new `BR` line there.
   - Task run with no task named MUST take the first ready task in milestone item's child
     order: open, every blocker done, no assignee.
   - Task run MUST claim its task item right after it reads the item, before any quiz round
     or spawn. User's start request is the yes for this write. When the item is closed or
-    has any assignee, user included, run MUST stop and ask user: take it over, pick
-    another ready task, or stop. A task item the run creates after approval MUST be
-    claimed right after its create.
+    has any assignee, user included, run MUST stop and ask user: pick another ready task
+    (recommended), take it over, or stop. A task item the run creates after approval MUST
+    be claimed right after its create.
   - Task's branch MUST be the tracker's branch name for its item when the binding has that
     verb, else `<item id>-<title slug>`. Plan file path MUST be the branch with each `/`
     replaced by `-`.
 
 ## 2. Before the plan
 
-- Main session itself MUST run the quizzes, research and approval.
+- Main session itself MUST run the quizzes and approval, and own the research step.
 - Planning spawns researchers and the planner: MUST load `delegate` first.
 - Until the first proposal, quizzes, research and drafts MUST run outside plan mode. Main
   session MUST enter plan mode only to propose, after the self-review (§Self-review and
@@ -93,8 +96,9 @@ Drafting; planner runs only Drafting.
 - On a model below Opus or an effort below `high`, main session SHOULD suggest a switch to
   user before planning.
 - Before building, SHOULD push back on any part of the request the need does not justify.
-- Before the first quiz round, main session MUST read each topic file whose pointer fits
-  the request (`code` §Caveats).
+- Before the first quiz round, main session MUST have an agent read each topic file
+  whose pointer fits the request (`code` §Caveats), or pass those paths in each planning
+  brief.
 - Before any edit, MUST quiz user in rounds until no open point remains (an unclear
   requirement, a choice, an assumption), and wait for answers. §Quizzes sets the order
   and topics; `core` §Writing and questions sets the question format.
@@ -112,7 +116,8 @@ Drafting; planner runs only Drafting.
 - A round MUST ask only questions whose prerequisite answers are in. A question that
   depends on another open question of the round MUST wait for a later round.
 - A quiz MUST NOT ask a fact the parent doc, repo, a tool or an agent can settle: main
-  session MUST find it. A running lookup MUST hold back only questions that depend on it.
+  session MUST get it from an agent or a claim check (`core` §Tools and background
+  tasks). A running lookup MUST hold back only questions that depend on it.
 - During a quiz, main session MUST name a term that conflicts with project context
   `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST check
   each claim user makes about the code against the code, naming any contradiction.
@@ -151,8 +156,9 @@ Drafting; planner runs only Drafting.
 - A section with no item MUST be left out, except Requirements and Test scope. A missing
   Overrides or Accepted tech debt section MUST mean none.
 - The three bullets above MUST also hold for a milestone doc and a milestone item body,
-  with `templates/milestone.md`; there, only Requirements and Tasks stay when empty; a
-  milestone item body also keeps that opening goal line (§Plan file).
+  with `templates/milestone.md`; there, only Requirements and, in a milestone doc, Tasks
+  stay when empty; a milestone item body also keeps that opening goal line (§Plan file).
+  A triage `## Requirements` section that the item already holds MAY keep its place.
 - Requirements MUST hold only `TR` items and the dated notes of §Amendments, beside the
   `BR` list of §Requirements: no order line, summary, API table or key that restates
   them, and no `TR` that only says the `on` gates pass; a gate-type `BR` needs no `TR`;
@@ -259,10 +265,10 @@ Drafting; planner runs only Drafting.
   plan cites. Task run MUST also list the done write of its `code` run, in its form per
   finish answer (`code` §Task end, step 11), and the claim of a task item it creates.
 - An open question MUST go to one more quiz round.
-- Exiting plan mode is the approval. On a reject, MUST fix the part user names and propose
-  again. A fix that needs only plan edits or a quiz round MUST stay in plan mode. Any
-  other fix MUST first ask user to switch to auto mode or bypass permissions, and name the
-  work; after it, MUST enter plan mode again.
+- On a reject, MUST fix the part user names and propose again. A fix that needs only
+  plan edits or a quiz round MUST stay in plan mode. Any other fix MUST first ask user to
+  switch to auto mode or bypass permissions, and name the work; after it, MUST enter plan
+  mode again.
 
 ## 7. Plan file
 
@@ -271,10 +277,9 @@ Drafting; planner runs only Drafting.
 - It MUST then write the level's doc at its Doc path as the first commit; `core` §Host
   terms sets `<docs>`. Requirements MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
-- Right after that commit, main session MUST write the caveats found during planning
-  into the caveat base (`code` §Caveats). A task run MUST hold them in its plan-mode
-  proposal, not its plan file, and MUST skip each one about code that a `TR` of this task
-  builds or changes; the coder's caveat slot reports that one after the build.
+- Right after that commit, main session MUST have every caveat found during planning
+  written into the caveat base (`code` §Caveats), also one about code a `TR` builds or
+  changes. A task run MUST hold them in its plan-mode proposal, not its plan file.
 - In that step, main session MUST write each term the quiz settled into project context
   `## Glossary`, in its format line. A plan template MUST NOT hold a glossary section.
 - In that step, main session MUST write an expected load the quiz settled into
@@ -318,39 +323,41 @@ Drafting; planner runs only Drafting.
 - A change to the design MUST go back to §Before the plan: quizzes, plan, approval. A
   redesign user approves is such a change.
 - An architecture gap MUST re-plan at the strategic level, on a `design-<topic>` branch.
-- A defect in built code MUST get a new `TR-n` and its test (`implement` §Fixing and
+- A defect in built code is a bug in code this task already merged, outside the commit
+  range under review. It MUST get a new `TR-n` and its test (`implement` §Fixing and
   refactoring). That `TR` MUST name its fault class and each call site of that class,
-  found by a grep at amendment time.
+  found by a grep at amendment time. A finding on the range under review MUST go to the
+  fix round of `code` §Review loop instead.
 - Main session MUST allocate every new id. Subagent MUST NOT allocate one.
-- Before the next brief, main session MUST commit to the owning doc the new items, each
-  `(replaced by <new id>)` mark, each dated note and the line updates below; no reason or
-  history. The amendment's reason and history MUST go into the commit message, and into
-  the tracker comment when one is written.
+- Before the next brief or follow-up message, main session MUST commit to the owning doc
+  the new items, each `(replaced by <new id>)` mark, each dated note and the line updates
+  below; no reason or history. The amendment's reason and history MUST
+  go into the commit message, and into the tracker comment when one is written.
 - A replacing item MUST state its full text. A replaced item MUST keep its id line, never
   renumbered, with the mark `(replaced by <new id>)`; its old text MAY go. Before the
   plan's first commit, an item that user's yes replaces MAY be rewritten in place.
-- Brief of a `TR` that replaces another MUST tell the coder to re-point each `req:` marker
-  of the old id to the new id.
+- Brief or follow-up message of a `TR` that replaces another MUST tell the coder to
+  re-point each `req:` marker of the old id to the new id.
 - A wrong `tests:` case of a `TR` whose behavior stays MUST get a dated note below the
   `TR` list that names the `TR` and gives the corrected case. A changed behavior takes a
   new id (above).
 - When a code run starts on a plan whose commit is behind `<base>`, main session MUST
-  first check each `TR` against `<base>`. Each `TR` that `<base>` already meets MUST get
-  a dated note below the `TR` list. Done when each `TR` is checked.
+  first have an agent check each `TR` against `<base>`. Each `TR` that `<base>` already
+  meets MUST get a dated note below the `TR` list. Done when each `TR` is checked.
 - When an amendment replaces or removes a term, id, design choice or figure (a profile,
   a file, a class, a bound), main session MUST grep the owning doc, plan file and project
   context for it before it asks user. Each requirement line that names it MUST join that
   amendment's question, with its new id, and get its `(replaced by <new id>)` mark at the
   amendment commit. A `needs:` line that names a replaced id MUST be updated in place at
   that commit, with no new id.
-- At the amendment commit, main session MUST re-read each line that is not a requirement
-  (Goal, Design, Risks, Test scope) and update each one the amendment makes false. An
-  amendment that changes a tested behavior or a data shape MUST add each case it breaks
-  to Test scope in the same commit. A line with an `Unverified:` part that a `TR` proves
-  MUST be deleted.
+- Before the amendment commit, main session MUST have an agent list each line that is not
+  a requirement (Goal, Design, Risks, Test scope) and that the amendment makes false. The
+  amendment commit MUST update each such line. An amendment that changes a tested
+  behavior or a data shape MUST add each case it breaks to Test scope in the same
+  commit. A line with an `Unverified:` part that a `TR` proves MUST be deleted.
 
 ## 9. Drafting
 
-- Main session MAY spawn the planner for a draft, in the formats of §Requirements and §The
-  plan, checked against §Self-review and approval. The `planner` agent card sets its role
+- A planner draft MUST take the formats of §Requirements and §The plan, checked against
+  §Self-review and approval. The `planner` agent card sets its role
   and limits; `delegate` §Models sets its model.
