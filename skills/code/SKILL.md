@@ -99,8 +99,8 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
 - Reviewer MUST run on each coder or fix-flow debugger result: its diff, after the merge
   when the agent ran in a worktree.
 - After a review, main session MUST have each Must fix item and each auto-fix finding
-  fixed (`delegate` §Context), run the reviewer on the fix commits, and repeat until none
-  remains.
+  fixed (`delegate` §Context), run the reviewer on the fix commits (`delegate` §Briefs
+  sets the follow-up message), and repeat until none remains.
 - A fix (auto-fix or quiz answer) that changes the behavior a `TR` states MUST go through
   `plan` §Amendments before its fix brief.
 - A commit that only deletes caveat or doc lines a finding's Fix part names, or writes
@@ -119,9 +119,9 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   skipped line (§Task end, step 6). A claim the check does not settle MUST keep its
   `Unverified:` part.
 - Loop bound: when a loop needs a third round, main session MUST ask user first.
-- Final review MUST cover only commits since the last review, or since `<base>` when none
-  ran. It MUST add these whole-task checks on `<base>..HEAD`: each requirement met, `req:`
-  markers, stray files, gates.
+- Final review MUST be a fresh reviewer spawn. It MUST cover only commits since the last
+  review, or since `<base>` when none ran. It MUST add these whole-task checks on
+  `<base>..HEAD`: each requirement met, `req:` markers, stray files, gates.
 
 ## 5. Task end
 

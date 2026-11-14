@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 190
+max-lines: 202
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -34,8 +34,11 @@ Main session follows this skill for each spawn of a project agent.
   task branch (coder and debugger cards set the reset).
 - When a spawn in a worktree does not fail (§Re-spawn and retry), main session MUST
   merge its branch into the task branch, run `lint` and `unit`, then remove the
-  worktree. `code` §Review loop sets the review that follows. A fast-forward merge to a
-  commit whose full gate run the spawn reported MAY skip that `lint` and `unit` run.
+  worktree once the re-review reports `fixed` or `not re-opened` for each finding sent to
+  that agent, or when its review sends no finding to it. A later fix round for that
+  change MUST go to a fresh spawn.
+  `code` §Review loop sets the review that follows. A fast-forward merge to a commit
+  whose full gate run the spawn reported MAY skip that `lint` and `unit` run.
 - Before it removes an agent worktree, main session MUST run
   `git worktree unlock <path>`, since the host locks it for the agent.
 - This merge MAY run without user's yes.
@@ -50,8 +53,9 @@ Main session follows this skill for each spawn of a project agent.
   the plan file, and of each `BR` it covers, quoted from the doc or item that holds it
   (`plan` §Requirements), read at brief time; the test-scope list (`test` §Test scope),
   from the plan; for a review brief, also each scope addition with its reason, from the
-  coder or debugger recorded-items slot; project context lines of `## Commands`,
-  `## Gates`, `## Test levels` (unit style included), `## Rules` that apply; paths of
+  coder or debugger recorded-items slot; the names of the project context
+  sections and `## Rules` lines that apply, not their text, since the host loads project
+  context into each subagent; paths of
   topic files whose pointers fit the brief's work (`code` §Caveats), for the agent to
   read; which skills or skill sections the agent loads; task branch and `<base>`
   (`code` §Branch and plan file); the plan's Overrides and Accepted tech debt sections
@@ -62,8 +66,16 @@ Main session follows this skill for each spawn of a project agent.
   be quoted.
 - A review brief MUST also hold the commit range and, for a final review, the
   whole-task checks. An audit brief MUST hold the audit target (`audit` §Map first)
-  instead of the range and the task's requirements. A re-review brief MUST hold the
-  findings sent to fix.
+  instead of the range and the task's requirements.
+- A fix round MUST go to the agent that made the change, and a re-review to the
+  reviewer that found the issues, as a follow-up message to that agent. A fix-round
+  message MUST name the task-branch commit to reset to; a re-review message MUST name
+  the finding numbers and the fix commits. A follow-up message's result counts as a
+  spawn result for §Delegation and worktrees and §Re-spawn and retry. A fix round that
+  needs a higher §Models row, or a follow-up message that cannot reach its agent, MUST
+  go to a fresh spawn instead; its re-review brief MUST hold the findings sent to fix.
+- A brief MUST ask only for its card's report items, plus an item main session uses next
+  (`core` §Reports).
 - Any other brief (research, reading, writing) MUST hold its questions and the context
   the agent needs.
 - Each brief MUST name the §Models row its task matches, or `no row`; a retry brief

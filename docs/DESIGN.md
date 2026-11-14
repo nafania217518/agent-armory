@@ -265,6 +265,10 @@ One dated line per decision, with the dropped alternatives.
   `vibe`; a scope of one task run; an auto-fix question; arguments to `/dnd`; a
   reviewer question in `dnd`; a `blocked` label (clashes with GitHub's native Blocked
   status); an `on-hold` triage state.
+- 2026-11-14: follow-ups for fix rounds and re-reviews, a fresh final review, briefs
+  name project context sections, leaner reviewer-subagent reports. Dropped: a terse
+  report register (research and an A/B test: small saving, reader risk); resuming the
+  final review; a project-context probe in `setup`.
 
 ## 7. Milestones
 

@@ -10,3 +10,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A caveat line with an unchecked claim ends with ` : Unverified: ...`, see `review` section Output : skills/review/SKILL.md
 - A worktree agent cannot check out the task branch while the main checkout has it, so it commits on its own branch cut from the task-branch tip : skills/setup/templates/agents/coder.md
 - A Bash command whose text holds `git rev-parse`, even inside a heredoc, is refused in a worktree-isolated agent, so edit a card through the file-write tool : skills/setup/templates/agents/coder.md
+- A Haiku self-probe reports the project CLAUDE.md missing from a Claude Code subagent's context; a Sonnet exact-text probe finds it : skills/delegate/SKILL.md
+- A Claude Code subagent spawn costs about 55k tokens before its first tool call : skills/delegate/SKILL.md

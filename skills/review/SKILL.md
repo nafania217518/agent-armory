@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 166
+max-lines: 169
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -131,9 +131,10 @@ against `test` (load both when not in context). "Reported" means listed as a fin
 
 ## 5. Output
 
-- A reviewer subagent on a task's commit range MUST start with expected load, or
-  `none stated`, only. Any other review MUST start with `What this change does:` in two or
-  three sentences, and expected load, or `none stated`. Then MUST give `Gates:`, one line
+- A reviewer subagent MUST start with `Expected load: <figure>` when one is stated,
+  else with `Gates:`, and MUST leave out `off` gate lines. A review main session runs
+  MUST start with `What this change does:` in two or three sentences, and expected load,
+  or `none stated`. Then MUST give `Gates:`, one line
   per gate: `pass`; `fail <one line>`; `fail <one line>, exists on <base>`, no blocker;
   `(per <who> at <commit or range>)` after `pass` or `fail` for a run by another agent;
   `off <reason from the project context>`; `no command`; `not run (<cause>)`, neither pass
@@ -154,12 +155,14 @@ against `test` (load both when not in context). "Reported" means listed as a fin
 - A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
   it misleads a reader into a wrong action, else Should fix.
 - Each finding MUST have a number across all groups, a bold title with `file:lines` (or
-  `commit <sha>`), then three parts of one or two short sentences each: Problem, Fix,
-  If we skip it. A finding whose claim reviewer could not check MUST add a fourth part:
+  `commit <sha>`), then Problem and Fix, of one or two short sentences each; a Nice to
+  have finding adds If we skip it. A finding whose claim reviewer could not check MUST
+  add one more part:
   `Unverified: <the source or command that settles it>`. In a caveat line (`core`
   §Reports), the part MUST come last, after one more ` : `.
 - Then MUST give `Answers:` when the brief asks a question or names a check for reviewer
-  to judge, one line per item; then the two slots of `core` §Reports.
+  to judge, one line per item: short plain-fact sentences, up to 10, no prose; then the
+  two slots of `core` §Reports.
 - MUST end with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`, then `Not checked:` in
   one line when something that mattered was not checked; each `per` and `not run` gate
   counts.
