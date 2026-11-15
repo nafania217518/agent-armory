@@ -6,7 +6,7 @@ description: >
   only updates the project context and the agent cards. Use for "/setup", "set up
   armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 172
+max-lines: 166
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -18,56 +18,53 @@ Main session sets up armory on its host. User decides every write.
 
 ## 1. Invocation
 
-- Invocation MUST be `setup`. One run MUST set up armory in the current project: project
-  hooks and skill location, the pointer in project context, project context sections,
-  agent cards.
+- Invocation MUST be `setup`. One run MUST set up armory in the current project: the
+  pointer in project context when the probe fails, project context sections, agent cards.
 - Run MUST follow the sections in order. Writes MUST run at Flow step "the files" of
   §Project context.
 - Run in a project that already has armory MUST be an update run: project context holds
-  the sections of §Write, and host's agent location holds the six cards. Update run MUST
-  skip §Self-report and §Install, except the card render and the rerun bullet of
-  §Install. Its Questions round MUST show only items that project context lacks; the rest
-  MUST keep their existing values. §Write sets how each changed file is shown and
-  written.
+  the sections of §Write, and host's agent location holds the seven cards. Update run MUST
+  skip §Self-report and §Install, except the card render, the consent question and the
+  rerun bullets of §Install. Its Questions round MUST show only items that project
+  context lacks; the rest MUST keep their existing values. §Write sets how each changed
+  file is shown and written.
 
 ## 2. Self-report
 
 - Before any other step, main session MUST probe the `core` hook. Hook term MUST count as
   bound only when the probe finds `core` text in the starting context of a session and of
   a spawned agent; a config entry alone MUST NOT count.
-- User MUST see the probe result and confirm or correct it. Run MUST NOT go on before that
-  answer.
 
 ## 3. Install
 
-- Parts MUST be these: (a) core injection; (b) skills, reachable by host; (c) agent cards,
-  in host's format; (d) project context sections (§Project context).
-- Before any write, `setup` MUST ask the install question per part through the question
-  tool. Part (a) MUST offer "hook plus pointer" (recommended), "pointer only" and "stop".
-  Parts (b) to (d) MUST offer "install" (recommended) and "stop". "stop" MUST leave the
-  part out; run MUST go on to the next part. `setup` MUST install only the chosen parts.
+- Skills and the `core` hook MUST come from the armory plugin. `setup` MUST NOT write hook
+  config or skill files into the project; when the probe fails, it MUST write the pointer
+  instead.
+- Parts MUST be these: (a) the pointer, only when the probe fails; (b) agent cards, in
+  host's format; (c) project context sections (§Project context).
+- Before any write, `setup` MUST ask one consent question through the question tool. Its
+  message text MUST hold the probe result, or each present item in an update run, and
+  the full write set: each write with its part, path and diff. Options MUST be:
+  - "write on the setup branch" (recommended);
+  - "write uncommitted": skips the task branch, the commit and the finish question;
+  - "pick parts": opens one follow-up call with two questions, which parts to write and
+    "setup branch" or "uncommitted";
+  - "stop": ends the run with no write.
+- `setup` MUST write only the chosen parts.
 - Pointer MUST be one line in project context: "At session start, load the armory
   `core` skill when its rules are not in your context." Line MUST sit at the top of that
   context, before the first section.
-- `setup` MUST name `scripts/core-context.sh` of the armory clone as hook command
-  candidate. It prints `core` as plain stdout when its input names no hook event.
-- Embedded copy of `core` MAY go into the context only when user asks for it, between
-  `<!-- armory core -->` and `<!-- /armory core -->`, so a rerun can refresh it.
-- Skills MUST reach host by symlink from the armory clone into its skill location.
-- Main session MUST render the six card templates of `templates/agents/` (next to this
+- Main session MUST render the seven card templates of `templates/agents/` (next to this
   file), one per project agent (`delegate` §What each agent returns), into host's agent
   format at its agent location. Fields are name, description, model, effort and
   isolation. `{{MODEL}}` MUST be the model value of the card's default row (`delegate`
   §Models). `{{EFFORT}}` MUST be that row's effort. Drop a placeholder line left empty.
-- When it installs the hook or skills in the repo, one question per run MUST ask whether
-  host files that `setup` writes inside the repo (hook config, skill links) are local and
-  ignored by git, or committed with relative paths.
 - After the writes, `setup` MUST list every write back, with its part and path.
 - Rerun MUST be idempotent. Each item already present MUST be reported as present, with a
-  refresh offered. Marker block, pointer line, hook entry or skill link MAY be refreshed
-  after user's yes. Project context and agent cards follow §Project context.
-- Item that a host plugin already provides MUST count as present; for the hook, present
-  MUST mean probed active.
+  refresh offered in the consent question. Project context and agent cards follow
+  §Project context.
+- Hook MUST count as present when probed active. In an update run, it MUST count as
+  present when the armory plugin is enabled.
 
 ## 4. Project context
 
@@ -76,8 +73,8 @@ Main session writes these sections (§Write).
 ### Flow
 
 - MUST load `code` for the branch, `delegate` for default rows and `test` for levels.
-- In a repo the order MUST be: questions (§Questions); user's yes to write the files; task
-  branch `setup-armory` (`code` §Branch and plan file); the files (every write of
+- In a repo the order MUST be: questions (§Questions); the consent question (§Install);
+  task branch `setup-armory` (`code` §Branch and plan file); the files (every write of
   §Install, project context sections included); a commit of the files; the report; the
   finish question (`code` §Finish).
 - When `setup-armory` exists, `setup` MUST delete and cut it again if it is merged into
@@ -99,12 +96,10 @@ Main session writes these sections (§Write).
      `functional`, `e2e`, `coverage`, `run`. A level the project does not have: no line.
   4. Which flexible levels are `on`: `contract`, `functional`, `e2e` [all three
      `off (not chosen)`].
-  5. What the project adds to or changes in the level lines of `test` §Levels, with the
-     level names fixed [none], and the unit style [`sociable`].
-  6. Other gates that are `off`, each with a reason [all `on`].
-  7. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
+  5. Other gates that are `off`, each with a reason [all `on`].
+  6. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
      [`none`] (`code` §Review loop).
-  8. Tracker [the docs fallback].
+  7. Tracker [the docs fallback].
 - Before the round, `setup` MUST probe host's connections (MCP servers and CLIs) for a
   tracker. It MUST propose a binding for each verb of `core` §Host terms, term `tracker`,
   its target, and the `closes by PR merge:` line of `templates/AGENTS.md` (the closing
@@ -132,16 +127,13 @@ Main session writes these sections (§Write).
 - With no tracker fit, a required verb unbound, or no `closes by PR merge:` value,
   `setup` MUST ask user how to reach the tracker, that verb or that value, or keep the
   docs fallback.
-- Each formatting or style rule of question 7 MUST pass the style-rule check of
-  `implement` §Before you write. Else MUST ask user to change the rule, drop it, or move
-  it into that config.
 
 ### Write
 
 - Main session MUST write the sections into project context and report the path.
 - Project context `## Rules` MUST hold the line `Documentation lives in <folder>`
   (default `docs/`).
-- `auto-fix:` answer to question 7 MUST replace template line `- auto-fix: none`.
+- `auto-fix:` answer to question 6 MUST replace template line `- auto-fix: none`.
 - Project context MUST have these sections, in this order: `## What this is` (one
   paragraph on what the project is), `## Commands`, `## Gates`, `## Test levels`,
   `## Tracker`, `## Rules` (project-only rules), `## Glossary`, `## Caveats`.
@@ -151,17 +143,19 @@ Main session writes these sections (§Write).
   `templates/AGENTS.md`. `## Glossary` MUST start empty, with its format line.
   `## Caveats` MUST hold its format line. Run MUST place each caveat it found under
   `code` §Caveats.
-- Update run MUST offer to sort root `## Caveats` under `code` §Caveats. Its report MUST
-  give entry count before and after, and each drop.
+- Only when root `## Caveats` holds no topic pointer, update run MUST offer to sort it
+  under `code` §Caveats. Its report MUST give entry count before and after, and each
+  drop.
 - Gate's command MUST carry the gate's name. `run` is not a gate. Gates MUST be: `lint`,
   `owasp`, `unit`, `integration`, `coverage` (default `on`); `contract`, `functional`,
   `e2e` (default `off (not chosen)` until turned on).
 - Project context MUST NOT copy global rules or armory rules, `test` level lines
   included. `## Test levels` MUST hold only what the project adds to or changes in those
   lines, and its unit style.
-- MUST NOT overwrite an existing project context or agent card without user's yes on the
-  shown diff. MUST show that diff instead; on a no, MUST add only missing parts user
-  approves.
+- A new `## Test levels` MUST take the defaults: no change to the `test` level lines, and
+  unit style `sociable`. An existing one MUST keep its lines.
+- MUST NOT overwrite an existing project context or agent card outside the consent
+  question. MUST put its diff into that question instead.
 - Fill `templates/AGENTS.md` from answers. Drop a command line with no command and any
   placeholder line left empty.
 
@@ -169,4 +163,4 @@ Main session writes these sections (§Write).
 
 - Report MUST hold: what was installed per part, with paths, project context path
   included; usage notes (how to load each skill on this host, and how to rerun or
-  refresh); gates that are `off`.
+  refresh); gates that are `off`; the `## Test levels` defaults.

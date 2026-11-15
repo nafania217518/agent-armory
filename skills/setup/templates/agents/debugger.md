@@ -33,7 +33,7 @@ Report, in this order:
 2. The loop command.
 3. The hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: the loop command's last output, redacted, the proposed
-   fix outline, and the debug branch with its commits (`debug` §Diagnose only).
+   fix outline, and the debug commits on your branch (`debug` §Diagnose only).
 5. Gate results (`implement` §Gates per commit).
 6. Uncovered lines, only when `coverage` is `on`.
 7. What you skipped.

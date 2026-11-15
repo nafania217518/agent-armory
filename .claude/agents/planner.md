@@ -20,7 +20,9 @@ brief.
 Report, in this order:
 
 1. The draft.
-2. The recorded-items slot and the caveat slot (`core` §Reports).
+2. When the draft holds `TR` items: each task-check result (`plan` §Self-review and
+   approval), with its fix applied.
+3. The recorded-items slot and the caveat slot (`core` §Reports).
 
 Before you report, MUST check each line against `core` §Reports and cut each line that
 fails.

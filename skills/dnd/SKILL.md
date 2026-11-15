@@ -5,7 +5,7 @@ description: >
   each task runs through plan and code to Finish with no more questions to the user;
   the run answers each question itself and reports every answer. Use for "/dnd".
 disable-model-invocation: true
-max-lines: 66
+max-lines: 69
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -24,28 +24,31 @@ away. It asks once at start, then answers every later question itself.
   2. Finish: PR + merge; merge into `<base>`; open a PR; local only. Default MUST follow
      project's setup (project context, CI workflows, branch protection); with no sign,
      PR + merge.
-  3. Fable: Opus high (default), Opus max, stop and ask, or allow Fable.
+  3. Fable: Opus high (default), Opus max, or allow Fable.
 - The answers MUST count as user's yes for each write they name: push, PR, merge, a run
-  on Fable. They hold for each task until session ends.
+  on Fable. They MUST also count as the yes for each tracker write and the acceptance PR
+  comment of §Run. They hold for each task until session ends.
 - PR + merge MUST push task branch, open a PR and squash-merge it. Merge into `<base>`
   MUST squash-merge task branch into `<base>` and push `<base>`. Open a PR MUST push task
   branch and open a PR.
-- Opus high or Opus max MUST replace each run on Fable: answer to the Fable question and
-  a Fable retry (`delegate` §Re-spawn and retry). Allow Fable: run MUST answer the Fable
-  question itself and follow `delegate` for each run on Fable.
+- Opus high or Opus max MUST replace each run on Fable: answer to the Fable question.
+  Allow Fable: run MUST answer the Fable question itself and follow `delegate` for each
+  run on Fable.
+- When the retry of `delegate` §Re-spawn and retry also fails, the Fable answer MUST
+  replace the ask to user. Opus max: one spawn on Opus max. Allow Fable: one spawn on
+  Fable high. Opus high, or an escalation that also failed: the stop case of §Run.
 
 ## 2. Run
 
 - MUST run each task through `plan` at task level, then `code` through its Finish.
 - MUST NOT put any later question to user. MUST pick recommended option instead, or,
-  with none, the option that leaves task done, gated and ready for a PR. Exception: the
-  Fable question when start answer is "stop and ask".
+  with none, the option that leaves task done, gated and ready for a PR.
 - Self-approve: MUST NOT enter plan mode; passed self-review of `plan` §Self-review and
   approval is the approval.
 - Acceptance (`code` §Task end, step 7): MUST try each by-hand item itself when it can
   and no earlier step tried it. MUST record proof of each try (command and its output)
-  in a comment on the task item, or in the task report with no tracker bound. The report
-  MUST list each item left for user.
+  in the task report. When Finish opens a PR, MUST also post the proof as a PR comment
+  before any merge. The report MUST list each item left for user.
 - A case whose only option is to stop MUST save work (push task branch, unless Finish
   answer is local only) and log the stop in answers log. With a tracker bound, it MUST
   comment the cause on the task item. A blocker that is a tracker item MUST get a

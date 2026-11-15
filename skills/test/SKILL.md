@@ -4,7 +4,7 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 141
+max-lines: 139
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -20,8 +20,7 @@ What to test, at which level, and how.
   `functional`, very few `e2e`.
 - You MUST put a test at the lowest level that can prove the behavior.
 - A bug only a higher-level test finds MUST get the lower-level test.
-- Coder MAY delete a higher-level test on touched behavior that only repeats a lower-level
-  one. Deletion is a scope addition (§Test scope). A duplicate outside touched behavior
+- A higher-level test outside touched behavior that only repeats a lower-level one
   MUST NOT be touched. It MUST be recorded as an out-of-scope finding (`core` §Reports).
 
 ## 2. Levels
@@ -88,8 +87,7 @@ change these lines; that section MUST win.
   mock, fixture and call site that builds or reads it, found by a grep for the type or
   function name, also one that would still pass through a failure path.
 - A scope addition MUST be a failing test proven missed from the list (`implement`
-  §Tests while coding), or a duplicate higher-level test on touched behavior (§Pyramid).
-  It MUST be recorded (`core` §Reports), with its reason.
+  §Tests while coding). It MUST be recorded (`core` §Reports), with its reason.
 - Reviewer MUST check the reason and code of each scope addition, and decide whether a
   rework is needed.
 

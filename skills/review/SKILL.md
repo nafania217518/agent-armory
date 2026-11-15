@@ -20,17 +20,20 @@ in context). "Reported" means listed as a finding.
 
 - Review and audit are reports user asked for: MUST give them in full. Both are read-only:
   MUST NOT change any tracked file. Gate output (a coverage folder) is exempt.
+- Main session MUST spawn a reviewer for every review, also one user asks for, and
+  MUST NOT review in its own context.
 - MUST review what user names: uncommitted or staged changes, a branch, a PR link, or
   files. Nothing named: uncommitted changes, or else last commit.
 - Inside a task, review MUST cover the commit range and checks the brief names. With no
   brief, range and checks of `code` §Review loop apply.
 - MUST read the task the change serves: `BR` text in the brief and the plan sections it
-  names by line range, user's request, PR description, or commit messages.
+  names, user's request, PR description, or commit messages.
 - MUST read the diff, then the code it touches: callers of every changed function,
   functions it calls, tests, README.
 - MUST trace the real flow: where data comes in, what is stored, what goes out.
 - When a signature, return value or behavior changes, MUST grep every caller.
-- MUST find expected load: a figure in `<docs>/DESIGN.md`, else in README or deploy
+- With a plan, MUST take expected load from the plan's load `TR`s (`plan` §The plan).
+  With no plan, MUST find it: a figure in `<docs>/DESIGN.md`, else in README or deploy
   config. MUST judge scale against it.
 - When no expected load is stated, MUST NOT assume one. MUST report it missing instead, as
   Should fix, when the change touches a data-growth path (`plan` §The plan).
@@ -40,9 +43,10 @@ in context). "Reported" means listed as a finding.
 - MUST check commit messages against the diff. A wrong or missing change MUST be reported.
 - Stray files in the diff (test inputs, outputs, scratch scripts) MUST be reported.
 - MUST run every `on` gate at the range's last commit (a detached worktree when HEAD moved
-  past it), or take the run the brief hands over; `owasp` reading included (`implement`
-  §Gates per commit, also for a failure already on `<base>`). An `on` gate with no command
-  MUST be reported.
+  past it), `owasp` reading included (`implement` §Gates per commit, also for a failure
+  already on `<base>`). MAY take a gate run the brief hands over only when it ran at that
+  same commit. A final review MUST run every `on` gate itself. An `on` gate with no
+  command MUST be reported.
 - MUST confirm an `on` gate's command covers each changed file, else report the file. A
   prose or docs file is exempt when no gate covers prose: reviewer MUST read it.
 - Each requirement the task names MUST be shown met by the diff or by a check.
@@ -118,11 +122,8 @@ in context). "Reported" means listed as a finding.
   (§Output).
 - A finding that rests on a library claim MUST follow `research` §When to research:
   reviewer MUST look the claim up in dependency cache or docs before it reports.
-- A `tech-debt:` marker (`implement` §The smallest complete change) that is a decision
-  MUST NOT be reported, unless expected load already crosses its limit. In a review, a
-  marker is a decision only when the plan's Accepted tech debt section names it (`plan`
-  §The plan); one the diff adds that is not a decision MUST be reported as Should fix. In
-  an audit, a marker that names its limit is a decision.
+- A `tech-debt:` marker (`implement` §The smallest complete change) MUST be reported only
+  when expected load is past its limit, or when it covers a never-cut item.
 - A finding on a design rule the plan's Overrides section names MUST NOT be reported. MUST
   check the code against that override instead.
 - MUST propose the smallest fix that works. SHOULD prefer fixes that delete code.
@@ -131,24 +132,23 @@ in context). "Reported" means listed as a finding.
 
 ## 5. Output
 
-- A reviewer MUST start with `Expected load: <figure>` when one is stated, else with
-  `Gates:`, and MUST leave out `off` gate lines. `Gates:` MUST give one line per gate:
-  `pass`; `fail <one line>`; `fail <one line>, exists on <base>`, no blocker;
-  `(per <who> at <commit or range>)` after `pass` or `fail` for a run by another agent;
-  `no command`; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
-  cannot run (a file the range lacks: name the commit that adds it).
+- A reviewer MUST start with `Gates:`, and MUST leave out `off` gate lines. `Gates:` MUST
+  give one line per gate: `pass`; `fail <one line>`;
+  `fail <one line>, exists on <base>`, no blocker; `(per <who> at <commit or range>)`
+  after `pass` or `fail` for a run by another agent; `no command`; `not run (<cause>)`,
+  neither pass nor fail, when an `on` gate's command cannot run (a file the range lacks:
+  name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
-  - Must fix: bug, security, data loss, breaks at the expected load, an `on` gate
-    failure that the change introduced, a requirement not met.
-  - Should fix: risky code without a test, real slowness, duplication, a function that
-    mixes jobs, code that should not exist, a smell (class Shape), code that is hard to
-    read; process findings, unless one hides a bug: a breach of a `test` rule (a missing
-    or wrong `req:` marker, a test case changed outside the scope), a commit message not
-    matching the diff, a stray file, an `on` gate with no command, a changed file no
-    gate covers, a `TR` that traces to no `BR`.
-  - Nice to have: small speed-ups, shorter forms.
+  - Must fix: a bug, a risk, a break at the expected load, an `on` gate failure the
+    change adds, a requirement not met.
+  - Should fix: a big slowdown, a Lean, Shape or Readability finding, or a process
+    finding (§The diff is the truth, a `test` rule breach other than a missing test
+    case) that hides no bug.
+  - Nice to have: a small speed-up or a shorter form.
+- A missing test case MUST be graded Must fix on risky code (class Missing test), else
+  Nice to have.
 - A wrong fact in prose or config MUST be graded by its effect, like code: Must fix when
   it misleads a reader into a wrong action, else Should fix.
 - Each finding MUST have a number across all groups, a bold title with `file:lines` (or

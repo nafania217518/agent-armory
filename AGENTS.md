@@ -89,6 +89,8 @@ Caveat base : the project's knowledge base of caveats: root caveats plus topic f
 
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
 
+Squire : the subagent that does the main session's fixed file reads and given-text writes.
+
 ## Caveats
 
 Format: the caveat line of the armory `core` skill, section Reports, or a topic pointer
@@ -100,3 +102,4 @@ line of the armory `code` skill, section Caveats
 - setup: before editing skills/setup/SKILL.md or a tracker binding : docs/caveats/setup.md
 - triage: before editing skills/triage/SKILL.md or the plan rule for a run from an accepted item : docs/caveats/triage.md
 - code-and-plan: before editing the milestone-status or Finish rules of skills/code/SKILL.md or skills/plan/SKILL.md, or before a merge into <base> : docs/caveats/code-and-plan.md
+- skill-refs: before renaming, renumbering or reordering a skill section, a `code` §Task end step, a cited bullet or a `delegate` §Models row : docs/caveats/skill-refs.md

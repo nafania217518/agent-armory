@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 216
+max-lines: 221
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -53,17 +53,18 @@ file). Caveat slot, caveat format, subagent ban and recorded items are in `core`
 Caveat base is the project context `## Caveats` plus topic files
 `<docs>/caveats/<topic>.md`.
 
-- Main session MUST write each root `## Caveats` line itself, and MUST send each
-  topic-file write to a writer (the task scribe, `delegate` §Briefs).
+- Main session MUST have the squire write each caveat-base line, root `## Caveats` and
+  topic files alike, and MUST commit each write (`delegate` §Briefs).
 - Main session MUST have each caveat it receives or finds after the plan-file commit
   written into the caveat base immediately, unless the next bullet defers it; a caveat
   with an `Unverified:` part first gets the check of §Review loop.
-- A caveat of the bullet above about code that a later `TR` of this task still builds or
-  changes MUST wait until that `TR` merges into the task branch; main session MUST then
-  have it written as this section says.
-- Before that write, main session MUST check the line against `core` §Reports, its claim
-  against the code, with a search of the named file for the fact, and its place against
-  the bullets below. A line that fails MUST be split, cut, moved or dropped.
+- A caveat of the bullet above, or a planning caveat, about code that a `TR` of this task
+  still builds or changes is a held caveat. It MUST wait until that `TR` merges into the
+  task branch; main session MUST then have it written as this section says.
+- Before that write, main session MUST check the line against `core` §Reports and its
+  place against the bullets below, and MUST have the squire check its claim against the
+  code, with a search of the named file for the fact. A line that fails MUST be split,
+  cut, moved or dropped.
 - A caveat MUST go to root `## Caveats` only when every task needs it. Else it MUST go to
   the topic file whose pointer fits, or to a new topic file when none fits.
 - A line that says what to do is a rule: it MUST go to the project context `## Rules`.
@@ -77,8 +78,9 @@ Caveat base is the project context `## Caveats` plus topic files
 - Before main session briefs work on a file, it MUST pass the agent the path of each
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
-  (`git diff --name-status <base>...HEAD`), main session MUST re-check the claim, then
-  have the entry kept, its path fixed or the entry dropped, by the bullets above.
+  (`git diff --name-status <base>...HEAD`), main session MUST have the squire re-check
+  the claim, then have the entry kept, its path fixed or the entry dropped, by the
+  bullets above.
 
 ## 3. Running the plan
 
@@ -109,16 +111,15 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   `plan` §Amendments before its fix brief or message.
 - A commit that only deletes caveat or doc lines a finding's Fix part names, or writes
   caveat or doc text that a Fix part gives word for word, gets no re-review (a
-  no-re-review commit). Main session MUST still run `lint` and `unit` after it, except
-  where `delegate` §Delegation and worktrees lets a merge skip them.
+  no-re-review commit).
 - An auto-fix finding is one of a class that the project context `## Rules` line
   `auto-fix: <classes>` names: `should` (Should fix) and `nice` (Nice to have), or
   `none`. A missing line MUST mean `none`.
 - A finding or a caveat with an `Unverified:` part (`review` §Output, `research` §When to
   research) MUST be checked before a fix brief, the recorded-items quiz or a `## Caveats`
-  write: by main session with one targeted command, by a coder whose brief says "check
-  the claim first; change nothing if it is false", or, when a web source can settle the
-  claim, by a researcher (`research` §When to research). A false finding or caveat MUST
+  write: by the squire, by a coder whose brief says "check the claim first; change
+  nothing if it is false", or, when a web source can settle the claim, by a researcher
+  (`research` §When to research). A false finding or caveat MUST
   be dropped; the task report MUST name it, with the disproving command or source, in its
   skipped line (§Task end, step 6). A claim the check does not settle MUST keep its
   `Unverified:` part.
@@ -133,12 +134,15 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
 - Before the task report: every `on` gate MUST pass, or report MUST name the failing gate.
 - Recorded-items quiz MUST offer these options per kind:
   - scope addition: keep or revert;
-  - model-row bypass (`delegate` §Models): accept, or re-run it on its row;
   - other SHOULD bypass made during the work: accept, or undo if possible;
-  - out-of-scope finding or design misfit: fix as an amendment, make it a follow-up
-    item, or ignore;
+  - out-of-scope finding or other design misfit: fix as an amendment, make it a
+    follow-up item, or ignore;
+  - tech-debt misfit (`implement` §The smallest complete change): fix as an amendment,
+    make it a follow-up item, or accept it into Accepted tech debt;
   - Should fix or Nice to have finding: fix now, make it a follow-up item, or ignore; an
     auto-fix finding (§Review loop) MUST skip the quiz.
+- A model-row bypass (`delegate` §Models) MUST skip the quiz; the task report MUST name
+  it.
 - A follow-up item MUST be a new open tracker item; the quiz answer is the yes to that
   create. With no tracker bound, it MUST be a line in the task report. Its text MUST mark
   with `Unverified:` each cause that no probe on a clean state confirmed.
@@ -147,38 +151,39 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
      item has its applied answer.
   3. After any commit since the last review: MUST run the reviewer on each such commit
-     that is not a pure revert or a no-re-review commit (§Review loop), and `lint` and
-     `unit` again, except where `delegate` §Delegation and worktrees lets a merge skip
-     them. Done when each such commit has its review and `lint` and `unit` ran, or were
-     skipped as allowed.
-  4. Quiz loop: MUST repeat steps 2 and 3 while a re-review in step 3 adds a new
-     recorded item. The loop bound (§Review loop) applies.
+     that is not a pure revert or a no-re-review commit (§Review loop). Done when each
+     such commit has its review.
+  4. Late items: each item that step 3 records, other than an auto-fix finding
+     (§Review loop), MUST skip the quiz and become a follow-up line of the task report.
+     Done when each such item has its follow-up line.
   5. Stray-task check: MUST check each task in the scope of `core` §Tools and background
      tasks. One that still runs with no valid reason is a stray task: MUST stop it,
-     report it as a finding, and have a caveat on its cause written (§Caveats). After
-     that caveat commit, MUST run `lint` and `unit`; it gets no re-review. Done when no
-     stray task runs.
-  6. Report MUST hold, in this order: a one-line outcome; the met requirements in one
-     line by id range (`TR-1..TR-7 met`), then each unmet one with its id and status; the
-     gate results, one line per gate; each measured result (`plan` §The plan); what was
-     skipped or not checked; each recorded item with only its applied answer; any risk
-     the user must know. Done when the report holds each listed item.
+     report it as a finding, and have a caveat on its cause written (§Caveats). That
+     caveat commit gets no re-review. Done when no stray task runs.
+  6. Before the report, MUST run `lint` and `unit` once. Report MUST hold, in this order:
+     a one-line outcome; the met requirements in one line by id range (`TR-1..TR-7 met`),
+     then each unmet one with its id and status; the gate results, one line per gate; each
+     measured result (`plan` §The plan); what was skipped or not checked; each recorded
+     item with only its applied answer; each follow-up line of step 4; each held caveat
+     (§Caveats) whose `TR` has not merged; any risk the user must know. Done when `lint`
+     and `unit` ran and the report holds each listed item.
   7. Acceptance: MUST ask user which items they want to try by hand, with the exact
      commands or clicks for each. Done when user has answered.
   8. Cleanup: MUST run the caveat cleanup (§Caveats), then ask user what to keep of the
      plan file and the design docs the task added to the repo. The recommended option MUST
      be: keep the design docs, and of the plan file only its Requirements section, which
-     `req:` markers point into. It MUST also ask, for each `debug-<id>` branch, whether
-     to delete or keep it. After a cleanup commit, MUST run `lint` and `unit`; it gets
-     no re-review. Done when user has answered.
-  9. Done write: when the task has a milestone, MUST make one more commit, the last on
-     the task branch. It MUST mark the task done in the milestone
-     doc. When the task was the milestone's last open one, the same commit MUST also mark
-     the milestone done in `<docs>/DESIGN.md` (`plan` §Levels). It MUST change only
-     status lines. It MUST NOT be committed directly on `<base>`. A task with no
+     `req:` markers point into. It MUST also ask, for each kept diagnose-only branch,
+     whether to keep it or delete it. A cleanup commit gets no re-review. Done when user
+     has answered.
+  9. Done write: when the task has a milestone, MUST have the squire mark the task done
+     in the milestone doc and, when the task was the milestone's last open one, the
+     milestone done in `<docs>/DESIGN.md` (`plan` §Levels). MUST then commit both marks
+     in one commit, the last on the task branch. That commit MUST change only status
+     lines. It MUST NOT be committed directly on `<base>`. A task with no
      milestone MUST skip this step. With a tracker bound, step 11 MUST replace this step.
      Done when the status commit is on the task branch.
-  10. Finish: §Finish.
+  10. Finish: when the tip moved after the `lint` and `unit` run of step 6, MUST run them
+      again, then MUST follow §Finish. Done when that run is made or the tip did not move.
   11. Tracker done write, with a tracker bound: after the finish answer, MUST comment on
       the task item with the branch and, when they exist, the kept plan file path, PR link
       and merge commit (the merged HEAD commit on a fast-forward). It MUST make no repo

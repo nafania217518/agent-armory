@@ -17,14 +17,14 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   characters; `scripts/core-context.test.mjs` guards it.
 - Each skill opens with "load `core` when it is not in context"; this line is the
   fallback when neither hook nor pointer ran.
-- `setup` installs the hook or writes the pointer into the project context; the
+- `setup` writes the pointer into the project context when the hook probe fails; the
   user keeps personal items there.
 - The skill set has fourteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
   `test`, `debug`, `review`, `audit`, `research`, `retro`,
   `triage`, `dnd` and `setup`. The skills other than `core` hold the workflows.
-- The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
-  and `planner`. The plugin ships their templates, not agent cards; `setup` writes the
-  cards into each project.
+- The project agents are seven: `coder`, `debugger`, `reviewer`, `researcher`, `writer`,
+  `planner` and `squire`. The plugin ships their templates, not agent cards; `setup`
+  writes the cards into each project.
 - The agent cards a project holds are generated instances of the plugin templates,
   which are the single source.
 - The project context (AGENTS.md) holds project facts and project-only rules (`setup`
@@ -86,7 +86,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
 | `dnd` | none (new) | main session, when the user starts it (user-only) |
-| `setup` | 21, 22; templates `AGENTS.md` and six card templates | main session, when the user starts it (user-only) |
+| `setup` | 21, 22; templates `AGENTS.md` and seven card templates | main session, when the user starts it (user-only) |
 | card templates | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
@@ -101,6 +101,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | researcher | `core`, `research` |
 | planner | `core`, `plan`, `implement`, `test` |
 | writer | `core` |
+| squire | `core` |
 
 The size of a load set is the sum of the `max-lines` fields of its skills.
 
@@ -284,6 +285,16 @@ One dated line per decision, with the dropped alternatives.
   reads and one claim check or lookup, its output cut to 20 lines. A task scribe takes
   the caveat topic-file writes. Dropped: a MAY for word-for-word fixes, the main session
   writing caveat topic files, reads as a SHOULD.
+- 2026-11-15: skill simplification: 51 looser rules in every skill but `core`: one
+  retry on Opus high, then ask; main gate runs only where no tip run exists; no
+  `debug-<id>` branch; one recorded-items quiz; one `setup` consent question;
+  plugin-only skills. Dropped: the kept-on-purpose variants, the Fable retry rung,
+  a second quiz round.
+- 2026-11-15: squire: one Sonnet-medium squire per session does every main-session
+  file read and write outside git steps, gate runs, scripts, armory templates,
+  `setup` runs and the plan-mode file; it writes only given text and makes no commit.
+  It replaces the task scribe; the writer keeps prose. Dropped: a writer-card mode, a
+  squire per task, squire commits, a SHOULD route.
 
 ## 7. Milestones
 

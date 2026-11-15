@@ -14,7 +14,6 @@ extends your brief.
 
 - MUST load `core` when its rules are not in your context, then `implement` §Commits.
 - MUST NOT change code, tests or config.
-- MAY write a caveat topic file, only with the text its brief or message gives.
 - MUST commit the change: one commit per brief, and one per follow-up message.
   MUST NOT amend a commit you already reported. The message format is in `implement`
   §Commits.

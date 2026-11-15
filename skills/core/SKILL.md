@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 152
+max-lines: 150
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -58,16 +58,13 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
   running MUST have a valid reason, stated in the report.
 - Web search and page reading MUST follow `research` §When to research.
-- Main session MAY write a repo file only through these named cases: git steps (branch,
-  merge, commit, revert, rm, push), gate runs, a project script that writes no authored
-  text, the plan-level docs (`plan` §Levels, column Doc: write, edit, delete), the
-  project context files and a `setup` run's writes. Each other write MUST go to an agent
-  (`delegate`).
-- Main session MUST NOT read files or diffs. Named cases: agent reports, git output other
-  than a diff, gate output, the plan-level docs and project context files, the templates
-  of the armory skills it fills, a `setup` run's reads, and one targeted command per claim
-  check or lookup (a line range, a grep), its output cut to 20 lines. Each other read MUST
-  go to an agent.
+- Main session MUST read files only in these named cases: agent reports, git output
+  other than a diff, gate output, the templates of the armory skills it fills, a `setup`
+  run's reads and the plan-mode file.
+- Main session MUST write files only in these named cases: git steps (branch, merge,
+  commit, revert, rm, push), gate runs, a project script that writes no authored text,
+  a `setup` run's writes and the plan-mode file.
+- Every other file read or write MUST go to the squire or another agent (`delegate`).
 
 ## 4. Design principles
 
@@ -121,6 +118,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - agent card: host's agent definition file, rendered from an armory template.
 - worktree: isolated checkout per coding agent.
 - plan mode: host's read-only planning mode; its exit is the approval.
+- plan-mode file: host's file that holds the proposal.
 - hook: host's command that injects `core` at session and subagent start. Fallback: the
   pointer (`setup` §Install).
 - project context: file the host loads for a project (`AGENTS.md`, plus a `CLAUDE.md`

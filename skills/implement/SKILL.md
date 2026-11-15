@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 159
+max-lines: 157
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -21,20 +21,14 @@ rules: `test`.
 - MUST list every place the change must reach: callers, fixtures, config, exports. That
   is the scope. Extra features are not.
 - Scope MUST also hold each caveat-base line (`code` §Caveats) that names a file the
-  change touches. MUST re-check its claim and report each false one with its fix, its new
-  file or `drop`; main session has it written before review (`code` §Caveats).
+  change touches. A line found false SHOULD be reported with its fix, its new file or
+  `drop`; main session has it written before review (`code` §Caveats).
 - MUST check what the change can break for users: data it would destroy or expose,
   callers that stop working.
-- Before adding or applying a formatting or style rule, MUST check project's linter and
-  formatter config for a rule that enforces or undoes it. Mechanical style rule SHOULD go
-  into that config, not into project context `## Rules`.
 - Vague request SHOULD get the smallest version that does the core job.
-- Design misfit: when a new requirement does not fit the design, SHOULD ask what you
-  would build had it been there from the start. When that differs from plan, coder MUST
-  still follow plan and MUST record misfit with its reasoning (`core` §Reports). It MAY
-  stop and report `stuck: <misfit>` at once when going on wastes significant work. On
-  user's yes, change goes back to planning (`plan` §Amendments); new design SHOULD ship
-  in pieces.
+- Design misfit: when a new requirement does not fit the design, coder MUST still follow
+  plan and MUST record misfit with its reason (`core` §Reports). It MAY report
+  `stuck: <misfit>`.
 - When the plan cannot be followed at all, coder MUST stop and report `stuck:` (coder
   agent card).
 
@@ -69,6 +63,8 @@ rules: `test`.
 - Shortcut with a known limit MUST carry the marker comment
   `tech-debt: <what was simplified>, <the limit>, <when to upgrade>`.
 - `tech-debt:` marker MUST NOT cover a shortcut on a never-cut item (above).
+- Shortcut that plan's Accepted tech debt section does not name MUST be recorded as a
+  design misfit (§Before you write).
 
 ## 3. Readability
 
@@ -111,9 +107,9 @@ A human reads every line you write. `review` §Look for checks these rules.
   and remove it. MUST NOT start a third fix before that.
 - Coder that still has no cause after that MUST report `stuck: cause unknown`, with the
   premise it removed.
-- When the brief or a follow-up message names a debug branch, MUST NOT merge it; MUST
-  write the fix on a branch from the task branch, never on the debug branch. MAY copy its
-  loop test, without the debug prefix and skip, as regression test.
+- When the brief or a follow-up message names a diagnose-only branch or commit, MUST NOT
+  merge it or build on it. MUST write the fix on the commit the brief names to reset to.
+  MAY copy its loop test, without the debug prefix, as regression test.
 - Refactoring: MUST pin what the code does with a test, change the structure, then prove
   behavior did not change.
 - A change to what a parameter means, with the same type, MUST rename the function or
@@ -138,8 +134,10 @@ Gates and their commands are in project context `## Gates` and `## Commands`.
 - `coverage`: MUST run the command and never compute a number yourself. Build tools hold
   the threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
-- Per commit: `lint` and `unit`, when `on`, MUST pass, except a failure that already
-  exists on `<base>` (`code` §Branch and plan file). MUST compare with it to tell.
+- `lint` and `unit`, when `on`, MUST pass at the result tip and SHOULD pass on each
+  commit. Exceptions: a failure that already exists on `<base>` (`code` §Branch and plan
+  file), and the diagnose-only exemption (`debug` §Diagnose only). MUST compare with
+  `<base>` to tell.
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
   an out-of-scope finding. `code` §Task end sets the report gates.
 - Gate, build and test output MUST reach your context only as its tail or a grep for

@@ -36,6 +36,7 @@ terms and run on Claude Code.
 | `researcher` | Answers the technical questions of one brief from sources. | Sonnet | low |
 | `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |
 | `planner` | Read-only. Drafts a design, a test design or an analysis of options. | Opus | high |
+| `squire` | Does the main session's fixed reads and given-text writes. Makes no commit. | Sonnet | medium |
 
 ## Install
 
@@ -106,5 +107,5 @@ never in a tracked file.
   context (template in `skills/setup/templates/AGENTS.md`) holds the gates.
 - `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later.
   Below that, add a `CLAUDE.md` with the one line `@AGENTS.md`.
-- The global rules live in `core`; the plugin hook, or the hook or pointer that
-  `setup` installs, loads it.
+- The global rules live in `core`; the plugin hook loads it, or the pointer that
+  `setup` writes when the hook probe fails.

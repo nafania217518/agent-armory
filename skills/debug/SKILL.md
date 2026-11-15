@@ -4,7 +4,7 @@ description: >
   Diagnosis of a bug whose cause is not known: feedback loop, reproduce and minimise,
   ranked hypotheses, one-variable probes, tagged debug logs, cleanup, redaction. Loaded
   by the debugger card; "/debug".
-max-lines: 103
+max-lines: 102
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -15,6 +15,8 @@ Load the `core` skill first when its rules are not in your context.
 How to find a bug's cause, for debugger. It runs in one of two flows: diagnose only
 (§Diagnose only), or diagnose and fix, the fix flow (§Fix and cleanup). Brief, or a
 later follow-up message, names the flow.
+
+On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger instead.
 
 ## 1. Redact
 
@@ -28,16 +30,13 @@ later follow-up message, names the flow.
 
 - MUST NOT write a hypothesis, or build a theory from reading code, before loop exists.
   MUST build loop first.
-- MUST build loop the first way that works, in this order:
-  1. Failing test at the seam that reaches the bug.
-  2. HTTP script against a running dev server.
-  3. CLI run on a fixture, diffed against known-good output.
-  4. Headless browser script.
-  5. Replay of a captured trace through the code path.
-  6. Throwaway harness that calls the code path with one function call.
-  7. Property or fuzz loop over many random inputs.
-  8. Bisection harness for `git bisect run`, when bug appeared between two known states.
-  9. Differential run of two versions or two configs on same input.
+- MUST first try a failing test at the seam that reaches the bug.
+- When that test does not work, SHOULD take the first of these that works, in cost
+  order: throwaway harness that calls the code path with one function call; CLI run on a
+  fixture, diffed against known-good output; replay of a captured trace; HTTP script
+  against a running dev server; property or fuzz loop; differential run of two versions
+  or two configs on same input; bisection harness for `git bisect run` between two known
+  states; headless browser script.
 - SHOULD tighten loop: make it faster, assert on exact symptom, and make it deterministic
   (pinned time, seeded random, isolated files and network).
 - Flaky bug: SHOULD raise reproduction rate (repeat trigger, run in parallel, add stress)
@@ -82,22 +81,22 @@ later follow-up message, names the flow.
 
 - MUST NOT write the fix. MUST end with report instead.
 - MUST commit loop when it is a file. MAY commit other debug code (a harness, tagged
-  logs). Each debug commit MUST go only on a branch `debug-<id>` cut from task branch, or,
-  with none, from the branch the brief names, where `<id>` is the debug prefix's id. With
-  neither, debugger MUST report `stuck: base branch for debug-<id>`. MUST NOT merge that
-  branch into task branch; MUST name it in report instead.
-- Each debug commit subject MUST start with `debug(<id>):`. Each debug commit MUST keep
-  `on` gates green: a loop test goes in skipped, with debug prefix in its name.
+  logs). Each debug commit MUST go on debugger's worktree branch, the diagnose-only
+  branch. MUST NOT merge that branch into task branch; MUST name it in report instead.
+- Each debug commit subject MUST start with `debug(<id>):`, where `<id>` is the debug
+  prefix's id.
+- Diagnose-only exemption: tip of a diagnose-only result MAY fail `unit` because of its
+  loop test.
 - Done when report names the confirmed hypothesis, loop command with its last output, a
-  proposed fix outline, and debug branch with its commits, no debug code is left
-  uncommitted, and checkout is back on the branch the run started on.
+  proposed fix outline, and the debug commits on the diagnose-only branch, and no debug
+  code is left uncommitted.
 
 ## 7. Fix and cleanup
 
 In the fix flow:
 
-- Fix MUST follow `implement` §Fixing and refactoring. Minimised repro MUST become its
-  regression test.
+- Fix MUST follow `implement` §Fixing and refactoring. Its regression test MUST follow
+  `test` §Pyramid. Minimised repro MAY become that test.
 - Done when original loop passes, diff against the commit the run, or its last follow-up
   message, reset to (untracked files included) holds only the fix and its regression test,
   and the fix's commit message states the confirmed hypothesis.

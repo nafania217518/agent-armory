@@ -5,7 +5,7 @@ description: >
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
   One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
   whole repo", "what can I delete", "list the tech debt", "/audit".
-max-lines: 77
+max-lines: 80
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -24,8 +24,9 @@ differs from a review.
 
 - MUST audit what user names: a folder, package or the whole repo. Nothing named: the
   whole repo.
-- MUST read README, deploy and build config, dependency list, entry points (main, routes,
-  handlers, jobs, CLI commands) and tests.
+- SHOULD read, riskiest first: README, deploy and build config, dependency list, entry
+  points (main, routes, handlers, jobs, CLI commands) and tests. `Not checked:` (§Output)
+  MUST name each skipped read.
 - MUST find expected load.
 - MUST trace main flows end to end. MUST read these fully: user input, money, auth, data
   writes, background jobs, anything shared between processes.
@@ -41,12 +42,14 @@ differs from a review.
 - MUST check caveat base (`code` §Caveats): each pointer names an existing topic file,
   and each entry's file exists. Each failure MUST be a finding.
 - A drifted entry is one whose file has a commit newer than entry's line (`git blame` on
-  the line, `git log -1` on the file). A reviewer that runs the audit MUST report each
-  drifted entry by `file:line`. Main session MUST then check claims of drifted entries in
-  parallel reviewer spawns, one per topic file, plus one for root list.
-- Each such spawn MUST return one verdict per entry: holds, false, path moved, or
-  `Unverified: <what settles it>`. Main session MUST add each verdict other than holds
-  to audit findings.
+  the line, `git log -1` on the file).
+- Up to 10 drifted entries: reviewer that runs the audit MUST check each claim itself.
+  11 or more: it MUST report each drifted entry by `file:line`. Main session MUST then
+  check their claims in parallel reviewer spawns, one per topic file, plus one for root
+  list.
+- Each claim check MUST give one verdict per entry: holds, false, path moved, or
+  `Unverified: <what settles it>`. Each verdict other than holds MUST be an audit
+  finding. For a spawn, main session MUST add it to audit findings.
 
 ## 3. Tech-debt ledger
 
