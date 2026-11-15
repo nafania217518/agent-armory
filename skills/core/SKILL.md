@@ -58,12 +58,12 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
   running MUST have a valid reason, stated in the report.
 - Web search and page reading MUST follow `research` §When to research.
-- Main session MUST read files only in these named cases: agent reports, git output
-  other than a diff, gate output, the templates of the armory skills it fills, a `setup`
-  run's reads and the plan-mode file.
-- Main session MUST write files only in these named cases: git steps (branch, merge,
-  commit, revert, rm, push), gate runs, a project script that writes no authored text,
-  a `setup` run's writes and the plan-mode file.
+- Main session MUST read files only in these cases: agent reports, git output other than
+  a diff, gate output, templates of armory skills it fills, a `setup` run's reads and the
+  plan-mode file.
+- Main session MUST write files only in these cases: git steps (branch, merge, commit,
+  revert, rm, push), gate runs, a project script that writes no authored text, a `setup`
+  run's writes and the plan-mode file.
 - Every other file read or write MUST go to the squire or another agent (`delegate`).
 
 ## 4. Design principles

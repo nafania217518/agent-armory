@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: >
-  Reviews a named change, or audits a repo or package, with the review or audit skill:
+  Reviews a named change, or audits a repo or package, with `review` or `audit`:
   correct, safe, holds under load, tested, fast, lean, well shaped, readable. Changes
   no tracked file. Use for every delegated review and audit.
 model: opus

@@ -5,11 +5,11 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 221
+max-lines: 216
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # code
 
@@ -47,8 +47,7 @@ git switch --no-track -c <task-branch> <base>
 ## 2. Caveats
 
 Before the plan-file commit, a caveat goes into the plan-mode proposal (`plan` §Plan
-file). Caveat slot, caveat format, subagent ban and recorded items are in `core`
-§Reports.
+file). Caveat slot, caveat format, subagent ban and recorded items are in `core` §Reports.
 
 Caveat base is the project context `## Caveats` plus topic files
 `<docs>/caveats/<topic>.md`.
@@ -78,9 +77,8 @@ Caveat base is the project context `## Caveats` plus topic files
 - Before main session briefs work on a file, it MUST pass the agent the path of each
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
-  (`git diff --name-status <base>...HEAD`), main session MUST have the squire re-check
-  the claim, then have the entry kept, its path fixed or the entry dropped, by the
-  bullets above.
+  (`git diff --name-status <base>...HEAD`), main session MUST have the squire re-check the
+  claim, then have the entry kept, its path fixed or it dropped, by the bullets above.
 
 ## 3. Running the plan
 
@@ -97,8 +95,7 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
 - An out-of-scope finding on code this task built is a defect in built code. It MUST get
   its `TR` before the next brief or follow-up message (`plan` §Amendments), not at the
   quiz.
-- Before the first brief, MUST run the behind-`<base>` check of `plan`
-  §Amendments.
+- Before the first brief, MUST run the behind-`<base>` check of `plan` §Amendments.
 
 ## 4. Review loop
 
@@ -117,12 +114,11 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   `none`. A missing line MUST mean `none`.
 - A finding or a caveat with an `Unverified:` part (`review` §Output, `research` §When to
   research) MUST be checked before a fix brief, the recorded-items quiz or a `## Caveats`
-  write: by the squire, by a coder whose brief says "check the claim first; change
-  nothing if it is false", or, when a web source can settle the claim, by a researcher
-  (`research` §When to research). A false finding or caveat MUST
-  be dropped; the task report MUST name it, with the disproving command or source, in its
-  skipped line (§Task end, step 6). A claim the check does not settle MUST keep its
-  `Unverified:` part.
+  write: by the squire, by a coder whose brief says "check the claim first; change nothing
+  if it is false", or, when a web source can settle the claim, by a researcher (`research`
+  §When to research). A false finding or caveat MUST be dropped; the task report MUST name
+  it, with the disproving command or source, in its skipped line (§Task end, step 6). A
+  claim the check does not settle MUST keep its `Unverified:` part.
 - Loop bound: when a loop needs a third round, main session MUST ask user first.
   Rounds before a switch to a fresh spawn MUST count.
 - Final review MUST be a fresh reviewer spawn. It MUST cover only commits since the last
@@ -141,8 +137,7 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
     make it a follow-up item, or accept it into Accepted tech debt;
   - Should fix or Nice to have finding: fix now, make it a follow-up item, or ignore; an
     auto-fix finding (§Review loop) MUST skip the quiz.
-- A model-row bypass (`delegate` §Models) MUST skip the quiz; the task report MUST name
-  it.
+- A model-row bypass (`delegate` §Models) MUST skip the quiz; task report MUST name it.
 - A follow-up item MUST be a new open tracker item; the quiz answer is the yes to that
   create. With no tracker bound, it MUST be a line in the task report. Its text MUST mark
   with `Unverified:` each cause that no probe on a clean state confirmed.

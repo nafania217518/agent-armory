@@ -8,7 +8,7 @@ max-lines: 102
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # debug
 
@@ -83,8 +83,8 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 - MUST commit loop when it is a file. MAY commit other debug code (a harness, tagged
   logs). Each debug commit MUST go on debugger's worktree branch, the diagnose-only
   branch. MUST NOT merge that branch into task branch; MUST name it in report instead.
-- Each debug commit subject MUST start with `debug(<id>):`, where `<id>` is the debug
-  prefix's id.
+- Each debug commit subject MUST start with `debug(<id>):`, where `<id>` is the
+  debug prefix's id.
 - Diagnose-only exemption: tip of a diagnose-only result MAY fail `unit` because of its
   loop test.
 - Done when report names the confirmed hypothesis, loop command with its last output, a

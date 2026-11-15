@@ -5,11 +5,11 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 157
+max-lines: 156
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # implement
 
@@ -134,10 +134,9 @@ Gates and their commands are in project context `## Gates` and `## Commands`.
 - `coverage`: MUST run the command and never compute a number yourself. Build tools hold
   the threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
-- `lint` and `unit`, when `on`, MUST pass at the result tip and SHOULD pass on each
-  commit. Exceptions: a failure that already exists on `<base>` (`code` §Branch and plan
-  file), and the diagnose-only exemption (`debug` §Diagnose only). MUST compare with
-  `<base>` to tell.
+- `lint` and `unit`, when `on`, MUST pass at result tip and SHOULD pass on each commit.
+  Exceptions: a failure that already exists on `<base>` (`code` §Branch and plan file) and
+  diagnose-only exemption (`debug` §Diagnose only). MUST compare with `<base>` to tell.
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
   an out-of-scope finding. `code` §Task end sets the report gates.
 - Gate, build and test output MUST reach your context only as its tail or a grep for

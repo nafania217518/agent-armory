@@ -4,11 +4,11 @@ description: >
   Test rules: pyramid, levels, unit style, TDD, test scope, structure, `req:` markers,
   determinism, review checks. Load before you write, plan or review a test. Use for
   "armory test rules", "TDD", "test levels", "req: marker", "/test".
-max-lines: 139
+max-lines: 137
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # test
 
@@ -53,13 +53,12 @@ change these lines; that section MUST win.
 
 ## 4. TDD
 
-- You MUST write the failing test for every requirement before the code, except one with
-  `tests: none`. You MUST work one test at a time: write it, see it fail for the expected
-  reason, make the smallest change that passes it, and only then write the next test. A
-  test that passes on first run MUST fail once you break the code it covers; you MUST
-  then undo the break. The break MUST remove what the rule in the test name depends on,
-  such as a branch, escape or filter, one rule at a time. A break in other code does not
-  prove the test.
+- You MUST write the failing test for every requirement before code, except one with
+  `tests: none`. You MUST work one test at a time: write it, see it fail for expected
+  reason, make the smallest change that passes it, and only then write next test. A test
+  that passes on first run MUST fail once you break code it covers; you MUST then undo the
+  break. The break MUST remove what the rule in test name depends on, such as a branch,
+  escape or filter, one rule at a time. A break in other code does not prove the test.
 - A requirement where an honest test is impractical MUST NOT get a bad test. Plan MUST
   decide it: the plan item carries the line `tests: none, <why>`.
 - A coder that finds a planned test impractical MUST NOT drop it. That is a requirement
@@ -113,9 +112,8 @@ change these lines; that section MUST win.
 ## 7. Markers
 
 - Test that proves a requirement MUST carry marker `req: <task-branch>/TR-n` in a comment
-  on the line above the case, or above the group holding its tests
-  (`// req: add-login/TR-8`; several ids: `// req: add-login/TR-8, add-login/TR-13`).
-  Scan:
+  on the line above the case, or above group holding its tests (`// req: add-login/TR-8`;
+  several ids: `// req: add-login/TR-8, add-login/TR-13`). Scan:
 ```
 git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<docs>/'
 ```

@@ -21,7 +21,6 @@ You implement one brief. A follow-up message from the main session extends your 
 - MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.
-- A library claim in your report MUST follow `research` §When to research.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.
 

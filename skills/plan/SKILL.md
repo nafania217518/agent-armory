@@ -6,11 +6,11 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "plan a milestone", "design doc", "design this change", a changed requirement,
   "/plan", and from the code skill when no plan exists.
-max-lines: 376
+max-lines: 373
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # plan
 
@@ -97,9 +97,8 @@ Drafting; planner runs only Drafting.
 - On a model below Opus or an effort below `high`, main session SHOULD suggest a switch to
   user before planning.
 - Before building, SHOULD push back on any part of the request the need does not justify.
-- Before the first quiz round, main session MUST have an agent read each topic file
-  whose pointer fits the request (`code` §Caveats), or pass those paths in each planning
-  brief.
+- Before the first quiz round, main session MUST have an agent read each topic file whose
+  pointer fits the request (`code` §Caveats), or pass those paths in each planning brief.
 - Before any edit, MUST quiz user in rounds until no open point remains (an unclear
   requirement, a choice, an assumption), and wait for answers. §Quizzes sets the order
   and topics; `core` §Writing and questions sets the question format.
@@ -198,8 +197,7 @@ Drafting; planner runs only Drafting.
   `TR` id, or `load: none, <why>`. A load `TR` MUST state data size, operations measured,
   each measured query as text or as the rule that draws it from seed data, and a latency
   target, such as p95. Figures MUST come from the expected load (`review` §Understand
-  first, the no-plan case). Its benchmark MUST meet the row check of `test`
-  §Determinism.
+  first, the no-plan case). Its benchmark MUST meet the row check of `test` §Determinism.
 - A `TR` that sets a bar on a measured value MUST cite a current value, measured on
   current code or a probe, with its spread over at least 3 runs. A bar at the metric's
   ceiling or floor, or within that spread, MUST change before approval: another metric or
@@ -286,8 +284,7 @@ Drafting; planner runs only Drafting.
 - Task run MUST write its plan file also after zero quiz rounds.
 - Right after that commit, main session MUST have every caveat found during planning
   written into the caveat base (`code` §Caveats). A task run MUST hold them in its
-  plan-mode proposal, not its plan file. A held caveat, one about code that a `TR` still
-  builds or changes, MUST wait as `code` §Caveats sets.
+  plan-mode proposal, not its plan file. A held caveat MUST wait as `code` §Caveats sets.
 - In that step, main session MUST have the squire write each term the quiz settled into
   project context `## Glossary`, in its format line, and MUST commit it. A plan
   template MUST NOT hold a glossary section.

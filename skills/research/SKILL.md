@@ -6,11 +6,11 @@ description: >
   library, API, model, tool or domain that may be outdated, for the plan's research step,
   and in the researcher agent. Use for "check the docs", "is this still true", "research
   this", "/research".
-max-lines: 56
+max-lines: 55
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load the `core` skill first when its rules are not in your context.
+Load `core` first when its rules are not in your context.
 
 # research
 
@@ -18,9 +18,9 @@ How to check a claim against sources. Main session delegates; researcher reads.
 
 ## 1. When to research
 
-- A claim that can be outdated is a hypothesis until a source confirms it. It MUST go to
-  research when plan or code depends on it and installed source, types or repo docs do
-  not settle it.
+- A claim that can be outdated is a hypothesis until source confirms it. It MUST go to
+  research when plan or code depends on it and installed source, types or repo docs do not
+  settle it.
 - A claim about a library's runtime behavior (a default, thread pool, order, version
   difference) MUST cite its source: the file in the dependency cache, official docs, or a
   run. Else it MUST carry the `Unverified:` part (`review` §Output).
@@ -35,22 +35,21 @@ How to check a claim against sources. Main session delegates; researcher reads.
   independent sources. A copy of the same text MUST NOT count as independent.
 - MUST note each source's date; a local source MUST give its version instead. SHOULD
   prefer newest primary source. Older primary source SHOULD beat a newer secondary one.
-- When sources disagree, MUST say so. An Opus agent MUST name the source it trusts and
-  say why. A Sonnet agent MUST instead report what each source says, name no winner and
-  mark that question `open: sources disagree`. Main session MUST re-spawn only the
-  disputed questions on the Opus research row, with those sources in the brief.
-- An agent whose brief names its pages MUST read only those pages, in place of the
-  source order above; each answer MUST quote its passage or take `open: not on the page`.
-  A question whose pages disagree MUST still take `open: sources disagree`.
+- When sources disagree, MUST say so. An Opus agent MUST name the source it trusts and say
+  why. A Sonnet agent MUST instead report what each source says, name no winner and mark
+  that question `open: sources disagree`. Main session MUST re-spawn only the disputed
+  questions on the Opus research row, with those sources in the brief.
+- An agent whose brief names its pages MUST read only those pages, in place of the source
+  order above; each answer MUST quote its passage or take `open: not on the page`. A
+  question whose pages disagree MUST still take `open: sources disagree`.
 
 ## 3. Result
 
 Result MUST hold, in this order:
 
 1. The claim, in one or two sentences, with its confidence: `confirmed`, `likely` or
-   `open: <reason>`. The reason MUST be `sources disagree` or `not on the page`.
-   With several questions or facts, the result MUST hold one claim line per question
-   or fact, each with its confidence.
-2. The sources, one per line: title, URL or path, date or version for a local source,
-   what it says.
+   `open: <reason>`. The reason MUST be `sources disagree` or `not on the page`. With
+   several questions or facts, result MUST hold one claim line per question or fact.
+2. The sources, one per line: title, URL or path, date or version for a local source, what
+   it says.
 3. The recorded-items slot and the caveat slot (`core` §Reports).
