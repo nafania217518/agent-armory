@@ -6,7 +6,7 @@ description: >
   library, API, model, tool or domain that may be outdated, for the plan's research step,
   and in the researcher agent. Use for "check the docs", "is this still true", "research
   this", "/research".
-max-lines: 55
+max-lines: 57
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -37,8 +37,9 @@ How to check a claim against sources. Main session delegates; researcher reads.
   prefer newest primary source. Older primary source SHOULD beat a newer secondary one.
 - When sources disagree, MUST say so. An Opus agent MUST name the source it trusts and say
   why. A Sonnet agent MUST instead report what each source says, name no winner and mark
-  that question `open: sources disagree`. Main session MUST re-spawn only the disputed
-  questions on the Opus research row, with those sources in the brief.
+  that question `open: sources disagree`. Main session MUST send only the disputed
+  questions to an agent on the Opus research row, fresh or reused (`delegate` §Briefs),
+  with those sources in the brief.
 - An agent whose brief names its pages MUST read only those pages, in place of the source
   order above; each answer MUST quote its passage or take `open: not on the page`. A
   question whose pages disagree MUST still take `open: sources disagree`.
@@ -48,8 +49,9 @@ How to check a claim against sources. Main session delegates; researcher reads.
 Result MUST hold, in this order:
 
 1. The claim, in one or two sentences, with its confidence: `confirmed`, `likely` or
-   `open: <reason>`. The reason MUST be `sources disagree` or `not on the page`. With
-   several questions or facts, result MUST hold one claim line per question or fact.
+   `open: <reason>`. The reason MUST be `sources disagree`, `not on the page` or
+   `not settled by the code`. With several questions or facts, result MUST hold one claim
+   line per question or fact.
 2. The sources, one per line: title, URL or path, date or version for a local source, what
    it says.
 3. The recorded-items slot and the caveat slot (`core` §Reports).

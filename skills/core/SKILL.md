@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 150
+max-lines: 154
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -56,15 +56,19 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - MUST NOT use `nohup`, `command &` or any other detached shell job for a background task.
   MUST start it as host's tracked background task.
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
-  running MUST have a valid reason, stated in the report.
+  running MUST have a valid reason, stated in the report. An idle agent does not count as
+  running.
 - Web search and page reading MUST follow `research` §When to research.
 - Main session MUST read files only in these cases: agent reports, git output other than
-  a diff, gate output, templates of armory skills it fills, a `setup` run's reads and the
-  plan-mode file.
+  a diff, gate output, templates of armory skills it fills, the plan-mode file and a
+  short non-diff read that needs no judgment, and file text user must see or approve.
 - Main session MUST write files only in these cases: git steps (branch, merge, commit,
-  revert, rm, push), gate runs, a project script that writes no authored text, a `setup`
-  run's writes and the plan-mode file.
-- Every other file read or write MUST go to the squire or another agent (`delegate`).
+  revert, rm, push), gate runs, a project script that writes no authored text, the
+  plan-mode file, a file copy, and a short text already in its context (user-approved
+  wording, a caveat line from a report, a status value, a settled glossary term).
+- A skill MAY extend or override these cases for its own run.
+- Every other read MUST go to an agent that returns a conclusion; every other write MUST
+  go by intent to the writer (prose) or coder (code) (`delegate`).
 
 ## 4. Design principles
 

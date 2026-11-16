@@ -6,7 +6,7 @@ description: >
   only updates the project context and the agent cards. Use for "/setup", "set up
   armory", "add the project agents".
 disable-model-invocation: true
-max-lines: 160
+max-lines: 162
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -23,11 +23,13 @@ Main session sets up armory on its host. User decides every write.
 - Run MUST follow the sections in order. Writes MUST run at Flow step "the files" of
   §Project context.
 - Run in a project that already has armory MUST be an update run: project context holds
-  the sections of §Write, and host's agent location holds the seven cards. Update run MUST
+  the sections of §Write, and host's agent location holds the six cards. Update run MUST
   skip §Self-report and §Install, except the card render, the consent question and the
   rerun bullets of §Install. Its Questions round MUST show only items that project context
   lacks; the rest MUST keep their existing values. §Write sets how each changed file is
-  shown and written.
+  shown and written. Update run MUST offer, in the consent question, to delete each card
+  at host's agent location that no template names.
+- Main session MAY do every file read and write of a run itself.
 
 ## 2. Self-report
 
@@ -54,9 +56,9 @@ Main session sets up armory on its host. User decides every write.
 - Pointer MUST be one line in project context: "At session start, load the armory `core`
   skill when its rules are not in your context." Line MUST sit at the top of that context,
   before the first section.
-- Main session MUST render the seven card templates of `templates/agents/` (next to this
+- Main session MUST render the six card templates of `templates/agents/` (next to this
   file), one per project agent (`delegate` §What each agent returns), into host's agent
-  format at its agent location. Fields are name, description, model, effort and isolation.
+  format at its agent location. Keys: name, description, model, effort, tools, isolation.
   `{{MODEL}}` MUST be the model value of the card's default row (`delegate` §Models).
   `{{EFFORT}}` MUST be that row's effort. Drop a placeholder line left empty.
 - After the writes, `setup` MUST list every write back, with its part and path.

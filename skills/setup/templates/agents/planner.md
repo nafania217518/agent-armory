@@ -5,12 +5,13 @@ description: >
   (levels, cases, test scope) or an analysis of options. Use for a planning draft.
 model: {{MODEL}}
 effort: {{EFFORT}}
+tools: Read, Grep, Glob, Bash, Skill
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 You draft one part of a plan. A follow-up message from the main session extends your
-brief.
+brief. A message that holds a full brief replaces it.
 
 - MUST load `core` when its rules are not in your context, then `plan` (§Drafting),
   `test` and `implement`.

@@ -6,7 +6,7 @@ description: >
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "plan a milestone", "design doc", "design this change", a changed requirement,
   "/plan", and from the code skill when no plan exists.
-max-lines: 373
+max-lines: 374
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -52,10 +52,10 @@ Drafting; planner runs only Drafting.
   milestone doc. Status values MUST be open, done and dropped.
 - Task-level plan run that adds no task to a milestone and reads that all its tasks are
   done MUST ask user whether to mark the milestone done. On a yes, it MUST cut a
-  `design-<topic>` branch, have the squire make the status-line edit in
-  `<docs>/DESIGN.md`, and commit it as that branch's first commit, with the finish
-  question of `code` §Finish, or, with a tracker bound, a status write under `core`
-  tracker write rule. A code run MUST keep `code` §Task end, step 9.
+  `design-<topic>` branch, make the status-line edit in `<docs>/DESIGN.md` itself, and
+  commit it as that branch's first commit, with the finish question of `code` §Finish,
+  or, with a tracker bound, a status write under `core` tracker write rule. A code run
+  MUST keep `code` §Task end, step 9.
 - With a tracker bound in project context `## Tracker` (`core` §Host terms), each level
   MUST follow this tracker variant. The variant replaces only the docs-fallback rules it
   names; the table and rules above MUST stay the docs fallback.
@@ -116,12 +116,12 @@ Drafting; planner runs only Drafting.
 - A round MUST ask only questions whose prerequisite answers are in. A question that
   depends on another open question of the round MUST wait for a later round.
 - A quiz MUST NOT ask a fact the parent doc, repo, a tool or an agent can settle: main
-  session MUST get it from the squire or another agent (`core` §Tools and background
+  session MUST get it by a short read or from an agent (`core` §Tools and background
   tasks). A running lookup MUST hold back only questions that depend on it.
 - During a quiz, main session MUST name a term that conflicts with project context
-  `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST have
-  the squire check each claim user makes about the code against the code, naming any
-  contradiction.
+  `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST
+  check each claim user makes about the code against the code as `code` §Caveats sets,
+  naming any contradiction.
 - Task run MAY have zero quiz rounds when its parent doc leaves no open point.
 - An unknown (a library, API, model or domain fact) MUST go to research (`research` §When
   to research), then, when needed, to a quiz on the findings and next steps.
@@ -278,18 +278,18 @@ Drafting; planner runs only Drafting.
 
 - After approval, main session MUST cut the level's branch (§Levels, column Branch) from
   `<base>` with the commands of `code` §Branch and plan file.
-- It MUST then have the squire write the level's doc at its Doc path, copied from the
-  plan-mode file the message names, and MUST commit it as the first commit; `core` §Host
-  terms sets `<docs>`. Requirements MUST NOT go into a separate file.
+- It MUST then have the writer copy only the level's template sections of the plan-mode
+  file the message names to the level's Doc path, as the first commit; `core` §Host terms
+  sets `<docs>`. Requirements MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
 - Right after that commit, main session MUST have every caveat found during planning
   written into the caveat base (`code` §Caveats). A task run MUST hold them in its
   plan-mode proposal, not its plan file. A held caveat MUST wait as `code` §Caveats sets.
-- In that step, main session MUST have the squire write each term the quiz settled into
-  project context `## Glossary`, in its format line, and MUST commit it. A plan
+- In that step, main session MUST write each term the quiz settled into project context
+  `## Glossary` itself, in its format line, and MUST commit it. A plan
   template MUST NOT hold a glossary section.
-- In that step, main session MUST have the squire write an expected load the
-  quiz settled into `<docs>/DESIGN.md`, and MUST commit it.
+- In that step, main session MUST write an expected load the quiz settled into
+  `<docs>/DESIGN.md` itself, and MUST commit it.
 - Strategic or milestone run with a branch MUST end with the finish question of `code`
   §Finish for its branch.
 - With a tracker bound (§Levels, tracker variant), a strategic or milestone run MUST
@@ -336,11 +336,11 @@ Drafting; planner runs only Drafting.
   found by a grep at amendment time. A finding on the range under review MUST go to the
   fix round of `code` §Review loop instead.
 - Main session MUST allocate every new id. Subagent MUST NOT allocate one.
-- Before the next brief or follow-up message, main session MUST have the squire write
+- Before the next brief or follow-up message, main session MUST have the writer write
   into the owning doc the new items, each `(replaced by <new id>)` mark, each dated note
-  and the line updates below, and MUST commit them; no reason or history. The amendment's
-  reason and history MUST go into the commit message, and into the tracker comment when
-  one is written.
+  and the line updates below; no reason or history. The writer brief MUST carry the
+  amendment's reason and history for the writer's commit message; main session MUST also
+  put them into the tracker comment when one is written.
 - A replacing item MUST state its full text. A replaced item MUST keep its id line, never
   renumbered, with the mark `(replaced by <new id>)`; its old text MAY go. Before the
   plan's first commit, an item that user's yes replaces MAY be rewritten in place. Until
@@ -355,11 +355,12 @@ Drafting; planner runs only Drafting.
   first have an agent check each `TR` against `<base>`. Each `TR` that `<base>` already
   meets MUST get a dated note below the `TR` list. Done when each `TR` is checked.
 - When an amendment replaces or removes a term, id, design choice or figure (a profile,
-  a file, a class, a bound), main session MUST have the squire grep the owning doc, plan
-  file and project context for it before it asks user. Each requirement line that names
-  it MUST join that amendment's question, with its new id, and get its
-  `(replaced by <new id>)` mark at the amendment commit. A `needs:` line that names a
-  replaced id MUST be updated in place at that commit, with no new id.
+  a file, a class, a bound), main session MUST have the owning doc, plan file and project
+  context grepped for it before it asks user: by a short read when that settles it, else
+  by a researcher (`delegate` §Models row 9) that returns the id of each line naming it.
+  Each requirement line that names it MUST join that amendment's question, with its new
+  id, and get its `(replaced by <new id>)` mark at the amendment commit. A `needs:` line
+  that names a replaced id MUST be updated in place at that commit, with no new id.
 - Before the amendment commit, main session MUST have an agent list each line that is not
   a requirement (Goal, Design, Risks, Test scope) and that the amendment makes false. The
   amendment commit MUST update each such line. An amendment that changes a tested

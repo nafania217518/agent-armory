@@ -6,6 +6,7 @@ description: >
   delegated bug with no known cause.
 model: opus
 effort: high
+tools: Read, Grep, Glob, Bash, Edit, Write, Skill
 isolation: worktree
 ---
 
@@ -19,7 +20,7 @@ extends your brief.
 - At spawn and on each follow-up message, before any edit, MUST hard-reset your
   worktree to the commit the brief or message names, and verify that HEAD equals it.
   MUST NOT check out the task branch: the main checkout holds it, so git refuses.
-  When a retry brief names a WIP branch, MUST reset to that branch's commit.
+  When a brief names a WIP branch to reset to, MUST reset to that branch's commit.
 - MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.

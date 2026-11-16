@@ -5,7 +5,7 @@ description: >
   review and fix loop, task report, finish question. Load it before the first code
   search or edit of any coding task: "/code", "implement", "fix", "refactor", "add a
   feature".
-max-lines: 216
+max-lines: 219
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -52,8 +52,8 @@ file). Caveat slot, caveat format, subagent ban and recorded items are in `core`
 Caveat base is the project context `## Caveats` plus topic files
 `<docs>/caveats/<topic>.md`.
 
-- Main session MUST have the squire write each caveat-base line, root `## Caveats` and
-  topic files alike, and MUST commit each write (`delegate` §Briefs).
+- Main session MUST write each caveat-base line itself, root `## Caveats` and topic files
+  alike, and MUST commit each write (`core` §Tools and background tasks).
 - Main session MUST have each caveat it receives or finds after the plan-file commit
   written into the caveat base immediately, unless the next bullet defers it; a caveat
   with an `Unverified:` part first gets the check of §Review loop.
@@ -61,9 +61,10 @@ Caveat base is the project context `## Caveats` plus topic files
   still builds or changes is a held caveat. It MUST wait until that `TR` merges into the
   task branch; main session MUST then have it written as this section says.
 - Before that write, main session MUST check the line against `core` §Reports and its
-  place against the bullets below, and MUST have the squire check its claim against the
-  code, with a search of the named file for the fact. A line that fails MUST be split,
-  cut, moved or dropped.
+  place against the bullets below, and MUST check its claim against the code, with a
+  search of the named file for the fact: by a short read when that settles it, else by a
+  researcher (`delegate` §Models row 9) that returns a verdict, not the lines. A line that
+  fails MUST be split, cut, moved or dropped.
 - A caveat MUST go to root `## Caveats` only when every task needs it. Else it MUST go to
   the topic file whose pointer fits, or to a new topic file when none fits.
 - A line that says what to do is a rule: it MUST go to the project context `## Rules`.
@@ -77,8 +78,9 @@ Caveat base is the project context `## Caveats` plus topic files
 - Before main session briefs work on a file, it MUST pass the agent the path of each
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
-  (`git diff --name-status <base>...HEAD`), main session MUST have the squire re-check the
-  claim, then have the entry kept, its path fixed or it dropped, by the bullets above.
+  (`git diff --name-status <base>...HEAD`), main session MUST re-check the claim as the
+  bullet above sets, then have the entry kept, its path fixed or it dropped, by the
+  bullets above.
 
 ## 3. Running the plan
 
@@ -114,13 +116,14 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   `none`. A missing line MUST mean `none`.
 - A finding or a caveat with an `Unverified:` part (`review` §Output, `research` §When to
   research) MUST be checked before a fix brief, the recorded-items quiz or a `## Caveats`
-  write: by the squire, by a coder whose brief says "check the claim first; change nothing
-  if it is false", or, when a web source can settle the claim, by a researcher (`research`
-  §When to research). A false finding or caveat MUST be dropped; the task report MUST name
-  it, with the disproving command or source, in its skipped line (§Task end, step 6). A
-  claim the check does not settle MUST keep its `Unverified:` part.
+  write: as §Caveats sets for a code claim, by a researcher (`research` §When to research)
+  when a web source can settle it, or by a coder whose brief says "check the claim first;
+  change nothing if it is false". A false finding or
+  caveat MUST be dropped; the task report MUST name it, with the disproving command or
+  source, in its skipped line (§Task end, step 6). A claim the check does
+  not settle MUST keep its `Unverified:` part.
 - Loop bound: when a loop needs a third round, main session MUST ask user first.
-  Rounds before a switch to a fresh spawn MUST count.
+  Rounds before a switch to another agent MUST count.
 - Final review MUST be a fresh reviewer spawn. It MUST cover only commits since the last
   review, or since `<base>` when none ran. It MUST add these whole-task checks on
   `<base>..HEAD`: each requirement met, `req:` markers, stray files, gates.
@@ -170,7 +173,7 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
      `req:` markers point into. It MUST also ask, for each kept diagnose-only branch,
      whether to keep it or delete it. A cleanup commit gets no re-review. Done when user
      has answered.
-  9. Done write: when the task has a milestone, MUST have the squire mark the task done
+  9. Done write: when the task has a milestone, MUST itself mark the task done
      in the milestone doc and, when the task was the milestone's last open one, the
      milestone done in `<docs>/DESIGN.md` (`plan` §Levels). MUST then commit both marks
      in one commit, the last on the task branch. That commit MUST change only status

@@ -36,7 +36,6 @@ terms and run on Claude Code.
 | `researcher` | Answers the technical questions of one brief from sources. | Sonnet | low |
 | `writer` | Writes or edits prose. Changes no code, tests or config. | Sonnet | low |
 | `planner` | Read-only. Drafts a design, a test design or an analysis of options. | Opus | high |
-| `squire` | Does the main session's fixed reads and given-text writes. Makes no commit. | Sonnet | medium |
 
 ## Install
 

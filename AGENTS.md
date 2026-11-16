@@ -75,6 +75,8 @@ Main session : the session the user talks to; only it asks the user and spawns s
 
 Subagent : an agent that the main session spawns; it reports back and cannot reach the user.
 
+Reusable agent : a writer, researcher or planner; new work may go to an idle one by message.
+
 User-only skill : a skill that only the user starts; the model does not load it on its own.
 
 Tracker : the system of the `core` host term `tracker`. Avoid: issue tracker, ticket tracker
@@ -88,8 +90,6 @@ Inbound item : an open tracker item opened outside an armory run and not yet `ac
 Caveat base : the project's knowledge base of caveats: root caveats plus topic files.
 
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
-
-Squire : the subagent that does the main session's fixed file reads and given-text writes.
 
 ## Caveats
 

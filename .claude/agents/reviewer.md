@@ -6,6 +6,7 @@ description: >
   no tracked file. Use for every delegated review and audit.
 model: opus
 effort: high
+tools: Read, Grep, Glob, Bash, Skill, ToolSearch, mcp__Claude_Browser__*
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.

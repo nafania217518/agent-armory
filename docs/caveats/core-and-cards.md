@@ -14,5 +14,6 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A Claude Code subagent spawn costs about 55k tokens before its first tool call : skills/delegate/SKILL.md
 - The hook runs `core-context.sh` from `${CLAUDE_PLUGIN_ROOT}`, so it injects the installed plugin's `core`, not this repo's `skills/core/SKILL.md` : hooks/hooks.json
 - On Claude Code, Edit and Write refuse an existing file not Read first, so each main-session write case needs a read case : skills/core/SKILL.md
-- The writer card, unlike the coder and debugger cards, has no reset-to-commit rule : skills/setup/templates/agents/writer.md
-- A new `.claude/agents/` card is not spawnable right after it lands; the host lists it later in the same session : .claude/agents/squire.md
+- A new `.claude/agents/` card is not spawnable right after it lands; the host lists it later in the same session : .claude/agents/coder.md
+- On Claude Code, a subagent result's `totalTokens` is its context size at the last turn, not a sum over turns : skills/delegate/SKILL.md
+- Subagents get a 5-minute cache TTL even on a subscription, unless `CLAUDE_CODE_SUBAGENT_PROMPT_CACHE_TTL`, `subagentPromptCacheTtl` or frontmatter `experimental.cacheTtl` sets 1h : skills/delegate/SKILL.md

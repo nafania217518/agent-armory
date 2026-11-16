@@ -22,8 +22,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - The skill set has fourteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
   `test`, `debug`, `review`, `audit`, `research`, `retro`,
   `triage`, `dnd` and `setup`. The skills other than `core` hold the workflows.
-- The project agents are seven: `coder`, `debugger`, `reviewer`, `researcher`, `writer`,
-  `planner` and `squire`. The plugin ships their templates, not agent cards; `setup`
+- The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
+  and `planner`. The plugin ships their templates, not agent cards; `setup`
   writes the cards into each project.
 - The agent cards a project holds are generated instances of the plugin templates,
   which are the single source.
@@ -86,7 +86,7 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
 | `dnd` | none (new) | main session, when the user starts it (user-only) |
-| `setup` | 21, 22; templates `AGENTS.md` and seven card templates | main session, when the user starts it (user-only) |
+| `setup` | 21, 22; templates `AGENTS.md` and six card templates | main session, when the user starts it (user-only) |
 | card templates | 16 (role rules, report format, default model row) | the spawn |
 
 | Actor | Loads |
@@ -101,7 +101,6 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | researcher | `core`, `research` |
 | planner | `core`, `plan`, `implement`, `test` |
 | writer | `core` |
-| squire | `core` |
 
 The size of a load set is the sum of the `max-lines` fields of its skills.
 
@@ -295,6 +294,34 @@ One dated line per decision, with the dropped alternatives.
   `setup` runs and the plan-mode file; it writes only given text and makes no commit.
   It replaces the task scribe; the writer keeps prose. Dropped: a writer-card mode, a
   squire per task, squire commits, a SHOULD route.
+- 2026-11-16: short reads: the main session itself does a short non-diff read that needs
+  no judgment, since a squire round trip costs more than the read. Dropped: a line bound,
+  grep and line-range reads only, small diffs.
+- 2026-11-16: skill-owned file cases: a skill MAY extend or override the main session's
+  read and write cases for its own run; the `setup` cases moved from `core` into `setup`.
+- 2026-11-16: squire removed: main-session context holds decisions, intents and
+  conclusions, not low-level text; given-text writes put the exact text into main
+  context anyway, and each round cost about 60k tokens. Replaced by short reads, short
+  in-context writes and file copies by the main session, claim checks by a researcher
+  that returns a verdict, and other writes by intent to the writer or coder.
+- 2026-11-16: broad agent reuse: new work for a writer, researcher or planner goes to an
+  idle agent of that card already spawned in the session, to keep its knowledge, shorten
+  briefs and keep main-session context lean. Coder, debugger and reviewer stay on
+  follow-ups of their open output only (context bleed, debugger anchoring, worktree
+  lifecycle, review independence). A fresh spawn replaces reuse on another model or
+  effort, on staleness, and for work that judges the agent's own output (no self-judging),
+  and after 4 minutes 30 seconds idle (the 5-minute subagent cache TTL; a resume after
+  expiry re-writes the whole history). Follow-ups have no idle limit; the limit applies to
+  new work only. A writer follow-up is only a change to its own text. Idle means no turn
+  running; an open output does not block reuse. No context-window cap: current models have
+  1M windows, so it never triggers. The writer gets its own worktree like the coder.
+  Dropped: a 1h subagent cache TTL.
+- 2026-11-16: card tool lists: each card gets a `tools:` line that lists only the tools
+  it needs. Cards had no `tools:`, so every spawn got all tools: measured, an all-tools
+  spawn starts at about 54k tokens and a two-tool spawn at about 14k. `Skill` stays on
+  every list so the agent can load skills. The reviewer lists `ToolSearch` and
+  `mcp__Claude_Browser__*` to reach browser tools. Dropped: turning off MCP servers,
+  which is user config.
 
 ## 7. Milestones
 
