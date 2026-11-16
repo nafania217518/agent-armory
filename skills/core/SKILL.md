@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 155
+max-lines: 159
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -56,8 +56,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - MUST NOT use `nohup`, `command &` or any other detached shell job for a background task.
   MUST start it as host's tracked background task.
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
-  running MUST have a valid reason, stated in report. An idle agent does not count as
-  running.
+  running MUST have a valid reason, stated in report. An idle agent or a subagent's timer
+  (§Reports) does not count as running.
 - Subagent MUST keep temp files in its own `mktemp -d` folder.
 - Web search and page reading MUST follow `research` §When to research.
 - Main session MUST read files only in these cases, or those a skill names for its own
@@ -103,6 +103,10 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   returns other armory rules require. It MUST NOT narrate steps, restate the brief, or
   paste file content, a diff or command output that none of these asks for. It MUST point
   to code by `path:lines` or commit SHA instead.
+- A subagent's timer is its own tracked background task that ends 4 minutes after start.
+  A turn that a timer's end starts MUST reply `pong` only; a pong is not a report. A
+  subagent whose brief or a later message holds `timer: on` MUST end each turn with
+  exactly one timer running. The turn of its 7th pong in a row MUST end with none instead.
 - A report item is needed when main session uses it to spawn an agent, to plan or change
   next work, or to put a decision to user. A report format and a report MUST hold only
   needed items, and every needed item. Each item MUST give only its value. An item whose

@@ -4,7 +4,7 @@ description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
   "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 220
+max-lines: 225
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -71,7 +71,12 @@ Main session follows this skill for each spawn of a project agent.
   its review in `code` §Task end, step 3 ends.
 - An open output does not block reuse; a later follow-up on that output MUST name its
   earlier brief. Main session MUST note clock time of each reusable agent's (below)
-  result. It MUST read clock before each new-work message.
+  result or pong. It MUST read clock before each new-work message.
+- A pong (`core` §Reports) MUST NOT change main session's next step. With no other step,
+  main session MUST end its turn with an empty reply. Main session MUST stop a coder,
+  debugger or reviewer once its output closes.
+- A brief or message MUST hold the line `timer: on` (`core` §Reports) when main session
+  expects to send that agent a later message.
 - A follow-up message MUST name commits since agent's last turn, or `none`; when that turn
   was on another branch, it MUST name current branch and its tip instead. It MUST also
   hold each brief item that changed since agent's last brief or message: a new or replaced
@@ -102,8 +107,8 @@ Main session follows this skill for each spawn of a project agent.
 - New work MUST go to a fresh spawn instead when agent's model or effort differs from the
   work's §Models row, when the work touches a file of its work that a commit by another
   actor changed since its last turn, with the exclusions and branch case of follow-up work
-  above, when its last result arrived more than 4 minutes 30 seconds ago, or when its
-  worktree is removed.
+  above, when its last result or pong arrived more than 4 minutes 30 seconds ago, or when
+  its worktree is removed.
 - When a re-review marks a finding `open` and its fixer ran below Opus high, its next fix
   round MAY count as needing Opus high, with the finding and failed fix commits in its
   brief.
