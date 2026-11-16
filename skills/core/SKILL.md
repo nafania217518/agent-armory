@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 159
+max-lines: 160
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -106,7 +106,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - A subagent's timer is its own tracked background task that ends 4 minutes after start.
   A turn that a timer's end starts MUST reply `pong` only; a pong is not a report. A
   subagent whose brief or a later message holds `timer: on` MUST end each turn with
-  exactly one timer running. The turn of its 7th pong in a row MUST end with none instead.
+  exactly one timer running, started as the turn's last action unless one from an earlier
+  turn still runs. The turn of its 7th pong in a row MUST end with none instead.
 - A report item is needed when main session uses it to spawn an agent, to plan or change
   next work, or to put a decision to user. A report format and a report MUST hold only
   needed items, and every needed item. Each item MUST give only its value. An item whose
