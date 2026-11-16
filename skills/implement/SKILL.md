@@ -5,7 +5,7 @@ description: >
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
   the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
   `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 156
+max-lines: 155
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -19,18 +19,18 @@ rules: `test`.
 ## 1. Before you write
 
 - MUST list every place the change must reach: callers, fixtures, config, exports. That
-  is the scope. Extra features are not.
+  is scope. Extra features are not.
 - Scope MUST also hold each caveat-base line (`code` §Caveats) that names a file the
-  change touches. A line found false SHOULD be reported with its fix, its new file or
-  `drop`; main session has it written before review (`code` §Caveats).
-- MUST check what the change can break for users: data it would destroy or expose,
-  callers that stop working.
+  change touches. Line found false SHOULD be reported with its fix, its new file or
+  `drop`; main session has it written (`code` §Caveats).
+- MUST check what change can break for users: data it would destroy or expose, callers
+  that stop working.
 - Vague request SHOULD get the smallest version that does the core job.
-- Design misfit: when a new requirement does not fit the design, coder MUST still follow
-  plan and MUST record misfit with its reason (`core` §Reports). It MAY report
+- Design misfit: when new requirement does not fit design, coder MUST still follow plan
+  and MUST record misfit with its reason (`core` §Reports). It MAY report
   `stuck: <misfit>`.
-- When the plan cannot be followed at all, coder MUST stop and report `stuck:` (coder
-  agent card).
+- When plan cannot be followed at all, coder MUST stop and report `stuck:` (coder agent
+  card).
 
 ## 2. The smallest complete change
 
@@ -40,15 +40,15 @@ rules: `test`.
   2. Already in this codebase? Use it as surrounding code does.
   3. Standard library or platform feature? Use it, unless project has its own. SHOULD
      prefer a house component over a native widget.
-  4. An installed dependency? Use it. MUST NOT add a dependency for a few lines.
+  4. Installed dependency? Use it. MUST NOT add a dependency for a few lines.
   5. One line a reader gets at a glance? One line.
   6. Otherwise: the minimum code that works.
 - MUST ship the smallest complete change, once you know everything it must touch. MUST
   finish every caller and fixture the change breaks. One-liner that needs decoding
   MUST NOT count as small.
-- MUST limit the change to the scope (§Before you write) and approved plan. MUST NOT make
-  unrequested changes: refactors, renames, reformatting, fixes outside the scope. The one
-  exception is the scope addition (`test` §Test scope).
+- MUST limit change to scope (§Before you write) and approved plan. MUST NOT make
+  unrequested changes: refactors, renames, reformatting, fixes outside scope. The one
+  exception is scope addition (`test` §Test scope).
 - Bug that neither brief nor its plan item names, and that your change did not
   introduce, MUST NOT be fixed. It MUST be recorded as an out-of-scope finding instead,
   or reported as `stuck: <bug>` when it blocks the work.
@@ -83,9 +83,9 @@ A human reads every line you write. `review` §Look for checks these rules.
 - SHOULD keep business logic in pure functions.
 - MUST NOT silence the compiler.
 - Operation that can run more than once MUST be idempotent: a second run, or a run after
-  a crash halfway, ends in the same state. Such operations are retried handlers, jobs,
+  a crash halfway, ends in same state. Such operations are retried handlers, jobs,
   migrations, scripts, message consumers and a resume after a crash. Plain create call
-  MUST be idempotent only when the plan says so.
+  MUST be idempotent only when plan says so.
 - MUST NOT share mutable state that does not need sharing. Shared state MUST have one
   writer, enforced by the structure.
 - Code that applies an async answer to state (UI, cache, store) MUST key it to the
@@ -110,8 +110,8 @@ A human reads every line you write. `review` §Look for checks these rules.
 - When the brief or a follow-up message names a diagnose-only branch or commit, MUST NOT
   merge it or build on it. MUST write the fix on the commit the brief names to reset to.
   MAY copy its loop test, without the debug prefix, as regression test.
-- Refactoring: MUST pin what the code does with a test, change the structure, then prove
-  behavior did not change.
+- Refactoring: MUST pin what code does with a test, change structure, then prove behavior
+  did not change.
 - A change to what a parameter means, with the same type, MUST rename the function or
   change the parameter's type. Renamed parameter alone misses a positional caller.
 - SHOULD sequence work into small units. Finish and check one before starting the next.
@@ -120,9 +120,8 @@ A human reads every line you write. `review` §Look for checks these rules.
 
 - MUST change only test cases on the test-scope list. New case in an existing file is
   not a change outside the scope.
-- Test outside the list that the change makes fail MUST count as a bug the change
-  introduced. MUST fix the code so the test passes. Test that already fails on `<base>`:
-  §Gates per commit.
+- Test outside list that the change makes fail MUST count as a bug the change introduced.
+  MUST fix code so test passes. Test that already fails on `<base>`: §Gates per commit.
 - MAY add the test to your scope only when you can prove it was missed from the list:
   the change is expected and explains the failure.
 - MUST report the test only when you can neither fix the code nor prove the miss.
@@ -132,7 +131,7 @@ A human reads every line you write. `review` §Look for checks these rules.
 Gates and their commands are in project context `## Gates` and `## Commands`.
 
 - `coverage`: MUST run the command and never compute a number yourself. Build tools hold
-  the threshold.
+  threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
 - `lint` and `unit`, when `on`, MUST pass at result tip and SHOULD pass on each commit.
   Exceptions: a failure that already exists on `<base>` (`code` §Branch and plan file) and
@@ -145,7 +144,7 @@ Gates and their commands are in project context `## Gates` and `## Commands`.
 - Before your report, every `on` gate the brief does not leave to main session
   (`delegate` §Briefs) MUST pass, or the report names the failing gate.
 - Report MUST give one line per gate for a commit range when every commit in it gives
-  the same result. A commit that differs MUST get its own line.
+  same result. Commit that differs MUST get its own line.
 
 ## 8. Commits
 

@@ -12,14 +12,14 @@ isolation: worktree
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You diagnose one bug, and fix it when asked. A follow-up message from the main session
+You diagnose one bug, and fix it when asked. A follow-up message from main session
 extends your brief.
 
 - MUST load `core` when its rules are not in your context, then `debug`, `implement`
   and `test`.
 - At spawn and on each follow-up message, before any edit, MUST hard-reset your
   worktree to the commit the brief or message names, and verify that HEAD equals it.
-  MUST NOT check out the task branch: the main checkout holds it, so git refuses.
+  MUST NOT check out task branch: main checkout holds it, so git refuses.
   When a brief names a WIP branch to reset to, MUST reset to that branch's commit.
 - MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
@@ -31,10 +31,10 @@ extends your brief.
 Report, in this order:
 
 1. Your worktree's branch name.
-2. The loop command.
-3. The hypotheses in rank order, each with its verdict.
-4. In the diagnose-only flow: the loop command's last output, redacted, the proposed
-   fix outline, and the debug commits on your branch (`debug` §Diagnose only).
+2. Loop command.
+3. Hypotheses in rank order, each with its verdict.
+4. In the diagnose-only flow: loop command's last output (redacted), proposed fix
+   outline, and debug commits on your branch (`debug` §Diagnose only).
 5. Gate results (`implement` §Gates per commit).
 6. Uncovered lines, only when `coverage` is `on`.
 7. What you skipped.

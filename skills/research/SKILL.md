@@ -22,11 +22,11 @@ How to check a claim against sources. Main session delegates; researcher reads.
   research when plan or code depends on it and installed source, types or repo docs do not
   settle it.
 - A claim about a library's runtime behavior (a default, thread pool, order, version
-  difference) MUST cite its source: the file in the dependency cache, official docs, or a
-  run. Else it MUST carry the `Unverified:` part (`review` §Output).
-- Main session MUST delegate web search and page reading to an agent on row 8, 9 or 10
-  (`delegate` §Models). Raw page text MUST NOT enter main context.
-- The agent MUST return only the result of §Result.
+  difference) MUST cite its source: file in dependency cache, official docs, or a run.
+  Else it MUST carry the `Unverified:` part (`review` §Output).
+- Main session MUST delegate web search and page reading to a researcher (`delegate`
+  §Models). Raw page text MUST NOT enter main context.
+- Agent MUST return only the result of §Result.
 
 ## 2. Sources
 
@@ -37,10 +37,10 @@ How to check a claim against sources. Main session delegates; researcher reads.
   prefer newest primary source. Older primary source SHOULD beat a newer secondary one.
 - When sources disagree, MUST say so. An Opus agent MUST name the source it trusts and say
   why. A Sonnet agent MUST instead report what each source says, name no winner and mark
-  that question `open: sources disagree`. Main session MUST send only the disputed
-  questions to an agent on the Opus research row, fresh or reused (`delegate` §Briefs),
-  with those sources in the brief.
-- An agent whose brief names its pages MUST read only those pages, in place of the source
+  that question `open: sources disagree`. Main session MUST send only disputed questions
+  to an agent on the Opus research row, fresh or reused (`delegate` §Briefs), with those
+  sources in its brief.
+- An agent whose brief names its pages MUST read only those pages, in place of source
   order above; each answer MUST quote its passage or take `open: not on the page`. A
   question whose pages disagree MUST still take `open: sources disagree`.
 

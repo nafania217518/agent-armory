@@ -34,7 +34,12 @@ the task branch is in `delegate` §Delegation and worktrees.
   before it cuts the task branch, the run MUST read its task item again. When the item is
   closed or has an assignee other than user, the run MUST NOT cut the branch. It MUST stop
   and ask user instead: pick another task (recommended), take it over, or stop.
-- MUST NOT commit to `<base>`.
+- When the task branch already exists with its committed plan file, the run MUST switch
+  to it and skip the cut and `plan`; it starts at the behind-`<base>` check (`plan`
+  §Amendments). A task item claimed by user counts as this run's claim.
+- MUST NOT commit to `<base>` or the local default branch, except the merge of §Finish
+  and the first commit of a new repo (`setup` §Flow). MUST commit on a branch cut from
+  `<base>` instead.
 - MUST ask user before any push, and before any merge into `<base>`, PR merges too.
 
 ```
@@ -78,9 +83,9 @@ Caveat base is the project context `## Caveats` plus topic files
 - Before main session briefs work on a file, it MUST pass the agent the path of each
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
-  (`git diff --name-status <base>...HEAD`), main session MUST re-check the claim as the
-  bullet above sets, then have the entry kept, its path fixed or it dropped, by the
-  bullets above.
+  (`git diff --name-status <base>...HEAD`), main session MUST re-check the entry's claim
+  as the "Before that write" bullet sets, then have entry kept, its path fixed or it
+  dropped, by bullets above.
 
 ## 3. Running the plan
 
@@ -94,9 +99,8 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   plan's order.
 - A finding that blocks the task MUST NOT wait for the recorded-items quiz. It is
   `stuck:` (`delegate` §Re-spawn and retry).
-- An out-of-scope finding on code this task built is a defect in built code. It MUST get
-  its `TR` before the next brief or follow-up message (`plan` §Amendments), not at the
-  quiz.
+- An out-of-scope finding that is a defect in built code (`plan` §Amendments) MUST get
+  its `TR` before the next brief or follow-up message, not at the quiz.
 - Before the first brief, MUST run the behind-`<base>` check of `plan` §Amendments.
 
 ## 4. Review loop
@@ -118,10 +122,9 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   research) MUST be checked before a fix brief, the recorded-items quiz or a `## Caveats`
   write: as §Caveats sets for a code claim, by a researcher (`research` §When to research)
   when a web source can settle it, or by a coder whose brief says "check the claim first;
-  change nothing if it is false". A false finding or
-  caveat MUST be dropped; the task report MUST name it, with the disproving command or
-  source, in its skipped line (§Task end, step 6). A claim the check does
-  not settle MUST keep its `Unverified:` part.
+  change nothing if it is false". A false finding or caveat MUST be dropped; task report
+  MUST name it, with the disproving command or source, in its skipped line (§Task end,
+  step 6). A claim the check does not settle MUST keep its `Unverified:` part.
 - Loop bound: when a loop needs a third round, main session MUST ask user first.
   Rounds before a switch to another agent MUST count.
 - Final review MUST be a fresh reviewer spawn. It MUST cover only commits since the last
@@ -130,7 +133,6 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
 
 ## 5. Task end
 
-- Before the task report: every `on` gate MUST pass, or report MUST name the failing gate.
 - Recorded-items quiz MUST offer these options per kind:
   - scope addition: keep or revert;
   - other SHOULD bypass made during the work: accept, or undo if possible;
@@ -158,30 +160,30 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
      tasks. One that still runs with no valid reason is a stray task: MUST stop it,
      report it as a finding, and have a caveat on its cause written (§Caveats). That
      caveat commit gets no re-review. Done when no stray task runs.
-  6. Before the report, MUST run `lint` and `unit` once. Report MUST hold, in this order:
-     a one-line outcome; the met requirements in one line by id range (`TR-1..TR-7 met`),
-     then each unmet one with its id and status; the gate results, one line per gate; each
-     measured result (`plan` §The plan); what was skipped or not checked; each recorded
-     item with only its applied answer; each follow-up line of step 4; each held caveat
-     (§Caveats) whose `TR` has not merged; any risk the user must know. Done when `lint`
-     and `unit` ran and the report holds each listed item.
+  6. Before the report, MUST have `lint` and `unit` results at the tip; a review run at
+     the tip counts. Report MUST hold, in this order: a one-line outcome; the met
+     requirements in one line by id range (`TR-1..TR-7 met`), then each unmet one with its
+     id and status; the gate results, one line per gate; each measured result (`plan` §The
+     plan); what was skipped or not checked; each recorded item with only its applied
+     answer; each follow-up line of step 4; each held caveat (§Caveats) whose `TR` has not
+     merged; any risk the user must know. Done when `lint` and `unit` results at the tip
+     exist and the report holds each listed item.
   7. Acceptance: MUST ask user which items they want to try by hand, with the exact
      commands or clicks for each. Done when user has answered.
-  8. Cleanup: MUST run the caveat cleanup (§Caveats), then ask user what to keep of the
-     plan file and the design docs the task added to the repo. The recommended option MUST
-     be: keep the design docs, and of the plan file only its Requirements section, which
-     `req:` markers point into. It MUST also ask, for each kept diagnose-only branch,
-     whether to keep it or delete it. A cleanup commit gets no re-review. Done when user
-     has answered.
-  9. Done write: when the task has a milestone, MUST itself mark the task done
-     in the milestone doc and, when the task was the milestone's last open one, the
-     milestone done in `<docs>/DESIGN.md` (`plan` §Levels). MUST then commit both marks
-     in one commit, the last on the task branch. That commit MUST change only status
-     lines. It MUST NOT be committed directly on `<base>`. A task with no
-     milestone MUST skip this step. With a tracker bound, step 11 MUST replace this step.
-     Done when the status commit is on the task branch.
-  10. Finish: when the tip moved after the `lint` and `unit` run of step 6, MUST run them
-      again, then MUST follow §Finish. Done when that run is made or the tip did not move.
+  8. Cleanup: MUST run caveat cleanup (§Caveats), then ask user what to keep of plan file
+     and design docs the task added to the repo. Recommended option MUST be: keep design
+     docs, and of plan file only its Requirements section, which `req:` markers point
+     into. It MUST also ask, for each kept diagnose-only branch, whether to keep or delete
+     it. A cleanup commit gets no re-review. Done when user has answered.
+  9. Done write: when task has a milestone, MUST itself mark task done in milestone doc
+     and, when task was milestone's last open one, milestone done in `<docs>/DESIGN.md`
+     (`plan` §Levels). MUST then commit both marks in one commit, the last on task branch.
+     That commit MUST change only status lines. It MUST NOT be committed directly on
+     `<base>`. A task with no milestone MUST skip this step. With a tracker bound,
+     step 11 MUST replace this step. Done when status commit is on task branch.
+  10. Finish: when the tip moved after the `lint` and `unit` results of step 6, MUST run
+      them again, then MUST follow §Finish. Done when that run is made or the tip did not
+      move.
   11. Tracker done write, with a tracker bound: after the finish answer, MUST comment on
       the task item with the branch and, when they exist, the kept plan file path, PR link
       and merge commit (the merged HEAD commit on a fast-forward). It MUST make no repo
@@ -192,9 +194,8 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
         and tell user;
       - PR, with a closing reference form in `closes by PR merge:`: the run MUST leave
         the status to the PR merge;
-      - PR, with `closes by PR merge: no`: MUST set the items done only when the run
-        merges the PR itself after user's yes; else the report MUST say the items stay
-        open;
+      - PR, with `closes by PR merge: no`: MUST set the items done only when run merges PR
+        itself after user's yes; else report MUST say the items stay open;
       - push only or stop: MUST comment only; the task item MUST keep its claim.
 
       Done when each comment and status write of its finish answer is made.
@@ -206,12 +207,11 @@ Brief each item as `delegate` §Briefs sets. A requirement change during the wor
   has a remote, else a merge into `<base>`.
 - A merge into `<base>` MUST merge into the local default branch. With a remote, main
   session MUST then ask a separate question whether to push that branch.
-- After a push to a branch with an open PR, main session MUST have an agent compare the
-  PR body's Summary and Evidence with the plan's Design and the latest gate and measured
-  results, and return each stale line with its new text. Main session MUST update those
-  lines in the same step. The push yes covers that edit. When the cleanup (§Task end,
-  step 8) removed the Design, the brief MUST name the commit before that cleanup to read
-  it from.
+- After a push to a branch with an open PR, main session MUST have an agent compare the PR
+  body's Summary and Evidence with plan's Design and latest gate and measured results, and
+  return each stale line with its new text. Main session MUST update those lines in the
+  same step. The push yes covers that edit. When the cleanup (§Task end, step 8) removed
+  the Design, the brief MUST name the commit before that cleanup to read it from.
 - A PR body MUST take the sections and order of `templates/pr.md`, relative to this
   skill, each filled as its format line says, with no format line.
 - With a tracker bound and a closing reference form in `closes by PR merge:`, the PR body

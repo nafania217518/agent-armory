@@ -42,9 +42,9 @@ differs from a review.
   each entry's file exists. Each failure MUST be a finding.
 - A drifted entry is one whose file has a commit newer than entry's line (`git blame` on
   the line, `git log -1` on the file).
-- Up to 10 drifted entries: reviewer that runs the audit MUST check each claim itself. 11
-  or more: it MUST report each drifted entry by `file:line`. Main session MUST then check
-  their claims in parallel reviewer spawns, one per topic file, plus one for root list.
+- Up to 10 drifted entries: reviewer that runs audit MUST check each claim itself. 11 or
+  more: it MUST report each drifted entry by `file:line`. Main session MUST then check
+  their claims as `code` §Caveats sets, one spawn per topic file, plus one for root list.
 - Each claim check MUST give one verdict per entry: holds, false, path moved, or
   `Unverified: <what settles it>`. Each verdict other than holds MUST be an audit finding.
   For a spawn, main session MUST add it to audit findings.
@@ -70,8 +70,8 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?tech-debt:' -- <target>
 - MUST start with `What this repo does:` in two or three sentences, and expected load, or
   `none stated`. Then MUST give `Gates:` block of `review` §Output, each `on` gate run on
   whole tree. A gate failure in target MUST be a Must fix finding.
-- Then MUST give findings, tech-debt ledger and the two slots (`core` §Reports).
+- Then MUST give findings, tech-debt ledger and two slots (`core` §Reports).
 - MUST end with `Verdict:` in one line (`Verdict: healthy.`, or what to fix first), then
   `Not checked:` in one line when a part was not read or not run.
 - Nothing found: MUST give `What this repo does:`, `Gates:`, ledger, one line on what was
-  checked and the two slots. End lines follow, with `Verdict: healthy.`
+  checked and two slots. End lines follow, with `Verdict: healthy.`

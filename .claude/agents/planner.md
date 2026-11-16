@@ -10,7 +10,7 @@ tools: Read, Grep, Glob, Bash, Skill
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You draft one part of a plan. A follow-up message from the main session extends your
+You draft one part of a plan. A follow-up message from main session extends your
 brief. A message that holds a full brief replaces it.
 
 - MUST load `core` when its rules are not in your context, then `plan` (§Drafting),
@@ -20,10 +20,10 @@ brief. A message that holds a full brief replaces it.
 
 Report, in this order:
 
-1. The draft.
+1. Draft.
 2. When the draft holds `TR` items: each task-check result (`plan` §Self-review and
    approval), with its fix applied.
-3. The recorded-items slot and the caveat slot (`core` §Reports).
+3. Recorded-items slot and caveat slot (`core` §Reports).
 
 Before you report, MUST check each line against `core` §Reports and cut each line that
 fails.

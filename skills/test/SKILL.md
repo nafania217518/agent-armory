@@ -31,8 +31,8 @@ change these lines; that section MUST win.
 - unit: one unit (function, class or small cluster), fast, runs on every change.
   Frontend unit tests with backend stubbed are `unit`.
 - integration: narrow, one integration point at a time (real database, file system, one
-  separate service or its double), at the service boundary. The test MUST start the real
-  part or service double, trigger the code that uses it, and check the result there.
+  separate service or its double), at service boundary. Test MUST start real part or
+  service double, trigger code that uses it, and check result there.
 - contract: consumer-driven contract tests for each interface with a separate service.
   Consumer MUST write the contract; provider MUST verify it. It keeps `integration`
   doubles honest.
@@ -55,12 +55,12 @@ change these lines; that section MUST win.
 
 - You MUST write the failing test for every requirement before code, except one with
   `tests: none`. You MUST work one test at a time: write it, see it fail for expected
-  reason, make the smallest change that passes it, and only then write next test. A test
-  that passes on first run MUST fail once you break code it covers; you MUST then undo the
-  break. The break MUST remove what the rule in test name depends on, such as a branch,
-  escape or filter, one rule at a time. A break in other code does not prove the test.
+  reason, make smallest change that passes it, and only then write next test. Test that
+  passes on first run MUST fail once you break code it covers; you MUST then undo the
+  break. Break MUST remove what the rule in test name depends on, such as a branch, escape
+  or filter, one rule at a time. A break in other code does not prove the test.
 - A requirement where an honest test is impractical MUST NOT get a bad test. Plan MUST
-  decide it: the plan item carries the line `tests: none, <why>`.
+  decide it: plan item carries line `tests: none, <why>`.
 - A coder that finds a planned test impractical MUST NOT drop it. That is a requirement
   change (`plan` §Amendments): coder MUST stop and report `stuck:` with the why.
   `delegate` §Re-spawn and retry handles the rest.
@@ -70,7 +70,7 @@ change these lines; that section MUST win.
   exception: a "finds nothing" or "not shown" test MUST have a positive twin, a sibling
   test on same data that finds or shows something; it is then kept.
 - An expected value MUST come from a source independent of the code: a literal, a worked
-  example, the spec. A test MUST NOT compute its expected value the way the code does.
+  example, the spec. A test MUST NOT compute its expected value the way code does.
 - You MUST NOT assert the order of internal calls, or test private methods or trivial
   code (a getter, a pass-through, code with no branch).
 - Happy path, each edge case the requirement touches (`review` §Look for, class Bug) and
@@ -79,16 +79,16 @@ change these lines; that section MUST win.
 
 ## 5. Test scope
 
-- Main session MUST write the test-scope list into the plan: only the existing test
-  cases the change will break, rework or remove, each with the reason.
+- Main session MUST write the test-scope list into plan: only existing test cases the
+  change will break, rework or remove, each with the reason.
 - When a change makes a response parse stricter, changes a type that tests build or map,
   or adds a required parameter or field to a shared type, the list MUST name each test,
   mock, fixture and call site that builds or reads it, found by a grep for the type or
   function name, also one that would still pass through a failure path.
 - A scope addition MUST be a failing test proven missed from the list (`implement`
   §Tests while coding). It MUST be recorded (`core` §Reports), with its reason.
-- Reviewer MUST check the reason and code of each scope addition, and decide whether a
-  rework is needed.
+- Reviewer MUST check reason and code of each scope addition, and decide whether rework is
+  needed.
 
 ## 6. Structure and naming
 
@@ -107,7 +107,7 @@ change these lines; that section MUST win.
   wrong-key mapping fails a test: length ≠ width ≠ height; id order ≠ name order ≠
   insert order.
 - An end-to-end step whose expected UI state equals previous step's MUST also assert on
-  its own response body. A DOM check alone can pass before that response arrives.
+  its own response body. DOM check alone can pass before that response arrives.
 
 ## 7. Markers
 

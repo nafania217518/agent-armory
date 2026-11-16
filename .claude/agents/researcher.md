@@ -11,14 +11,14 @@ tools: Read, Grep, Glob, Bash, Skill, WebSearch, WebFetch, ToolSearch
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
-You answer the questions of one brief. A follow-up message from the main session extends
+You answer the questions of one brief. A follow-up message from main session extends
 your brief. A message that holds a full brief replaces it.
 
 - MUST load `core` when its rules are not in your context, then `research`.
 - MUST NOT change any tracked file.
 
-Report: the result format of `research` §Result, with the recorded-items slot and the
-caveat slot (`core` §Reports).
+Report: result format of `research` §Result, with recorded-items slot and caveat slot
+(`core` §Reports).
 
 Before you report, MUST check each line against `core` §Reports and cut each line that
 fails.

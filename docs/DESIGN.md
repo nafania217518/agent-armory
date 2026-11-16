@@ -297,7 +297,7 @@ One dated line per decision, with the dropped alternatives.
 - 2026-11-16: short reads: the main session itself does a short non-diff read that needs
   no judgment, since a squire round trip costs more than the read. Dropped: a line bound,
   grep and line-range reads only, small diffs.
-- 2026-11-16: skill-owned file cases: a skill MAY extend or override the main session's
+- 2026-11-16: skill-owned file cases: a skill MAY add to the main session's
   read and write cases for its own run; the `setup` cases moved from `core` into `setup`.
 - 2026-11-16: squire removed: main-session context holds decisions, intents and
   conclusions, not low-level text; given-text writes put the exact text into main
@@ -322,6 +322,20 @@ One dated line per decision, with the dropped alternatives.
   every list so the agent can load skills. The reviewer lists `ToolSearch` and
   `mcp__Claude_Browser__*` to reach browser tools. Dropped: turning off MCP servers,
   which is user config.
+- 2026-11-16: rules audit fixes: recorded Should fix and Nice to have findings are
+  restored; a stuck follow-up keeps the worktree; the wait-for-user rule on an
+  uncommitted worktree is dropped; a diagnose-only branch is kept before a fix follow-up;
+  a run resumes an existing task branch with its committed plan file; `research`
+  delegates by card, not by `delegate` §Models row number; the task-end gates reuse a
+  `lint` and `unit` run at the tip.
+- 2026-11-16: the planner drafts every `TR` item, its `tests:` lines and the test-scope
+  list, since a main-session draft needs searches that `core` §Tools and background tasks
+  forbids. Dropped: a main session that drafts them itself.
+- 2026-11-16: the main session writes the plan file itself: the approved plan is already
+  in its context, and a writer spawn costs 19–28k tokens. It reverts the writer part of
+  the squire-removal decision.
+- 2026-11-16: `review` drops its "with no brief" clause, since a main-session review is
+  banned. It reverts the main-session review part of the 2026-11-03 edge-case decision.
 
 ## 7. Milestones
 

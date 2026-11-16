@@ -5,7 +5,7 @@ description: >
   list, one item at a time, a recommended category and outcome, then the writes the user
   approves. Changes no repo file. Use for "/triage", "triage the tracker".
 disable-model-invocation: true
-max-lines: 103
+max-lines: 102
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -22,8 +22,8 @@ and no plan mode. It MUST write no repo file.
 - MUST stop and name `setup` when project context has no `## Tracker`, or a label verb
   (`core` §Host terms, term `tracker`) or one of the five label lines is unbound.
 - Roles: states `needs-triage`, `needs-info`, `accepted`; categories `bug`, `enhancement`.
-  Each maps to its `label <role>: <label>` line. A triaged open item MUST carry exactly
-  one state role and one category role.
+  Each maps to its `label <role>: <label>` line. A triaged inbound item MUST carry
+  exactly one state role and one category role.
 - On user's no to a missing role label, MUST stop and name it.
 - Done when every label verb and label line is bound, and every role label exists.
 
@@ -58,9 +58,8 @@ other item, a mixed one included, is an enhancement.
 3. MUST ask only open points, each under its `plan` business-quiz topic (`plan` §Quizzes):
    facts `BR` lines need that the item, code, done milestones, docs and tests do not
    settle. A request for a different output on an input the project fixes is an open
-   point; triage MUST recommend the fixed output. MUST NOT write to another item; MUST
-   leave its change to a `plan` amendment. Done when each point is answered or left to
-   reporter.
+   point; triage MUST recommend fixed output. MUST NOT write to another item; MUST leave
+   its change to a `plan` amendment. Done when each point is answered or left to reporter.
 4. MUST ask one call with two questions, category then outcome, each option with its
    writes in short. Message text MUST hold reasons, related items, `BR` lines when
    `accepted` is an option, and the drafted rejection reason. Rejected MUST be recommended
@@ -98,6 +97,6 @@ other item, a mixed one included, is an enhancement.
 - An item whose body starts with the `core` AI marker line, or that holds its own
   `## Requirements`, MUST skip steps 1 and 4 of §Triage one item. Once each point is
   answered, it MUST ask user one yes or no question that lists the write, and on a yes set
-  `accepted` again.
+  `accepted` only on an item with its own `## Requirements`; else remove `needs-info`.
 - Done when each point of earlier notes is marked answered or still open, and, for such an
-  item, user has answered and, on a yes, its state label is set back.
+  item, user has answered and, on a yes, its state label is set or removed.

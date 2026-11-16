@@ -31,7 +31,7 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 - MUST NOT write a hypothesis, or build a theory from reading code, before loop exists.
   MUST build loop first.
 - MUST first try a failing test at the seam that reaches the bug.
-- When that test does not work, SHOULD take the first of these that works, in cost
+- When that test does not work, SHOULD take first of these that works, in cost
   order: throwaway harness that calls the code path with one function call; CLI run on a
   fixture, diffed against known-good output; replay of a captured trace; HTTP script
   against a running dev server; property or fuzz loop; differential run of two versions
@@ -81,10 +81,10 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 
 - MUST NOT write the fix. MUST end with report instead.
 - MUST commit loop when it is a file. MAY commit other debug code (a harness, tagged
-  logs). Each debug commit MUST go on debugger's worktree branch, the diagnose-only
-  branch. MUST NOT merge that branch into task branch; MUST name it in report instead.
-- Each debug commit subject MUST start with `debug(<id>):`, where `<id>` is the
-  debug prefix's id.
+  logs). Each debug commit MUST go on debugger's worktree branch. MUST NOT merge
+  that branch into task branch; MUST name it in report instead.
+- Each debug commit subject MUST start with `debug(<id>):`, where `<id>` is debug
+  prefix's id.
 - Diagnose-only exemption: tip of a diagnose-only result MAY fail `unit` because of its
   loop test.
 - Done when report names the confirmed hypothesis, loop command with its last output, a

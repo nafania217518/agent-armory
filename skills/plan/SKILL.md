@@ -5,7 +5,7 @@ description: >
   milestone (scope and BR requirements) and task (TR requirements and the plan file),
   with quizzes and the user's approval in plan mode. Use for a new task, "plan this",
   "plan a milestone", "design doc", "design this change", a changed requirement,
-  "/plan", and from the code skill when no plan exists.
+  "/plan", and from `code` when no plan exists.
 max-lines: 374
 ---
 
@@ -15,7 +15,8 @@ Load `core` first when its rules are not in your context.
 # plan
 
 Pre-work before any edit, at three levels. Main session runs every section except
-Drafting; planner runs only Drafting.
+Drafting and the task check and task-level walks of §Self-review and approval; planner
+runs only those.
 
 ## 1. Levels
 
@@ -188,9 +189,8 @@ Drafting; planner runs only Drafting.
   that breaks callers across the codebase SHOULD use expand–contract: add the new form,
   move callers in batches, remove the old form.
 - Plan MUST hold the test-scope list (`test` §Test scope).
-- Items, their `tests:` lines and the test-scope list SHOULD come as a draft from planner
-  (§Drafting), which loads `test` and `implement`. A main session that drafts them itself
-  MUST load both.
+- Items, their `tests:` lines and the test-scope list MUST come as a draft from planner
+  (§Drafting).
 - A data-growth path is a read or write path whose cost grows with stored data: a query, a
   loop over stored rows, an index build.
 - Each `TR` that adds or changes a data-growth path MUST carry its `load:` line: its load
@@ -224,7 +224,7 @@ Drafting; planner runs only Drafting.
   - strategic: doc has no testable item; every milestone line has a goal; every new
     milestone line has status open; every new decision line carries its date and dropped
     alternatives. With a tracker bound, the check MUST read the planned milestone items (a
-    goal, status open) in place of milestone lines.
+    goal, status open) instead of milestone lines.
   - milestone: each `BR` is testable and sits in exactly one task's `BR` list. A gate-type
     `BR`, one that applies to every task, such as one for `lint`, MUST sit in every open
     task's list.
@@ -253,16 +253,15 @@ Drafting; planner runs only Drafting.
       the later `TR`.
 - At milestone and task level, review MUST also walk each new or changed flow path by
   path, from the command the user runs (gate, CLI, page) to where each output lands,
-  against the branch, worktree and gate rules.
-- At milestone and task level, review MUST also check that each need is real and each
-  interface two items build has its contract item (§The plan).
+  against the branch, worktree and gate rules. It MUST also check that each need is real
+  and each interface two items build has its contract item (§The plan).
 - At task level, review MUST also walk each new `tests:` case, with its expected value,
   through its `TR` and the existing rules of its component, in the plan and code. A case
   one of them makes impossible MUST be dropped or rewritten. A case whose expected value
   still holds without its `TR`'s code, a swappable test value included, MUST be rewritten.
-- The actor that drafts the `TR` items MUST run the task check and the task-level walks
-  above. Main session MUST run the strategic and milestone checks, with their walks, and
-  the tracker-write list below.
+- Planner MUST run the task check and the task-level walks above on its draft. Main
+  session MUST run the strategic and milestone checks, with their walks, and the
+  tracker-write list below.
 - With a tracker bound (§Levels, tracker variant), proposal MUST list each tracker write
   the run makes: creates with their labels (a missing role label's create included), body
   edits, links, edges, comments and status sets, and the create of each follow-up item the
@@ -271,29 +270,27 @@ Drafting; planner runs only Drafting.
 - An open question MUST go to one more quiz round.
 - On a reject, MUST fix the part user names and propose again. A fix that needs only
   plan edits or a quiz round MUST stay in plan mode. Any other fix MUST first ask user to
-  switch to auto mode or bypass permissions, and name the work; after it, MUST enter plan
-  mode again.
+  leave plan mode, and name the work; after it, MUST enter plan mode again.
 
 ## 7. Plan file
 
 - After approval, main session MUST cut the level's branch (§Levels, column Branch) from
-  `<base>` with the commands of `code` §Branch and plan file.
-- It MUST then have the writer copy only the level's template sections of the plan-mode
-  file the message names to the level's Doc path, as the first commit; `core` §Host terms
-  sets `<docs>`. Requirements MUST NOT go into a separate file.
+  `<base>` under `code` §Branch and plan file.
+- It MUST then write the level's template sections of the approved proposal to the
+  level's Doc path itself, as the first commit; `core` §Host terms sets `<docs>`.
+  Requirements MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
 - Right after that commit, main session MUST have every caveat found during planning
   written into the caveat base (`code` §Caveats). A task run MUST hold them in its
   plan-mode proposal, not its plan file. A held caveat MUST wait as `code` §Caveats sets.
-- In that step, main session MUST write each term the quiz settled into project context
-  `## Glossary` itself, in its format line, and MUST commit it. A plan
-  template MUST NOT hold a glossary section.
-- In that step, main session MUST write an expected load the quiz settled into
-  `<docs>/DESIGN.md` itself, and MUST commit it.
+- In that step, main session MUST itself write each term the quiz settled into project
+  context `## Glossary`, in its format line, and an expected load the quiz settled into
+  `<docs>/DESIGN.md`, and MUST commit them. A plan template MUST NOT hold a glossary
+  section.
 - Strategic or milestone run with a branch MUST end with the finish question of `code`
   §Finish for its branch.
 - With a tracker bound (§Levels, tracker variant), a strategic or milestone run MUST
-  follow this rule in place of the branch and doc-commit bullets above. It MUST create its
+  follow this rule instead of the branch and doc-commit bullets above. It MUST create its
   items after approval. Milestone run MUST write no milestone doc. Such a run MUST cut its
   level's branch only when it writes a repo file (`DESIGN.md`, glossary or caveats); that
   write MUST be its first commit. Else it MUST skip the branch and finish question. A new
@@ -305,6 +302,8 @@ Drafting; planner runs only Drafting.
 - A run that creates several tracker items MUST create the blockers first. It MUST then
   add blocked-by edges and cross-references in a second pass, with real ids. It MUST NOT
   write a placeholder id; it MUST wait for the real id instead.
+- Done when the plan file, caveat, glossary and load commits are on the level's branch, or
+  the tracker items are created.
 
 ## 8. Amendments
 
@@ -314,6 +313,7 @@ Drafting; planner runs only Drafting.
   (below), and MUST go to user for a yes, with the new text, through the question tool.
   One exception, the `TR` of a defect in built code (below), needs no yes: it repairs
   approved work.
+- An added or changed `TR` MUST come as a draft from planner (§Drafting), as in §The plan.
 - A change user asks for during a code run MUST get its `BR` in the same amendment as its
   `TR`; user's request is the yes for both.
 - An amendment MUST go to the doc that owns the fact (§Levels).
