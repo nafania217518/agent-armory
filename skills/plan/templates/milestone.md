@@ -12,7 +12,7 @@ Parent: `{{DOCS}}/DESIGN.md` §Milestones, line `{{NAME}}`.
 
 ## Requirements
 
-Format: `BR-<n>: MUST <behavior>`.
+Format: `- BR-<n>: MUST <behavior>`, a list item.
 
 ## Tasks
 

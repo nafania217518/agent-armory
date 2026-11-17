@@ -18,10 +18,11 @@ dropped alternative.
 
 ## Requirements
 
-Format: `TR-<n> (<milestone>/BR-<m>, ...): MUST <behavior>`, then indented lines: a
-`tests:` line that names the tests and each gate by name, or `tests: none, <why>`; a
-`needs:` line: the `TR` ids it needs, or `none`; on a data-growth path, a `load:` line:
-its load `TR` id, or `load: none, <why>`.
+Format: `- TR-<n> (<milestone>/BR-<m>, ...): MUST <behavior>`, a list item, then
+indented list items under it: a `- tests:` line that names the tests and each gate by
+name, or `- tests: none, <why>`; a `- needs:` line: the `TR` ids it needs, or `none`; on
+a data-growth path, a `- load:` line: its load `TR` id, or `- load: none, <why>`. An
+exact text block the `TR` prescribes is indented under the item.
 
 A task with no milestone and no tracker bound lists its own `BR` items first, in the
 format of armory `plan`'s `templates/milestone.md` §Requirements.
