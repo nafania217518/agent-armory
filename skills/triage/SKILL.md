@@ -5,7 +5,7 @@ description: >
   list, one item at a time, a recommended category and outcome, then the writes the user
   approves. Changes no repo file. Use for "/triage", "triage the tracker".
 disable-model-invocation: true
-max-lines: 102
+max-lines: 103
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -64,8 +64,9 @@ other item, a mixed one included, is an enhancement.
    writes in short. Message text MUST hold reasons, related items, `BR` lines when
    `accepted` is an option, and the drafted rejection reason. Rejected MUST be recommended
    when the project already gives the item or open items with `BR` lines cover it. With a
-   point left to reporter, MUST NOT offer `accepted`; MUST offer the other outcomes. Done
-   when user chose and its writes are made.
+   point left to reporter, MUST NOT offer `accepted`; MUST offer the other outcomes. When
+   rejected is not recommended, MUST recommend `needs-info` with a point left to reporter,
+   else `accepted`. Done when user chose and its writes are made.
 
 ## 4. Outcomes
 

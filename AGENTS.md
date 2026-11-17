@@ -89,6 +89,10 @@ Inbound item : an open tracker item opened outside an armory run and not yet `ac
 
 Caveat base : the project's knowledge base of caveats: root caveats plus topic files.
 
+Basis : the ground a recommended option rests on.
+
+Intent point : an open point whose options turn on the user's goal, scope, priority or taste.
+
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
 
 ## Caveats

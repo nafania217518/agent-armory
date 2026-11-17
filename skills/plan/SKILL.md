@@ -117,15 +117,15 @@ runs only those.
 - A round MUST ask only questions whose prerequisite answers are in. A question that
   depends on another open question of the round MUST wait for a later round.
 - A quiz MUST NOT ask a fact the parent doc, repo, a tool or an agent can settle: main
-  session MUST get it by a short read or from an agent (`core` §Tools and background
-  tasks). A running lookup MUST hold back only questions that depend on it.
+  session MUST get it by a short read (`core` §Tools and background tasks) or by
+  research (below). A running lookup MUST hold back only questions that depend on it.
 - During a quiz, main session MUST name a term that conflicts with project context
   `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST
   check each claim user makes about the code against the code as `code` §Caveats sets,
   naming any contradiction.
 - Task run MAY have zero quiz rounds when its parent doc leaves no open point.
-- An unknown (a library, API, model or domain fact) MUST go to research (`research` §When
-  to research), then, when needed, to a quiz on the findings and next steps.
+- Open points and claims MUST go to research as `research` §When to research sets, then,
+  when needed, to a quiz on the findings and next steps.
 
 ## 4. Requirements
 

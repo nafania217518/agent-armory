@@ -3,7 +3,7 @@ name: core
 description: >
   Always-on base rules for the main session and every subagent; the hook injects them at
   session and subagent start. Use for "/core" and "show the armory base rules".
-max-lines: 160
+max-lines: 161
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -50,6 +50,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 - Main session MUST ask user through question tool; message text MUST hold only context.
   Free-text question MAY offer only "Other", or go as a plain message. Subagent MUST
   report `stuck: <question>` instead.
+- Recommended option MUST name its basis (`research` §When to research), or be unmarked.
 
 ## 3. Tools and background tasks
 

@@ -5,7 +5,7 @@ description: >
   each task runs through plan and code to Finish with no more questions to the user;
   the run answers each question itself and reports every answer. Use for "/dnd".
 disable-model-invocation: true
-max-lines: 68
+max-lines: 73
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -42,6 +42,10 @@ Main session runs each session task from `plan` to `code` Finish while user is a
 - MUST run each task through `plan` at task level, then `code` through its Finish.
 - MUST NOT put any later question to user. MUST pick recommended option instead, or, with
   none, the option that leaves task done, gated and ready for a PR.
+- An answer or self-approved plan item that is irreversible or outward-facing (delete data
+  git cannot restore, break a public interface, publish, spend) MUST rest on basis 1 of
+  `research` §When to research, other than a plan or item a `dnd` run self-approved or
+  created, or on a §Start round answer; with neither, it is the stop case below.
 - Self-approve: MUST NOT enter plan mode; passed self-review of `plan` §Self-review and
   approval is the approval.
 - Acceptance (`code` §Task end, step 7): MUST try each by-hand item itself when it can and
@@ -62,7 +66,8 @@ Main session runs each session task from `plan` to `code` Finish while user is a
 
 ## 3. Answers log
 
-- MUST record each question the run answers: question, answer, a one-line why.
+- MUST record each question the run answers: question, answer, one-line why: its basis
+  (number for an intent point, `research` §When to research) or `no basis`, and source.
 - Each task MUST end with `code` task report, then its answers log.
 - With self-approve, MUST also record each tracker write the plan lists (`plan`
   §Self-review and approval).

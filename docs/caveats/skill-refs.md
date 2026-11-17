@@ -4,4 +4,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 
 - `plan`, `delegate` and `dnd` cite `code` §Task end steps by number, so a step renumber breaks them with no lint error : skills/code/SKILL.md
 - `audit` cites `review` §Understand first by bullet position ("first bullet"), so a new bullet above it changes what audit inherits : skills/audit/SKILL.md
-- `code` §Caveats and `plan` §Amendments cite `delegate` §Models row 9 by number, so a row renumber breaks them with no lint error : skills/delegate/SKILL.md
+- `code` §Caveats and `plan` §Amendments cite `delegate` §Models row 9, and `research` §When to research cites rows 7 and 8, by number, so a row renumber breaks them with no lint error : skills/delegate/SKILL.md
+- `dnd` §Run and §Answers log cite basis numbers of the `research` §When to research ladder, so a ladder reorder breaks them with no lint error : skills/research/SKILL.md

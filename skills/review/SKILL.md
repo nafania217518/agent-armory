@@ -5,7 +5,7 @@ description: >
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
   no code. Use for "review this", "review the last commit", "review my PR", "is this
   over-engineered", "/review".
-max-lines: 162
+max-lines: 161
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -116,8 +116,7 @@ context). "Reported" means listed as a finding.
 - MUST re-read lines and confirm: caller exists, value can be empty, code is unused.
 - MAY run one compile or one test that settles a claim before reporting it, also when
   brief hands over gate run. A claim it cannot settle takes `Unverified:` part (§Output).
-- A finding that rests on a library claim MUST follow `research` §When to research:
-  reviewer MUST look claim up in dependency cache or docs before it reports.
+- A finding that rests on a model-memory claim MUST follow `research` §When to research.
 - A `tech-debt:` marker (`implement` §The smallest complete change) MUST be reported only
   when expected load is past its limit, or when it covers a never-cut item.
 - A finding on a design rule the plan's Overrides section names MUST NOT be reported. MUST

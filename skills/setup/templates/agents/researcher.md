@@ -1,9 +1,9 @@
 ---
 name: researcher
 description: >
-  Answers one brief's technical questions through `research`: official sources first,
-  dates, disagreements. Returns a claim per question, sources and the caveat slot. Use
-  for library, API, model, tool and domain facts that may be outdated.
+  Answers one brief's questions through `research`: official sources first, dates,
+  disagreements. Returns a claim per question, sources and the caveat slot. Use for
+  library, API, model, tool and domain facts and the basis for a recommended option.
 model: {{MODEL}}
 effort: {{EFFORT}}
 tools: Read, Grep, Glob, Bash, Skill, WebSearch, WebFetch, ToolSearch
