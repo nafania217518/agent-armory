@@ -9,7 +9,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [code, core-main, delegate, test, workflow]
-  max-lines: 169
+  max-lines: 172
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -35,7 +35,12 @@ Main session sets up armory on its host. User decides every write.
   bullets of §3. Its Questions round MUST show only items that project context
   lacks; the rest MUST keep their existing values. §4.4 sets how each changed file is
   shown and written. Update run MUST offer, in the consent question, to delete each card
-  at host's agent location that no template names.
+  at host's agent location that no template names. Update run MUST merge an old
+  `## Commands` into `## Gates`: each `on` gate takes its command, each `off` line stays,
+  and `## Commands` goes. An `on` gate with no command MUST be offered
+  as off, and the command of an `off` gate for drop, in the consent question. A command
+  with `(cd <folder> && …)` pieces MUST become parts, each other piece a `.` part. Any
+  other line MUST be offered for drop in the consent question.
 - Main session MAY do every file read and write of a run itself.
 
 ## 2. Self-report
@@ -98,14 +103,13 @@ Main session sets up armory on its host. User decides every write.
   build tool's script list. Other items take their defaults. Each default is in brackets:
   1. Name [folder name], one paragraph on what the project is, docs folder [`docs/`].
   2. Surfaces: frontend, backend, CLI, library, other.
-  3. One command per check: `lint`, `owasp`, `unit`, `integration`, `contract`,
-     `functional`, `e2e`, `coverage`, `run`. A level the project does not have: no line.
-  4. Which flexible levels are `on`: `contract`, `functional`, `e2e` [all three
-     `off (not chosen)`].
-  5. Other gates that are `off`, each with a reason [all `on`].
-  6. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
+  3. One command per gate: `lint`, `owasp`, `unit`, `integration`, `coverage`,
+     `contract`, `functional`, `e2e`; with several packages, one per folder that has the
+     check, as parts. A level the project does not have: no line.
+  4. Gates with no command: each is off, with an optional reason [no reason].
+  5. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
      [`none`] (`code` §3).
-  7. Tracker [docs fallback].
+  6. Tracker [docs fallback].
 - Before round, `setup` MUST probe host's connections (MCP servers and CLIs) for a
   tracker. It MUST propose a binding for each verb of `tracking` §1,
   its target, and the `closes by PR merge:` line of `templates/AGENTS.md` (the closing
@@ -123,12 +127,10 @@ Main session sets up armory on its host. User decides every write.
 
 ### 4.3. Answer checks
 
-- Gate with no command MUST be `off <reason>`.
 - Each surface of question 2 MUST meet the `test` surface rule with a command and its gate
-  `on`. Else MUST ask for the command, or for the gate to be `off` with a reason.
+  `on`. Else MUST ask for the command, or leave the gate off.
 - `coverage` command MUST fail below threshold set in build tools (default 90% per core
-  module), through a fail-under setting. Else MUST ask for it, or set gate `off` with a
-  reason.
+  module), through a fail-under setting. Else MUST ask for it, or leave the gate off.
 - With no tracker fit, a required verb unbound, or no `closes by PR merge:` value, `setup`
   MUST ask user how to reach tracker, that verb or that value, or keep docs fallback.
 
@@ -137,21 +139,21 @@ Main session sets up armory on its host. User decides every write.
 - Main session MUST write the sections into project context.
 - Project context `## Rules` MUST hold the line `Documentation lives in <folder>` (default
   `docs/`).
-- `auto-fix:` answer to question 6 MUST replace template line `- auto-fix: none`.
+- `auto-fix:` answer to question 5 MUST replace template line `- auto-fix: none`.
 - Project context MUST have these sections, in this order: `## What this is` (one
-  paragraph on what the project is), `## Commands`, `## Gates`, `## Test levels`,
+  paragraph on what the project is), `## Gates`, `## Test levels`,
   `## Tracker`, `## Rules` (project-only rules), `## Glossary`, `## Caveats`.
 - `## Tracker` is the one optional section. It MUST be written only for a bound tracker.
   With docs fallback, the section and its format line MUST be dropped.
-- `## Commands`, `## Gates`, `## Glossary` and `## Caveats` MUST take format lines of
+- `## Gates`, `## Glossary` and `## Caveats` MUST take format lines of
   `templates/AGENTS.md`. `## Glossary` MUST start empty, with its format line. Run MUST
   place each caveat it found under `workflow` §3, after the `Unverified:` check of `code`
   §3.
 - Only when root `## Caveats` holds no topic pointer, update run MUST offer to sort it
   under `workflow` §3. Its report MUST give entry count before and after, and each drop.
-- Gate's command MUST carry the gate's name. `run` is not a gate. Gates MUST be: `lint`,
-  `owasp`, `unit`, `integration`, `coverage` (default `on`); `contract`, `functional`,
-  `e2e` (default `off (not chosen)` until turned on).
+- Gate line MUST carry the gate's name. Gates MUST be: `lint`, `owasp`, `unit`,
+  `integration`, `coverage`, `contract`, `functional`, `e2e`. A gate is `on` only when
+  its line or a part holds a command.
 - Project context MUST NOT copy global rules or armory rules, `test` level lines included.
   `## Test levels` MUST hold only what the project adds to or changes in those lines, and
   its unit style.
@@ -159,8 +161,9 @@ Main session sets up armory on its host. User decides every write.
   unit style `sociable`. An existing one MUST keep its lines.
 - MUST NOT overwrite an existing project context or agent card outside the consent
   question. MUST put its diff into that question instead.
-- Fill `templates/AGENTS.md` from answers. Drop a command line with no command and any
-  placeholder line left empty.
+- Fill `templates/AGENTS.md` from answers. Drop a gate line that is off with no reason,
+  and any placeholder line left empty. A gate with parts keeps its
+  line, with its parts under it.
 
 ## 5. Report
 

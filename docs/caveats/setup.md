@@ -12,3 +12,4 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - An update run finds an old pointer only by its opening words "At session start, load the armory `core` skill", so a pointer edit that changes those words leaves old pointers unmatched : skills/setup/SKILL.md
 - GitHub `--state closed` lists done and dropped items alike, so a `list items` binding finds the status dropped only by a search for `reason:"not planned"` : skills/setup/SKILL.md
 - `docs/DESIGN.md` numbers its section headings (`## 3. The project context template`) while the templates and `AGENTS.md` do not, so a match of a heading by its name breaks on that number : docs/DESIGN.md
+- The setup `AGENTS.md` template and root `AGENTS.md` write out the `core` §6 caveat format and the `workflow` §3 pointer format as plain text, so a change to either format leaves them stale with no `lint` report : skills/setup/templates/AGENTS.md

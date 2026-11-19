@@ -24,3 +24,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A hook command that exits 1 is a non-blocking error: the session goes on and nothing is injected (code.claude.com/docs/en/hooks, read 2026-11-19) : hooks/hooks.json
 - SubagentStart takes context only from `hookSpecificOutput.additionalContext` JSON, not from plain stdout (code.claude.com/docs/en/hooks, read 2026-11-19) : hooks/agent-payload.json
 - The researcher card loads only `core` and `research`, so a rule that `dnd` adds for researchers reaches one only through the brief : skills/setup/templates/agents/researcher.md
+- When armory is enabled at user scope, its hook payloads reach every project, so a `core` rule keyed on a project-context section also fires in projects that never ran `setup` : skills/core/SKILL.md
+- `lint` does not compare the `docs/DESIGN.md` §4 load tables with the card load lines, so a card load change leaves both tables stale with no report : docs/DESIGN.md

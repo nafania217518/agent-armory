@@ -3,12 +3,12 @@ name: review
 description: >
   Review of a change: logic, safety, real load, tests for risky code, gates, lean and
   readable lines. Reads the connected code, not only the diff. Lists findings, changes
-  no code. Use for "review this", "review the last commit", "review my PR", "is this
-  over-engineered", "/review".
+  no code. Use for "review the last commit", "is this over-engineered",
+  "/review".
 metadata:
   type: regular
   extends: [core, implement, research, test]
-  max-lines: 166
+  max-lines: 165
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -48,11 +48,10 @@ listed as a finding.
 
 - MUST check commit messages against diff. A wrong or missing change MUST be reported.
 - Stray files in diff (test inputs, outputs, scratch scripts) MUST be reported.
-- MUST run every `on` gate at range's last commit (a detached worktree when HEAD moved
-  past it), `owasp` reading included (`implement` §4, also for a failure
-  already on `<base>`). MAY take a gate run the brief hands over only when it ran at that
-  commit. Final review MUST run every `on` gate itself. An `on` gate with no command MUST
-  be reported.
+- MUST run every `on` gate, every part included, at range's last commit (a detached
+  worktree when HEAD moved past it), `owasp` reading included (`implement` §4, also for a
+  failure already on `<base>`). MAY take a gate run the brief hands over only when it ran
+  at that commit. Final review MUST run every `on` gate itself.
 - MUST confirm an `on` gate's command covers each changed file, else report the file. A
   prose or docs file is exempt when no gate covers prose: reviewer MUST read it.
 - Each requirement the task names MUST be shown met by diff or by a check.
@@ -136,7 +135,7 @@ listed as a finding.
 - Reviewer MUST start with `Gates:`, and MUST leave out `off` gate lines. `Gates:` MUST
   give one line per gate: `pass`; `fail <one line>`; `fail <one line>, exists on <base>`,
   no blocker; `(per <who> at <commit or range>)` after `pass` or `fail` for a run by
-  another agent; `no command`; `not run (<cause>)`, neither pass nor fail, when an `on`
+  another agent; `not run (<cause>)`, neither pass nor fail, when an `on`
   gate's command cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).

@@ -4,32 +4,20 @@
 
 {{WHAT}}
 
-## Commands
+## Gates
 
-Format: `<check>: <command>`; `implement` §4 says how to run them.
+Format: `<gate>: <command>`, or `<gate>: off <reason>`; a gate with no line is off. A gate
+MAY list parts instead, one indented `- <folder>: <command>` line each, run inside that
+folder (`.` is the repo root).
 
 - lint: {{LINT}}
 - owasp: {{OWASP}}
 - unit: {{UNIT}}
 - integration: {{INTEGRATION}}
+- coverage: {{COVERAGE}}
 - contract: {{CONTRACT}}
 - functional: {{FUNCTIONAL}}
 - e2e: {{E2E}}
-- coverage: {{COVERAGE}}
-- run: {{RUN}}
-
-## Gates
-
-Format: `<gate>: on`, or `<gate>: off <reason>`.
-
-- lint: {{LINT_GATE}}
-- owasp: {{OWASP_GATE}}
-- unit: {{UNIT_GATE}}
-- integration: {{INTEGRATION_GATE}}
-- coverage: {{COVERAGE_GATE}}
-- contract: {{CONTRACT_GATE}}
-- functional: {{FUNCTIONAL_GATE}}
-- e2e: {{E2E_GATE}}
 
 ## Test levels
 
@@ -51,8 +39,7 @@ with the label verbs bound, `label <role>: <label>`, one per role of armory
 
 ## Rules
 
-Project-only rules. The armory skills hold the rest. The `auto-fix:` values are in
-armory `code` §3.
+Project-only rules.
 
 - Documentation lives in {{DOCS}}
 - auto-fix: none
@@ -65,5 +52,5 @@ A line MUST hold only a term of the project's domain, with no implementation det
 
 ## Caveats
 
-Format: the caveat line of armory `core` §6, or a topic pointer line of
-armory `workflow` §3
+Format: `- <short description> : <file or —>`, or a topic pointer line
+`- <topic>: <when to read it> : <docs>/caveats/<topic>.md`.

@@ -16,8 +16,8 @@ Format: `- BR-<n>: MUST <behavior>`, a list item.
 
 ## Tasks
 
-Format: `<branch> : <what> : <BR list> : <needs> : <status>`. `<needs>` holds the task
-branches it needs, or `none`. In execution order; the status
+Format: `- <branch> : <what> : <BR list> : <needs> : <status>`, a list item. `<needs>`
+holds the task branches it needs, or `none`. In execution order; the status
 values are in armory `tracking` §2.
 
 ## Risks

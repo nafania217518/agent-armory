@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core-main, delegate, requirements, research, workflow]
-  max-lines: 168
+  max-lines: 169
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -137,6 +137,7 @@ Pre-work before any edit, at three levels.
 - On a reject, MUST fix the part user names and propose again. A fix that needs only
   plan edits or a quiz round MUST stay in plan mode. Any other fix MUST first ask user to
   leave plan mode, and name the work; after it, MUST enter plan mode again.
+- Done when the check of the level passes and user approves the proposal.
 
 ## 7. Plan file
 
@@ -146,7 +147,7 @@ Pre-work before any edit, at three levels.
   level's Doc path itself, as the first commit; `core` §7 sets `<docs>`.
   Requirements MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
-- Right after that commit, main session MUST have the planning caveats written into the
+- Right after that commit, main session MUST write the planning caveats into the
   caveat base (`workflow` §3).
 - In that step, main session MUST itself write each term the quiz settled into project
   context `## Glossary`, in its format line, and an expected load the quiz settled into

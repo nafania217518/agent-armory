@@ -27,8 +27,8 @@ Main session follows this skill for each spawn of a project agent.
 - Two agents that run at once MUST NOT edit the same file.
 - When a spawn in a worktree does not fail (§6), main session MUST merge
   its branch into task branch, or the branch the brief names, then remove its worktree
-  once its output closes (§2). Main session MUST run `lint` and `unit` only after a
-  non-fast-forward merge.
+  once its output closes (§2). Main session MUST run `lint` and `unit`, each when
+  `on` and every part included, only after a non-fast-forward merge.
 - Before it removes an agent worktree, main session MUST run `git worktree unlock <path>`,
   since host locks it for the agent.
 - This merge MAY run without user's yes.

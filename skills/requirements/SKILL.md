@@ -21,8 +21,8 @@ Load `craft` before you write or check a `TR` when its rules are not in your con
 - An answer MUST become a `BR` or `TR` only when testable: a behavior or a measurable
   constraint, such as `TR-5 (BR-2): MUST NOT lock the table for more than 1 s`. A `BR` is
   testable when its `TR` items together prove it. A goal no test can prove MUST go into
-  the doc's Goal section; with a tracker bound, a task plan or a milestone item body MUST
-  leave it to its item.
+  the doc's Goal section; with a tracker bound, a task plan MUST leave it to its task
+  item, and a milestone item body MUST put it in its opening one-line goal.
 - In a milestone run, or a task run with no milestone, each testable business answer MUST
   become a `BR` in the item format of `templates/milestone.md`.
 - In a task run, each testable tech answer MUST become a `TR` in the item format of

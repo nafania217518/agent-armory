@@ -57,15 +57,15 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in
 `core` §6.
 
 - A caveat found during planning MUST wait in the plan-mode proposal, not in the plan
-  file. Right after the planning run's first commit, main session MUST have each such
-  caveat written into the caveat base, except a held caveat.
+  file. Right after the planning run's first commit, main session MUST write each such
+  caveat into the caveat base, except a held caveat.
 - Main session MUST write each caveat-base line itself, root `## Caveats` and topic files
   alike, and MUST commit each write (`core-main` §3).
-- Main session MUST have each caveat it receives or finds after the plan-file commit
-  written into the caveat base immediately, unless the next bullet defers it.
+- Main session MUST write each caveat it receives or finds after the plan-file commit
+  into the caveat base immediately, unless the next bullet defers it.
 - A caveat of the bullet above, or a planning caveat, about code that a `TR` of this task
   still builds or changes is a held caveat. It MUST wait until that `TR` merges into the
-  task branch; main session MUST then have it written as this section says.
+  task branch; main session MUST then write it as this section says.
 - Before that write, main session MUST check the line against `core` §6 and its place
   against the bullets below, and MUST check its claim against the code, with a search of
   the named file for the fact: by a short read when that settles it, else by a researcher
@@ -85,8 +85,8 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
   (`git diff --name-status <base>...HEAD`), main session MUST re-check the entry's claim
-  as the "Before that write" bullet sets, then have entry kept, its path fixed or it
-  dropped, by bullets above.
+  as the "Before that write" bullet sets, then keep the entry, fix its path or drop it,
+  by bullets above.
 
 ## 4. Finish
 

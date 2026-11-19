@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core, craft]
-  max-lines: 111
+  max-lines: 117
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -87,18 +87,24 @@ A human reads every line you write.
 
 ## 4. Gates per commit
 
-Gates and their commands are in project context `## Gates` and `## Commands`.
+Gates are in project context `## Gates`. A gate is `on` when its line or a part holds a
+command; any other gate is off. A part's command runs inside its folder.
 
+- Of each `on` gate, a change SHOULD run only a gate with no parts, its `.` parts, and
+  each part whose folder holds a changed file. A changed file in no part folder of any
+  gate, `.` aside, selects every part of each gate. A gate with none of these MUST NOT
+  run; its report line MUST say `not run (no part touched)`.
 - `coverage`: MUST run the command and never compute a number yourself. Build tools hold
   threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
-- `lint` and `unit`, when `on`, MUST pass at result tip and SHOULD pass on each commit.
-  Exceptions: a failure that already exists on `<base>`, and the debugger's diagnose-only
-  exemption. MUST compare with `<base>` to tell.
+- `lint` and `unit`, when `on`, MUST pass at result tip in the parts the bullet above
+  selects, and SHOULD pass on each commit. Exceptions: a failure that already exists on
+  `<base>`, and the debugger's diagnose-only exemption. MUST compare with `<base>` to
+  tell.
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
   an out-of-scope finding.
 - Before your report, every `on` gate the brief does not leave to main session MUST pass,
-  or the report names the failing gate.
+  except a gate not run for no part touched, or the report names the failing gate.
 - Report MUST give one line per gate for a commit range when every commit in it gives
   same result. Commit that differs MUST get its own line.
 

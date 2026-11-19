@@ -2,7 +2,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 # core
 
-armory-core 0.5.0
+armory-core 0.5.1
 
 ## 1. Rule words
 
@@ -104,6 +104,8 @@ armory-core 0.5.0
 - project context: file the host loads for a project (`AGENTS.md`, plus a `CLAUDE.md` with
   the line `@AGENTS.md`); skills MUST name its sections. Its `## Rules` line
   `Documentation lives in <folder>` sets `<docs>` for main session and every subagent.
+  One that holds both `## Commands` and `## Gates` is in the old form: MUST NOT run its
+  gates; MUST ask user for a setup update run first.
 - tracker: system that holds milestones, tasks and their status; project context
   `## Tracker` binds it.
   - Subagent MAY read tracker but MUST NOT write to it. It MUST report a needed write to
@@ -113,7 +115,7 @@ armory-core 0.5.0
 
 # core-main
 
-armory-core-main 0.5.0
+armory-core-main 0.5.1
 
 ## 1. Rule words
 

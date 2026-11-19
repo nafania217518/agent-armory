@@ -15,7 +15,8 @@ brief. A message that holds a full brief replaces it.
 
 - MUST load `core` when its rules are not in your context, then `plan-draft`, `test`
   and `implement`.
-- MUST NOT change any file.
+- MUST NOT change any tracked file; a probe or scratch file goes in its own `mktemp -d`
+  folder (`core` §3).
 
 Report, in this order:
 

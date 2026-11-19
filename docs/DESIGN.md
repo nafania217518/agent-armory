@@ -125,11 +125,13 @@ The template is `skills/setup/templates/AGENTS.md`. `setup` writes its sections 
 AGENTS.md. Sections:
 
 - `## What this is`: first; one paragraph on what the project is.
-- `## Commands`: one line per check, with the same name as its gate.
-- `## Gates`: `on`, or `off <reason>`. Gates: `lint`, `owasp`, `unit`, `integration`,
-  `coverage`, and the flexible levels `contract`, `functional`, `e2e` (off until the
-  project turns them on). No other rule has a project switch, except the `## Rules` line
-  `auto-fix:` (`code` section Review loop).
+- `## Gates`: one line per gate, `<gate>: <command>` for an `on` gate, or
+  `<gate>: off <reason>`; a gate with no line is off. A gate MAY list parts per folder; a
+  change runs only the parts of its folders and the repo root, a file in no part folder
+  runs every part, and task end and every review run every part. Gates: `lint`,
+  `owasp`, `unit`, `integration`, `coverage`, and the flexible levels `contract`,
+  `functional`, `e2e` (off until the project turns them on). No other rule has a project
+  switch, except the `## Rules` line `auto-fix:` (`code` section Review loop).
 - `## Test levels`: only what the project adds to or changes in the level lines of
   `test` section Levels, and the unit style (sociable or solitary).
 - `## Tracker`: optional; one line per bound verb with its binding, then the
@@ -158,13 +160,13 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | `plan-draft` | 6 (drafting part: task check) | `planner` |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
 | `code` | 18 (review loop, task end), 14 (handover gates) | main session |
-| `implement` | 9, 10, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger |
+| `implement` | 9, 10, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger, reviewer, planner, writer |
 | `test` | 13, except the parts in `craft` | coder, debugger, reviewer, planner |
-| `craft` | 5 (before you write), 11, parts of 13 (TDD, test scope, the benchmark row check); the data-growth path definition: none (new) | coder, debugger, reviewer, planner, through the pointers of `implement` and `test` |
+| `craft` | 5 (before you write), 11, parts of 13 (TDD, test scope, the benchmark row check); the data-growth path definition: none (new) | coder, debugger, reviewer, planner, writer, through the pointers of `implement` and `test` |
 | `debug` | none (new) | debugger |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
-| `research` | 7 | researcher; reviewer, through the pointer of `review`; main session, through the pointers of `plan`, `code` and `delegate` |
+| `research` | 7 | researcher; coder; reviewer, through the pointer of `review`; main session, through the pointers of `plan`, `code` and `delegate` |
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
 | `dnd` | none (new) | main session, when the user starts it (user-only) |
@@ -176,13 +178,13 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 | main session, full task | `core`, `core-main` (the main payload or the pointer), `workflow`, `tracking`, `requirements`, `plan`, `delegate`, `code`, `research` |
 | main session, triage | `core`, `core-main` (the main payload or the pointer), `tracking`, `requirements`, `triage` |
 | main session, dnd | `core`, `core-main` (the main payload or the pointer), `workflow`, `tracking`, `dnd`, `requirements`, `plan`, `delegate`, `code`, `research` |
-| coder | `core` (the agent payload), `implement`, `test`, `craft` |
+| coder | `core` (the agent payload), `implement`, `test`, `craft`, `research` |
 | debugger | `core` (the agent payload), `debug`, `implement`, `test`, `craft` |
 | reviewer | `core` (the agent payload), `review`, `implement`, `test`, `craft`, `research` |
 | reviewer, audit brief | `core` (the agent payload), `audit`, `review`, `implement`, `test`, `craft`, `research` |
 | researcher | `core` (the agent payload), `research` |
 | planner | `core` (the agent payload), `plan-draft`, `requirements`, `implement`, `test`, `craft` |
-| writer | `core` (the agent payload) |
+| writer | `core` (the agent payload), `implement`, `craft` |
 
 A load set has two sizes, never added: its hook payload in characters, and the sum of the
 `metadata.max-lines` fields of its other skills in lines.
@@ -462,11 +464,19 @@ One dated line per decision, with the dropped alternatives.
   payloads carry the rule in about 215 characters, in place of a skill, four pointers
   and four card lines. Dropped: keep `output-budget` as an abstract skill (the
   2026-11-18 rule), and a new `core` section for the rule.
+- 2026-11-19: `## Commands` merges into `## Gates`. A gate is `on` when it holds a
+  command; an `off` line with its reason is optional; a gate MAY list parts per folder,
+  and a change runs only its folders' parts. Reason: two sections named each gate twice
+  and allowed an `on` gate with no command. In a monorepo, one line per gate forced `cd`
+  chains, a hand-written per-folder rule and a copy of the commands in a runner script.
+  `run` goes, since no skill reads it. Old projects convert in the `setup` update run.
+  Until then, every actor stops before it runs the gates of an old-form context (`core`
+  section Host terms).
 
 ## 7. Milestones
 
-Format: `<name> : <one-line goal> : <status>`; the status values are in `tracking`
-§2.
+Format: `- <name> : <one-line goal> : <status>`, a list item; the status values are in
+`tracking` §2.
 
 - plan-levels : the three planning levels in `plan`, the three doc templates, the done
   write in `code` : done

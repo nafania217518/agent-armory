@@ -8,7 +8,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [core]
-  max-lines: 89
+  max-lines: 90
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -42,8 +42,8 @@ project or in armory so later sessions go better.
     context file or a skill changed no behavior, or belongs in a check or review rule.
   - Tool economy. Use when a cheaper call, model row or tool could replace a costly tool
     call or spawn.
-- Before class Checks and review rules, SHOULD read project context `## Gates` and
-  `## Commands`. An existing check that is off or broken is then the finding.
+- Before class Checks and review rules, SHOULD read project context `## Gates`. A gate
+  that is off or broken is then the finding.
 - Done when each class was checked against the session.
 
 ## 3. Findings
@@ -57,7 +57,8 @@ project or in armory so later sessions go better.
   - evidence: step of this session where miss cost something.
 - Source MUST follow the file:
   - `armory`: a file of the armory plugin: a skill, agent card template, plan template,
-    hook or script;
+    hook or script; a project agent card rendered from an armory template counts here,
+    with its template `skills/setup/templates/agents/<agent>.md` as file;
   - `user`: user's global context file;
   - `project`: any other file.
 - Severity MUST follow miss's cost. High: miss gave a wrong result, or would give one

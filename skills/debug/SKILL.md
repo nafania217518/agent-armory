@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core, implement, test]
-  max-lines: 108
+  max-lines: 109
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -81,7 +81,8 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 - Performance bug MUST get a baseline measurement first.
 - MUST test your own ranking and record a verdict for each hypothesis: confirmed,
   refuted or untested. Done when one hypothesis is confirmed. When all are refuted, MUST
-  go back to §4.
+  go back to §4. After a second round with all refuted, MUST report
+  `stuck: cause unknown` with the refuted hypotheses.
 
 ## 6. Diagnose only
 

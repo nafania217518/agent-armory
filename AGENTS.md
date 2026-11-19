@@ -10,26 +10,17 @@ the rules for every armory actor: `core`, `core-main`, `workflow`, `tracking`,
 Claude Code. The plugin also ships the templates and the hooks. The design is in
 `docs/DESIGN.md`.
 
-## Commands
+## Gates
 
-Format: `<check>: <command>`; `implement` section Gates per commit says how to run
-them.
+Format: `<gate>: <command>`, or `<gate>: off <reason>`; a gate with no line is off. A gate
+MAY list parts instead, one indented `- <folder>: <command>` line each, run inside that
+folder (`.` is the repo root).
 
 - lint: claude plugin validate . && claude plugin validate .claude-plugin/plugin.json && node scripts/skill-sizes.mjs && node scripts/doc-checks.mjs && node scripts/skill-graph.mjs
 - unit: node --test scripts/
-
-## Gates
-
-Format: `<gate>: on`, or `<gate>: off <reason>`.
-
-- lint: on
 - owasp: off (no dependencies)
-- unit: on
 - integration: off (no integration point)
 - coverage: off (no coverage tool for the scripts)
-- contract: off (not chosen)
-- functional: off (not chosen)
-- e2e: off (not chosen)
 
 ## Test levels
 
@@ -40,8 +31,7 @@ scripts in `scripts/`: `unit`.
 
 ## Rules
 
-Project-only rules. The armory skills hold the rest. The `auto-fix:` values are in the
-armory `code` skill, section Review loop.
+Project-only rules.
 
 - Documentation lives in docs/
 - auto-fix: should
@@ -97,8 +87,8 @@ Marker line : the line that shows that core or core-main is in context.
 
 ## Caveats
 
-Format: the caveat line of the armory `core` skill, section Reports, or a topic pointer
-line of the armory `workflow` skill, section Caveats
+Format: `- <short description> : <file or —>`, or a topic pointer line
+`- <topic>: <when to read it> : <docs>/caveats/<topic>.md`.
 
 - lint: before editing scripts/skill-sizes.mjs, scripts/doc-checks.mjs, scripts/skill-graph.mjs, scripts/frontmatter.mjs or their tests, a skill's frontmatter, or a list text that doc-checks.mjs reads : docs/caveats/lint.md
 - evals: before adding, editing or running a case in evals/ : docs/caveats/evals.md

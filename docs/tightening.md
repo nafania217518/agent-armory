@@ -9,10 +9,10 @@ Rules for a pass that shrinks skill text with no change of meaning.
 - MUST shorten a stock phrase: "in order to" becomes "to".
 - SHOULD use the shorter synonym ("use", not "utilize"), except for a
   `## Glossary` term or an RFC 2119 word.
-- MUST write `§<name>` in place of `section <name>`.
+- MUST write `` `<skill>` §<n> `` in place of `` `<skill>` section <name> ``.
 - MAY merge two bullets only when they share one RFC word, subject and condition.
-- MUST keep exact: code, paths, commands, numbers, headings, section names, terms,
-  and every not, never, no, only, except, unless and however.
+- MUST keep exact: code, paths, commands, numbers, headings, section names (except the
+  swap above), terms, and every not, never, no, only, except, unless and however.
 - MUST write a full rule with its subject, not a fragment, an invented abbreviation
   or an arrow.
 - A line wrap MUST keep each RFC 2119 keyword on one line: `MUST NOT` and `SHOULD NOT`

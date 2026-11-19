@@ -11,5 +11,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - Every rule reference in a skill, card or skill template names its section by number, and skill-graph checks only that the heading exists, so an inserted, removed or moved section retargets each cite of a later section with no `lint` report : scripts/skill-graph.mjs
 - `docs/DESIGN.md` and the milestone docs' Tasks format lines cite `tracking` sections by number, and skill-graph does not read them, so a `tracking` renumber leaves them stale with no `lint` report : skills/tracking/SKILL.md
 - `tracking` §4 (the behind-`<base>` check) uses `<base>`, which `workflow` §2 defines, but `tracking` does not extend `workflow` : skills/tracking/SKILL.md
-- Root `AGENTS.md` cites the `workflow` section Caveats by name, and skill-graph does not read it, so a rename of that section breaks the cite with no `lint` report : AGENTS.md
+- Root `AGENTS.md` cites `core` section Host terms and `test` section Levels by name, and skill-graph does not read it, so a rename of either section breaks the cite with no `lint` report : AGENTS.md
 - `workflow` §4 and `delegate` §1 name `code` §4 step 8 by rule name only ("task-end cleanup"), so a rename of that step breaks them with no `lint` report : skills/workflow/SKILL.md

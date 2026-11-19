@@ -3,12 +3,12 @@ name: audit
 description: >
   Quality audit of a whole repo or package: bugs, security holes, what breaks under real
   load, risky code without tests, slow paths, what to delete, and the tech-debt ledger.
-  One-shot ranked report, changes nothing. Use for "audit this codebase", "review the
-  whole repo", "what can I delete", "list the tech debt", "/audit".
+  One-shot ranked report, changes nothing. Use for "audit this codebase", "what can I
+  delete", "list the tech debt", "/audit".
 metadata:
   type: regular
   extends: [core, review]
-  max-lines: 80
+  max-lines: 82
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -34,6 +34,8 @@ differs from a review.
   writes, background jobs, anything shared between processes.
 - Big repo: SHOULD go deep where a mistake costs most, not file by file. SHOULD read first
   files that `git log` shows changing most often.
+- Done when each read of the list is made or named in `Not checked:`, expected load is
+  found or set to `none stated`, and each main flow is traced.
 
 ## 2. Audit-only checks
 

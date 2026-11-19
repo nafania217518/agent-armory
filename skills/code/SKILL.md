@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core-main, delegate, research, workflow]
-  max-lines: 125
+  max-lines: 126
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -98,16 +98,17 @@ Brief each item as `delegate` §2 sets. A requirement change during the work fol
      Done when each such item has its follow-up line.
   5. Stray-task check: MUST check each task in the scope of `core` §3.
      One that still runs with no valid reason is a stray task: MUST stop it,
-     report it as a finding, and have a caveat on its cause written (`workflow` §3). That
+     report it as a finding, and write a caveat on its cause (`workflow` §3). That
      caveat commit gets no re-review. Done when no stray task runs.
-  6. Before the report, MUST have `lint` and `unit` results at the tip; a review run at
-     the tip counts. Report MUST hold, in this order: a one-line outcome; the met
-     requirements in one line by id range (`TR-1..TR-7 met`), then each unmet one with its
-     id and status; the gate results, one line per gate; each measured result; what was
-     skipped or not checked; each recorded item with only its applied
-     answer; each follow-up line of step 4; each held caveat (`workflow` §3) whose `TR`
-     has not merged; any risk the user must know. Done when `lint` and `unit` results at
-     the tip exist and the report holds each listed item.
+  6. Before the report, MUST have `lint` and `unit` results at the tip, each when `on`,
+     with every part run; a review run at the tip counts. Report MUST hold, in this
+     order: a one-line outcome; the met requirements in one line by id range
+     (`TR-1..TR-7 met`), then each unmet one with its id and status; the gate results,
+     one line per gate; each measured result; what was skipped or not checked; each
+     recorded item with only its applied answer; each follow-up line of step 4; each held
+     caveat (`workflow` §3) whose `TR` has not merged; any risk the user must know. Done
+     when `lint` and `unit` results at the tip, each when `on`, with every part run,
+     exist and the report holds each listed item.
   7. Acceptance: MUST ask user which items they want to try by hand, with the exact
      commands or clicks for each. Done when user has answered.
   8. Cleanup: MUST run caveat cleanup (`workflow` §3), then ask user what to keep of plan
