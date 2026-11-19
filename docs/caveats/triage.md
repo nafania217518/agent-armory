@@ -7,3 +7,4 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A quick-override `accepted` meets no conflict check and no already-given check : skills/triage/SKILL.md
 - Triage has no rule for which fixed output to recommend when two project sources fix different outputs on one input : skills/triage/SKILL.md
 - A step 1 duplicate choice is the yes to a category label and a reason comment that its ask need not show : skills/triage/SKILL.md
+- `triage` writes `BR` lines, but `tracking` loads `requirements` only before an amendment, so no pointer brings the testable rule of `requirements` §1 into a triage run : skills/triage/SKILL.md

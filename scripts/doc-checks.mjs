@@ -1,5 +1,6 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
+import { parseFront, splitLines } from './frontmatter.mjs';
 
 const USAGE = 'usage: node scripts/doc-checks.mjs [root]';
 const WIDTH = 90;
@@ -214,10 +215,16 @@ function cardFailures(root) {
   return failures;
 }
 
-function isModelLoaded(root, skill) {
-  const text = readFileSync(path.join(root, 'skills', skill, 'SKILL.md'), 'utf8');
-  const front = text.startsWith('---\n') ? text.slice(4, text.indexOf('\n---', 4)) : '';
-  return !/^disable-model-invocation:\s*true\s*$/m.test(front);
+// An unreadable skill needs none here; the width check already names it.
+function needsEvals(root, skill) {
+  let text;
+  try {
+    text = readFileSync(path.join(root, 'skills', skill, 'SKILL.md'), 'utf8');
+  } catch {
+    return false;
+  }
+  const meta = parseFront(splitLines(text));
+  return meta.type !== 'abstract' && !meta.flags.includes('disable-model-invocation: true');
 }
 
 function evalCount(root, skill, kind) {
@@ -235,7 +242,7 @@ const LOAD_CASES = (skill) => (skill === 'core' ? 1 : 3);
 function evalFailures(root) {
   return skillNames(root)
     .sort()
-    .filter((skill) => isModelLoaded(root, skill))
+    .filter((skill) => needsEvals(root, skill))
     .flatMap((skill) => [
       ...(evalCount(root, skill, 'load') < LOAD_CASES(skill)
         ? [`${skill}: fewer than ${LOAD_CASES(skill)} load evals`] : []),

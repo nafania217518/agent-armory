@@ -3,37 +3,25 @@ name: implement
 description: >
   The coder's rules: scope before you write, the smallest complete change, readability,
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
-  the gates per commit, atomic commits. Loaded by the coder and debugger cards and by
-  `code`; "/implement". For a coding request from the user, load `code` instead.
-max-lines: 155
+  the gates per commit, atomic commits. Loaded by the coder and debugger cards;
+  "/implement". Not for a coding request from the user.
+metadata:
+  type: regular
+  extends: [core, craft]
+  max-lines: 111
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load `core` first when its rules are not in your context.
+Load `core` before your first step when its rules are not in your context.
+Load `craft` before your first step when its rules are not in your context.
 
 # implement
 
-How to write code, for coder and debugger. Reviewer judges code against it. Test
-rules: `test`.
+How to write code, for coder and debugger. Reviewer judges code against it.
 
-## 1. Before you write
+## 1. The smallest complete change
 
-- MUST list every place the change must reach: callers, fixtures, config, exports. That
-  is scope. Extra features are not.
-- Scope MUST also hold each caveat-base line (`code` §Caveats) that names a file the
-  change touches. Line found false SHOULD be reported with its fix, its new file or
-  `drop`; main session has it written (`code` §Caveats).
-- MUST check what change can break for users: data it would destroy or expose, callers
-  that stop working.
-- Vague request SHOULD get the smallest version that does the core job.
-- Design misfit: when new requirement does not fit design, coder MUST still follow plan
-  and MUST record misfit with its reason (`core` §Reports). It MAY report
-  `stuck: <misfit>`.
-- When plan cannot be followed at all, coder MUST stop and report `stuck:` (coder agent
-  card).
-
-## 2. The smallest complete change
-
+- This section is a design rule, so an approved plan MAY override it (`core` §1).
 - The ladder. MUST take the first option that fully works:
   1. Does it need to exist? Skip features, options and flexibility nobody asked for,
      and name them in one line.
@@ -46,14 +34,14 @@ rules: `test`.
 - MUST ship the smallest complete change, once you know everything it must touch. MUST
   finish every caller and fixture the change breaks. One-liner that needs decoding
   MUST NOT count as small.
-- MUST limit change to scope (§Before you write) and approved plan. MUST NOT make
+- MUST limit change to scope (`craft` §1) and approved plan. MUST NOT make
   unrequested changes: refactors, renames, reformatting, fixes outside scope. The one
-  exception is scope addition (`test` §Test scope).
+  exception is scope addition (`craft` §4).
 - Bug that neither brief nor its plan item names, and that your change did not
   introduce, MUST NOT be fixed. It MUST be recorded as an out-of-scope finding instead,
   or reported as `stuck: <bug>` when it blocks the work.
 - MUST keep the codebase's existing structure: its layers, interfaces and conventions,
-  unless approved plan changes them (`core` §Rule words). Code already clear and local
+  unless approved plan changes them (`core` §1). Code already clear and local
   MUST stay as it is.
 - Moved or merged code MUST keep its error handling and validation.
 - Between options of equal size, MUST take the one correct on edge cases.
@@ -64,11 +52,11 @@ rules: `test`.
   `tech-debt: <what was simplified>, <the limit>, <when to upgrade>`.
 - `tech-debt:` marker MUST NOT cover a shortcut on a never-cut item (above).
 - Shortcut that plan's Accepted tech debt section does not name MUST be recorded as a
-  design misfit (§Before you write).
+  design misfit (`craft` §1).
 
-## 3. Readability
+## 2. Readability
 
-A human reads every line you write. `review` §Look for checks these rules.
+A human reads every line you write.
 
 - Names of variables, functions and classes MUST say what they hold or do.
 - High-level code SHOULD be short and read as steps: one function calling private helpers
@@ -76,29 +64,10 @@ A human reads every line you write. `review` §Look for checks these rules.
 - SHOULD prefer chaining over a declarative mess, unless it hurts readability. Chain MAY
   span several lines when each call has its own line.
 
-## 4. Domain, boundaries and state
-
-- Domain structure and types MUST make illegal states and values impossible to write.
-- MUST check and parse outside data once, where it enters. Inside, trust it.
-- SHOULD keep business logic in pure functions.
-- MUST NOT silence the compiler.
-- Operation that can run more than once MUST be idempotent: a second run, or a run after
-  a crash halfway, ends in same state. Such operations are retried handlers, jobs,
-  migrations, scripts, message consumers and a resume after a crash. Plain create call
-  MUST be idempotent only when plan says so.
-- MUST NOT share mutable state that does not need sharing. Shared state MUST have one
-  writer, enforced by the structure.
-- Code that applies an async answer to state (UI, cache, store) MUST key it to the
-  request or input it answers. It MUST drop an answer whose key is not the latest.
-- Single responsibility: each new or changed unit (function, class or module) MUST have
-  one job, so it has one reason to change. Unit with two jobs MUST be split by job.
-- Interface segregation: an interface MUST hold only methods its clients use. Client
-  that needs part of a wide interface MUST get its own narrow one instead.
-
-## 5. Fixing and refactoring
+## 3. Fixing and refactoring
 
 - MUST fix the root cause of each bug the brief or its plan item names (other bugs:
-  §The smallest complete change). It MUST first get a test that reproduces it. Then MUST
+  §1). It MUST first get a test that reproduces it. Then MUST
   grep every caller of the function you touch and fix the cause once, in shared code.
   Guard that only hides the crash MUST NOT count as a fix.
 - Fix inside a loop MUST re-check every exit and `continue` path of that loop against
@@ -116,17 +85,7 @@ A human reads every line you write. `review` §Look for checks these rules.
   change the parameter's type. Renamed parameter alone misses a positional caller.
 - SHOULD sequence work into small units. Finish and check one before starting the next.
 
-## 6. Tests while coding
-
-- MUST change only test cases on the test-scope list. New case in an existing file is
-  not a change outside the scope.
-- Test outside list that the change makes fail MUST count as a bug the change introduced.
-  MUST fix code so test passes. Test that already fails on `<base>`: §Gates per commit.
-- MAY add the test to your scope only when you can prove it was missed from the list:
-  the change is expected and explains the failure.
-- MUST report the test only when you can neither fix the code nor prove the miss.
-
-## 7. Gates per commit
+## 4. Gates per commit
 
 Gates and their commands are in project context `## Gates` and `## Commands`.
 
@@ -134,19 +93,16 @@ Gates and their commands are in project context `## Gates` and `## Commands`.
   threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
 - `lint` and `unit`, when `on`, MUST pass at result tip and SHOULD pass on each commit.
-  Exceptions: a failure that already exists on `<base>` (`code` §Branch and plan file) and
-  diagnose-only exemption (`debug` §Diagnose only). MUST compare with `<base>` to tell.
+  Exceptions: a failure that already exists on `<base>`, and the debugger's diagnose-only
+  exemption. MUST compare with `<base>` to tell.
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
-  an out-of-scope finding. `code` §Task end sets the report gates.
-- Gate, build and test output MUST reach your context only as its tail or a grep for
-  FAIL or error, and a long file only by line range or a search. On a failing gate, MUST
-  read only the failing part of its log.
-- Before your report, every `on` gate the brief does not leave to main session
-  (`delegate` §Briefs) MUST pass, or the report names the failing gate.
+  an out-of-scope finding.
+- Before your report, every `on` gate the brief does not leave to main session MUST pass,
+  or the report names the failing gate.
 - Report MUST give one line per gate for a commit range when every commit in it gives
   same result. Commit that differs MUST get its own line.
 
-## 8. Commits
+## 5. Commits
 
 - Commits MUST be small and atomic: one requirement or one fix per commit, also in one
   coder result that covers several items.

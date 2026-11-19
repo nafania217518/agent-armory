@@ -63,7 +63,7 @@ Each `BR` is checked by reading the files, by `lint`, by `unit`, or by a grep.
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
-values are in the armory `plan` skill, section Levels.
+values are in the armory `tracking` skill, section 2.
 
 - retro-rules : the flow walk, the plugin-lag caveat, gates per commit in the cards :
   BR-1, BR-2, BR-3, BR-7, BR-8 : done

@@ -5,11 +5,14 @@ description: >
   into armory, project and user, so that later sessions go better. Changes no file.
   Use for "/retro", "run a retro".
 disable-model-invocation: true
-max-lines: 86
+metadata:
+  type: user-only
+  extends: [core]
+  max-lines: 89
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load `core` first when its rules are not in your context.
+Load `core` before your first step when its rules are not in your context.
 
 # retro
 
@@ -19,7 +22,7 @@ project or in armory so later sessions go better.
 ## 1. Scope
 
 - MUST change no file: MUST NOT edit, commit or spawn a coder. MUST list each change as a
-  finding instead (§Findings).
+  finding instead (§3).
 - MUST read session, and MUST have an agent read and report each touched file a finding's
   evidence needs.
 - Done when session's steps are read, and each file a finding's evidence needs is
@@ -34,7 +37,7 @@ project or in armory so later sessions go better.
   - Checks and review rules. Use when a mistake was made, or got past a gate or reviewer.
     A mechanical miss (a fixed pattern, a banned call, a file place) MUST get a check: a
     lint rule, a gate or a hook. A judgement miss MUST get a rule where it happened (a
-    skill, agent card or project context `## Rules`), or in `review`.
+    skill, agent card or project context `## Rules`), or in the review skill.
   - Context size and no-op lines. Use when a line of project context, user's global
     context file or a skill changed no behavior, or belongs in a check or review rule.
   - Tool economy. Use when a cheaper call, model row or tool could replace a costly tool
@@ -47,7 +50,7 @@ project or in armory so later sessions go better.
 
 - Each finding MUST name these fields:
   - source: `armory`, `project` or `user` (below);
-  - class: one of §Finding classes;
+  - class: one of §2;
   - severity: High, Medium or Low (below);
   - file: file to change, and its section for a skill;
   - change: what to change in that file;

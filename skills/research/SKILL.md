@@ -6,11 +6,14 @@ description: >
   library, API, model, tool or domain, for the basis of a recommended option, for the
   plan's research step, and in the researcher agent. Use for "check the docs", "is this
   still true", "research this", "/research".
-max-lines: 80
+metadata:
+  type: regular
+  extends: [core]
+  max-lines: 80
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load `core` first when its rules are not in your context.
+Load `core` before your first step when its rules are not in your context.
 
 # research
 
@@ -19,20 +22,19 @@ Load `core` first when its rules are not in your context.
 - A claim from model memory, not from repo, a run or a cited source, MUST be proven when
   code, a recommendation, a plan decision or a review finding rests on it.
 - Proof MUST take first form that works: a run, installed source or types, official docs
-  or changelog, independent sources (§Sources). A review finding or a report claim,
-  caveat line included, with no proof MUST carry `Unverified:` part (`review` §Output).
-  A proven claim MUST name its proof: the command, `path:line` or URL.
-- Main session MUST delegate web search and page reading to a researcher (`delegate`
-  §Models). Raw page text MUST NOT enter main context.
-- Before a question round, or before `dnd` answers a question itself, main session MUST
-  send to research each open point whose options turn on an outside fact (library, tool,
-  API, domain fact) or user's intent (goal, scope, priority, taste). One round's points
-  and claims to prove MUST go in one researcher brief, split only past 5 web questions.
-  Brief MUST state each point and its options with no preferred option, say when the run
-  is `dnd`, and, with an open point, name `delegate` §Models row 7, or row 8 with a web
-  question.
-- A claim or point MUST skip research when a skill or project rule, a `core` §Design
-  principles rule for a point that is not an intent point, repo evidence already in
+  or changelog, independent sources (§2). A review finding or a report claim, caveat
+  line included, with no proof MUST carry one more part, last:
+  `Unverified: <the source or command that settles it>`; in a caveat line it follows one
+  more ` : `. A proven claim MUST name its proof: the command, `path:line` or URL.
+- Main session MUST delegate web search and page reading to a researcher. Raw page text
+  MUST NOT enter main context.
+- Before a question round, main session MUST send to research each open point whose
+  options turn on an outside fact (library, tool, API, domain fact) or user's intent
+  (goal, scope, priority, taste). One round's points and claims to prove MUST go in one
+  researcher brief, split only past 5 web questions. Brief MUST state each point and its
+  options with no preferred option.
+- A claim or point MUST skip research when a skill or project rule, a `core` §4
+  rule for a point that is not an intent point, repo evidence already in
   context or a result from this run settles it, it is logic over text already in context,
   a gate run in same step would fail if it were false, or it is a yes/no approval (push,
   merge, plan approval). What settles it is the point's basis; an intent point's basis
@@ -42,15 +44,13 @@ Load `core` first when its rules are not in your context.
      `<docs>`, project context;
   2. a precedent: how repo already made same kind of choice (code, earlier plans, caveat
      base); an inferred reading counts as this basis at most;
-  3. under `dnd` only, common practice from research, for how a thing is done, never for
-     whether or what to build;
-  4. smallest option: one that leaves least built or changed at task end (`core` §Design
-     principles, YAGNI); under `dnd`, fallback of `dnd` §Run replaces it.
+  3. smallest option: one that leaves least built or changed at task end (`core` §4,
+     YAGNI).
 - An unprovable claim MUST NOT serve as basis; recommendation MUST take next one.
 - Basis 1 and 2 MUST cite `path:line` or item link. Between two sources of one basis
-  that disagree, newer MUST win, in place of §Sources choice of winner; agent MUST still
-  say so. Run MUST log it in question's message text, or under `dnd` in answers log.
-- Agent MUST return only the result of §Result.
+  that disagree, newer MUST win, in place of §2 choice of winner; agent MUST still say
+  so. Run MUST log it in question's message text.
+- Agent MUST return only the result of §3.
 
 ## 2. Sources
 
@@ -61,10 +61,10 @@ Load `core` first when its rules are not in your context.
 - When sources disagree, MUST say so. An Opus agent MUST name the source it trusts and say
   why. A Sonnet agent MUST instead report what each source says, name no winner and mark
   that question `open: sources disagree`. Main session MUST send only disputed questions
-  to an agent on the Opus research row, fresh or reused (`delegate` §Briefs), with those
-  sources in its brief.
+  to an agent on the Opus research row, fresh or reused, with those sources in its
+  brief.
 - An agent whose brief names its pages MUST read only those pages, in place of proof order
-  (§When to research); each answer MUST quote its passage or take `open: not on the page`.
+  (§1); each answer MUST quote its passage or take `open: not on the page`.
   A question whose pages disagree MUST still take `open: sources disagree`.
 
 ## 3. Result
@@ -77,4 +77,4 @@ Result MUST hold, in this order:
    For an open point, claim MUST name recommended option, its basis (number for an intent
    point) and its source, or `no recommendation`.
 2. The sources, one per line: title, URL or path, date or version, what it says.
-3. The recorded-items slot and the caveat slot (`core` §Reports).
+3. The recorded-items slot and the caveat slot (`core` §6).

@@ -3,12 +3,17 @@ name: delegate
 description: >
   How the main session spawns project agents: the brief, the worktree, the model and
   effort per spawn, and retries. Load it before any spawn or hand-off to an agent:
-  "delegate", "spawn an agent", "which model", "write a brief", "/delegate".
-max-lines: 225
+  "delegate", "which model", "write a brief", "/delegate".
+metadata:
+  type: regular
+  extends: [core, research, workflow]
+  max-lines: 232
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load `core` first when its rules are not in your context.
+Load `core` before your first step when its rules are not in your context.
+Load `workflow` before your first brief when its rules are not in your context.
+Load `research` before a researcher brief when its rules are not in your context.
 
 # delegate
 
@@ -20,17 +25,17 @@ Main session follows this skill for each spawn of a project agent.
   brief MUST NOT send them to main checkout, in words or by an absolute path into it. It
   MUST name each project script by its path from worktree root.
 - Two agents that run at once MUST NOT edit the same file.
-- When a spawn in a worktree does not fail (§Re-spawn and retry), main session MUST merge
+- When a spawn in a worktree does not fail (§6), main session MUST merge
   its branch into task branch, or the branch the brief names, then remove its worktree
-  once its output closes (§Briefs). Main session MUST run `lint` and `unit` only after a
-  non-fast-forward merge. `code` §Review loop sets the review that follows.
+  once its output closes (§2). Main session MUST run `lint` and `unit` only after a
+  non-fast-forward merge.
 - Before it removes an agent worktree, main session MUST run `git worktree unlock <path>`,
   since host locks it for the agent.
 - This merge MAY run without user's yes.
 - A diagnose-only debugger result MUST NOT be merged. Main session MUST keep a branch at
-  diagnose-only tip, the diagnose-only branch, until `code` §Task end, step 8; before a
+  diagnose-only tip, the diagnose-only branch, until the task-end cleanup; before a
   fix follow-up to that debugger, it MUST create that branch. It removes the worktree once
-  its output closes (§Briefs).
+  its output closes (§2).
 
 ## 2. Briefs
 
@@ -38,19 +43,19 @@ Main session follows this skill for each spawn of a project agent.
   each plan section that applies (Design, test-scope list, Overrides, Accepted tech debt)
   by name and each `TR` by id, with no line range and never quoted, for agent to read, and
   no word on a section the plan leaves out; each `BR` it covers that lives outside plan
-  file (`plan` §Requirements), by path and line range for agent to read, or, in a tracker
+  file, by path and line range for agent to read, or, in a tracker
   item, quoted in full, read at brief time; for a review brief, also each scope addition
   with its reason, from coder or debugger recorded-items slot; names of project context
   sections and `## Rules` lines that apply, not their text, since host loads project
   context into each subagent; paths of topic files whose pointers fit the brief's work
-  (`code` §Caveats), for agent to read; which skills or skill sections agent loads; task
-  branch and `<base>` (`code` §Branch and plan file).
+  (`workflow` §3), for agent to read; which skills or skill sections agent loads; task
+  branch and `<base>` (`workflow` §2).
 - A brief MUST hold no design choice the plan lacks. It MUST name the gap instead: coder
-  then records the misfit (`implement` §Before you write), or main session first amends
-  plan (`plan` §Amendments).
+  then records the misfit, or main session first amends
+  plan (`tracking` §4).
 - A review brief MUST also hold commit range, each gate run at range's last commit with
   the actor that ran it, and, for a final review, whole-task checks. An audit brief MUST
-  hold the audit target (`audit` §Map first) instead of range and task's requirements.
+  hold the audit target that user names instead of range and task's requirements.
 - A writer brief, and a debugger brief outside a task, MUST name branch and commit to
   reset to.
 - Follow-up work MUST go as a follow-up message to the agent whose open output it extends:
@@ -58,7 +63,7 @@ Main session follows this skill for each spawn of a project agent.
   a further question on its research or text. For a writer, a follow-up MUST be only a
   change to text it wrote in its open output; any other write is new work. Work that
   checks, reviews or settles a dispute about an agent's own output MUST go to another
-  agent, except the drafter's own task check (`plan` §Self-review and approval).
+  agent, except the planner's own task check on its draft.
 - An output MUST count as open until: for a coder or debugger change, its review reports
   `fixed` or `not re-opened` for each finding sent to it, or sends it none; for reviewer
   findings, each finding sent to fix is `fixed` or `not re-opened`, or none was sent; for
@@ -68,14 +73,14 @@ Main session follows this skill for each spawn of a project agent.
   drop of its claim. An output MUST also count as closed once its follow-up work leaves
   the agent. Unless its fix leaves its agent, a finding left for recorded-items quiz keeps
   its coder or debugger and its reviewer open until quiz answer is applied and, for a fix,
-  its review in `code` §Task end, step 3 ends.
+  the review of its fix commits ends.
 - An open output does not block reuse; a later follow-up on that output MUST name its
   earlier brief. Main session MUST note clock time of each reusable agent's (below)
   result or pong. It MUST read clock before each new-work message.
-- A pong (`core` §Reports) MUST NOT change main session's next step. With no other step,
+- A pong (`core` §6) MUST NOT change main session's next step. With no other step,
   main session MUST end its turn with an empty reply. Main session MUST stop a coder,
   debugger or reviewer once its output closes.
-- A brief or message MUST hold the line `timer: on` (`core` §Reports) when main session
+- A brief or message MUST hold the line `timer: on` (`core` §6) when main session
   expects to send that agent a later message.
 - A follow-up message MUST name commits since agent's last turn, or `none`; when that turn
   was on another branch, it MUST name current branch and its tip instead. It MUST also
@@ -87,25 +92,26 @@ Main session follows this skill for each spawn of a project agent.
   any uncommitted work in that worktree as a WIP commit. After a `stuck:` report, it MUST
   also merge task branch, or the branch its brief names, into that WIP branch; the
   worktree stays. A re-review message MUST also name finding numbers and fix commits. A
-  follow-up or new-work message's result counts as a spawn result for §Delegation and
-  worktrees and §Re-spawn and retry.
-- A finding that the fixer reports false MUST get the claim check of `code` §Review loop.
-- Follow-up work MUST leave its agent and go as new work (below) when it needs a §Models
+  follow-up or new-work message's result counts as a spawn result for §1
+  and §6.
+- Follow-up work MUST leave its agent and go as new work (below) when it needs a §4
   row of a higher tier, or same tier with higher effort, when the message cannot reach its
   agent, or when a commit by another actor since agent's last turn changes a file of its
   work: a file its commits changed, its review range covered or its report named. A
-  no-re-review commit (`code` §Review loop), a merge of the agent's own commits, a WIP
+  no-re-review commit (below), a merge of the agent's own commits, a WIP
   commit of the agent's own work, the commits the message sends it to check and a merge of
   those commits do not count. When agent's last turn was on another branch, the stale-file
   check MUST compare that branch's tip at that turn with current tip. A re-review brief to
   another agent MUST hold the findings sent to fix.
+- A no-re-review commit only deletes caveat or doc lines a finding's Fix part names, or
+  writes caveat or doc text that a Fix part gives word for word.
 - Writer, researcher and planner are reusable agents. New work for one SHOULD go as a
   message to an idle reusable agent of that card already spawned in the session. The
   message MUST hold a full brief that replaces agent's earlier brief, and commits as for a
   follow-up message. Coder, debugger and reviewer MUST get only follow-ups on their open
   output.
 - New work MUST go to a fresh spawn instead when agent's model or effort differs from the
-  work's §Models row, when the work touches a file of its work that a commit by another
+  work's §4 row, when the work touches a file of its work that a commit by another
   actor changed since its last turn, with the exclusions and branch case of follow-up work
   above, when its last result or pong arrived more than 4 minutes 30 seconds ago, or when
   its worktree is removed.
@@ -113,14 +119,14 @@ Main session follows this skill for each spawn of a project agent.
   round MAY count as needing Opus high, with the finding and failed fix commits in its
   brief.
 - A brief MUST ask only for its card's report items, plus an item main session uses next
-  (`core` §Reports).
+  (`core` §6).
 - Any other brief (research, reading, writing) MUST hold its questions and context the
   agent needs.
-- Each brief MUST name the §Models row its task matches, or `no row`.
+- Each brief MUST name the §4 row its task matches, or `no row`.
 - A brief MAY leave an `on` gate to main session only when its change touches no file the
   gate runs.
 - A brief MUST NOT repeat `core` rules or claim `core` is in context; agent loads it when
-  hook (`core` §Host terms) did not.
+  hook (`core` §7) did not.
 
 ## 3. What each agent returns
 
@@ -129,24 +135,24 @@ Main session follows this skill for each spawn of a project agent.
   and report format.
 - A bug whose cause neither the plan, a review finding nor a diagnose-only report names
   MUST go to debugger, not coder. So MUST a coder's `stuck: cause unknown`; it MUST NOT
-  get the retry of §Re-spawn and retry; main session MUST first commit coder's uncommitted
-  work as a WIP commit (§Re-spawn and retry), then remove its worktree. Its debugger brief
+  get the retry of §6; main session MUST first commit coder's uncommitted
+  work as a WIP commit (§6), then remove its worktree. Its debugger brief
   MUST name the stuck coder's WIP branch as a read-only reference.
 - Main session MUST name debugger's flow in brief or follow-up message: diagnose only when
   user asks for the cause; the fix flow when user asks for a fix, or for a coder's
   `stuck: cause unknown`. When request is unclear, flow MUST be diagnose only, with no
   question to user. After a diagnose-only report, main session MUST ask user whether to
-  fix the bug. On a yes, the fix follows `code`; on a no, its output closes. A fix after a
-  diagnose-only run SHOULD go to that debugger, in the fix flow, as a follow-up message
-  (§Briefs). A fresh spawn for it MUST be the coder, with the cause, loop command,
+  fix the bug. On a yes, the fix is a coding task; on a no, its output closes. A fix
+  after a diagnose-only run SHOULD go to that debugger, in the fix flow, as a follow-up
+  message (§2). A fresh spawn for it MUST be the coder, with the cause, loop command,
   proposed fix outline and diagnose-only branch in its brief.
 
 ## 4. Models
 
 - Fable, Opus, Sonnet and Haiku are tier names; each name in lower case is the model value
   of a spawn and of an agent card.
-- Each subagent spawn SHOULD use model and effort of its row in table below (`core` §Rule
-  words covers a bypass). User picks main session model.
+- Each subagent spawn SHOULD use model and effort of its row in table below (`core` §1
+  covers a bypass). User picks main session model.
 - A task that no row names SHOULD run on Opus, with effort from effort map.
 - Effort map, each SHOULD: `low` for one clear step or a ready spec; `medium` for several
   steps with some judgment; `high` for analysis, comparison, review, design, an unknown
@@ -171,6 +177,8 @@ Main session follows this skill for each spawn of a project agent.
 - Default rows: coder row 1; debugger, reviewer and planner row 6; researcher and writer
   row 10. A spawn MAY override the default with another row; it MUST then set its model
   and effort.
+- A researcher brief with an open point (`research` §1) MUST name row 7, or row 8 with a
+  web question.
 - The table MUST be read with these definitions:
   - Trivial change: no new branch, loop or data shape (renames, typos, config values, copy
     edits that state no new behavior and are not rule, requirement or contract text, code
@@ -211,9 +219,8 @@ Main session follows this skill for each spawn of a project agent.
 ## 6. Re-spawn and retry
 
 - A spawn fails when it returns no report or a `stuck:` report. These MUST NOT count as a
-  fail: a failing gate (`implement` §Gates per commit and `review` §The diff is the truth
-  handle it); a `sources disagree` report (`research` §Sources), whose section sets where
-  disputed questions go.
+  fail: a failing gate, which the agent's own gate rules handle; a `sources disagree`
+  report (`research` §2), whose section sets where disputed questions go.
 - A spawn that fails because of an open requirement or a question for user MUST go to user
   at once.
 - Any other failed spawn, from any row, SHOULD get one fresh retry on Opus high. When

@@ -4,16 +4,22 @@ description: >
   Diagnosis of a bug whose cause is not known: feedback loop, reproduce and minimise,
   ranked hypotheses, one-variable probes, tagged debug logs, cleanup, redaction. Loaded
   by the debugger card; "/debug".
-max-lines: 102
+metadata:
+  type: regular
+  extends: [core, implement, test]
+  max-lines: 108
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
-Load `core` first when its rules are not in your context.
+Load `core` before your first step when its rules are not in your context.
+Load `implement` before your first code edit or commit when its rules are not in your
+context.
+Load `test` before you write a test when its rules are not in your context.
 
 # debug
 
 How to find a bug's cause, for debugger. It runs in one of two flows: diagnose only
-(§Diagnose only), or diagnose and fix, the fix flow (§Fix and cleanup). Brief, or a
+(§6), or diagnose and fix, the fix flow (§7). Brief, or a
 later follow-up message, names the flow.
 
 On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger instead.
@@ -75,7 +81,7 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 - Performance bug MUST get a baseline measurement first.
 - MUST test your own ranking and record a verdict for each hypothesis: confirmed,
   refuted or untested. Done when one hypothesis is confirmed. When all are refuted, MUST
-  go back to §Hypotheses.
+  go back to §4.
 
 ## 6. Diagnose only
 
@@ -95,8 +101,8 @@ On "/debug", main session MUST NOT run loop itself. It MUST spawn debugger inste
 
 In the fix flow:
 
-- Fix MUST follow `implement` §Fixing and refactoring. Its regression test MUST follow
-  `test` §Pyramid. Minimised repro MAY become that test.
+- Fix MUST follow `implement` §3. Its regression test MUST follow
+  `test` §1. Minimised repro MAY become that test.
 - Done when original loop passes, diff against the commit the run, or its last follow-up
   message, reset to (untracked files included) holds only the fix and its regression test,
   and the fix's commit message states the confirmed hypothesis.

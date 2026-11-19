@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: core-main-load-1
+runs: 1
+execution:
+  prompt: "Show me the armory main-session rules."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: core-main-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?core-main"'
+    min: 1

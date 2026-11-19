@@ -457,6 +457,65 @@ describe('doc-checks', () => {
       assert.equal(r.stderr, '');
     });
 
+    // req: doc-checks-abstract/TR-1
+    test('crlf_user_only_skill_needs_no_evals', () => {
+      writeFile('skills/delegate/SKILL.md', '---\r\nname: delegate\r\n'
+        + 'disable-model-invocation: true\r\n---\r\n'
+        + listTexts()['skills/delegate/SKILL.md']);
+      writeFile('skills/plan/SKILL.md', '---\r\nname: plan\r\n---\r\nplan\n');
+      for (const skill of ['delegate', 'plan']) {
+        for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+          rmSync(join(tmpDir, `evals/${skill}-${name}`), { recursive: true });
+        }
+      }
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'plan: fewer than 3 load evals\nplan: no skip eval\n');
+    });
+
+    // req: doc-checks-abstract/TR-1
+    test('closing_line_with_trailing_space_does_not_close_frontmatter', () => {
+      writeFile('skills/delegate/SKILL.md', '---\nname: delegate\n'
+        + 'disable-model-invocation: true\n--- \n'
+        + listTexts()['skills/delegate/SKILL.md']);
+      for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+        rmSync(join(tmpDir, `evals/delegate-${name}`), { recursive: true });
+      }
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'delegate: fewer than 3 load evals\ndelegate: no skip eval\n');
+    });
+
+    // req: doc-checks-abstract/TR-1
+    test('unreadable_skill_is_named_once_and_skips_its_eval_check', () => {
+      rmSync(join(tmpDir, 'skills/code/SKILL.md'));
+      mkdirSync(join(tmpDir, 'skills/code/SKILL.md'));
+      for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+        rmSync(join(tmpDir, `evals/code-${name}`), { recursive: true });
+      }
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'skills/code/SKILL.md: cannot read (EISDIR)\n');
+    });
+
+    // req: doc-checks-abstract/TR-2
+    test('abstract_skill_needs_no_evals', () => {
+      writeFile('skills/plan/SKILL.md', '---\nname: plan\nuser-invocable: false\n'
+        + 'metadata:\n  type: abstract\n---\nplan\n');
+      writeFile('skills/delegate/SKILL.md', '---\nname: delegate\nuser-invocable: false\n'
+        + 'metadata:\n  type: regular\n---\n'
+        + listTexts()['skills/delegate/SKILL.md']);
+      for (const name of ['load-2', 'load-3', 'skip-1']) {
+        rmSync(join(tmpDir, `evals/plan-${name}`), { recursive: true });
+      }
+      for (const name of ['load-1', 'load-2', 'load-3', 'skip-1']) {
+        rmSync(join(tmpDir, `evals/delegate-${name}`), { recursive: true });
+      }
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(r.stderr, 'delegate: fewer than 3 load evals\ndelegate: no skip eval\n');
+    });
+
     test('dir_without_case_yaml_does_not_count', () => {
       rmSync(join(tmpDir, 'evals/code-load-3/case.yaml'));
       const r = run();

@@ -17,8 +17,8 @@ your brief. A message that holds a full brief replaces it.
 - MUST load `core` when its rules are not in your context, then `research`.
 - MUST NOT change any tracked file.
 
-Report: result format of `research` §Result, with recorded-items slot and caveat slot
-(`core` §Reports).
+Report: result format of `research` §3, with recorded-items slot and caveat slot
+(`core` §6).
 
-Before you report, MUST check each line against `core` §Reports and cut each line that
+Before you report, MUST check each line against `core` §6 and cut each line that
 fails.

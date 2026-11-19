@@ -10,18 +10,94 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 ## 1. Rule homes
 
-- The always-on rules live in one `core` skill, the single source. The user's global rules
-  are part of it.
-- Two plugin hooks inject `core` into every session and every subagent
-  (`hooks/hooks.json`, `scripts/core-context.sh`). The host caps hook output at 10,000
-  characters; `scripts/core-context.test.mjs` guards it.
-- Each skill opens with "load `core` when it is not in context"; this line is the
-  fallback when neither hook nor pointer ran.
+- The always-on rules live in two skills, the single source: `core`, the rules for every
+  actor, and `core-main`, the rules for the main session only. The user's global rules
+  are part of them. The agent-only rules (report slots, timer, `stuck:`) sit in `core`
+  for now, as an exception to the placement rule below.
+- A build writes two hook payloads: the main payload (`core` plus `core-main`) and the
+  agent payload (`core` alone). Two plugin hooks inject them (`hooks/hooks.json`): the
+  main payload at session start, the agent payload at subagent start. The git commit of
+  the payloads is a separate step.
+- Only `core` and `core-main` hold a marker line, `armory-core <version>` and
+  `armory-core-main <version>`, so each payload holds the marker of each skill it
+  contains. A marker of any version counts as found.
+- The host injects no hook output over 10,000 characters. The size check warns on a
+  payload over 9,000 characters and on one over 10,000, marker lines included. For now
+  both levels only warn; making them errors is a later step. This cap is the only size
+  limit of `core` and `core-main`: `scripts/skill-sizes.mjs` exempts them from
+  `metadata.max-lines`.
+- A parent MUST be loaded with its child, lazily: a pointer
+  ``Load `<parent>` before <when>`` loads it just before the step that needs it. A
+  pointer to `core` or `core-main` loads it only when its marker is missing from
+  context; it is the fallback when neither the hook nor the project-context pointer ran.
+  For now each skill holds its own pointers; a later step makes the build write them
+  from `metadata.extends`.
+- The `core-main` skill opens with a disclaimer that its rules are for the main session
+  only, and each of its section names carries a main-session-only tag. The build drops
+  both from the main payload. The hook-fallback pointer loads both skills.
 - `setup` writes the pointer into the project context when the hook probe fails; the
   user keeps personal items there.
-- The skill set has fourteen skills: `core`, `plan`, `delegate`, `code`, `implement`,
-  `test`, `debug`, `review`, `audit`, `research`, `retro`,
-  `triage`, `dnd` and `setup`. The skills other than `core` hold the workflows.
+- The skill set has twenty skills: `core`, `core-main`, `workflow`, `tracking`,
+  `requirements`, `plan-draft`, `craft`, `plan`, `delegate`, `code`,
+  `implement`, `test`, `debug`, `review`, `audit`, `research`, `retro`, `triage`, `dnd`
+  and `setup`. The skills other than `core` and `core-main` hold the workflows.
+- The migration map of `skill-architecture-redesign` extracts more abstract skills. Each
+  task that adds one also adds it to each doc-checks skill list.
+- The skills form a hierarchy, like code built by composition. A skill's frontmatter
+  lists its parents in `metadata.extends`, explicitly, with no implicit root: `core` has
+  none, `core-main` extends `core`, and each other skill lists `core` or `core-main` and
+  any other parent. A skill MAY have several parents. The extends graph MUST be acyclic.
+- `code`, `plan`, `setup` and `triage` extend `core-main`, since they cite its rules.
+  `audit` extends `review`; `dnd` extends `plan` and `code`. `code` and `plan` extend
+  `delegate` and not each other; `core-main` holds the hand-off between them.
+- A rule goes to `core` only when every actor needs it, and to `core-main` only when
+  every main-session run needs it.
+- When two skills share rules, or cite each other, the shared part moves to an abstract
+  skill that both extend, as a shared helper moves out of two modules.
+  `metadata.type: abstract` marks it. An abstract skill has `user-invocable: false`,
+  which hides it from the user's `/` menu; the model can still load it. Its description
+  says "Abstract: load only through a skill that extends it". It is loaded only through
+  a child's pointer; an agent card MUST NOT load one. Its name takes no prefix. Each
+  skill carries `metadata.type`: `abstract`, `user-only` for a skill with
+  `disable-model-invocation: true`, or `regular`.
+- `workflow` and `tracking` are the abstract skills of the run mechanics that the
+  main-session skills share. `tracking` holds the tracker verbs and write rules (the
+  five main-only tracker sub-bullets of `core` included), the docs fallback, the docs
+  and status homes, the `triage` roles and label lines, amendments and the business quiz
+  topics. `workflow` extends `tracking` and holds the claim, branches, caveat-base
+  writes, finish and the done write. `triage` extends `tracking`, not `workflow`, so a
+  triage run loads no branch, caveat or finish rule. The plan templates, the `BR` and
+  `TR` formats, the plan-doc section rules, the milestone check and the flow walk live
+  in the abstract skill `requirements` instead, which `tracking`, `plan` and
+  `plan-draft` extend: a skill that a card loads cannot have `tracking`, a child of
+  `core-main`, as an ancestor.
+- `plan-draft` is a concrete skill of the planner's drafting rules: the task check, the
+  `tests:` case walk, the task-level flow walk and the drafting rules, on top of
+  `requirements`. The `planner` card loads it, not `plan`. The parts it shares with
+  `plan`, `implement` and `test` move to abstract skills; the definitions only the
+  planner reads stay in it as plain text.
+- `core-main` and each new concrete skill, `plan-draft` included, get 3 load eval cases
+  and 1 skip eval case. An abstract skill gets none.
+- A skill cites only its ancestors: the skills it extends, directly or through a parent.
+  An agent card and a brief payload, ``brief loads `<skill>` ``, are exempt.
+  A skill that needs none of another skill's rules and names it only as a command for the
+  user or a home for a rule names it in plain text, as `core-main` §4 does. A user-only
+  skill MUST NOT be a parent, since the host does not let the model load it; a skill
+  names it in plain text instead.
+- Each skill numbers its own sections; a rule reference takes the form
+  `` `<skill>` §<n> ``, or `` `<skill>` §<n>.<m> `` for a `###` subsection.
+- `lint` fails when a skill that an agent card loads has `core-main` as an ancestor.
+- The graph tool is a Node script in `scripts/`. Its build writes the payloads. Its check
+  runs by default and in `lint`. It draws the graph on demand, with `--mermaid` or
+  `--html`. Its nodes are the skills and the agent cards; a card is a kind of its own,
+  exempt from the hierarchy rules. An edge is each backticked skill name in a skill, its
+  description included, not only a rule reference or a pointer. Each skill pair has one
+  edge, labelled with its section set: `§3`, `§4` and `§6` make one edge.
+- The graph check reports a skill whose pointers and `metadata.extends` differ, a cycle,
+  a cite of a skill that is not an ancestor, a card that loads an abstract skill, and a
+  rule reference by name or with no such heading. It reads the rule references of the
+  skill templates too, with no other check. A `§` after a file path names a doc section
+  and is not checked. A run with any report exits 1, so `lint` fails.
 - The project agents are six: `coder`, `debugger`, `reviewer`, `researcher`, `writer`
   and `planner`. The plugin ships their templates, not agent cards; `setup`
   writes the cards into each project.
@@ -31,7 +107,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
   section Project context).
 - The skills use host terms (`core` section Host terms) as host-neutral names.
 - The `tracker` host term binds per project, in the project context `## Tracker`. With no
-  binding, the docs fallback takes its place (`core` section Host terms).
+  binding, the docs fallback takes its place (`tracking` §1).
 
 ## 2. Rule strength
 
@@ -73,16 +149,22 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 
 | Home | RULES sections | Loaded by |
 |---|---|---|
-| `core` | 1, 2, 3, 4; the one-line Fable MUST of 23 | the hook or the pointer; every armory skill, so every actor |
-| `plan` + templates `strategic.md`, `milestone.md`, `task.md` | 5 (push back), 6 | main session; `planner`, drafting part only |
+| `core` | the parts of 1, 2, 3, 4 that every actor needs; the one-line Fable MUST of 23; the output-size rule: none (new) | the hook, in both payloads, or the pointer; a skill that finds its marker missing; so every actor |
+| `core-main` | the main-session parts of 1, 2, 3, 4; the hand-off between `plan` and `code`: none (new) | the hook, in the main payload, or the pointer; a main-session skill that finds its marker missing |
+| `plan` | 5 (push back); 6: the levels, the quiz rounds, the strategic check, the approval | main session |
+| `workflow` + template `pr.md` | parts of 7 (caveat writes) and 17 (branch, push and merge guard, finish); the claim and the done write: none (new) | main session, through the pointer of a child skill |
+| `tracking` | parts of 6 (docs and status homes, amendments, business quiz topics); the main-session tracker rules and the `triage` roles, label lines and notes form: none (new) | main session, through the pointer of `workflow` or `triage` |
+| `requirements` + templates `strategic.md`, `milestone.md`, `task.md` | parts of 6 (`BR` and `TR` formats, plan-doc section rules, milestone check, flow walk, plan templates) | main session and planner, through the pointers of `tracking`, `plan` and `plan-draft` |
+| `plan-draft` | 6 (drafting part: task check) | `planner` |
 | `delegate` | 15, 16 (briefs, contracts), 23 (table, effort map, Fable question, re-spawn, retry), 17 (worktree merge) | main session, from `plan` and `code` |
-| `code` + template `pr.md` | 17 (branch, plan-file commit, push and merge guard), 18 (review loop, task end), 14 (handover gates), 7 (caveat writes) | main session |
-| `implement` | 5 (before you write), 9, 10, 11, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger |
-| `test` | 13 | coder, debugger, reviewer, planner |
+| `code` | 18 (review loop, task end), 14 (handover gates) | main session |
+| `implement` | 9, 10, 12, 14 (per-commit gates), 17 (commit message) | coder, debugger |
+| `test` | 13, except the parts in `craft` | coder, debugger, reviewer, planner |
+| `craft` | 5 (before you write), 11, parts of 13 (TDD, test scope, the benchmark row check); the data-growth path definition: none (new) | coder, debugger, reviewer, planner, through the pointers of `implement` and `test` |
 | `debug` | none (new) | debugger |
 | `review` | 19 | reviewer |
 | `audit` | 20 | reviewer on an audit brief |
-| `research` | 7 | researcher |
+| `research` | 7 | researcher; reviewer, through the pointer of `review`; main session, through the pointers of `plan`, `code` and `delegate` |
 | `retro` | none (new) | main session, when the user starts it (user-only) |
 | `triage` | none (new) | main session, when the user starts it (user-only) |
 | `dnd` | none (new) | main session, when the user starts it (user-only) |
@@ -91,31 +173,33 @@ RULES sections are the sections of `docs/archive/RULES.md`.
 
 | Actor | Loads |
 |---|---|
-| main session, full task | `core` (the hook or the pointer), `plan`, `delegate`, `code` |
-| main session, triage | `core` (the hook or the pointer), `triage` |
-| main session, dnd | `core` (the hook or the pointer), `dnd`, `plan`, `delegate`, `code` |
-| coder | `core`, `implement`, `test` |
-| debugger | `core`, `debug`, `implement`, `test` |
-| reviewer | `core`, `review`, `implement`, `test` |
-| reviewer, audit brief | `core`, `audit`, `review`, `implement`, `test` |
-| researcher | `core`, `research` |
-| planner | `core`, `plan`, `implement`, `test` |
-| writer | `core` |
+| main session, full task | `core`, `core-main` (the main payload or the pointer), `workflow`, `tracking`, `requirements`, `plan`, `delegate`, `code`, `research` |
+| main session, triage | `core`, `core-main` (the main payload or the pointer), `tracking`, `requirements`, `triage` |
+| main session, dnd | `core`, `core-main` (the main payload or the pointer), `workflow`, `tracking`, `dnd`, `requirements`, `plan`, `delegate`, `code`, `research` |
+| coder | `core` (the agent payload), `implement`, `test`, `craft` |
+| debugger | `core` (the agent payload), `debug`, `implement`, `test`, `craft` |
+| reviewer | `core` (the agent payload), `review`, `implement`, `test`, `craft`, `research` |
+| reviewer, audit brief | `core` (the agent payload), `audit`, `review`, `implement`, `test`, `craft`, `research` |
+| researcher | `core` (the agent payload), `research` |
+| planner | `core` (the agent payload), `plan-draft`, `requirements`, `implement`, `test`, `craft` |
+| writer | `core` (the agent payload) |
 
-The size of a load set is the sum of the `max-lines` fields of its skills.
+A load set has two sizes, never added: its hook payload in characters, and the sum of the
+`metadata.max-lines` fields of its other skills in lines.
 
 The skills are the truth; the plan files under `docs/plans/` hold the execution records.
 
 ## 5. Planning levels
 
 Planning has three horizons: strategic, milestone and task. One `plan` skill covers all
-three, with one template per doc.
+three; `requirements` holds one template per doc.
 
 With a tracker bound, the milestone list, each milestone (scope and `BR` list), its
 tasks and every status live in the tracker. The repo keeps this file's architecture and
 decisions and the task plan files.
 
-The rules and the claim: `plan` section Levels; the done write: `code`.
+The rules: `plan` section Levels; the doc and status homes: `tracking`; the claim and
+the done write: `workflow`.
 
 ## 6. Decisions
 
@@ -336,11 +420,53 @@ One dated line per decision, with the dropped alternatives.
   the squire-removal decision.
 - 2026-11-16: `review` drops its "with no brief" clause, since a main-session review is
   banned. It reverts the main-session review part of the 2026-11-03 edge-case decision.
+- 2026-11-18: the always-on rules split into two level-1 skills, `core` for every actor
+  and `core-main` for the main session, each with its own section numbers and marker
+  line (`armory-core <version>`, `armory-core-main <version>`; any version counts). A
+  build writes two hook payloads, main (`core` plus `core-main`) and agent (`core`),
+  capped at 10,000 characters (error) and 9,000 (warning), marker lines included; the
+  cap replaces their `metadata.max-lines`. The skill set grows to fifteen, so each
+  doc-checks skill list names `core-main`. The skills take three levels (level 1, shared,
+  special), declared in frontmatter, with references only up; `core` cites no other
+  skill. A graph tool in `scripts/` builds the payloads and checks the levels in
+  `lint`. Load evals per special skill are deferred. Reason: the payload cap, and the
+  main-session rules that reach every subagent through the hook. It reverts the
+  2026-11-06 drop of a second SessionStart file for the main-session rules. Kept as
+  options: an agent-only source or the agent cards as the home of the agent-only rules;
+  the reference form only, with brief payloads in frontmatter. Dropped: a per-role agent
+  core, a combined `core` skill built from two sources, one numbering with gaps for the
+  main-only sections, a main-only section tag for lint.
+- 2026-11-18: the skills form a hierarchy built like code, instead of levels. Each skill
+  lists its parents in `metadata.extends`, with no implicit root; a skill may have
+  several parents, the graph has no cycle, and a pointer loads each parent lazily, just
+  before the step that needs it. A skill cites only its ancestors. A part that two
+  skills share moves to an abstract skill (`metadata.type: abstract`,
+  `user-invocable: false`, no evals) that both extend; no agent card loads one.
+  `workflow` is the first abstract skill. `plan-draft` is a concrete skill that the
+  `planner` card loads instead of `plan`. Only `core` and `core-main` keep a marker
+  line. An edge is each backticked skill name in a skill, its description included. The
+  skill set grows to seventeen. Every graph check only reports until the flip task.
+  Both payload size levels only warn for now. It reverts the level part and the 10,000
+  error of the decision above. Reason: the reference map holds 22 two-way pairs, `dnd`
+  overlays `plan` and `code`, `audit` builds on `review`, and the `planner` card loads
+  all of `plan`. Dropped: levels 1–3; a level 4 or an exemption for user-only skills;
+  `dnd` rewritten by question kind; `audit` merged into `review`; a shared `findings`
+  skill; two shared skills from the start; only rule references and pointers as edges;
+  a card that loads one section or an abstract skill; drafting rules in the `planner`
+  card; amending DESIGN.md on the milestone branch; markers in every skill; eager
+  parent loading; a name prefix for abstract skills; an implicit `core` root; abstract
+  skills with evals; a single parent per skill.
+- 2026-11-19: the output-size rule moves from the abstract skill `output-budget` into
+  `core` §3, and `output-budget` goes. A rule that every actor needs lives in `core`,
+  not in an abstract skill. Reason: every actor runs commands and reads files, so both
+  payloads carry the rule in about 215 characters, in place of a skill, four pointers
+  and four card lines. Dropped: keep `output-budget` as an abstract skill (the
+  2026-11-18 rule), and a new `core` section for the rule.
 
 ## 7. Milestones
 
-Format: `<name> : <one-line goal> : <status>`; the status values are in `plan`
-section Levels. The milestone doc is `docs/milestones/<name>.md`.
+Format: `<name> : <one-line goal> : <status>`; the status values are in `tracking`
+§2.
 
 - plan-levels : the three planning levels in `plan`, the three doc templates, the done
   write in `code` : done
@@ -357,6 +483,12 @@ section Levels. The milestone doc is `docs/milestones/<name>.md`.
 - tracker : a bound tracker owns milestones, tasks and status: the `tracker` term in
   `core`, its binding by `setup`, tracker paths in `plan`, `code` and `delegate`, and a
   dry run on a scratch GitHub repo : done
+- skill-architecture-redesign : split `core` into `core` and `core-main`, the two hook
+  payloads, the marker lines, the skill hierarchy (`metadata.extends`, the abstract
+  skills, `plan-draft`), the graph tool, a probe of whether SessionStart `compact`
+  output survives the summary, and the release bump : open
+- skill-adoption : adopt the drafts parked in `docs/adoption-drafts/` on branch
+  `drafts-stash`, chosen in its milestone run and fitted to the skill levels : open
 
 ## 8. Open
 

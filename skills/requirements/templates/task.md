@@ -25,7 +25,7 @@ a data-growth path, a `- load:` line: its load `TR` id, or `- load: none, <why>`
 exact text block the `TR` prescribes is indented under the item.
 
 A task with no milestone and no tracker bound lists its own `BR` items first, in the
-format of armory `plan`'s `templates/milestone.md` §Requirements.
+format of armory `requirements` `templates/milestone.md` §Requirements.
 
 ## Test scope
 

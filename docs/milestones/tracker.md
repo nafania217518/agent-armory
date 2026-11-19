@@ -183,7 +183,7 @@ Each `BR` is checked by reading the files, by `lint`, by `unit` or by a dry run.
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
-values are in the armory `plan` skill, section Levels.
+values are in the armory `tracking` skill, section 2.
 
 - tracker-term : the `tracker` term and its rules in `core`; the probe and
   `## Tracker` in `setup` and its template, the target check : BR-1, BR-2, BR-3, BR-4,

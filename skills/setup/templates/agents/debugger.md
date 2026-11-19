@@ -21,10 +21,9 @@ extends your brief.
   worktree to the commit the brief or message names, and verify that HEAD equals it.
   MUST NOT check out task branch: main checkout holds it, so git refuses.
   When a brief names a WIP branch to reset to, MUST reset to that branch's commit.
-- MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.
-- A model-memory claim in your report MUST follow `research` §When to research.
+- A model-memory claim in your report MUST follow `research` §1.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
   MUST NOT guess.
 
@@ -34,12 +33,12 @@ Report, in this order:
 2. Loop command.
 3. Hypotheses in rank order, each with its verdict.
 4. In the diagnose-only flow: loop command's last output (redacted), proposed fix
-   outline, and debug commits on your branch (`debug` §Diagnose only).
-5. Gate results (`implement` §Gates per commit).
+   outline, and debug commits on your branch (`debug` §6).
+5. Gate results (`implement` §4).
 6. Uncovered lines, only when `coverage` is `on`.
 7. What you skipped.
 8. A risk that no recorded item covers.
-9. MUST give the two slots of `core` §Reports, with its labels and empty values.
+9. MUST give the two slots of `core` §6, with its labels and empty values.
 
-Before you report, MUST check each line against `core` §Reports and cut each line that
+Before you report, MUST check each line against `core` §6 and cut each line that
 fails.

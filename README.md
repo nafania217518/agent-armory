@@ -9,11 +9,17 @@ terms and run on Claude Code.
 | Skill | What it does | Loaded by |
 |---|---|---|
 | `core` | Always-on base rules for every actor: rule words, writing, design principles, reports. | the hook or the pointer; every armory skill |
-| `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session; `planner` |
+| `core-main` | Always-on rules for the main session only: replies, questions, reads and writes. | the hook, in the main payload, or the pointer |
+| `workflow` | Abstract: the run mechanics the main-session skills share: the claim, branches, caveat-base writes, finish and the done write. | `code`, `plan`, `delegate` and `setup`, through their pointers |
+| `tracking` | Abstract: the tracker verbs and write rules, the docs fallback, the docs and status homes, the triage roles and label lines, amendments and the business quiz topics. | `workflow` and `triage`, through their pointers |
+| `requirements` | Abstract: the `BR` and `TR` formats, the plan-doc section rules, the milestone check, the flow walk and the plan templates. | `tracking`, `plan`, `plan-draft`, through their pointers |
+| `plan` | Pre-work for a task: quizzes, requirements, the plan, approval and the plan file. | main session |
+| `plan-draft` | The planner's drafting rules: `TR` items, `tests:` lines and test scope, and the task check on the draft. | `planner` |
 | `delegate` | How the main session hands work to agents: briefs, worktrees, model and effort. | main session, from `plan` and `code` |
 | `code` | Main-session coding lifecycle from the approved plan to the finish question. | main session |
 | `implement` | The coder's rules: smallest complete change, readability, gates, atomic commits. | `coder`, `debugger`, `reviewer` |
 | `test` | Test rules: pyramid, levels, unit style, TDD, test scope, markers, determinism. | `coder`, `debugger`, `reviewer`, `planner` |
+| `craft` | Abstract: the coding and test rules that `implement` and `test` share: scope, domain types, TDD, test scope, data-growth paths. | `implement`, `test`, through their pointers |
 | `debug` | Diagnosis of a bug whose cause is not known: feedback loop, hypotheses, probes, cleanup. | `debugger` |
 | `review` | Review of a change. Lists findings and changes no code. | `reviewer` |
 | `audit` | Ranked one-shot quality audit of a whole repo or package. Changes nothing. | `reviewer` on an audit brief |
@@ -90,8 +96,7 @@ claude plugin eval . --ablation none --runs 3 --no-publish --model opus --max-co
 One run per case is noisy: on Opus a load case can miss once and pass on the next run.
 Treat a case as a real miss only when it fails on most of its 3 runs. The command still
 exits 1 when any case scores below 1.0 (`--threshold`, default 1.0), so read the
-per-case scores, not the exit code. An Opus run costs about $17 (114 runs at about
-$0.15).
+per-case scores, not the exit code. An Opus run costs about $19 (126 runs at about $0.15).
 
 `--ablation none` is needed: under the default two arms, `tool: Skill` graders do not
 score. Results go to `evals/results/`, which git ignores.
@@ -106,5 +111,5 @@ never in a tracked file.
   context (template in `skills/setup/templates/AGENTS.md`) holds the gates.
 - `AGENTS.md` without a `CLAUDE.md` needs Claude Code 2.1.277 or later.
   Below that, add a `CLAUDE.md` with the one line `@AGENTS.md`.
-- The global rules live in `core`; the plugin hook loads it, or the pointer that
-  `setup` writes when the hook probe fails.
+- The global rules live in `core` and `core-main`; the plugin hooks inject them, or the
+  pointer that `setup` writes when the hook probe fails.

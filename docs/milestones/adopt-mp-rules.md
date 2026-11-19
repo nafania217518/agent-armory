@@ -82,7 +82,7 @@ Each `BR` is checked by reading the skill, by `lint`, or by a dry run of a quiz.
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
-values are in the armory `plan` skill, section Levels.
+values are in the armory `tracking` skill, section 2.
 
 - plan-quiz-rules : A1, A2, A3, A5 in `plan`; the glossary format line : BR-1, BR-2,
   BR-3, BR-5, BR-6, BR-7, BR-12, BR-13, BR-14 : done

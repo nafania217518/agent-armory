@@ -59,7 +59,7 @@ Each `BR` is checked by reading the files, by `lint`, or by a grep for `setup`.
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
-values are in the armory `plan` skill, section Levels.
+values are in the armory `tracking` skill, section 2.
 
 - small-rules-edits : the four items and the `setup` fact moves : BR-1, BR-2, BR-3,
   BR-4, BR-5, BR-6, BR-7 : done

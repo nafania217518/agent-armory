@@ -2,7 +2,14 @@
 
 Format: the caveat line of the armory `core` skill, section Reports.
 
-- `plan`, `delegate` and `dnd` cite `code` §Task end steps by number, so a step renumber breaks them with no lint error : skills/code/SKILL.md
-- `audit` cites `review` §Understand first by bullet position ("first bullet"), so a new bullet above it changes what audit inherits : skills/audit/SKILL.md
-- `code` §Caveats and `plan` §Amendments cite `delegate` §Models row 9, and `research` §When to research cites rows 7 and 8, by number, so a row renumber breaks them with no lint error : skills/delegate/SKILL.md
-- `dnd` §Run and §Answers log cite basis numbers of the `research` §When to research ladder, so a ladder reorder breaks them with no lint error : skills/research/SKILL.md
+- `dnd` cites `code` §4 steps by number, so a step renumber breaks it with no lint error : skills/code/SKILL.md
+- `audit` cites `review` §1 by bullet position ("first bullet"), so a new bullet above it changes what audit inherits : skills/audit/SKILL.md
+- `delegate` §4 cites its own rows 7 and 8 for a researcher brief with an open point, by number, so a row renumber breaks them with no lint error : skills/delegate/SKILL.md
+- `dnd` §2 cites basis 1 of the 3-step `research` §1 ladder and adds its own basis 3 and 4 on top of it, so a change to that ladder breaks the `dnd` basis numbers with no lint error : skills/research/SKILL.md
+- `plan` and `triage` name `tracking` rules by rule name ("AI marker line"), some with no section, so a § search misses them : skills/plan/SKILL.md
+- `review` §3 Shape ("an `implement` or `craft` MUST") and §5 ("a `test` or `craft` rule breach") name a skill's rules in general, so a rule move out of those skills changes them with no `lint` report : skills/review/SKILL.md
+- Every rule reference in a skill, card or skill template names its section by number, and skill-graph checks only that the heading exists, so an inserted, removed or moved section retargets each cite of a later section with no `lint` report : scripts/skill-graph.mjs
+- `docs/DESIGN.md` and the milestone docs' Tasks format lines cite `tracking` sections by number, and skill-graph does not read them, so a `tracking` renumber leaves them stale with no `lint` report : skills/tracking/SKILL.md
+- `tracking` §4 (the behind-`<base>` check) uses `<base>`, which `workflow` §2 defines, but `tracking` does not extend `workflow` : skills/tracking/SKILL.md
+- Root `AGENTS.md` cites the `workflow` section Caveats by name, and skill-graph does not read it, so a rename of that section breaks the cite with no `lint` report : AGENTS.md
+- `workflow` §4 and `delegate` §1 name `code` §4 step 8 by rule name only ("task-end cleanup"), so a rename of that step breaks them with no `lint` report : skills/workflow/SKILL.md

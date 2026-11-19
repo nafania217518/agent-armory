@@ -116,7 +116,7 @@ Each `BR` is checked by reading the files, by `lint`, or by a grep.
 ## Tasks
 
 Format: `<branch> : <what> : <BR list> : <status>`. In execution order; the status
-values are in the armory `plan` skill, section Levels.
+values are in the armory `tracking` skill, section 2.
 
 - debug-skill : the `debug` skill, the debugger card and its spawn rules : BR-1, BR-2,
   BR-3, BR-4, BR-5, BR-6, BR-7, BR-10, BR-11, BR-12, BR-13, BR-14, BR-15, BR-16,

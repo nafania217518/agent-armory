@@ -2,16 +2,20 @@ import { lstatSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 
 const USAGE = 'usage: node scripts/skill-sizes.mjs [skills-dir]';
-const MAX = /^max-lines: (\S*)$/;
+const MAX = /^ {2}max-lines: (\S*)$/;
 const POSITIVE = /^[1-9]\d*$/;
+// The hook payloads replace the line cap for these; skill-graph warns on their size.
+const EXEMPT = new Set(['core', 'core-main']);
 
-// The max-lines value from the leading --- block, or undefined.
+// The metadata.max-lines value from the leading --- block, or undefined.
 function maxLines(text) {
   const lines = text.split('\n');
   if (lines[0] !== '---') return undefined;
+  let inMetadata = false;
   for (const line of lines.slice(1)) {
     if (line === '---') return undefined;
-    const match = line.match(MAX);
+    if (!line.startsWith(' ')) inMetadata = line === 'metadata:';
+    const match = inMetadata && line.match(MAX);
     if (match) return match[1];
   }
   return undefined;
@@ -60,13 +64,17 @@ function main() {
       continue;
     }
     const lines = text.split('\n').length - 1;
+    if (EXEMPT.has(name)) {
+      process.stdout.write(`${name}: ${lines}/exempt\n`);
+      continue;
+    }
     const max = maxLines(text);
     process.stdout.write(`${name}: ${lines}/${max ?? '?'}\n`);
     if (max === undefined || !POSITIVE.test(max)) {
-      process.stderr.write(`${name}: max-lines is missing or not "max-lines: <positive integer>"\n`);
+      process.stderr.write(`${name}: metadata.max-lines is missing or not "  max-lines: <positive integer>" under metadata\n`);
       failed = true;
     } else if (lines > Number(max)) {
-      process.stderr.write(`${name}: ${lines} lines, over max-lines ${max}\n`);
+      process.stderr.write(`${name}: ${lines} lines, over metadata.max-lines ${max}\n`);
       failed = true;
     }
   }

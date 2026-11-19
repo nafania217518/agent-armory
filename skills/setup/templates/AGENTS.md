@@ -6,7 +6,7 @@
 
 ## Commands
 
-Format: `<check>: <command>`; `implement` §Gates per commit says how to run them.
+Format: `<check>: <command>`; `implement` §4 says how to run them.
 
 - lint: {{LINT}}
 - owasp: {{OWASP}}
@@ -33,7 +33,7 @@ Format: `<gate>: on`, or `<gate>: off <reason>`.
 
 ## Test levels
 
-Only what this project adds to or changes in armory `test` §Levels.
+Only what this project adds to or changes in armory `test` §2.
 
 Unit style: {{UNIT_STYLE}}
 
@@ -41,18 +41,18 @@ Unit style: {{UNIT_STYLE}}
 
 ## Tracker
 
-Format: `<verb>: <binding>`, one line per bound verb of armory `core` §Host terms,
-term `tracker`, then `target: <the project's own tracker>`, then
+Format: `<verb>: <binding>`, one line per bound verb of armory `tracking` §1, then
+`target: <the project's own tracker>`, then
 `closes by PR merge: <no | the closing reference form, e.g. Closes #<id>>`, then,
 with the label verbs bound, `label <role>: <label>`, one per role of armory
-`triage`.
+`tracking` §3.
 
 {{TRACKER}}
 
 ## Rules
 
 Project-only rules. The armory skills hold the rest. The `auto-fix:` values are in
-armory `code` §Review loop.
+armory `code` §3.
 
 - Documentation lives in {{DOCS}}
 - auto-fix: none
@@ -65,5 +65,5 @@ A line MUST hold only a term of the project's domain, with no implementation det
 
 ## Caveats
 
-Format: the caveat line of armory `core` §Reports, or a topic pointer line of
-armory `code` §Caveats
+Format: the caveat line of armory `core` §6, or a topic pointer line of
+armory `workflow` §3

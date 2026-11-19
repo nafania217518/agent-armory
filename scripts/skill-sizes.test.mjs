@@ -17,7 +17,7 @@ function writeSkill(name, text, dir = 'skills') {
 
 // A skill file of `lines` newline-terminated lines with the given max.
 function skillText(max, lines) {
-  const head = ['---', 'name: x', `max-lines: ${max}`, '---'];
+  const head = ['---', 'name: x', 'metadata:', `  max-lines: ${max}`, '---'];
   const body = Array.from({ length: Math.max(0, lines - head.length) }, (_, i) => `line ${i}`);
   return [...head, ...body].join('\n') + '\n';
 }
@@ -62,6 +62,13 @@ describe('skill-sizes', () => {
       assert.equal(run().stdout, 'audit: 6/20\ncode: 5/10\n');
     });
 
+    test('metadata_field_after_extends_continuation_passes', () => {
+      writeSkill('a', '---\nmetadata:\n  extends: [b,\n    c]\n  max-lines: 9\n---\n');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stdout, 'a: 6/9\n');
+    });
+
     test('skill_at_exact_max_passes', () => {
       writeSkill('a', skillText('7', 7));
       const r = run();
@@ -70,8 +77,8 @@ describe('skill-sizes', () => {
     });
 
     test('counts_lines_like_wc_without_trailing_newline', () => {
-      writeSkill('a', '---\nmax-lines: 9\n---\nlast');
-      assert.equal(run().stdout, 'a: 3/9\n');
+      writeSkill('a', '---\nmetadata:\n  max-lines: 9\n---\nlast');
+      assert.equal(run().stdout, 'a: 4/9\n');
     });
   });
 
@@ -135,11 +142,11 @@ describe('skill-sizes', () => {
     });
 
     test('field_only_in_body_counts_as_missing', () => {
-      expectNamed('---\nname: bad\n---\nmax-lines: 50\n');
+      expectNamed('---\nname: bad\n---\nmetadata:\n  max-lines: 50\n');
     });
 
     test('no_frontmatter_exits_1_named', () => {
-      expectNamed('max-lines: 50\nbody\n');
+      expectNamed('metadata:\n  max-lines: 50\nbody\n');
     });
 
     // req: agent-reuse/TR-7
@@ -149,17 +156,29 @@ describe('skill-sizes', () => {
 
     // req: agent-reuse/TR-7
     test('value_tab_exits_1_named', () => {
-      expectNamed('---\nname: bad\nmax-lines:\t5\n---\nbody\n');
+      expectNamed('---\nname: bad\nmetadata:\n  max-lines:\t5\n---\nbody\n');
     });
 
     // req: agent-reuse/TR-7
     test('value_no_space_exits_1_named', () => {
-      expectNamed('---\nname: bad\nmax-lines:5\n---\nbody\n');
+      expectNamed('---\nname: bad\nmetadata:\n  max-lines:5\n---\nbody\n');
     });
 
     // req: agent-reuse/TR-7
     test('value_trailing_space_exits_1_named', () => {
       expectNamed(skillText('5 ', 5));
+    });
+
+    test('top_level_field_counts_as_missing', () => {
+      expectNamed('---\nname: bad\nmax-lines: 50\n---\nbody\n');
+    });
+
+    test('field_under_other_key_counts_as_missing', () => {
+      expectNamed('---\nname: bad\nother:\n  max-lines: 50\n---\nbody\n');
+    });
+
+    test('field_after_metadata_block_ends_counts_as_missing', () => {
+      expectNamed('---\nname: bad\nmetadata:\n  type: x\nuser-invocable: false\n  max-lines: 50\n---\nbody\n');
     });
   });
 
@@ -171,10 +190,10 @@ describe('skill-sizes', () => {
     });
 
     test('first_argument_dir_used', () => {
-      writeSkill('other', skillText('10', 4), 'elsewhere');
+      writeSkill('other', skillText('10', 5), 'elsewhere');
       const r = run([join(tmpDir, 'elsewhere')]);
       assert.equal(r.status, 0);
-      assert.equal(r.stdout, 'other: 4/10\n');
+      assert.equal(r.stdout, 'other: 5/10\n');
     });
   });
 
@@ -243,6 +262,31 @@ describe('skill-sizes', () => {
       } finally {
         chmodSync(file, 0o644);
       }
+    });
+  });
+
+  // req: core-split/TR-1
+  describe('core exemption', () => {
+    const noMax = '---\nname: x\n---\nbody\n';
+
+    test('core_and_core_main_without_max_lines_are_exempt_but_core_extra_is_not', () => {
+      writeSkill('core', noMax);
+      writeSkill('core-main', noMax);
+      writeSkill('core-extra', noMax);
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.deepEqual(stderrLines(r), [
+        'core-extra: metadata.max-lines is missing or not "  max-lines: <positive integer>" under metadata',
+      ]);
+      assert.ok(r.stdout.includes('core: 4/exempt\n'));
+      assert.ok(r.stdout.includes('core-main: 4/exempt\n'));
+    });
+
+    test('core_over_its_own_max_lines_still_passes', () => {
+      writeSkill('core', skillText('1', 5));
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stdout, 'core: 5/exempt\n');
     });
   });
 });

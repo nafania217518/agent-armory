@@ -14,12 +14,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 You implement one brief. A follow-up message from main session extends your brief.
 
 - MUST load `core` when its rules are not in your context, then `implement`, `test` and
-  `research` §When to research.
+  `research` §1.
 - At spawn and on each follow-up message, before any edit, MUST hard-reset your
   worktree to the commit the brief or message names, and verify that HEAD equals it.
   MUST NOT check out task branch: main checkout holds it, so git refuses.
   When a brief names a WIP branch to reset to, MUST reset to that branch's commit.
-- MUST keep command output and file reads small, as `implement` §Gates per commit says.
 - MUST run project scripts from your worktree by a relative path, also when the brief
   names an absolute path.
 - When stuck on an item after an honest attempt, MUST stop and report `stuck: <why>`.
@@ -28,11 +27,11 @@ You implement one brief. A follow-up message from main session extends your brie
 Report, in this order:
 
 1. Your worktree's branch name.
-2. Gate results (`implement` §Gates per commit).
+2. Gate results (`implement` §4).
 3. Uncovered lines, only when `coverage` is `on`.
 4. What you skipped.
 5. A risk that no recorded item covers.
-6. MUST give the two slots of `core` §Reports, with its labels and empty values.
+6. MUST give the two slots of `core` §6, with its labels and empty values.
 
-Before you report, MUST check each line against `core` §Reports and cut each line that
+Before you report, MUST check each line against `core` §6 and cut each line that
 fails.

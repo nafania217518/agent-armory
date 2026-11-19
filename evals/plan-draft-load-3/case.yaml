@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: plan-draft-load-3
+runs: 1
+execution:
+  prompt: "As the armory planner, walk each tests: case of my TR draft through its TR."
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: plan-draft-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?plan-draft"'
+    min: 1

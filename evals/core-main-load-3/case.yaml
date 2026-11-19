@@ -1,0 +1,13 @@
+schema_version: "1.1"
+name: core-main-load-3
+runs: 1
+execution:
+  prompt: "How must the armory main session shape its replies?"
+  max_turns: 3
+  allowed_tools: [Skill, Read, Glob, Grep]
+graders:
+  - name: core-main-loaded
+    type: tool_used
+    tool: Skill
+    input_match: '"skill"\s*:\s*"(?:[\w-]+:)?core-main"'
+    min: 1
