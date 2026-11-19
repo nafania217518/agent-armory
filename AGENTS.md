@@ -35,8 +35,6 @@ Format: `<gate>: on`, or `<gate>: off <reason>`.
 
 Only what this project adds to or changes in the armory `test` skill, section Levels.
 
-Unit style: sociable
-
 Surfaces: The plugin skills and templates: no test level; `lint` checks them. The
 scripts in `scripts/`: `unit`.
 
@@ -57,11 +55,6 @@ armory `code` skill, section Review loop.
 - A brief MUST name each skill it loads by its repo path, and each agent card by its
   template path in `skills/setup/templates/agents/`, because the installed plugin can
   lag this repo.
-- A match of a template heading by section name MUST ignore the number that
-  `docs/DESIGN.md` adds.
-- A GitHub `list items` binding MUST search `reason:"not planned"` for the status
-  dropped, because `--state closed` mixes done and dropped.
-- Skill text MAY drop a, an and the where meaning stays.
 - Outside `core` section Host terms, a skill MUST NOT name a host's own tool or file; it
   uses those host terms and skill names instead.
 
@@ -96,9 +89,7 @@ Intent point : an open point whose options turn on the user's goal, scope, prior
 
 Triage role : a state (`needs-triage`, `needs-info`, `accepted`) or a category (`bug`, `enhancement`) that triage sets on an item through a mapped label.
 
-Abstract skill : a skill that holds rules other skills share; only a skill that extends it loads it.
-
-Parent skill : a skill that another skill lists in metadata.extends. Avoid: level
+Abstract skill : a skill that holds rules other skills share; only a skill that extends it loads it. Avoid: level
 
 Hook payload : the text a plugin hook injects at session or subagent start.
 

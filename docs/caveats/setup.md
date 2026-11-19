@@ -10,3 +10,5 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - Claude Code renders SessionStart hook stdout after `SessionStart:startup hook success: ` on the same line, so the first line of `hooks/main-payload.md` does not start a line in the main session's context : hooks/main-payload.md
 - The fallback pointer sits in project context, which the host loads into every subagent, so a subagent that misreads its main-session clause loads `core-main` : skills/setup/SKILL.md
 - An update run finds an old pointer only by its opening words "At session start, load the armory `core` skill", so a pointer edit that changes those words leaves old pointers unmatched : skills/setup/SKILL.md
+- GitHub `--state closed` lists done and dropped items alike, so a `list items` binding finds the status dropped only by a search for `reason:"not planned"` : skills/setup/SKILL.md
+- `docs/DESIGN.md` numbers its section headings (`## 3. The project context template`) while the templates and `AGENTS.md` do not, so a match of a heading by its name breaks on that number : docs/DESIGN.md
