@@ -163,7 +163,7 @@ it, and a probe shows whether the SessionStart `compact` output survives the sum
   `output-budget` skill, its pointers, card lines and list entries removed : BR-43,
   BR-42, BR-35 : output-budget, plan-draft, core-split : done
 - compaction-probe : the user's probe after 0.5.0, with its caveat line : BR-34,
-  BR-35 : release-0-5-0 : open
+  BR-35 : release-0-5-0 : done
 
 ## Risks
 

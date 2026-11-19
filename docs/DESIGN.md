@@ -486,7 +486,7 @@ Format: `<name> : <one-line goal> : <status>`; the status values are in `trackin
 - skill-architecture-redesign : split `core` into `core` and `core-main`, the two hook
   payloads, the marker lines, the skill hierarchy (`metadata.extends`, the abstract
   skills, `plan-draft`), the graph tool, a probe of whether SessionStart `compact`
-  output survives the summary, and the release bump : open
+  output survives the summary, and the release bump : done
 - skill-adoption : adopt the drafts parked in `docs/adoption-drafts/` on branch
   `drafts-stash`, chosen in its milestone run and fitted to the skill levels : open
 

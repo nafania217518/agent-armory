@@ -17,7 +17,8 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - A plugin agent's `agent_type` is `plugin:agent`, a project card's is its bare `name`, so a matcher for `coder` misses a plugin-shipped `coder` : hooks/hooks.json
 - `doc-checks.mjs` drops every line that starts with `model:` or `effort:` before it compares a card copy with its template, so a copy that keeps `{{MODEL}}` or `{{EFFORT}}` passes lint : scripts/doc-checks.mjs
 - Loading a skill that is already in context injects its full text again; the host does not deduplicate skill loads : skills/core/SKILL.md
-- PostCompact stdout never reaches the model, so only SessionStart with source `compact` can re-inject `core` after a compaction; whether that output survives the summary is unverified : hooks/hooks.json
+- PostCompact stdout never reaches the model, so only SessionStart with source `compact` can re-inject `core` after a compaction : hooks/hooks.json
+- SessionStart with source `compact` output lands after the compaction summary, so both marker lines are in context again; the 0.5.0 probe showed it on 2026-11-19 : hooks/hooks.json
 - `.worktreeinclude` copies a file into a new worktree, subagent `isolation: worktree` included, only when the file is also gitignored : —
 - `user-invocable: false` hides a skill from the `/` menu while the model can still load it; a load through a pointer is not yet probed : —
 - A hook command that exits 1 is a non-blocking error: the session goes on and nothing is injected (code.claude.com/docs/en/hooks, read 2026-11-19) : hooks/hooks.json
