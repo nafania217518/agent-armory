@@ -13,3 +13,4 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - `tracking` §4 (the behind-`<base>` check) uses `<base>`, which `workflow` §2 defines, but `tracking` does not extend `workflow` : skills/tracking/SKILL.md
 - Root `AGENTS.md` cites `core` section Host terms and `test` section Levels by name, and skill-graph does not read it, so a rename of either section breaks the cite with no `lint` report : AGENTS.md
 - `workflow` §4 and `delegate` §1 name `code` §4 step 8 by rule name only ("task-end cleanup"), so a rename of that step breaks them with no `lint` report : skills/workflow/SKILL.md
+- `delegate` §4 cites its own row 2 by number in the fix-round bullet, so renumbering the rows breaks it with no `lint` error : skills/delegate/SKILL.md

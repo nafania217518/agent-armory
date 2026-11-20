@@ -472,6 +472,22 @@ One dated line per decision, with the dropped alternatives.
   `run` goes, since no skill reads it. Old projects convert in the `setup` update run.
   Until then, every actor stops before it runs the gates of an old-form context (`core`
   section Host terms).
+- 2026-11-20: gate economy. Coders run filtered tests and the linter on changed files
+  between commits, and each selected gate once at result tip; the main session runs only
+  the touched parts after a non-fast-forward merge; a run the actor waits on goes in the
+  foreground, and no actor polls a background task with a sleep loop. Reason: a retro on
+  another project counted 151 full gate runs by coders (76 min), 25 post-merge runs (26
+  min) and 247 sleep-loop calls (28 min). Task end and every review still run every part.
+  Dropped: a per-project surface rule in `## Rules`, which gate parts replace.
+- 2026-11-20: `delegate` row 2 (Opus high) takes only a coder brief that names a design
+  gap; any other coding brief is full design, row 1 (Opus low). Each spawn passes the
+  model and effort of its row, and a design-caused Must fix sends the next fix round to
+  row 2. Reason: a row study on another project found 19 row-2 spawns with no fewer
+  design-caused Must fix at medium than at low, many row-2 spawns ran at the card's low
+  because no effort was passed, and Opus 5.5 guidance
+  (platform.claude.com/docs/en/build-with-claude/effort) says a detailed spec makes effort
+  nearly irrelevant. Dropped: the trait list (layers, TR count, failure paths, modules), a
+  per-TR design mark, measuring further first.
 
 ## 7. Milestones
 

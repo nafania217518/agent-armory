@@ -32,8 +32,8 @@ What to test, at which level, and how.
 Each level MUST cover what its line says. Project context `## Test levels` MAY add to or
 change these lines; that section MUST win.
 
-- unit: one unit (function, class or small cluster), fast, runs on every change.
-  Frontend unit tests with backend stubbed are `unit`.
+- unit: one unit (function, class or small cluster), fast, runs on every change. Frontend
+  unit tests with backend stubbed are `unit`.
 - integration: narrow, one integration point at a time (real database, file system, one
   separate service or its double), at service boundary. Test MUST start real part or
   service double, trigger code that uses it, and check result there.
@@ -44,8 +44,8 @@ change these lines; that section MUST win.
   externals doubled.
 - e2e: deployed stack through its UI or API, main user journeys only. Slow and flaky by
   nature: project SHOULD keep only the few that earn their place.
-- Surface rule: each surface MUST have at least one test level. Frontend: `unit` or
-  `e2e` (browser). Backend: `unit` or `integration`. CLI and library: `unit`.
+- Surface rule: each surface MUST have at least one test level. Frontend: `unit` or `e2e`
+  (browser). Backend: `unit` or `integration`. CLI and library: `unit`.
 
 ## 3. Unit style
 
@@ -61,16 +61,16 @@ change these lines; that section MUST win.
   (`core` §4). You SHOULD extract a helper at the third repeat.
 - A test SHOULD arrange, act, assert (given, when, then).
 - A test SHOULD check one condition; there SHOULD be one test per condition.
-- Test case name MUST state the behavior. A prefix the framework requires comes first.
-  The requirement id MUST NOT be in the case name or the file name.
+- Test case name MUST state the behavior. A prefix the framework requires comes first. The
+  requirement id MUST NOT be in the case name or the file name.
 - A test file MUST be named after the unit under test, in the framework's convention.
 - You SHOULD keep one test file per unit and level; a unit's requirements share it.
   Level's command sets what marks its files: directory, suffix, build tag or target.
-- An assertion on an order MUST include at least one pair of items that removing the
-  sort or rank step would swap.
+- An assertion on an order MUST include at least one pair of items that removing the sort
+  or rank step would swap.
 - Test data MUST give each field of one type a distinct value, so a swapped, dropped or
-  wrong-key mapping fails a test: length ≠ width ≠ height; id order ≠ name order ≠
-  insert order.
+  wrong-key mapping fails a test: length ≠ width ≠ height; id order ≠ name order ≠ insert
+  order.
 - An end-to-end step whose expected UI state equals previous step's MUST also assert on
   its own response body. DOM check alone can pass before that response arrives.
 
@@ -86,8 +86,8 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
 
 ## 6. Determinism
 
-- A test MUST be deterministic: no sleep as a wait, no mutable state shared between
-  tests, no dependence on test order, the clock or unseeded random data.
+- A test MUST be deterministic: no sleep as a wait, no mutable state shared between tests,
+  no dependence on test order, the clock or unseeded random data.
 - A real timer MAY run in an integration test when the timer is the behavior under test,
   with the shortest wait that proves it.
 

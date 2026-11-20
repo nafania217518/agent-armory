@@ -8,7 +8,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [code, core, plan]
-  max-lines: 88
+  max-lines: 86
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -39,9 +39,9 @@ away.
 - Opus high or Opus max MUST replace each run on Fable: answer to the Fable question.
   Allow Fable: run MUST answer the Fable question itself and follow `delegate` for each
   run on Fable.
-- When the retry of `delegate` §6 also fails, the Fable answer MUST
-  replace the ask to user. Opus max: one spawn on Opus max. Allow Fable: one spawn on
-  Fable high. Opus high, or an escalation that also failed: the stop case of §2.
+- When the retry of `delegate` §6 also fails, the Fable answer MUST replace the ask to
+  user. Opus max: one spawn on Opus max. Allow Fable: one spawn on Fable high. Opus high,
+  or an escalation that also failed: the stop case of §2.
 
 ## 2. Run
 
@@ -57,12 +57,11 @@ away.
   `dnd` and state the ladder of the bullet above.
 - An answer or self-approved plan item that is irreversible or outward-facing (delete data
   git cannot restore, break a public interface, publish, spend) MUST rest on basis 1 of
-  `research` §1, other than a plan or item a `dnd` run self-approved or
-  created, or on a §1 answer; with neither, it is the stop case below.
-- Self-approve: MUST NOT enter plan mode; passed self-review of `plan` §6
-  is the approval.
-- Acceptance (`code` §4, step 7): MUST try each by-hand item itself when it can and
-  no earlier step tried it. MUST record proof of each try (command and its output) in the
+  `research` §1, other than a plan or item a `dnd` run self-approved or created, or on a
+  §1 answer; with neither, it is the stop case below.
+- Self-approve: MUST NOT enter plan mode; passed self-review of `plan` §6 is the approval.
+- Acceptance (`code` §4, step 7): MUST try each by-hand item itself when it can and no
+  earlier step tried it. MUST record proof of each try (command and its output) in the
   task report. When Finish opens a PR, MUST also post the proof as a PR comment before any
   merge. The report MUST list each item left for user.
 - A case whose only option is to stop MUST save work (push task branch, unless Finish
@@ -72,8 +71,8 @@ away.
   bound, and the comment MUST take the `## Triage notes` form of `tracking` §3.
 - After a stop, MUST go on with next task only when user's request names more work (a
   list, or a query of tracker items); else MUST end the run.
-- Loop bound (`code` §3): MUST end the loop after seventh round. Each open
-  finding MUST become a follow-up item.
+- Loop bound (`code` §3): MUST end the loop after seventh round. Each open finding MUST
+  become a follow-up item.
 - When an open Must fix finding or a failing `on` gate is left at Finish, run MUST take
   the stop case above. It MUST NOT merge.
 
@@ -84,5 +83,4 @@ away.
 - MUST log there each disagreement between two sources of one basis (`research` §1), in
   place of the question's message text.
 - Each task MUST end with `code` task report, then its answers log.
-- With self-approve, MUST also record each tracker write the plan lists (`plan`
-  §6).
+- With self-approve, MUST also record each tracker write the plan lists (`plan` §6).

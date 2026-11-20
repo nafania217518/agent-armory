@@ -96,4 +96,5 @@ Format: `- <short description> : <file or —>`, or a topic pointer line
 - setup: before editing skills/setup/SKILL.md or a tracker binding, or a format line of a `requirements` template : docs/caveats/setup.md
 - triage: before editing skills/triage/SKILL.md or the plan rule for a run from an accepted item : docs/caveats/triage.md
 - code-and-plan: before editing the milestone-status rules of skills/tracking/SKILL.md or skills/workflow/SKILL.md, the Finish rules of skills/workflow/SKILL.md, the Task end steps of skills/code/SKILL.md, or before a merge into <base> : docs/caveats/code-and-plan.md
+- gates: before editing the gate rules of skills/implement/SKILL.md §4, skills/delegate/SKILL.md §1 or skills/review/SKILL.md §2 : docs/caveats/gates.md
 - skill-refs: before renaming, renumbering or reordering a skill section, a `code` §Task end step, a cited bullet or a `delegate` §Models row : docs/caveats/skill-refs.md

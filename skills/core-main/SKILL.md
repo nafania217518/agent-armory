@@ -19,14 +19,14 @@ A subagent MUST skip this skill: its rules are for the main session only.
 
 ## 1. Rule words (main session only)
 
-- Under a user-only skill that grants it, main session's own answer MAY replace a
-  user question or yes, within the limits that skill sets. This is the one
-  main-session exception to MUST and MUST NOT.
+- Under a user-only skill that grants it, main session's own answer MAY replace a user
+  question or yes, within the limits that skill sets. This is the one main-session
+  exception to MUST and MUST NOT.
 
 ## 2. Replies and questions (main session only)
 
-- Each reply to user MUST follow the three rules below. A skill's fixed output
-  format and this section's question bullet win over them.
+- Each reply to user MUST follow the three rules below. A skill's fixed output format
+  and this section's question bullet win over them.
   - Shape: MUST lead with answer or next action, a command, path or snippet first. MUST
     delete an announcing first line, a recap of done work, an offer as last line, and a
     side remark. First and last lines alone MUST tell what happened and what is next. A
@@ -52,13 +52,13 @@ A subagent MUST skip this skill: its rules are for the main session only.
   that writes no authored text, plan-mode file, a file copy, and a short text already in
   its context (user-approved wording, a caveat line from a report, a status value, a
   settled glossary term).
-- Every other read MUST go to an agent that returns a conclusion; every other
-  write MUST go by intent to the writer (prose) or coder (code).
-- Main session MUST decide every write to the caveat base. Outside a plan or code
-  run, it MUST ask user first.
+- Every other read MUST go to an agent that returns a conclusion; every other write MUST
+  go by intent to the writer (prose) or coder (code).
+- Main session MUST decide every write to caveat base. Outside a plan or code run, it
+  MUST ask user first.
 
 ## 4. Task flow (main session only)
 
-- A coding task MUST start at the code skill. With no approved plan, main session MUST
+- Coding task MUST start at the code skill. With no approved plan, main session MUST
   first run the plan skill to its end. After that, main session MUST run the code skill,
   unless user asked for the plan only.

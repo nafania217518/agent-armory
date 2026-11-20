@@ -9,7 +9,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [code, core-main, delegate, test, workflow]
-  max-lines: 172
+  max-lines: 167
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -27,20 +27,18 @@ Main session sets up armory on its host. User decides every write.
 
 - Invocation MUST be `setup`. One run MUST set up armory in current project: pointer in
   project context when probe fails, project context sections, agent cards.
-- Run MUST follow sections in order. Writes MUST run at Flow step "the files" of
-  §4.
+- Run MUST follow sections in order. Writes MUST run at Flow step "the files" of §4.
 - Run in a project that already has armory MUST be an update run: project context holds
   the sections of §4.4, and host's agent location holds the six cards. Update run MUST
-  skip §2 and §3, except pointer, card render, consent question and rerun
-  bullets of §3. Its Questions round MUST show only items that project context
-  lacks; the rest MUST keep their existing values. §4.4 sets how each changed file is
-  shown and written. Update run MUST offer, in the consent question, to delete each card
-  at host's agent location that no template names. Update run MUST merge an old
-  `## Commands` into `## Gates`: each `on` gate takes its command, each `off` line stays,
-  and `## Commands` goes. An `on` gate with no command MUST be offered
-  as off, and the command of an `off` gate for drop, in the consent question. A command
-  with `(cd <folder> && …)` pieces MUST become parts, each other piece a `.` part. Any
-  other line MUST be offered for drop in the consent question.
+  skip §2 and §3, except pointer, card render, consent question and rerun bullets of §3.
+  Its Questions round MUST show only items that project context lacks; the rest MUST keep
+  their existing values. §4.4 sets how each changed file is shown and written. Update run
+  MUST offer, in the consent question, to delete each card at host's agent location that
+  no template names. Update run MUST merge an old `## Commands` into `## Gates`: each `on`
+  gate takes its command, each `off` line stays, and `## Commands` goes. An `on` gate with
+  no command MUST be offered as off, and the command of an `off` gate for drop, in the
+  consent question. A command with `(cd <folder> && …)` pieces MUST become parts, each
+  other piece a `.` part. Any other line MUST be offered for drop in the consent question.
 - Main session MAY do every file read and write of a run itself.
 
 ## 2. Self-report
@@ -70,14 +68,13 @@ Main session sets up armory on its host. User decides every write.
   An update run MUST write the pointer only over a project-context line that starts "At
   session start, load the armory `core` skill" and differs from it.
 - Main session MUST render the six card templates of `templates/agents/` (next to this
-  file), one per project agent (`delegate` §3), into host's agent
-  format at its agent location. Keys: name, description, model, effort, tools, isolation.
+  file), one per project agent (`delegate` §3), into host's agent format at its agent
+  location. Keys: name, description, model, effort, tools, isolation.
   `{{MODEL}}` MUST be the model value of card's default row (`delegate` §4).
   `{{EFFORT}}` MUST be that row's effort. Drop a placeholder line left empty.
 - After writes, `setup` MUST list every write back, with its part and path.
 - Rerun MUST be idempotent. Each item already present MUST be reported as present, with a
-  refresh offered in the consent question. Project context and agent cards follow
-  §4.
+  refresh offered in the consent question. Project context and agent cards follow §4.
 - Hook MUST count as present when probed active. In an update run, it MUST count as
   present when armory plugin is enabled.
 
@@ -85,10 +82,9 @@ Main session sets up armory on its host. User decides every write.
 
 ### 4.1. Flow
 
-- In a repo the order MUST be: questions (§4.2); consent question (§3); task
-  branch `setup-armory` (`workflow` §2); the files (every write of
-  §3, project context sections included); a commit of the files; report; finish
-  question (`workflow` §4).
+- In a repo the order MUST be: questions (§4.2); consent question (§3); task branch
+  `setup-armory` (`workflow` §2); the files (every write of §3, project context sections
+  included); a commit of the files; report; finish question (`workflow` §4).
 - When `setup-armory` exists, `setup` MUST delete and cut it again if it is merged into
   `<base>`, else cut `setup-armory-<n>` with next free `<n>`.
 - No repo: MUST run `git init` and `git commit --allow-empty -m "Start the repository"` on
@@ -111,18 +107,17 @@ Main session sets up armory on its host. User decides every write.
      [`none`] (`code` §3).
   6. Tracker [docs fallback].
 - Before round, `setup` MUST probe host's connections (MCP servers and CLIs) for a
-  tracker. It MUST propose a binding for each verb of `tracking` §1,
-  its target, and the `closes by PR merge:` line of `templates/AGENTS.md` (the closing
-  reference form the probe finds, else `no`). It MUST bind an optional verb only when
-  tracker has it; a tracker that can only create a branch MUST leave the branch name verb
-  unbound. Only when it binds every label verb, it MUST propose the five
-  label lines of `tracking` §3. Each MUST default to an existing label of the
-  same name first, then one of the same meaning, else role name. Probe MUST prove binding
-  with one live read (list or read) against target, with no write. Failed read MUST count
-  as no fit.
+  tracker. It MUST propose a binding for each verb of `tracking` §1, its target, and the
+  `closes by PR merge:` line of `templates/AGENTS.md` (the closing reference form the
+  probe finds, else `no`). It MUST bind an optional verb only when tracker has it; a
+  tracker that can only create a branch MUST leave the branch name verb unbound. Only when
+  it binds every label verb, it MUST propose the five label lines of `tracking` §3. Each
+  MUST default to an existing label of the same name first, then one of the same meaning,
+  else role name. Probe MUST prove binding with one live read (list or read) against
+  target, with no write. Failed read MUST count as no fit.
 - One round MUST show prefilled set, item by item, and ask user to confirm or edit it.
-  As a free-text question, it goes as a plain message (`core-main` §2). A
-  further round MUST come only from §4.3.
+  As a free-text question, it goes as a plain message (`core-main` §2). A further round
+  MUST come only from §4.3.
 - Missing answer MUST take prefilled value (detected value or default). MUST say so.
 
 ### 4.3. Answer checks
@@ -141,8 +136,8 @@ Main session sets up armory on its host. User decides every write.
   `docs/`).
 - `auto-fix:` answer to question 5 MUST replace template line `- auto-fix: none`.
 - Project context MUST have these sections, in this order: `## What this is` (one
-  paragraph on what the project is), `## Gates`, `## Test levels`,
-  `## Tracker`, `## Rules` (project-only rules), `## Glossary`, `## Caveats`.
+  paragraph on what the project is), `## Gates`, `## Test levels`, `## Tracker`,
+  `## Rules` (project-only rules), `## Glossary`, `## Caveats`.
 - `## Tracker` is the one optional section. It MUST be written only for a bound tracker.
   With docs fallback, the section and its format line MUST be dropped.
 - `## Gates`, `## Glossary` and `## Caveats` MUST take format lines of
@@ -162,8 +157,8 @@ Main session sets up armory on its host. User decides every write.
 - MUST NOT overwrite an existing project context or agent card outside the consent
   question. MUST put its diff into that question instead.
 - Fill `templates/AGENTS.md` from answers. Drop a gate line that is off with no reason,
-  and any placeholder line left empty. A gate with parts keeps its
-  line, with its parts under it.
+  and any placeholder line left empty. A gate with parts keeps its line, with its parts
+  under it.
 
 ## 5. Report
 

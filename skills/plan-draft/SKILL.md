@@ -46,16 +46,16 @@ How the planner drafts the task part of a plan and checks its draft.
     empty and malformed values.
   - Each pair of `TR` items that act in one run states their order or shared state in
     the later `TR`.
-- The check MUST also run the flow walk of `requirements` §3 on the draft.
-- The check MUST also walk each new `tests:` case, with its expected value, through its
+- Check MUST also run the flow walk of `requirements` §3 on the draft.
+- Check MUST also walk each new `tests:` case, with its expected value, through its
   `TR` and the existing rules of its component, in the plan and code. A case one of them
   makes impossible MUST be dropped or rewritten. A case whose expected value still holds
   without its `TR`'s code, a swappable test value included, MUST be rewritten.
 
 ## 2. Drafting
 
-- A draft MUST take the formats of `requirements` §1 and §2.
-- A draft SHOULD look for complexity to remove before adding; deletion SHOULD beat
+- Draft MUST take the formats of `requirements` §1 and §2.
+- Draft SHOULD look for complexity to remove before adding; deletion SHOULD beat
   addition. It MAY include that simplification.
 - A `TR` for a defect in built code (`requirements` §1) MUST name its fault class and
   each call site of that class, found by a grep.

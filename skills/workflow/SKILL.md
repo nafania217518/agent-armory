@@ -6,7 +6,7 @@ description: >
 metadata:
   type: abstract
   extends: [core-main, tracking]
-  max-lines: 133
+  max-lines: 132
 user-invocable: false
 ---
 
@@ -53,8 +53,7 @@ git switch --no-track -c <task-branch> <base>
 
 ## 3. Caveats
 
-Caveat base, caveat slot, caveat format, subagent ban and recorded items are in
-`core` §6.
+Caveat base, caveat slot, caveat format, subagent ban and recorded items are in `core` §6.
 
 - A caveat found during planning MUST wait in the plan-mode proposal, not in the plan
   file. Right after the planning run's first commit, main session MUST write each such
@@ -73,7 +72,7 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in
   dropped.
 - A caveat MUST go to root `## Caveats` only when every task needs it. Else it MUST go to
   the topic file whose pointer fits, or to a new topic file when none fits.
-- A line that says what to do is a rule: it MUST go to the project context `## Rules`.
+- A line that says what to do is a rule: it MUST go to project context `## Rules`.
 - A caveat that a doc states MUST become a link to that doc section. One that a test,
   check, code comment or message text states MUST be dropped. A duplicate MUST be merged.
 - A topic entry MAY carry one indented line: its cause, its workaround or a doc link.

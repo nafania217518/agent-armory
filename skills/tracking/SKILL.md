@@ -37,8 +37,8 @@ Load `requirements` before an amendment when its rules are not in your context.
 - A run MUST NOT edit body of a parent item (an item above the one the run plans or
   codes), except to write an amendment user approved. It MUST comment on that item
   instead.
-- When a bound tracker is unreachable, the run MUST stop before tracker step and ask user.
-  It MUST NOT use docs fallback.
+- When a bound tracker is unreachable, run MUST stop before tracker step and ask user. It
+  MUST NOT use docs fallback.
 
 ## 2. Docs and status
 
@@ -80,12 +80,12 @@ Load `requirements` before an amendment when its rules are not in your context.
 - With the label lines bound, each tracker item a run creates MUST carry one category
   label and no `accepted`: `bug` for a fix, else `enhancement`. A missing role label MUST
   be created first.
-- The comment a run adds when it sets `needs-info` MUST take the form `## Triage notes`:
-  what is established, and what reporter still needs to give.
+- The comment a run adds when it sets `needs-info` MUST take the form
+  `## Triage notes`: what is established, and what reporter still needs to give.
 
 ## 4. Amendments
 
-- A requirement that changes during work, or needs user's answer, MUST stop the work until
+- A requirement that changes during work, or needs user's answer, MUST stop work until
   user's yes.
 - An added or changed requirement MUST get a new id, unless it is a `TR` edited in place
   (below), and MUST go to user for a yes, with the new text, through the question tool.
@@ -110,11 +110,11 @@ Load `requirements` before an amendment when its rules are not in your context.
 - An architecture gap MUST re-plan at the strategic level, on a `design-<topic>` branch.
 - A defect in built code (`requirements` §1) MUST get a new `TR-n` and its test.
 - Main session MUST allocate every new id. Subagent MUST NOT allocate one.
-- Before the next brief or follow-up message, main session MUST have the writer write
-  into the owning doc the new items, each `(replaced by <new id>)` mark, each dated note
-  and the line updates below; no reason or history. The writer brief MUST carry the
-  amendment's reason and history for the writer's commit message; main session MUST also
-  put them into the tracker comment when one is written.
+- Before next brief or follow-up message, main session MUST have writer write into
+  owning doc the new items, each `(replaced by <new id>)` mark, each dated note and the
+  line updates below; no reason or history. Writer brief MUST carry the amendment's
+  reason and history for writer's commit message; main session MUST also put them into
+  tracker comment when one is written.
 - A replacing item MUST state its full text. A replaced item MUST keep its id line, never
   renumbered, with the mark `(replaced by <new id>)`; its old text MAY go. Before the
   plan's first commit, an item that user's yes replaces MAY be rewritten in place. Until

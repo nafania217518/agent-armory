@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core-main, delegate, research, workflow]
-  max-lines: 126
+  max-lines: 125
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -36,12 +36,11 @@ Brief each item as `delegate` §2 sets. A requirement change during the work fol
 - MUST start each plan item once every item it needs is merged into the task branch. Ready
   items MAY run at once, each in its own worktree, and MUST start in the plan's order. An
   item or a fix round that touches a file a running item touches MUST wait for that item's
-  merge (`delegate` §1). A plan with no `needs:` lines runs in the
-  plan's order.
+  merge (`delegate` §1). A plan with no `needs:` lines runs in the plan's order.
 - A finding that blocks the task MUST NOT wait for the recorded-items quiz. It is
   `stuck:` (`delegate` §6).
-- An out-of-scope finding that is a defect in built code (`tracking` §4) MUST get
-  its `TR` before the next brief or follow-up message, not at the quiz.
+- An out-of-scope finding that is a defect in built code (`tracking` §4) MUST get its
+  `TR` before the next brief or follow-up message, not at the quiz.
 - Before the first brief, MUST run the behind-`<base>` check of `tracking` §4.
 
 ## 3. Review loop
@@ -49,12 +48,12 @@ Brief each item as `delegate` §2 sets. A requirement change during the work fol
 - Reviewer MUST run on each coder or fix-flow debugger result: its diff, after the merge
   when the agent ran in a worktree.
 - After a review, main session MUST have each Must fix item and each auto-fix finding
-  fixed (`core-main` §3), run the reviewer on the fix commits
-  (`delegate` §2 sets the follow-up message), and repeat until none remains.
-- A fix that changes the behavior a `TR` states MUST go through
-  `tracking` §4 before its fix brief or message.
+  fixed (`core-main` §3), run the reviewer on the fix commits (`delegate` §2 sets the
+  follow-up message), and repeat until none remains.
+- A fix that changes the behavior a `TR` states MUST go through `tracking` §4 before its
+  fix brief or message.
 - A no-re-review commit (`delegate` §2) gets no re-review.
-- An auto-fix finding is one of a class that the project context `## Rules` line
+- An auto-fix finding is one of a class that project context `## Rules` line
   `auto-fix: <classes>` names: `should` (Should fix) and `nice` (Nice to have), or
   `none`. A missing line MUST mean `none`.
 - A finding or a caveat with an `Unverified:` part (`research` §1) MUST be checked before
@@ -91,15 +90,15 @@ Brief each item as `delegate` §2 sets. A requirement change during the work fol
   2. MUST run the recorded-items quiz, then apply the answers. Done when each recorded
      item has its applied answer.
   3. After any commit since the last review: MUST run the reviewer on each such commit
-     that is not a pure revert or a no-re-review commit (§3). Done when each
-     such commit has its review.
-  4. Late items: each item that step 3 records, other than an auto-fix finding
-     (§3), MUST skip the quiz and become a follow-up line of the task report.
-     Done when each such item has its follow-up line.
-  5. Stray-task check: MUST check each task in the scope of `core` §3.
-     One that still runs with no valid reason is a stray task: MUST stop it,
-     report it as a finding, and write a caveat on its cause (`workflow` §3). That
-     caveat commit gets no re-review. Done when no stray task runs.
+     that is not a pure revert or a no-re-review commit (§3). Done when each such commit
+     has its review.
+  4. Late items: each item that step 3 records, other than an auto-fix finding (§3), MUST
+     skip the quiz and become a follow-up line of the task report. Done when each such
+     item has its follow-up line.
+  5. Stray-task check: MUST check each task in the scope of `core` §3. One that still
+     runs with no valid reason is a stray task: MUST stop it, report it as a finding, and
+     write a caveat on its cause (`workflow` §3). That caveat commit gets no re-review.
+     Done when no stray task runs.
   6. Before the report, MUST have `lint` and `unit` results at the tip, each when `on`,
      with every part run; a review run at the tip counts. Report MUST hold, in this
      order: a one-line outcome; the met requirements in one line by id range

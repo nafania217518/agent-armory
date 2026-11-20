@@ -26,3 +26,4 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - The researcher card loads only `core` and `research`, so a rule that `dnd` adds for researchers reaches one only through the brief : skills/setup/templates/agents/researcher.md
 - When armory is enabled at user scope, its hook payloads reach every project, so a `core` rule keyed on a project-context section also fires in projects that never ran `setup` : skills/core/SKILL.md
 - `lint` does not compare the `docs/DESIGN.md` §4 load tables with the card load lines, so a card load change leaves both tables stale with no report : docs/DESIGN.md
+- A Claude Code agent card's `effort` value may not reach the API for its spawns (anthropics/claude-code issue #43083) : skills/setup/templates/agents/coder.md : Unverified: spawn one card at effort low and at high, compare thinking tokens

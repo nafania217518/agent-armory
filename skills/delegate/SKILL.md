@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core, research, workflow]
-  max-lines: 232
+  max-lines: 234
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -25,17 +25,19 @@ Main session follows this skill for each spawn of a project agent.
   brief MUST NOT send them to main checkout, in words or by an absolute path into it. It
   MUST name each project script by its path from worktree root.
 - Two agents that run at once MUST NOT edit the same file.
-- When a spawn in a worktree does not fail (§6), main session MUST merge
-  its branch into task branch, or the branch the brief names, then remove its worktree
-  once its output closes (§2). Main session MUST run `lint` and `unit`, each when
-  `on` and every part included, only after a non-fast-forward merge.
+- When a spawn in a worktree does not fail (§6), main session MUST merge its branch into
+  task branch, or the branch the brief names, then remove its worktree once its output
+  closes (§2). Main session MUST run `lint` and `unit`, each when `on`, only after a
+  non-fast-forward merge, and only in the parts that hold a file the merge changed, the
+  `.` parts and gates with no parts; a merged file in no part folder, `.` aside, selects
+  every part.
 - Before it removes an agent worktree, main session MUST run `git worktree unlock <path>`,
   since host locks it for the agent.
 - This merge MAY run without user's yes.
 - A diagnose-only debugger result MUST NOT be merged. Main session MUST keep a branch at
-  diagnose-only tip, the diagnose-only branch, until the task-end cleanup; before a
-  fix follow-up to that debugger, it MUST create that branch. It removes the worktree once
-  its output closes (§2).
+  diagnose-only tip, the diagnose-only branch, until the task-end cleanup; before a fix
+  follow-up to that debugger, it MUST create that branch. It removes the worktree once its
+  output closes (§2).
 
 ## 2. Briefs
 
@@ -43,16 +45,16 @@ Main session follows this skill for each spawn of a project agent.
   each plan section that applies (Design, test-scope list, Overrides, Accepted tech debt)
   by name and each `TR` by id, with no line range and never quoted, for agent to read, and
   no word on a section the plan leaves out; each `BR` it covers that lives outside plan
-  file, by path and line range for agent to read, or, in a tracker
-  item, quoted in full, read at brief time; for a review brief, also each scope addition
-  with its reason, from coder or debugger recorded-items slot; names of project context
-  sections and `## Rules` lines that apply, not their text, since host loads project
-  context into each subagent; paths of topic files whose pointers fit the brief's work
-  (`workflow` §3), for agent to read; which skills or skill sections agent loads; task
-  branch and `<base>` (`workflow` §2).
-- A brief MUST hold no design choice the plan lacks. It MUST name the gap instead: coder
-  then records the misfit, or main session first amends
-  plan (`tracking` §4).
+  file, by path and line range for agent to read, or, in a tracker item, quoted in full,
+  read at brief time; for a review brief, also each scope addition with its reason, from
+  coder or debugger recorded-items slot; names of project context sections and `## Rules`
+  lines that apply, not their text, since host loads project context into each subagent;
+  paths of topic files whose pointers fit the brief's work (`workflow` §3), for agent to
+  read; which skills or skill sections agent loads; task branch and `<base>` (`workflow`
+  §2).
+- A brief MUST hold no design choice the plan lacks. It MUST name each gap instead, a
+  missing interface or failure path included: coder then records the misfit, or main
+  session first amends plan (`tracking` §4).
 - A review brief MUST also hold commit range, each gate run at range's last commit with
   the actor that ran it, and, for a final review, whole-task checks. An audit brief MUST
   hold the audit target that user names instead of range and task's requirements.
@@ -77,9 +79,9 @@ Main session follows this skill for each spawn of a project agent.
 - An open output does not block reuse; a later follow-up on that output MUST name its
   earlier brief. Main session MUST note clock time of each reusable agent's (below)
   result or pong. It MUST read clock before each new-work message.
-- A pong (`core` §6) MUST NOT change main session's next step. With no other step,
-  main session MUST end its turn with an empty reply. Main session MUST stop a coder,
-  debugger or reviewer once its output closes.
+- A pong (`core` §6) or a `wait` reply (`core` §3) MUST NOT change main session's next
+  step. With no other step, main session MUST end its turn with an empty reply. Main
+  session MUST stop a coder, debugger or reviewer once its output closes.
 - A brief or message MUST hold the line `timer: on` (`core` §6) when main session
   expects to send that agent a later message.
 - A follow-up message MUST name commits since agent's last turn, or `none`; when that turn
@@ -92,15 +94,14 @@ Main session follows this skill for each spawn of a project agent.
   any uncommitted work in that worktree as a WIP commit. After a `stuck:` report, it MUST
   also merge task branch, or the branch its brief names, into that WIP branch; the
   worktree stays. A re-review message MUST also name finding numbers and fix commits. A
-  follow-up or new-work message's result counts as a spawn result for §1
-  and §6.
+  follow-up or new-work message's result counts as a spawn result for §1 and §6.
 - Follow-up work MUST leave its agent and go as new work (below) when it needs a §4
   row of a higher tier, or same tier with higher effort, when the message cannot reach its
   agent, or when a commit by another actor since agent's last turn changes a file of its
   work: a file its commits changed, its review range covered or its report named. A
-  no-re-review commit (below), a merge of the agent's own commits, a WIP
-  commit of the agent's own work, the commits the message sends it to check and a merge of
-  those commits do not count. When agent's last turn was on another branch, the stale-file
+  no-re-review commit (below), a merge of the agent's own commits, a WIP commit of the
+  agent's own work, the commits the message sends it to check and a merge of those
+  commits do not count. When agent's last turn was on another branch, the stale-file
   check MUST compare that branch's tip at that turn with current tip. A re-review brief to
   another agent MUST hold the findings sent to fix.
 - A no-re-review commit only deletes caveat or doc lines a finding's Fix part names, or
@@ -135,9 +136,9 @@ Main session follows this skill for each spawn of a project agent.
   and report format.
 - A bug whose cause neither the plan, a review finding nor a diagnose-only report names
   MUST go to debugger, not coder. So MUST a coder's `stuck: cause unknown`; it MUST NOT
-  get the retry of §6; main session MUST first commit coder's uncommitted
-  work as a WIP commit (§6), then remove its worktree. Its debugger brief
-  MUST name the stuck coder's WIP branch as a read-only reference.
+  get the retry of §6; main session MUST first commit coder's uncommitted work as a WIP
+  commit (§6), then remove its worktree. Its debugger brief MUST name the stuck coder's
+  WIP branch as a read-only reference.
 - Main session MUST name debugger's flow in brief or follow-up message: diagnose only when
   user asks for the cause; the fix flow when user asks for a fix, or for a coder's
   `stuck: cause unknown`. When request is unclear, flow MUST be diagnose only, with no
@@ -162,7 +163,7 @@ Main session follows this skill for each spawn of a project agent.
 | # | Task | Model | Effort |
 |---|---|---|---|
 | 1 | Coding, full design | Opus | low |
-| 2 | Coding, the coder makes the design: a slice of several layers or 3+ TRs, a new script with its tests, a benchmark or measurement, code handling external input or failure paths, a fix that names a fault class but not every site | Opus | medium |
+| 2 | Coding, the brief names a design gap (§2) | Opus | high |
 | 3 | Coding with locking, transactions or cross-process state | Opus | high |
 | 4 | Trivial coding in a few short files, with no integration or e2e gate | Sonnet | low |
 | 5 | Refactoring by a pattern given in full | Opus | low |
@@ -175,8 +176,10 @@ Main session follows this skill for each spawn of a project agent.
 | 12 | Frontier task | the Fable question | — |
 
 - Default rows: coder row 1; debugger, reviewer and planner row 6; researcher and writer
-  row 10. A spawn MAY override the default with another row; it MUST then set its model
-  and effort.
+  row 10. A spawn MAY override the default with another row. Each spawn MUST pass a
+  model and an effort, also when they equal its card's defaults.
+- A Must fix that a design gap caused MUST send that coder's next fix round to row 2. A
+  coder's §6 retry MUST take row 2.
 - A researcher brief with an open point (`research` §1) MUST name row 7, or row 8 with a
   web question.
 - The table MUST be read with these definitions:
@@ -186,10 +189,9 @@ Main session follows this skill for each spawn of a project agent.
     code or text; a review Fix part that names only an outcome is not given in full. A
     pattern rewrite across many files is not trivial. Trivial task: mechanical work that
     needs no judgment.
-  - Full design: brief gives every interface and failure path, not only test names. A
-    change over 2+ modules, an external API, a poll or schedule, or file-system paths
-    leaves design to coder, as does each case row 2 lists. A fix whose cause and every
-    site are named stays full design.
+  - Full design: brief gives every interface and failure path the change needs, not only
+    test names, and names no design gap (§2). A fix whose cause and every site are named
+    stays full design.
   - Pattern given in full: brief shows old and new forms, or every step with its target,
     and names file set.
   - Research sizes: a fact is one claim that one passage of a source states. Many sources:

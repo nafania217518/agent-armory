@@ -46,24 +46,24 @@ Load `craft` before you write or check a `TR` when its rules are not in your con
   Overrides or Accepted tech debt section MUST mean none.
 - The three bullets above MUST also hold for a milestone doc and a milestone item body,
   with `templates/milestone.md`; there, only Requirements and, in a milestone doc, Tasks
-  stay when empty; a milestone item body also keeps its opening one-line goal.
-  A triage `## Requirements` section that the item already holds MAY keep its place.
+  stay when empty; a milestone item body also keeps its opening one-line goal. A triage
+  `## Requirements` section that the item already holds MAY keep its place.
 - Requirements MUST hold only `TR` items and dated amendment notes, beside the `BR` list:
   no order line, summary, API table or key that restates them, and no `TR` that only says
   the `on` gates pass; a gate-type `BR` needs no `TR`; each `tests:` line names the gate
   instead. A `TR` MUST state only its behavior and its indented lines, and MAY hold the
-  exact text it prescribes as an indented block under it; its reason MUST go to Design.
-  An item of another section MUST NOT go into a `BR` or `TR`; it MUST stay in its own
+  exact text it prescribes as an indented block under it; its reason MUST go to Design. An
+  item of another section MUST NOT go into a `BR` or `TR`; it MUST stay in its own
   section.
-- Overrides section MUST name each design rule the plan overrides (`core` §1) and
-  its reason.
+- Overrides section MUST name each design rule the plan overrides (`core` §1) and its
+  reason.
 - Each Risks line MUST name the `TR`, or in a milestone the `BR` or task, that checks or
   limits it, or the quiz answer that accepts it. A risk of failure in behavior the task
   builds MUST go to a quiz round first.
 - Plan MUST list `TR` items in execution order; an item that a later item's gate command
-  needs MUST come first. Each `tests:` line MUST follow `craft` §3 and name a gate by
-  its name, never by its command or a case count. A `TR` that breaks or reworks a test of
-  a gate MUST name that gate in its `tests:` line.
+  needs MUST come first. Each `tests:` line MUST follow `craft` §3 and name a gate by its
+  name, never by its command or a case count. A `TR` that breaks or reworks a test of a
+  gate MUST name that gate in its `tests:` line.
 - Each `TR` and each milestone task MUST name its needs: the items whose code, contract or
   data it uses, or `none`. A preferred order alone MUST NOT become a need; such items stay
   free to run at once.
@@ -87,10 +87,10 @@ Load `craft` before you write or check a `TR` when its rules are not in your con
   data set, or a before-and-after bound (median of at least 3 runs per side, on one
   machine in one session, such as +5 ms per query).
 - When the task's goal is a measured gain, its measurement item and data MUST come first,
-  with `needs: none`, and MUST run before the first feature item. When the baseline
-  leaves no room for the gain, main session MUST ask user.
-- A load `TR` is the measurement that `core` §4 requires before an
-  optimization; it is not itself an optimization.
+  with `needs: none`, and MUST run before the first feature item. When the baseline leaves
+  no room for the gain, main session MUST ask user.
+- A load `TR` is the measurement that `core` §4 requires before an optimization; it is not
+  itself an optimization.
 
 ## 3. Checks
 

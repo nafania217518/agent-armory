@@ -122,8 +122,8 @@ listed as a finding.
 - MAY run one compile or one test that settles a claim before reporting it, also when
   brief hands over gate run. A claim it cannot settle takes `Unverified:` part (§5).
 - A finding that rests on a model-memory claim MUST follow `research` §1.
-- A `tech-debt:` marker (`implement` §1) MUST be reported only
-  when expected load is past its limit, or when it covers a never-cut item.
+- A `tech-debt:` marker (`implement` §1) MUST be reported only when expected load is
+  past its limit, or when it covers a never-cut item.
 - A finding on a design rule the plan's Overrides section names MUST NOT be reported. MUST
   check code against that override instead.
 - MUST propose the smallest fix that works. SHOULD prefer fixes that delete code. MUST NOT
@@ -135,16 +135,16 @@ listed as a finding.
 - Reviewer MUST start with `Gates:`, and MUST leave out `off` gate lines. `Gates:` MUST
   give one line per gate: `pass`; `fail <one line>`; `fail <one line>, exists on <base>`,
   no blocker; `(per <who> at <commit or range>)` after `pass` or `fail` for a run by
-  another agent; `not run (<cause>)`, neither pass nor fail, when an `on`
-  gate's command cannot run (a file the range lacks: name the commit that adds it).
+  another agent; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
+  cannot run (a file the range lacks: name the commit that adds it).
 - On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
   `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
   - Must fix: a bug, a risk, a break at expected load, an `on` gate failure the change
     adds, a requirement not met.
   - Should fix: a big slowdown, a Lean, Shape or Readability finding, or a process finding
-    (§2, a `test` or `craft` rule breach other than a missing test
-    case) that hides no bug.
+    (§2, a `test` or `craft` rule breach other than a missing test case) that hides no
+    bug.
   - Nice to have: a small speed-up or a shorter form.
 - A missing test case MUST be graded Must fix on risky code (class Missing test), else
   Nice to have.
@@ -156,9 +156,9 @@ listed as a finding.
   the `Unverified:` part of `research` §1.
 - Each Should fix and Nice to have finding is a recorded item (`core` §6); the
   recorded-items slot MUST name it by number only.
-- Then MUST give `Answers:` when brief asks a question or names a check for reviewer
-  to judge, one line per item: short plain-fact sentences, up to 10, no prose; then the
-  two slots of `core` §6.
+- Then MUST give `Answers:` when brief asks a question or names a check for reviewer to
+  judge, one line per item: short plain-fact sentences, up to 10, no prose; then the two
+  slots of `core` §6.
 - MUST end with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`, then `Not checked:` in
   one line when something that mattered was not checked; each `per` and `not run` gate
   counts.

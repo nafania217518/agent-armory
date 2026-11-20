@@ -7,7 +7,7 @@ description: >
 metadata:
   type: abstract
   extends: [core]
-  max-lines: 108
+  max-lines: 107
 user-invocable: false
 ---
 
@@ -18,17 +18,16 @@ Load `core` before your first step when its rules are not in your context.
 
 ## 1. Before you write
 
-- MUST list every place the change must reach: callers, fixtures, config, exports. That
-  is scope. Extra features are not.
+- MUST list every place the change must reach: callers, fixtures, config, exports. That is
+  scope. Extra features are not.
 - Scope MUST also hold each caveat-base line that names a file the change touches. Line
-  found false SHOULD be reported with its fix, its new file or `drop`; main session has
-  it written.
+  found false SHOULD be reported with its fix, its new file or `drop`; main session has it
+  written.
 - MUST check what change can break for users: data it would destroy or expose, callers
   that stop working.
 - Vague request SHOULD get the smallest version that does the core job.
 - Design misfit: when new requirement does not fit design, coder MUST still follow plan
-  and MUST record misfit with its reason (`core` §6). It MAY report
-  `stuck: <misfit>`.
+  and MUST record misfit with its reason (`core` §6). It MAY report `stuck: <misfit>`.
 - When plan cannot be followed at all, coder MUST stop and report `stuck:` (coder agent
   card).
 
@@ -39,18 +38,18 @@ Load `core` before your first step when its rules are not in your context.
 - MUST check and parse outside data once, where it enters. Inside, trust it.
 - SHOULD keep business logic in pure functions.
 - MUST NOT silence the compiler.
-- Operation that can run more than once MUST be idempotent: a second run, or a run after
-  a crash halfway, ends in same state. Such operations are retried handlers, jobs,
+- Operation that can run more than once MUST be idempotent: a second run, or a run after a
+  crash halfway, ends in same state. Such operations are retried handlers, jobs,
   migrations, scripts, message consumers and a resume after a crash. Plain create call
   MUST be idempotent only when plan says so.
 - MUST NOT share mutable state that does not need sharing. Shared state MUST have one
   writer, enforced by the structure.
-- Code that applies an async answer to state (UI, cache, store) MUST key it to the
-  request or input it answers. It MUST drop an answer whose key is not the latest.
+- Code that applies an async answer to state (UI, cache, store) MUST key it to the request
+  or input it answers. It MUST drop an answer whose key is not the latest.
 - Single responsibility: each new or changed unit (function, class or module) MUST have
   one job, so it has one reason to change. Unit with two jobs MUST be split by job.
-- Interface segregation: an interface MUST hold only methods its clients use. Client
-  that needs part of a wide interface MUST get its own narrow one instead.
+- Interface segregation: an interface MUST hold only methods its clients use. Client that
+  needs part of a wide interface MUST get its own narrow one instead.
 
 ## 3. TDD
 
@@ -71,8 +70,8 @@ Load `core` before your first step when its rules are not in your context.
   test on same data that finds or shows something; it is then kept.
 - An expected value MUST come from a source independent of the code: a literal, a worked
   example, the spec. A test MUST NOT compute its expected value the way code does.
-- You MUST NOT assert the order of internal calls, or test private methods or trivial
-  code (a getter, a pass-through, code with no branch).
+- You MUST NOT assert the order of internal calls, or test private methods or trivial code
+  (a getter, a pass-through, code with no branch).
 - Happy path, each edge case the requirement touches (empty, zero, last item, rounding,
   time zones) and each failure path (invalid input, missing dependency, error from a
   callee) MUST each have their own test.
@@ -92,17 +91,17 @@ Load `core` before your first step when its rules are not in your context.
 
 ## 5. Tests while coding
 
-- MUST change only test cases on the test-scope list. New case in an existing file is
-  not a change outside the scope.
+- MUST change only test cases on the test-scope list. New case in an existing file is not
+  a change outside the scope.
 - Test outside list that the change makes fail MUST count as a bug the change introduced.
   MUST fix code so test passes.
-- MAY add the test to your scope only when you can prove it was missed from the list:
-  the change is expected and explains the failure.
+- MAY add the test to your scope only when you can prove it was missed from the list: the
+  change is expected and explains the failure.
 - MUST report the test only when you can neither fix the code nor prove the miss.
 
 ## 6. Data-growth paths
 
 - A data-growth path is a read or write path whose cost grows with stored data: a query, a
   loop over stored rows, an index build.
-- A benchmark MUST assert each measured query returns the rows its name promises, at
-  least a non-empty result, so a query that finds nothing fails the run.
+- A benchmark MUST assert each measured query returns the rows its name promises, at least
+  a non-empty result, so a query that finds nothing fails the run.

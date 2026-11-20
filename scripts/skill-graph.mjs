@@ -901,12 +901,16 @@ const WARN_AT = 9000;
 // The host swaps a hook output over this size for a file path and a preview.
 const HOST_LIMIT = 10000;
 
-function checkMarkers(skills) {
+function checkPayloadSources(skills) {
   for (const name of Object.keys(MARKERS)) {
     const skill = skills.get(name);
     if (skill.lines.filter((line) => line === MARKERS[name]).length !== 1) {
       throw new Exit(1, `${skill.path}: needs one marker line "${MARKERS[name]}"`);
     }
+  }
+  const coreMain = skills.get('core-main');
+  if (!coreMain.lines.includes(DISCLAIMER)) {
+    throw new Exit(1, `${coreMain.path}: needs the disclaimer line "${DISCLAIMER}"`);
   }
   for (const skill of skills.values()) {
     const i = skill.lines.findIndex((line) => line.startsWith('armory-core') && line !== MARKERS[skill.name]);
@@ -960,7 +964,7 @@ function buildPayloads(root, graphSkills) {
     const rel = `skills/${name}/SKILL.md`;
     skills.set(name, { ...skills.get(name), name, path: rel, lines: readLines(root, rel) });
   }
-  checkMarkers(skills);
+  checkPayloadSources(skills);
   const version = readVersion(root);
   const agent = payloadBody(fillMarker(skills.get('core').lines, 'core', version));
   const main = `${agent}\n${payloadBody(mainOnlyLines(fillMarker(skills.get('core-main').lines, 'core-main', version)))}`;

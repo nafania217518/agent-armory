@@ -8,7 +8,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [core-main, tracking]
-  max-lines: 105
+  max-lines: 104
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -18,8 +18,8 @@ Load `tracking` before your first step when its rules are not in your context.
 # triage
 
 Main session sorts tracker items opened outside an armory run, before a plan run picks
-them up. It works only on the tracker (`tracking` §1), with no branch
-and no plan mode. It MUST write no repo file.
+them up. It works only on the tracker (`tracking` §1), with no branch and no plan mode.
+It MUST write no repo file.
 
 ## 1. Start
 
@@ -86,20 +86,19 @@ other item, a mixed one included, is an enhancement.
 
 ## 5. Quick override
 
-- When request names the outcome, MUST skip steps 3 and 4 of §3. MUST list
-  the writes, with the request's category or else the one step 4 would recommend. For
-  `needs-triage`, MUST make the writes with no yes; for any other outcome, MUST ask user's
-  yes first.
+- When request names the outcome, MUST skip steps 3 and 4 of §3. MUST list the writes,
+  with the request's category or else the one step 4 would recommend. For `needs-triage`,
+  MUST make the writes with no yes; for any other outcome, MUST ask user's yes first.
 - Done when step 1 ended the item, `needs-triage` writes are made, or user said yes or no.
 
 ## 6. Resume
 
-- A `needs-info` item with a reply MUST go through §3 again. MUST NOT ask
-  again a point the reporter answered in reply to the earlier `## Triage notes`; MUST list
-  it as established instead.
+- A `needs-info` item with a reply MUST go through §3 again. MUST NOT ask again a point
+  the reporter answered in reply to the earlier `## Triage notes`; MUST list it as
+  established instead.
 - An item whose body starts with the AI marker line of `tracking` §1, or that holds its
-  own `## Requirements`, MUST skip steps 1 and 4 of §3. Once each point is
-  answered, it MUST ask user one yes or no question that lists the write, and on a yes set
-  `accepted` only on an item with its own `## Requirements`; else remove `needs-info`.
+  own `## Requirements`, MUST skip steps 1 and 4 of §3. Once each point is answered, it
+  MUST ask user one yes or no question that lists the write, and on a yes set `accepted`
+  only on an item with its own `## Requirements`; else remove `needs-info`.
 - Done when each point of earlier notes is marked answered or still open, and, for such an
   item, user has answered and, on a yes, its state label is set or removed.

@@ -3,12 +3,12 @@ name: implement
 description: >
   The coder's rules: scope before you write, the smallest complete change, readability,
   domain types and boundaries, root-cause fixes, safe refactors, the test-scope list,
-  the gates per commit, atomic commits. Loaded by the coder and debugger cards;
+  the gates, atomic commits. Loaded by the coder and debugger cards;
   "/implement". Not for a coding request from the user.
 metadata:
   type: regular
   extends: [core, craft]
-  max-lines: 117
+  max-lines: 119
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -23,8 +23,8 @@ How to write code, for coder and debugger. Reviewer judges code against it.
 
 - This section is a design rule, so an approved plan MAY override it (`core` §1).
 - The ladder. MUST take the first option that fully works:
-  1. Does it need to exist? Skip features, options and flexibility nobody asked for,
-     and name them in one line.
+  1. Does it need to exist? Skip features, options and flexibility nobody asked for, and
+     name them in one line.
   2. Already in this codebase? Use it as surrounding code does.
   3. Standard library or platform feature? Use it, unless project has its own. SHOULD
      prefer a house component over a native widget.
@@ -34,15 +34,15 @@ How to write code, for coder and debugger. Reviewer judges code against it.
 - MUST ship the smallest complete change, once you know everything it must touch. MUST
   finish every caller and fixture the change breaks. One-liner that needs decoding
   MUST NOT count as small.
-- MUST limit change to scope (`craft` §1) and approved plan. MUST NOT make
-  unrequested changes: refactors, renames, reformatting, fixes outside scope. The one
-  exception is scope addition (`craft` §4).
-- Bug that neither brief nor its plan item names, and that your change did not
-  introduce, MUST NOT be fixed. It MUST be recorded as an out-of-scope finding instead,
-  or reported as `stuck: <bug>` when it blocks the work.
+- MUST limit change to scope (`craft` §1) and approved plan. MUST NOT make unrequested
+  changes: refactors, renames, reformatting, fixes outside scope. The one exception is
+  scope addition (`craft` §4).
+- Bug that neither brief nor its plan item names, and that your change did not introduce,
+  MUST NOT be fixed. It MUST be recorded as an out-of-scope finding instead, or reported
+  as `stuck: <bug>` when it blocks the work.
 - MUST keep the codebase's existing structure: its layers, interfaces and conventions,
-  unless approved plan changes them (`core` §1). Code already clear and local
-  MUST stay as it is.
+  unless approved plan changes them (`core` §1). Code already clear and local MUST stay as
+  it is.
 - Moved or merged code MUST keep its error handling and validation.
 - Between options of equal size, MUST take the one correct on edge cases.
 - Never cut: MUST keep validation at trust boundaries, error handling that prevents data
@@ -66,12 +66,12 @@ A human reads every line you write.
 
 ## 3. Fixing and refactoring
 
-- MUST fix the root cause of each bug the brief or its plan item names (other bugs:
-  §1). It MUST first get a test that reproduces it. Then MUST
-  grep every caller of the function you touch and fix the cause once, in shared code.
-  Guard that only hides the crash MUST NOT count as a fix.
-- Fix inside a loop MUST re-check every exit and `continue` path of that loop against
-  each earlier finding on it, and SHOULD add a test for the path it adds.
+- MUST fix the root cause of each bug the brief or its plan item names (other bugs: §1).
+  It MUST first get a test that reproduces it. Then MUST grep every caller of the function
+  you touch and fix the cause once, in shared code. Guard that only hides the crash
+  MUST NOT count as a fix.
+- Fix inside a loop MUST re-check every exit and `continue` path of that loop against each
+  earlier finding on it, and SHOULD add a test for the path it adds.
 - After two failed fixes that share one premise, MUST write the premise in one sentence
   and remove it. MUST NOT start a third fix before that.
 - Coder that still has no cause after that MUST report `stuck: cause unknown`, with the
@@ -85,7 +85,7 @@ A human reads every line you write.
   change the parameter's type. Renamed parameter alone misses a positional caller.
 - SHOULD sequence work into small units. Finish and check one before starting the next.
 
-## 4. Gates per commit
+## 4. Gates
 
 Gates are in project context `## Gates`. A gate is `on` when its line or a part holds a
 command; any other gate is off. A part's command runs inside its folder.
@@ -98,20 +98,22 @@ command; any other gate is off. A part's command runs inside its folder.
   threshold.
 - `owasp`: MUST run the command, then read changed code against current OWASP Top 10.
 - `lint` and `unit`, when `on`, MUST pass at result tip in the parts the bullet above
-  selects, and SHOULD pass on each commit. Exceptions: a failure that already exists on
-  `<base>`, and the debugger's diagnose-only exemption. MUST compare with `<base>` to
-  tell.
+  selects. Exceptions: a failure that already exists on `<base>`, and the debugger's
+  diagnose-only exemption. MUST compare with `<base>` to tell. Between commits, SHOULD run
+  only the checks that cover the changed files: the filtered tests of the TDD loop and the
+  linter on those files. MUST run each selected gate once at result tip, and again only
+  when a later commit changes a file that selects one of its parts (bullet above).
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
   an out-of-scope finding.
 - Before your report, every `on` gate the brief does not leave to main session MUST pass,
   except a gate not run for no part touched, or the report names the failing gate.
-- Report MUST give one line per gate for a commit range when every commit in it gives
-  same result. Commit that differs MUST get its own line.
+- Report MUST give one line per gate: the result and commit of its last run, or
+  `not run (no part touched)`.
 
 ## 5. Commits
 
 - Commits MUST be small and atomic: one requirement or one fix per commit, also in one
   coder result that covers several items.
-- Subject: MUST be one imperative sentence under 72 characters that says what was done,
-  so `git log --oneline` reads as the task's log.
+- Subject: MUST be one imperative sentence under 72 characters that says what was done, so
+  `git log --oneline` reads as the task's log.
 - Body: SHOULD say why and how the change was proved.

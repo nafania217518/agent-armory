@@ -28,12 +28,12 @@ armory-core <version>
   each, active voice, present tense, one meaning per word, no idioms, no filler, no hedge
   that carries no doubt. Natural phrasing and domain terms stay where strict STE reads
   badly.
-- A report SHOULD explain each technical term at first use.
-- A reply or report of an error MUST state its cause, fix and `path:line`, or say which is
+- Report SHOULD explain each technical term at first use.
+- Reply or report of an error MUST state its cause, fix and `path:line`, or say which is
   unknown or absent, with no exclamation or apology. A skill's fixed output format wins
   over it.
-- Code comment MUST say only the why code cannot show, in one line. Exceptions: the
-  `req:` marker and the `tech-debt:` marker.
+- Code comment MUST say only the why code cannot show, in one line. Exceptions: `req:`
+  and `tech-debt:` markers.
 - Subagent MUST NOT ask user; it MUST report `stuck: <question>` instead.
 - Recommended option MUST name its basis, the ground it rests on, or be unmarked.
 
@@ -44,6 +44,12 @@ armory-core <version>
 - Tracked background task or spawned agent MUST stop once no longer needed. One left
   running MUST have a valid reason, stated in report. An idle agent or a subagent's timer
   (§6) does not count as running.
+- A run you wait on before your next step (gate, build, tests) SHOULD run in the
+  foreground, with host's timeout above its expected time. A background task SHOULD be
+  used only to do other work while it runs, or past host's foreground limit. MUST NOT
+  poll a background task with a sleep loop; MUST wait for host's completion notice
+  instead. A subagent turn that ends only to wait for that notice MUST reply `wait`
+  only; it is not a report.
 - Subagent MUST keep temp files in its own `mktemp -d` folder.
 - Gate, build and test output MUST reach your context only as its tail or a grep for FAIL
   or error, and a long file only by line range or a search. On a failing gate, MUST read
@@ -97,8 +103,8 @@ armory-core <version>
   line with only the fact a reader would not expect.
 - Each SHOULD bypass made during work (§1) MUST be recorded during the task, and so
   MUST each item a skill names as recorded.
-- A subagent MUST NOT write to the caveat base; it MUST report the caveat in its
-  caveat slot instead.
+- Subagent MUST NOT write to caveat base; it MUST report the caveat in its caveat slot
+  instead.
 
 ## 7. Host terms
 
@@ -108,9 +114,9 @@ armory-core <version>
 - worktree: isolated checkout per agent that edits files.
 - plan mode: host's read-only planning mode; its exit is the approval.
 - plan-mode file: host's file that holds the proposal.
-- hook: host's command that injects the hook payloads at session and subagent
-  start: core for every actor, plus core-main in the main session. Fallback: the
-  pointer line in project context.
+- hook: host's command that injects hook payloads at session and subagent start: core
+  for every actor, plus core-main in main session. Fallback: pointer line in project
+  context.
 - project context: file the host loads for a project (`AGENTS.md`, plus a `CLAUDE.md` with
   the line `@AGENTS.md`); skills MUST name its sections. Its `## Rules` line
   `Documentation lives in <folder>` sets `<docs>` for main session and every subagent.

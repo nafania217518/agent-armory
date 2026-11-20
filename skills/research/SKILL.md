@@ -9,7 +9,7 @@ description: >
 metadata:
   type: regular
   extends: [core]
-  max-lines: 80
+  max-lines: 79
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -33,12 +33,11 @@ Load `core` before your first step when its rules are not in your context.
   (goal, scope, priority, taste). One round's points and claims to prove MUST go in one
   researcher brief, split only past 5 web questions. Brief MUST state each point and its
   options with no preferred option.
-- A claim or point MUST skip research when a skill or project rule, a `core` §4
-  rule for a point that is not an intent point, repo evidence already in
-  context or a result from this run settles it, it is logic over text already in context,
-  a gate run in same step would fail if it were false, or it is a yes/no approval (push,
-  merge, plan approval). What settles it is the point's basis; an intent point's basis
-  takes its ladder number.
+- Claim or point MUST skip research when a skill or project rule, a `core` §4 rule for a
+  point that is not an intent point, repo evidence already in context or a result from
+  this run settles it, it is logic over text already in context, a gate run in same step
+  would fail if it were false, or it is a yes/no approval (push, merge, plan approval).
+  What settles it is the point's basis; an intent point's basis takes its ladder number.
 - An intent point's recommendation MUST take first basis that holds:
   1. a statement in an approved source: parent item, approved plan, design doc in
      `<docs>`, project context;
@@ -63,9 +62,9 @@ Load `core` before your first step when its rules are not in your context.
   that question `open: sources disagree`. Main session MUST send only disputed questions
   to an agent on the Opus research row, fresh or reused, with those sources in its
   brief.
-- An agent whose brief names its pages MUST read only those pages, in place of proof order
-  (§1); each answer MUST quote its passage or take `open: not on the page`.
-  A question whose pages disagree MUST still take `open: sources disagree`.
+- Agent whose brief names its pages MUST read only those pages, in place of proof order
+  (§1); each answer MUST quote its passage or take `open: not on the page`. A question
+  whose pages disagree MUST still take `open: sources disagree`.
 
 ## 3. Result
 
@@ -73,8 +72,8 @@ Result MUST hold, in this order:
 
 1. The claim, in one or two sentences, with its confidence: `confirmed`, `likely` or
    `open: <reason>`. The reason MUST be `sources disagree`, `not on the page` or
-   `not settled by the code`. Each question or fact MUST get its own claim line.
-   For an open point, claim MUST name recommended option, its basis (number for an intent
-   point) and its source, or `no recommendation`.
+   `not settled by the code`. Each question or fact MUST get its own claim line. For an
+   open point, claim MUST name recommended option, its basis (number for an intent point)
+   and its source, or `no recommendation`.
 2. The sources, one per line: title, URL or path, date or version, what it says.
 3. The recorded-items slot and the caveat slot (`core` §6).

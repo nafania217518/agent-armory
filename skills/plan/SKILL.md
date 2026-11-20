@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core-main, delegate, requirements, research, workflow]
-  max-lines: 169
+  max-lines: 168
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -28,7 +28,7 @@ Pre-work before any edit, at three levels.
 - Level MUST come from argument `strategic`, `milestone` or `task`. With no argument,
   first question MUST ask the level.
 - Each level MUST use the doc and branch of `tracking` §2 and this template; template
-  paths in this skill are relative to the `requirements` skill: strategic
+  paths in this skill are relative to `requirements`: strategic
   `templates/strategic.md`, other sections free; milestone `templates/milestone.md`,
   fixed; task `templates/task.md`, fixed.
 - Milestone or task doc MUST name its parent in its first lines, with the template's
@@ -60,27 +60,26 @@ Pre-work before any edit, at three levels.
   - A run MAY start from an existing tracker item. It MUST then read the item's body and
     comments first, take the item as its milestone or task, and keep the item's text,
     adding the run's sections below it. Else it MUST create the items only after approval.
-    An item that holds its own `## Requirements` MUST be the
-    milestone of a milestone run, or a task with no milestone of a task run, with no
-    milestone question. That `## Requirements` section MUST be the item's `BR` list; a run
-    MUST add each new `BR` line there.
+    An item that holds its own `## Requirements` MUST be the milestone of a milestone run,
+    or a task with no milestone of a task run, with no milestone question. That
+    `## Requirements` section MUST be the item's `BR` list; a run MUST add each new `BR`
+    line there.
   - Task run with no task named MUST take the first ready task in milestone item's child
     order: open, every blocker done, no assignee.
 
 ## 2. Before the plan
 
 - Main session itself MUST run the quizzes and approval, and own the research step.
-- Until the first proposal, quizzes, research and drafts MUST run outside plan mode. Main
-  session MUST enter plan mode only to propose, after the self-review (§6)
-  passes.
+- Until first proposal, quizzes, research and drafts MUST run outside plan mode. Main
+  session MUST enter plan mode only to propose, after self-review (§6) passes.
 - On a model below Opus or an effort below `high`, main session SHOULD suggest a switch to
   user before planning.
 - Before building, SHOULD push back on any part of the request the need does not justify.
-- Before the first quiz round, main session MUST have an agent read each topic file whose
+- Before first quiz round, main session MUST have an agent read each topic file whose
   pointer fits the request (`workflow` §3), or pass those paths in each planning brief.
 - Before any edit, MUST quiz user in rounds until no open point remains (an unclear
-  requirement, a choice, an assumption), and wait for answers. §3 sets the order
-  and topics; `core-main` §2 sets the question format.
+  requirement, a choice, an assumption), and wait for answers. §3 sets order and topics;
+  `core-main` §2 sets question format.
 - MUST NOT write any repo file before approval. Planning MUST NOT write code, tests or
   config.
 
@@ -94,15 +93,15 @@ Pre-work before any edit, at three levels.
 - A round MUST ask only questions whose prerequisite answers are in. A question that
   depends on another open question of the round MUST wait for a later round.
 - A quiz MUST NOT ask a fact the parent doc, repo, a tool or an agent can settle: main
-  session MUST get it by a short read (`core-main` §3) or by
-  research (below). A running lookup MUST hold back only questions that depend on it.
+  session MUST get it by a short read (`core-main` §3) or by research (below). A running
+  lookup MUST hold back only questions that depend on it.
 - During a quiz, main session MUST name a term that conflicts with project context
   `## Glossary`, MUST propose a precise term for a vague or overloaded one, and MUST
   check each claim user makes about the code against the code as `workflow` §3 sets,
   naming any contradiction.
 - Task run MAY have zero quiz rounds when its parent doc leaves no open point.
-- Open points and claims MUST go to research as `research` §1 sets, then,
-  when needed, to a quiz on the findings and next steps.
+- Open points and claims MUST go to research as `research` §1 sets, then, when needed,
+  to a quiz on the findings and next steps.
 
 ## 4. Requirements
 
@@ -111,7 +110,7 @@ Pre-work before any edit, at three levels.
 ## 5. The plan
 
 - Items, their `tests:` lines and the test-scope list MUST come as a draft from planner.
-- Measured results MUST go to the task report and the PR body, never to the plan file.
+- Measured results MUST go to task report and PR body, never to the plan file.
 - When the repo states no expected load, quiz MUST ask user for one; §7 writes the
   answer into `<docs>/DESIGN.md`.
 - When a load `TR` may gate a later fix, quiz SHOULD recommend keeping its benchmark as a
@@ -144,11 +143,11 @@ Pre-work before any edit, at three levels.
 - After approval, main session MUST cut the level's branch (`tracking` §2, column Branch)
   from `<base>` under `workflow` §2.
 - It MUST then write the level's template sections of the approved proposal to the
-  level's Doc path itself, as the first commit; `core` §7 sets `<docs>`.
-  Requirements MUST NOT go into a separate file.
+  level's Doc path itself, as the first commit; `core` §7 sets `<docs>`. Requirements
+  MUST NOT go into a separate file.
 - Task run MUST write its plan file also after zero quiz rounds.
-- Right after that commit, main session MUST write the planning caveats into the
-  caveat base (`workflow` §3).
+- Right after that commit, main session MUST write the planning caveats into caveat base
+  (`workflow` §3).
 - In that step, main session MUST itself write each term the quiz settled into project
   context `## Glossary`, in its format line, and an expected load the quiz settled into
   `<docs>/DESIGN.md`, and MUST commit them. A plan template MUST NOT hold a glossary

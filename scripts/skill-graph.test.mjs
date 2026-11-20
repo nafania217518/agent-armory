@@ -599,6 +599,16 @@ describe('skill-graph', () => {
         [1, 'skills/core-main/SKILL.md: needs one marker line "armory-core-main <version>"\n']);
     });
 
+    test('core_main_with_reworded_disclaimer_exits_1', () => {
+      writePayloadSources();
+      writeFile('skills/core-main/SKILL.md',
+        read('skills/core-main/SKILL.md').replace('MUST skip this skill', 'MUST NOT use this skill'));
+      const want = [1, 'skills/core-main/SKILL.md: needs the disclaimer line '
+        + '"A subagent MUST skip this skill: its rules are for the main session only."\n'];
+      assert.deepEqual(failure(run(['--build'])), want);
+      assert.deepEqual(failure(run([])), want);
+    });
+
     test('marker_line_in_other_skill_exits_1', () => {
       writePayloadSources();
       writeSkill('a', { body: ['Text.', 'armory-core <version>'] });
