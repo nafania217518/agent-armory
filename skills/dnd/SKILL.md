@@ -8,7 +8,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [code, core, plan]
-  max-lines: 86
+  max-lines: 88
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -60,10 +60,12 @@ away.
   `research` §1, other than a plan or item a `dnd` run self-approved or created, or on a
   §1 answer; with neither, it is the stop case below.
 - Self-approve: MUST NOT enter plan mode; passed self-review of `plan` §6 is the approval.
-- Acceptance (`code` §4, step 7): MUST try each by-hand item itself when it can and no
-  earlier step tried it. MUST record proof of each try (command and its output) in the
-  task report. When Finish opens a PR, MUST also post the proof as a PR comment before any
-  merge. The report MUST list each item left for user.
+- Acceptance (`code` §4, step 7): MUST try each by-hand item itself, in place of each
+  question of that step on the item, when it can and no earlier step tried it; an item it
+  cannot try MUST count as a skip of that step. A failed try MUST count as an "Other"
+  answer of that step. MUST record proof of each try (command, expected result and
+  output) in that step's addendum, and MUST send that addendum whenever it holds proof.
+  When Finish opens a PR, MUST also post the proof as a PR comment before any merge.
 - A case whose only option is to stop MUST save work (push task branch, unless Finish
   answer is local only) and log the stop in answers log. With a tracker bound, it MUST
   comment the cause on the task item. A blocker that is a tracker item MUST get a

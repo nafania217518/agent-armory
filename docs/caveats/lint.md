@@ -36,3 +36,9 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - After a file-path ref, a chained ref such as "`docs/x.md` §A and §B" is checked as a bare ref of the citing file, since a file-owner ref carries no owner to §B : scripts/skill-graph.mjs
 - When a skill is deleted, a card that still cites it as `<skill>` §1 gets a `section` report against the card, not a `cite` report : scripts/skill-graph.mjs
 - `skill-sizes.mjs` finds `metadata.max-lines` with its own line scan, not with `frontmatter.mjs`, so a change to how one reads the `metadata` block does not reach the other : scripts/skill-sizes.mjs
+- `skill-sizes.mjs` fails only when a skill has more lines than its `max-lines`, so an edit that loses a line under a planned cap passes `lint` : scripts/skill-sizes.mjs
+- In a shallow clone, `git blame` charges older lines to the boundary commit, so the doc-checks drift count comes out too low and no warning prints : scripts/doc-checks.mjs
+  checked: git@2.55.0
+- A doc-checks test fixture that has a caveat entry but no `git init` prints a `drift not checked` warning, which breaks an exact stderr assert : scripts/doc-checks.test.mjs
+- `git blame` fails on an untracked caveat file, so doc-checks reports that file as drift not checked : scripts/doc-checks.mjs
+  checked: git@2.55.0

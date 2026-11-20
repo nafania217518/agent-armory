@@ -6,7 +6,7 @@ description: >
 metadata:
   type: abstract
   extends: [core-main, tracking]
-  max-lines: 132
+  max-lines: 142
 user-invocable: false
 ---
 
@@ -43,6 +43,8 @@ These rules hold with a tracker bound.
 - MUST NOT commit to `<base>` or the local default branch, except the merge of §4 and the
   first commit of a new repo. MUST commit on a branch cut from `<base>` instead.
 - MUST ask user before any push, and before any merge into `<base>`, PR merges too.
+- When a push is rejected, main session MUST fetch, report how the remote branch moved,
+  and ask user how to go on. Done when user has answered.
 
 ```
 git symbolic-ref --short refs/remotes/origin/HEAD
@@ -75,7 +77,9 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in 
 - A line that says what to do is a rule: it MUST go to project context `## Rules`.
 - A caveat that a doc states MUST become a link to that doc section. One that a test,
   check, code comment or message text states MUST be dropped. A duplicate MUST be merged.
-- A topic entry MAY carry one indented line: its cause, its workaround or a doc link.
+- A topic entry MAY carry one indented line: its cause, its workaround or a doc link. An
+  entry about a library, tool or platform behavior SHOULD end that line, or make one,
+  with `checked: <name>@<version>`, the version its claim was checked on.
 - Root `## Caveats` MUST hold one pointer line per topic file:
   `- <topic>: <when to read it> : <docs>/caveats/<topic>.md`.
 - A topic file over 40 entries MUST be split; an empty one MUST be deleted, with its
@@ -83,9 +87,11 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in 
 - Before main session briefs work on a file, it MUST pass the agent the path of each
   topic file whose pointer fits that work.
 - Cleanup: for each caveat-base entry whose file the task changed, moved or deleted
-  (`git diff --name-status <base>...HEAD`), main session MUST re-check the entry's claim
-  as the "Before that write" bullet sets, then keep the entry, fix its path or drop it,
-  by bullets above.
+  (`git diff --name-status <base>...HEAD`), and each entry whose `checked:` name has a
+  new version in the task's manifest or lock-file diff, main session MUST re-check the
+  entry's claim as the "Before that write" bullet sets. It MUST then keep the entry with
+  its new `checked:` version, fix its path or drop it, by bullets above. A claim the
+  check does not settle MUST keep the entry with an `Unverified:` part.
 
 ## 4. Finish
 
@@ -94,6 +100,10 @@ Caveat base, caveat slot, caveat format, subagent ban and recorded items are in 
   into `<base>`.
 - A merge into `<base>` MUST merge into the local default branch. With a remote, main
   session MUST then ask a separate question whether to push that branch.
+- After a local merge into `<base>` that is not a fast-forward, main session MUST run
+  `lint` and `unit`, each when `on`, with every part, on the merged result before that
+  push question. A failure MUST stop the finish and go to user, with the task branch
+  kept. Done when both pass, or user has answered.
 - After a push to a branch with an open PR, main session MUST have an agent compare the PR
   body's Summary and Evidence with plan's Design and latest gate and measured results, and
   return each stale line with its new text. Main session MUST update those lines in the

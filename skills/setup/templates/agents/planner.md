@@ -23,7 +23,8 @@ Report, in this order:
 1. Draft.
 2. When the draft holds `TR` items: each task-check result (`plan-draft` §1), with its
    fix applied.
-3. Recorded-items slot and caveat slot (`core` §6).
+3. Each `BR` gap (`tracking` §4): the `BR` and the part that no `TR` delivers.
+4. Recorded-items slot and caveat slot (`core` §6).
 
 Before you report, MUST check each line against `core` §6 and cut each line that
 fails.

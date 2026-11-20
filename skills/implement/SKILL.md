@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core, craft]
-  max-lines: 119
+  max-lines: 131
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -32,8 +32,9 @@ How to write code, for coder and debugger. Reviewer judges code against it.
   5. One line a reader gets at a glance? One line.
   6. Otherwise: the minimum code that works.
 - MUST ship the smallest complete change, once you know everything it must touch. MUST
-  finish every caller and fixture the change breaks. One-liner that needs decoding
-  MUST NOT count as small.
+  finish every caller and fixture the change breaks. MUST delete each function, type or
+  file that the change leaves unused, outside the public interface. One-liner that needs
+  decoding MUST NOT count as small.
 - MUST limit change to scope (`craft` §1) and approved plan. MUST NOT make unrequested
   changes: refactors, renames, reformatting, fixes outside scope. The one exception is
   scope addition (`craft` §4).
@@ -76,6 +77,8 @@ A human reads every line you write.
   and remove it. MUST NOT start a third fix before that.
 - Coder that still has no cause after that MUST report `stuck: cause unknown`, with the
   premise it removed.
+- When each of two fixes makes a new, different test fail, MUST NOT start a third fix.
+  MUST report `stuck: design` with the failures instead.
 - When the brief or a follow-up message names a diagnose-only branch or commit, MUST NOT
   merge it or build on it. MUST write the fix on the commit the brief names to reset to.
   MAY copy its loop test, without the debug prefix, as regression test.
@@ -103,10 +106,17 @@ command; any other gate is off. A part's command runs inside its folder.
   only the checks that cover the changed files: the filtered tests of the TDD loop and the
   linter on those files. MUST run each selected gate once at result tip, and again only
   when a later commit changes a file that selects one of its parts (bullet above).
+- MUST NOT weaken a gate to make it pass: its line in project context `## Gates`, its
+  config or ignore file (lint, formatter, type checker, test runner), a threshold, or an
+  inline suppression the change adds. MUST fix the code instead. A change to a gate MUST
+  be one that the plan item names.
+- A commit, merge or push MUST NOT skip git's own hooks or signing. When a git hook fails,
+  MUST fix its cause, or report `stuck:` with its output.
 - Gate failure that already exists on `<base>` MUST NOT be fixed. It MUST be recorded as
   an out-of-scope finding.
-- Before your report, every `on` gate the brief does not leave to main session MUST pass,
-  except a gate not run for no part touched, or the report names the failing gate.
+- Before your report, every `on` gate the brief does not leave to main session MUST pass
+  on a clean tree, except a gate not run for no part touched, or the report names the
+  failing gate.
 - Report MUST give one line per gate: the result and commit of its last run, or
   `not run (no part touched)`.
 
@@ -117,3 +127,5 @@ command; any other gate is off. A part's command runs inside its folder.
 - Subject: MUST be one imperative sentence under 72 characters that says what was done, so
   `git log --oneline` reads as the task's log.
 - Body: SHOULD say why and how the change was proved.
+- A commit that serves a plan `TR` SHOULD carry the trailer line `Refs: <TR ids>`, so a
+  later undo finds the item's commits by `git log --grep`.

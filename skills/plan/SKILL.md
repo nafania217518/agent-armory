@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core-main, delegate, requirements, research, workflow]
-  max-lines: 168
+  max-lines: 195
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -42,8 +42,14 @@ Pre-work before any edit, at three levels.
   round MUST ask for the task's milestone, or none.
 - Strategic run MUST have no testable item. It MUST stop at the milestone list; each
   milestone plan MUST be a separate run.
+- Strategic run SHOULD keep, under `<docs>/DESIGN.md` §Open, each in-scope question not
+  yet sharp enough to become a milestone. Each later strategic run MUST turn each open
+  point it can state as a goal into a milestone, and delete it from that section.
 - Strategic run SHOULD add a decision line only when the decision is hard to reverse,
   surprising without context and the result of a real trade-off.
+- A decision that reverses or narrows an earlier decision line MUST get its own new
+  dated line, and the old line MUST keep its text; both lines MUST take the Decisions
+  format line of `templates/strategic.md`.
 - When `<docs>/DESIGN.md` is missing, strategic run MUST create it from the template. Else
   it MUST edit the file in place and keep its free sections.
 - With a tracker bound in project context `## Tracker` (`tracking` §1), each level
@@ -110,6 +116,19 @@ Pre-work before any edit, at three levels.
 ## 5. The plan
 
 - Items, their `tests:` lines and the test-scope list MUST come as a draft from planner.
+- When an item adds an interface that other items or callers build on, and no basis
+  (`research` §1) settles its design, main session MAY spawn 2 or 3 planners at once
+  (`delegate` §4 row 6) before the draft. Each brief MUST hold the same constraints, the
+  dependency kind (in-process, local stand-in, owned remote, third party) and one lens:
+  smallest interface, most common caller first, or ports and adapters at the seam.
+- Each such planner MUST return the interface, its error modes, one caller example, what
+  it hides and its trade-offs. Before main session reads them, it MUST fix its compare
+  criteria from the quiz answers and write its own pick. It MUST then compare the drafts
+  itself, with no reviewer, and ask user with 2 or 3 options. A clear winner on the
+  criteria MUST be the recommended option, with those criteria as its basis. The
+  question MUST show the strongest dissent, and say when a draft changed main session's
+  pick. With no draft that meets the criteria, the point MUST go back to the quiz. Done
+  when user chose a design or a hybrid.
 - Measured results MUST go to task report and PR body, never to the plan file.
 - When the repo states no expected load, quiz MUST ask user for one; §7 writes the
   answer into `<docs>/DESIGN.md`.
@@ -127,6 +146,14 @@ Pre-work before any edit, at three levels.
   - task: the planner's report holds a passed task check on the draft, each fix applied;
     else the draft goes back to the planner.
 - At milestone level, review MUST also run the flow walk of `requirements` §3.
+- At milestone and task level, once the checks above pass, main session MUST spawn a
+  fresh planner (`delegate` §4 row 7) as a cold reader. Its brief MUST hold no plan
+  context beyond the draft's template sections and its role: the coder of a task, or the
+  planner of a milestone's tasks. It MUST return, ranked, only questions where a wrong
+  guess would change what gets built, or `none`.
+- Main session MUST write into the draft each answer the run already holds. Each other
+  question MUST count as an open question (below), most important first. Done when each
+  question is answered in the draft.
 - With a tracker bound (§1, tracker variant), proposal MUST list each tracker write
   the run makes: creates with their labels (a missing role label's create included), body
   edits, links, edges, comments and status sets, and the create of each follow-up item the

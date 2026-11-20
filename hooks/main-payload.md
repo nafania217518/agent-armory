@@ -2,7 +2,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
 
 # core
 
-armory-core 0.5.2
+armory-core 0.5.3
 
 ## 1. Rule words
 
@@ -43,7 +43,8 @@ armory-core 0.5.2
 - Subagent MUST keep temp files in its own `mktemp -d` folder.
 - Gate, build and test output MUST reach your context only as its tail or a grep for FAIL
   or error, and a long file only by line range or a search. On a failing gate, MUST read
-  only the failing part of its log.
+  only the failing part of its log. Pass or fail MUST come from the gate command's own
+  exit code, saved before you trim, never from the trim's.
 
 ## 4. Design principles
 
@@ -104,6 +105,7 @@ armory-core 0.5.2
 - worktree: isolated checkout per agent that edits files.
 - plan mode: host's read-only planning mode; its exit is the approval.
 - plan-mode file: host's file that holds the proposal.
+- transcript: host's stored record of one session; each subagent has its own.
 - hook: host's command that injects hook payloads at session and subagent start: core
   for every actor, plus core-main in main session. Fallback: pointer line in project
   context.
@@ -121,7 +123,7 @@ armory-core 0.5.2
 
 # core-main
 
-armory-core-main 0.5.2
+armory-core-main 0.5.3
 
 ## 1. Rule words
 

@@ -3,7 +3,8 @@ name: researcher
 description: >
   Answers one brief's questions through `research`: official sources first, dates,
   disagreements. Returns a claim per question, sources and the caveat slot. Use for
-  library, API, model, tool and domain facts and the basis for a recommended option.
+  library, API, model, tool and domain facts, the basis for a recommended option, and a
+  read of past session transcripts for a retro.
 model: {{MODEL}}
 effort: {{EFFORT}}
 tools: Read, Grep, Glob, Bash, Skill, WebSearch, WebFetch, ToolSearch

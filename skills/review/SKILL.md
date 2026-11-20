@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core, implement, research, test]
-  max-lines: 165
+  max-lines: 206
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -26,7 +26,8 @@ listed as a finding.
 ## 1. Understand first
 
 - Review and audit are reports user asked for: MUST give them in full. Both are read-only:
-  MUST NOT change any tracked file. Gate output (a coverage folder) is exempt.
+  MUST NOT change any tracked file. Gate output (a coverage folder) and the revert
+  worktree of §2 are exempt.
 - Main session MUST spawn a reviewer for every review, also one user asks for, and
   MUST NOT review in its own context.
 - MUST review what user names: uncommitted or staged changes, branch, PR link or files.
@@ -38,6 +39,11 @@ listed as a finding.
   calls, tests, README.
 - MUST trace real flow: where data comes in, what is stored, what goes out.
 - When a signature, return value or behavior changes, MUST grep every caller.
+- MUST grep removed and changed lines for names that consumers outside the repo use:
+  routes, exported types, CLI flags, environment variables and schema columns. Each one
+  removed or changed with no migration path MUST be reported. A new required environment
+  variable, a `DROP`, a `NOT NULL` column with no default, and a dropped index MUST each
+  be reported unless the plan names it.
 - With a plan, MUST take expected load from plan's load `TR`s. With no plan, MUST find
   it: a figure in `<docs>/DESIGN.md`, else in README or deploy config. MUST judge scale
   against it.
@@ -54,7 +60,10 @@ listed as a finding.
   at that commit. Final review MUST run every `on` gate itself.
 - MUST confirm an `on` gate's command covers each changed file, else report the file. A
   prose or docs file is exempt when no gate covers prose: reviewer MUST read it.
-- Each requirement the task names MUST be shown met by diff or by a check.
+- Each requirement the task names MUST be shown met by diff or by a check. Each unit it
+  adds MUST pass four levels: exists, real (no stub), wired (a live path calls it) and fed
+  (its data comes from a real source, not a fixed return). A unit that fails a level MUST
+  be reported as a requirement not met.
 - A `TR` that traces to no `BR` is scope creep and MUST be reported.
 - MUST grep `req:` markers (`test` §5). A `TR` with code and no marker MUST be
   reported, unless its plan item says `tests: none`.
@@ -63,6 +72,11 @@ listed as a finding.
 - Test cases changed outside test-scope list and its recorded scope additions MUST be
   reported. `craft` §4 sets how to check a scope addition.
 - When diff touches tests, MUST apply `test` §7.
+- For each test that covers a fix of a Must fix finding, and each new test on risky code
+  (§3 class 4), MUST revert the non-test lines of that fix or of the test's commit in a
+  detached worktree in your own temp folder, run the test there and see it fail, then
+  MUST remove that worktree. A test that stays green MUST be reported as Must fix, class
+  Missing test. Done when each such test has a red run or a finding.
 
 ## 3. Look for
 
@@ -71,11 +85,22 @@ listed as a finding.
 - Review and audit MUST cover each class:
 
 1. Bug: wrong result, crash, missed edge case (`craft` §3), a caller the change breaks, a
-   fix in one caller while shared function stays broken, callers that disagree on a
-   return value, one rule applied two ways, a stale async answer applied over a newer
-   one (`craft` §2).
+   fix in one caller while shared function stays broken, a fix that closes one call form
+   or alias and leaves its sibling open, callers that disagree on a return value, one
+   rule applied two ways, a stale async answer applied over a newer one (`craft` §2), a
+   body that breaks the contract (inputs, output, side effects) that its name, signature
+   and callers promise, an import no declared dependency provides, a function or method
+   the installed version lacks (check lockfile or installed source), a call whose side
+   effect on shared state resets what an earlier call in the same action set, so the
+   final state is not what the action promises.
 2. Risk: security holes (injection, weak randomness, secrets, missing checks on input from
-   users), data loss (errors swallowed, writes in wrong order, no transaction).
+   users, a security check that passes on error or timeout), data loss and hidden failure
+   (a catch-all that returns empty or null with no context, a default value that hides a
+   failed call, a rethrow that drops the cause, a network, file or database call with no
+   timeout, writes in wrong order, no transaction, a non-idempotent call sent again after
+   a timeout or 5xx, whose outcome is unknown, not failed), resource leaks (a file,
+   connection, listener, interval, subscription or temp file opened with no close on some
+   path, failure paths included).
 3. Scale: fine for one user, wrong for many: check-then-write races, the same work done by
    every process, memory or lists that only grow, a query per item, O(n²) on big input,
    per-process state that must be shared.
@@ -112,7 +137,12 @@ listed as a finding.
      map, or polymorphism.
    - Fat Interface: a client depends on interface methods it does not use (`craft` §2).
      Fix: a narrow interface per client.
-8. Readability: code that breaks a rule of `implement` §2.
+   - Shallow Module: an interface nearly as large as the code behind it, or one concept a
+     reader must follow across many small modules. Fix: merge them into one module with a
+     smaller interface. Merge covers shallow pass-through modules; Lean split covers an
+     over-long unit with more than one job.
+8. Readability: code that breaks a rule of `implement` §2, or a comment that contradicts
+   the code or names behavior the change removed.
 
 ## 4. Check before you report
 
@@ -126,6 +156,9 @@ listed as a finding.
   past its limit, or when it covers a never-cut item.
 - A finding on a design rule the plan's Overrides section names MUST NOT be reported. MUST
   check code against that override instead.
+- A requirement not met where code shows a deliberate other way MUST still be reported as
+  Must fix. Its Fix MUST offer both options: implement it, or a plan amendment (the
+  tracking skill §4) for user to approve.
 - MUST propose the smallest fix that works. SHOULD prefer fixes that delete code. MUST NOT
   add layers, frameworks or config the problem does not need.
 - MUST NOT report style taste, "consider", or vague worries.
@@ -137,8 +170,9 @@ listed as a finding.
   no blocker; `(per <who> at <commit or range>)` after `pass` or `fail` for a run by
   another agent; `not run (<cause>)`, neither pass nor fail, when an `on` gate's command
   cannot run (a file the range lacks: name the commit that adds it).
-- On a re-review, MUST check each finding sent to fix, and MUST give after `Gates:` one
-  `Re-review:` line per such finding: `fixed`, `open` or `not re-opened` (withdrawn).
+- On a re-review, MUST check each finding sent to fix, and MUST review the fix commits as
+  new code by every §3 class. MUST give after `Gates:` one `Re-review:` line per such
+  finding: `fixed`, `open` or `not re-opened` (withdrawn).
 - Findings MUST come in three groups, empty groups skipped:
   - Must fix: a bug, a risk, a break at expected load, an `on` gate failure the change
     adds, a requirement not met.
@@ -156,10 +190,17 @@ listed as a finding.
   the `Unverified:` part of `research` §1.
 - Each Should fix and Nice to have finding is a recorded item (`core` §6); the
   recorded-items slot MUST name it by number only.
+- When user asked for the review and the diff changes more than 20 files, reviewer SHOULD
+  give `Read first:` after the findings: up to 10 changed files, ranked by blast radius
+  (callers of changed code), failure cost (what breaks and what would detect it) and
+  effect on users, one line each with its reason. It SHOULD list changed contract files
+  apart (API schemas, data models, config, dependency manifests).
 - Then MUST give `Answers:` when brief asks a question or names a check for reviewer to
   judge, one line per item: short plain-fact sentences, up to 10, no prose; then the two
   slots of `core` §6.
 - MUST end with `Verdict: Ship.` or `Verdict: fix 1 and 3 first.`, then `Not checked:` in
   one line when something that mattered was not checked; each `per` and `not run` gate
   counts.
-- Nothing found: one line on what was checked MUST replace the groups; `Re-review:` stays.
+- Nothing found: one line on what was checked MUST replace the groups. That line MUST name
+  three §3 classes checked, each with one `file:line` that shows it holds. `Re-review:`
+  stays.

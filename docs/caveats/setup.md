@@ -4,12 +4,13 @@ Format: the caveat line of the armory `core` skill, section Reports.
 
 - GitHub gives an item's linked branch name only by creating that branch : skills/setup/SKILL.md
 - A tracker read binding made before commit c5ce9ea may return an item without its labels : skills/tracking/SKILL.md
-- A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md
+- A GitHub read binding through `gh issue view` or `gh api` shows C1 control characters in caret form, so a body edit built from it changes the item text : skills/setup/SKILL.md : Unverified: `gh issue view` on an item whose body holds a C1 character
 - No reader parses the format lines in the setup and requirements templates, except their `§` refs, which skill-graph checks; `setup` and `plan` copy them as text, so their wording can change without breaking a check : skills/setup/templates/AGENTS.md
 - An update run skips `setup` §Install except the bullets `setup` §Invocation names, so a new `setup` §Install bullet that an update run needs must join that list : skills/setup/SKILL.md
-- Claude Code renders SessionStart hook stdout after `SessionStart:startup hook success: ` on the same line, so the first line of `hooks/main-payload.md` does not start a line in the main session's context : hooks/main-payload.md
+- Claude Code renders SessionStart hook stdout after `SessionStart:startup hook success: ` on the same line, so the first line of `hooks/main-payload.md` does not start a line in the main session's context : hooks/main-payload.md : Unverified: start a session and read its context, or the Claude Code hooks docs
 - The fallback pointer sits in project context, which the host loads into every subagent, so a subagent that misreads its main-session clause loads `core-main` : skills/setup/SKILL.md
 - An update run finds an old pointer only by its opening words "At session start, load the armory `core` skill", so a pointer edit that changes those words leaves old pointers unmatched : skills/setup/SKILL.md
-- GitHub `--state closed` lists done and dropped items alike, so a `list items` binding finds the status dropped only by a search for `reason:"not planned"` : skills/setup/SKILL.md
+- GitHub `--state closed` lists done and dropped items alike, so a `list items` binding finds the status dropped only by a search for `reason:"not planned"` : skills/setup/SKILL.md : Unverified: `gh issue list --state closed --search 'reason:"not planned"'`
 - `docs/DESIGN.md` numbers its section headings (`## 3. The project context template`) while the templates and `AGENTS.md` do not, so a match of a heading by its name breaks on that number : docs/DESIGN.md
 - The setup `AGENTS.md` template and root `AGENTS.md` write out the `core` §6 caveat format and the `workflow` §3 pointer format as plain text, so a change to either format leaves them stale with no `lint` report : skills/setup/templates/AGENTS.md
+- An update run skips setup §2, so the guard probe runs only on a first run : skills/setup/SKILL.md

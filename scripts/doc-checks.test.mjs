@@ -1,4 +1,4 @@
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { mkdirSync, mkdtempSync, rmSync, symlinkSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join } from 'node:path';
@@ -66,16 +66,25 @@ function writeEvals(skill) {
 }
 
 function run(args = [], cwd = tmpDir) {
-  try {
-    const stdout = execFileSync(process.execPath, [scriptPath, ...args], {
-      cwd,
-      encoding: 'utf8',
-      stdio: 'pipe',
-    });
-    return { status: 0, stdout, stderr: '' };
-  } catch (e) {
-    return { status: e.status, stdout: e.stdout, stderr: e.stderr };
-  }
+  const r = spawnSync(process.execPath, [scriptPath, ...args], { cwd, encoding: 'utf8' });
+  return { status: r.status, stdout: r.stdout, stderr: r.stderr };
+}
+
+function git(...args) {
+  return execFileSync('git', [
+    '-c', 'user.name=t', '-c', 'user.email=t@t', '-c', 'commit.gpgsign=false', ...args,
+  ], { cwd: tmpDir, encoding: 'utf8', stdio: 'pipe' }).trim();
+}
+
+function commitAll(message) {
+  git('add', '-A');
+  git('commit', '-q', '-m', message);
+  return git('rev-parse', '--short=7', 'HEAD');
+}
+
+// The fixture AGENTS.md with a `## Caveats` section of the given lines.
+function agentsWithCaveats(lines) {
+  return `${listTexts()['AGENTS.md']}## Caveats\n\n${lines.join('\n')}\n`;
 }
 
 beforeEach(() => {
@@ -160,7 +169,7 @@ describe('doc-checks', () => {
     test('extra_argument_exits_2', () => {
       const r = run(['.', 'more']);
       assert.equal(r.status, 2);
-      assert.equal(r.stderr, 'usage: node scripts/doc-checks.mjs [root]\n');
+      assert.equal(r.stderr, 'usage: node scripts/doc-checks.mjs [--verbose] [root]\n');
     });
   });
 
@@ -560,6 +569,173 @@ describe('doc-checks', () => {
         'delegate: fewer than 3 load evals', 'delegate: no skip eval',
         'plan: fewer than 3 load evals', 'plan: no skip eval', '',
       ].join('\n'));
+    });
+  });
+
+  // req: adopt-skill-improvements/TR-10
+  describe('caveat drift', () => {
+    beforeEach(() => git('init', '-q'));
+
+    test('file_changed_after_entry_counts_in_summary_and_exits_0', () => {
+      writeRepo({ 'AGENTS.md': agentsWithCaveats(['- a trap : src/a.mjs']) });
+      writeFile('src/a.mjs', 'one\n');
+      commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        'doc-checks: warning: 1 caveat entries drifted; --verbose lists them\n',
+      );
+    });
+
+    test('verbose_names_entry_file_and_entry_commit', () => {
+      writeRepo({ 'AGENTS.md': agentsWithCaveats(['- a trap : src/a.mjs']) });
+      writeFile('src/a.mjs', 'one\n');
+      const sha = commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      const line = agentsWithCaveats([]).split('\n').length - 1;
+      const r = run(['--verbose']);
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        `doc-checks: warning: AGENTS.md:${line}: src/a.mjs changed after ${sha}\n`,
+      );
+    });
+
+    test('entry_written_after_last_file_change_is_not_drift', () => {
+      writeFile('src/a.mjs', 'one\n');
+      writeFile('src/b.mjs', 'one\n');
+      writeFile('docs/caveats/t.md', '# t\n\n- b trap : src/b.mjs\n');
+      writeRepo();
+      const sha = commitAll('first');
+      writeFile('src/b.mjs', 'two\n');
+      commitAll('second');
+      writeFile('docs/caveats/t.md', '# t\n\n- b trap : src/b.mjs\n- a trap : src/a.mjs\n');
+      commitAll('third');
+      const r = run(['--verbose']);
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        `doc-checks: warning: docs/caveats/t.md:3: src/b.mjs changed after ${sha}\n`,
+      );
+    });
+
+    test('unverified_part_takes_the_file_before_it', () => {
+      writeFile('docs/caveats/t.md', '- a trap : src/a.mjs : Unverified: no test\n');
+      writeFile('src/a.mjs', 'one\n');
+      writeRepo();
+      const sha = commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      const r = run(['--verbose']);
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        `doc-checks: warning: docs/caveats/t.md:1: src/a.mjs changed after ${sha}\n`,
+      );
+    });
+
+    test('pointer_line_dash_entry_and_indented_line_are_skipped', () => {
+      writeRepo({
+        'AGENTS.md': agentsWithCaveats([
+          '- lint: before editing x : docs/caveats/lint.md',
+          '- a trap : src/a.mjs',
+          '',
+          '## Other',
+          '',
+          '- not an entry : src/a.mjs',
+        ]),
+      });
+      writeFile('docs/caveats/lint.md', '- no file yet : —\n  checked: lib@1 : src/a.mjs\n');
+      writeFile('src/a.mjs', 'one\n');
+      commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      writeFile('docs/caveats/lint.md', '- no file yet : —\n  checked: lib@1 : src/a.mjs\nmore\n');
+      commitAll('second');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        'doc-checks: warning: 1 caveat entries drifted; --verbose lists them\n',
+      );
+    });
+
+    test('uncommitted_entry_is_skipped', () => {
+      writeFile('docs/caveats/t.md', '# t\n');
+      writeFile('src/a.mjs', 'one\n');
+      writeRepo();
+      commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      writeFile('docs/caveats/t.md', '# t\n- a trap : src/a.mjs\n');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.equal(r.stderr, '');
+    });
+
+    test('caveat_file_outside_git_is_named_not_checked', () => {
+      rmSync(join(tmpDir, '.git'), { recursive: true, force: true });
+      writeRepo();
+      writeFile('docs/caveats/t.md', '- a trap : src/a.mjs\n');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.match(
+        r.stderr,
+        /^doc-checks: warning: docs\/caveats\/t\.md: drift not checked \(.+\)\n$/,
+      );
+    });
+
+    test('empty_file_field_is_named_not_checked', () => {
+      writeFile('docs/caveats/t.md', '- x : \n');
+      writeRepo();
+      commitAll('first');
+      const r = run();
+      assert.equal(r.status, 0);
+      assert.ok(
+        r.stderr.startsWith('doc-checks: warning: docs/caveats/t.md:1: drift not checked ('),
+        r.stderr,
+      );
+    });
+
+    test('verbose_after_root_lists_drifted_entries', () => {
+      writeFile('docs/caveats/t.md', '- a trap : src/a.mjs\n');
+      writeFile('src/a.mjs', 'one\n');
+      writeRepo();
+      const sha = commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      const r = run(['.', '--verbose']);
+      assert.equal(r.status, 0);
+      assert.equal(
+        r.stderr,
+        `doc-checks: warning: docs/caveats/t.md:1: src/a.mjs changed after ${sha}\n`,
+      );
+    });
+
+    test('verbose_with_two_roots_exits_2', () => {
+      writeRepo();
+      const r = run(['--verbose', '.', 'more']);
+      assert.equal(r.status, 2);
+    });
+
+    test('drift_warning_keeps_a_failure_exit', () => {
+      writeFile('docs/caveats/t.md', '- a trap : src/a.mjs\n');
+      writeFile('src/a.mjs', 'one\n');
+      writeRepo();
+      commitAll('first');
+      writeFile('src/a.mjs', 'two\n');
+      commitAll('second');
+      writeFile('docs/milestones/m.md', `${'a'.repeat(91)}\n`);
+      const r = run();
+      assert.equal(r.status, 1);
+      assert.equal(
+        r.stderr,
+        'docs/milestones/m.md:1: 91 > 90\n'
+          + 'doc-checks: warning: 1 caveat entries drifted; --verbose lists them\n',
+      );
     });
   });
 

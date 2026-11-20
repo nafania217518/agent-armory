@@ -8,7 +8,7 @@ description: >
 metadata:
   type: regular
   extends: [core, craft, requirements]
-  max-lines: 61
+  max-lines: 74
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -27,7 +27,7 @@ How the planner drafts the task part of a plan and checks its draft.
   is fixed first.
   - Every `BR` of the task, except a gate-type `BR`, has a `TR`. Every `TR` meets
     `requirements` §1 and §2 and has a `tests:` case for each edge case and each failure
-    path it names, or a `tests: none` line.
+    path it names, or a `tests: <kind>` or `tests: none` line (`craft` §3).
   - The design issues under `core` §4 and `craft` §1 and §2 are fixed.
   - Each claim in any section with "every", "each", "all", "always", "never" or "only",
     and each claim on the form of existing data a `TR` reads, holds on each path and
@@ -46,6 +46,19 @@ How the planner drafts the task part of a plan and checks its draft.
     empty and malformed values.
   - Each pair of `TR` items that act in one run states their order or shared state in
     the later `TR`.
+  - No `TR` delivers less than the `BR` it traces to, unless the report names that cut
+    as a `BR` gap. Words such as "v1", "for now", "placeholder", "stub", "simplified",
+    "later" or "too complex" mark a candidate.
+  - Each new part a `TR` adds that a caller must reach (route, command, handler,
+    module, model) has a `TR` that connects it to that caller, or names the existing
+    caller that reaches it.
+  - Each symbol, file or field that two `TR` or Design lines name carries the same name
+    in each of them.
+  - No `TR` or Design line leaves its decision to the coder: no "TBD", "as needed",
+    "handle edge cases" or a line of that kind, unless it names the rule the coder
+    applies.
+  - A task that the four-Risks-lines bullet of `requirements` §2 names holds those
+    lines.
 - Check MUST also run the flow walk of `requirements` §3 on the draft.
 - Check MUST also walk each new `tests:` case, with its expected value, through its
   `TR` and the existing rules of its component, in the plan and code. A case one of them

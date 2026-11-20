@@ -6,7 +6,7 @@ description: >
 metadata:
   type: abstract
   extends: [core, craft]
-  max-lines: 103
+  max-lines: 117
 user-invocable: false
 ---
 
@@ -60,6 +60,8 @@ Load `craft` before you write or check a `TR` when its rules are not in your con
 - Each Risks line MUST name the `TR`, or in a milestone the `BR` or task, that checks or
   limits it, or the quiz answer that accepts it. A risk of failure in behavior the task
   builds MUST go to a quiz round first.
+- A `TR` that changes authentication, deletes or migrates stored data, or handles
+  secrets MAY carry the indented line `review: dual`, chosen in the tech quiz.
 - Plan MUST list `TR` items in execution order; an item that a later item's gate command
   needs MUST come first. Each `tests:` line MUST follow `craft` §3 and name a gate by its
   name, never by its command or a case count. A `TR` that breaks or reworks a test of a
@@ -71,10 +73,22 @@ Load `craft` before you write or check a `TR` when its rules are not in your con
   message, a shared type), plan SHOULD put the contract in its own first item: the spec,
   shared types and a contract test or stub. Items on each side then need only that item. A
   last item joins them through an integration or e2e test.
+- When several items would each add a line to one shared file (an index or barrel
+  export, a route table, a registry), plan SHOULD give all those lines to one item: the
+  contract item or the last join item.
 - Each milestone task and each `TR` SHOULD be a vertical slice: a thin path through every
   layer it needs, checkable on its own. A preparatory refactor SHOULD come first. A change
   that breaks callers across the codebase SHOULD use expand–contract: add the new form,
   move callers in batches, remove the old form.
+- A milestone task or `TR` that joins two capabilities with "and", serves more than one
+  actor, or names a capability with no action SHOULD be split along one axis: spike (an
+  unknown first), paths (happy path first), interfaces (one surface first), data scope
+  (smallest first) or rules (simplest first). One split MUST use one axis. A split
+  MUST NOT follow layers; each part MUST stay a vertical slice instead.
+- A task that changes a stored data shape, a public interface, authentication or a
+  deploy step MUST hold four Risks lines: its rollback step, its compatibility window,
+  its deploy order, and each effect that a rollback cannot undo. A missing line MUST
+  block the proposal.
 - Plan MUST hold the test-scope list (`craft` §4).
 - Each `TR` that adds or changes a data-growth path (`craft` §6) MUST carry its `load:`
   line: its load `TR` id, or `load: none, <why>`. A load `TR` MUST state data size,

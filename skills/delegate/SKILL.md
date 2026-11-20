@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core, research, workflow]
-  max-lines: 234
+  max-lines: 263
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -24,7 +24,10 @@ Main session follows this skill for each spawn of a project agent.
 - Coder, debugger and writer always work in their own worktree; their cards set it. A
   brief MUST NOT send them to main checkout, in words or by an absolute path into it. It
   MUST name each project script by its path from worktree root.
-- Two agents that run at once MUST NOT edit the same file.
+- Two agents that run at once MUST NOT edit the same file. When each starts a server for
+  a gate, each brief MUST give its agent its own port, in one named environment variable
+  that the gate commands read. With no such variable, the two MUST run one after the
+  other.
 - When a spawn in a worktree does not fail (§6), main session MUST merge its branch into
   task branch, or the branch the brief names, then remove its worktree once its output
   closes (§2). Main session MUST run `lint` and `unit`, each when `on`, only after a
@@ -33,6 +36,10 @@ Main session follows this skill for each spawn of a project agent.
   every part.
 - Before it removes an agent worktree, main session MUST run `git worktree unlock <path>`,
   since host locks it for the agent.
+- When removal of an agent worktree fails because it holds modified or untracked files,
+  main session MUST NOT force it. It MUST list those files and ask user: commit them as a
+  WIP commit, copy them out, or delete them. Done when user has answered and the worktree
+  is removed.
 - This merge MAY run without user's yes.
 - A diagnose-only debugger result MUST NOT be merged. Main session MUST keep a branch at
   diagnose-only tip, the diagnose-only branch, until the task-end cleanup; before a fix
@@ -55,9 +62,17 @@ Main session follows this skill for each spawn of a project agent.
 - A brief MUST hold no design choice the plan lacks. It MUST name each gap instead, a
   missing interface or failure path included: coder then records the misfit, or main
   session first amends plan (`tracking` §4).
+- A brief for an item that needs a contract item (`requirements` §2) MUST name the
+  contract's files as read-only. A coder that needs a contract change MUST NOT make it.
+  It MUST report `stuck:` with the change instead, and main session amends plan
+  (`tracking` §4).
 - A review brief MUST also hold commit range, each gate run at range's last commit with
   the actor that ran it, and, for a final review, whole-task checks. An audit brief MUST
   hold the audit target that user names instead of range and task's requirements.
+- A review or check brief MUST NOT tell the agent what not to flag, what group to give a
+  finding, or that a choice is settled. It MUST name the plan sections and `TR` ids that
+  hold the choice instead (first bullet). Main session MUST settle a finding it thinks
+  false through the claim check of the code skill §3.
 - A writer brief, and a debugger brief outside a task, MUST name branch and commit to
   reset to.
 - Follow-up work MUST go as a follow-up message to the agent whose open output it extends:
@@ -66,6 +81,8 @@ Main session follows this skill for each spawn of a project agent.
   change to text it wrote in its open output; any other write is new work. Work that
   checks, reviews or settles a dispute about an agent's own output MUST go to another
   agent, except the planner's own task check on its draft.
+- Final-review findings whose agents' outputs are closed SHOULD go to one fixer in one
+  brief, split only by §4 row.
 - An output MUST count as open until: for a coder or debugger change, its review reports
   `fixed` or `not re-opened` for each finding sent to it, or sends it none; for reviewer
   findings, each finding sent to fix is `fixed` or `not re-opened`, or none was sent; for
@@ -123,7 +140,14 @@ Main session follows this skill for each spawn of a project agent.
   (`core` §6).
 - Any other brief (research, reading, writing) MUST hold its questions and context the
   agent needs.
+- A brief for work that no `TR` covers (a writer draft, a research report) MUST name the
+  checks its result must pass. A brief for an agent that checks that work MUST hold those
+  checks word for word, and they MUST stay the same in each later round.
 - Each brief MUST name the §4 row its task matches, or `no row`.
+- A brief whose done condition is a check the agent runs (a loop command, a script, a
+  count) MUST also name what the agent must not change to meet it: the check, its config
+  and its fixed inputs. The implement skill §4 sets this for gates. The minimise step of
+  the debug skill §3 MAY still cut a loop's inputs.
 - A brief MAY leave an `on` gate to main session only when its change touches no file the
   gate runs.
 - A brief MUST NOT repeat `core` rules or claim `core` is in context; agent loads it when
@@ -220,15 +244,20 @@ Main session follows this skill for each spawn of a project agent.
 
 ## 6. Re-spawn and retry
 
-- A spawn fails when it returns no report or a `stuck:` report. These MUST NOT count as a
-  fail: a failing gate, which the agent's own gate rules handle; a `sources disagree`
-  report (`research` §2), whose section sets where disputed questions go.
-- A spawn that fails because of an open requirement or a question for user MUST go to user
-  at once.
-- Any other failed spawn, from any row, SHOULD get one fresh retry on Opus high. When
-  failed spawn left work in its worktree, main session MUST first commit any uncommitted
-  part as a WIP commit on that spawn's branch, merge task branch, or the branch its brief
-  names, into that branch, name it as the commit to reset to in retry brief, or in the
-  brief of a fresh spawn that takes follow-up work after a `stuck:` report, and, for a
-  retry or a fresh spawn, remove first worktree. When the retry also fails, main session
-  MUST ask user.
+- A spawn fails when it returns no report, a `stuck:` report, or a result that answers
+  another task than its brief: a misread, not a missed detail. A misread MUST NOT get a
+  follow-up message; it MUST take the retry below, reset to its brief's commit, not to a
+  WIP commit. These MUST NOT count as a fail: a failing gate, which the agent's own gate
+  rules handle; a `sources disagree` report (`research` §2), whose section sets where
+  disputed questions go.
+- A spawn that fails because of an open requirement, a question for user or a
+  `stuck: design` report MUST go to user at once.
+- Any other failed spawn, from any row, SHOULD get one fresh retry on Opus high. Except
+  for a misread, when failed spawn left work in its worktree, main session MUST first
+  commit any uncommitted part as a WIP commit on that spawn's branch, merge task branch,
+  or the branch its brief names, into that branch, and name it as the commit to reset to
+  in retry brief, or in the brief of a fresh spawn that takes follow-up work after a
+  `stuck:` report. Then, before the retry or fresh spawn, main session MUST remove the
+  failed spawn's worktree. When the retry also fails, main session MUST ask user.
+- When a failed debugger's report names hypotheses, its retry brief MUST list each with
+  its verdict and, for a refuted one, the probe and result that refuted it.

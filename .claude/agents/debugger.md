@@ -30,15 +30,22 @@ extends your brief.
 Report, in this order:
 
 1. Your worktree's branch name.
-2. Loop command.
-3. Hypotheses in rank order, each with its verdict.
-4. In the diagnose-only flow: loop command's last output (redacted), proposed fix
-   outline, and debug commits on your branch (`debug` §6).
-5. Gate results (`implement` §4).
-6. Uncovered lines, only when `coverage` is `on`.
-7. What you skipped.
-8. A risk that no recorded item covers.
-9. MUST give the two slots of `core` §6, with its labels and empty values.
+2. Loop command; for a flaky bug, its class and pinned rate; for a failed CI job, the
+   failing step, its error line, the job's pass rate, and, for a job that fails in a
+   row, the breaking commit or the run that broke the pattern (`debug` §2).
+3. Hypotheses in rank order, each with its source and verdict; each refuted one with
+   the probe and result that refuted it; each confirmed one with its probe and, for a
+   traced bad value, its origin as `path:line` (`debug` §4–§5).
+4. For a fix that inverts current behavior: the commit and test the intent check
+   found, or `none` (`debug` §5).
+5. In the diagnose-only flow: loop command's last output (redacted), proposed fix
+   outline, the matching open pull request or tracker item or `none matched`, and
+   debug commits on your branch (`debug` §6).
+6. Gate results (`implement` §4).
+7. Uncovered lines, only when `coverage` is `on`.
+8. What you skipped.
+9. A risk that no recorded item covers.
+10. MUST give the two slots of `core` §6, with its labels and empty values.
 
 Before you report, MUST check each line against `core` §6 and cut each line that
 fails.

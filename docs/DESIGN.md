@@ -488,6 +488,15 @@ One dated line per decision, with the dropped alternatives.
   (platform.claude.com/docs/en/build-with-claude/effort) says a detailed spec makes effort
   nearly irrelevant. Dropped: the trait list (layers, TR count, failure paths, modules), a
   per-TR design mark, measuring further first.
+- 2026-11-20: adopt the 57 improvement drafts of `docs/adoption-drafts/` in one task, each
+  as written, edited, in part or not at all, as the `outcome` column of
+  `adoption_index.md` at commit d75cb91b records. `core` takes only the gate exit-code
+  rule and the `transcript` host term, since the main payload had about 650 of the host's
+  10,000 characters left. The PR thread verbs become optional tracker verbs of `tracking`
+  §1, and fetched or untrusted text counts as data by one rule in `research` §2. Reason:
+  the user accepted each change after a review of its conflicts, duplicates and model
+  defaults. Dropped: a forge host term in `core`; the guard hooks again (2026-11-02); a
+  milestone with one task per skill.
 
 ## 7. Milestones
 

@@ -14,3 +14,8 @@ Format: the caveat line of the armory `core` skill, section Reports.
 - Root `AGENTS.md` cites `core` section Host terms and `test` section Levels by name, and skill-graph does not read it, so a rename of either section breaks the cite with no `lint` report : AGENTS.md
 - `workflow` §4 and `delegate` §1 name `code` §4 step 8 by rule name only ("task-end cleanup"), so a rename of that step breaks them with no `lint` report : skills/workflow/SKILL.md
 - `delegate` §4 cites its own row 2 by number in the fix-round bullet, so renumbering the rows breaks it with no `lint` error : skills/delegate/SKILL.md
+- skill-graph checks a `§n` that does not follow a backticked skill name against the citing skill's own sections, so a plain-text cite such as "the research skill §2" passes `lint` with a wrong number, and a bare `§Name` gets a `section` report : scripts/skill-graph.mjs
+- setup §4.2 (row 7) and plan §5 (row 6) and §6 (row 7) cite delegate §4 rows by number, so a row renumber leaves them stale with no lint report : skills/delegate/SKILL.md
+- `delegate` §2 cites its own first bullet by position ("first bullet"), so a new bullet above it retargets the cite : skills/delegate/SKILL.md
+- `plan-draft` §1 names the four-Risks-lines bullet of `requirements` §2 by rule name only, so a § search misses it : skills/plan-draft/SKILL.md
+- `dnd` §2 names the skip option, the "Other" option, the item questions (first ask and re-ask), the loop-bound tie of an item's tries and the addendum of `code` §4 step 7 in words, so a rename of any of them in step 7 breaks `dnd` with no lint report : skills/code/SKILL.md

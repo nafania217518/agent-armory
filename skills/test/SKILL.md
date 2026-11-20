@@ -7,7 +7,7 @@ description: >
 metadata:
   type: regular
   extends: [core, craft]
-  max-lines: 99
+  max-lines: 109
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -54,6 +54,8 @@ change these lines; that section MUST win.
   doubled). Default: `sociable`.
 - A double SHOULD stub a query. A test SHOULD verify a call only when the call is the
   behavior.
+- A double's data MUST hold every field the real source returns, not only the fields the
+  test reads.
 
 ## 4. Structure and naming
 
@@ -73,6 +75,12 @@ change these lines; that section MUST win.
   order.
 - An end-to-end step whose expected UI state equals previous step's MUST also assert on
   its own response body. DOM check alone can pass before that response arrives.
+- A test that drives a UI MUST find each element by role and accessible name, then by
+  label, then by visible text, then by a test id. It MUST NOT use a CSS class, a DOM path
+  or a child index; when none of the four fits, it MUST add a test id to the element
+  instead.
+- Production code MUST NOT hold a method that only tests call, such as a reset or cleanup
+  hook. It MUST go in a test helper instead.
 
 ## 5. Markers
 
@@ -88,6 +96,8 @@ git grep --no-index --exclude-standard -nE '(#|//|/[*]) ?req: ' -- ':!*.md' ':!<
 
 - A test MUST be deterministic: no sleep as a wait, no mutable state shared between tests,
   no dependence on test order, the clock or unseeded random data.
+- A test against a real data store MUST create the records it needs and remove them
+  after, or run in a store or transaction no other test sees.
 - A real timer MAY run in an integration test when the timer is the behavior under test,
   with the shortest wait that proves it.
 

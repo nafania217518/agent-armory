@@ -9,7 +9,7 @@ disable-model-invocation: true
 metadata:
   type: user-only
   extends: [code, core-main, delegate, test, workflow]
-  max-lines: 167
+  max-lines: 193
 ---
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY follow RFC 2119.
@@ -46,13 +46,17 @@ Main session sets up armory on its host. User decides every write.
 - Before any other step, main session MUST probe the `core` hook. Hook term MUST count as
   bound only when probe finds `core` text in starting context of a session and of a
   spawned agent; a config entry alone MUST NOT count.
+- Main session MUST also probe for a guard, a host rule that denies a git command that
+  skips git's own hooks: one dry-run commit with `--no-verify`. Guard MUST count as
+  present only when host denied that command, not when git ran it. Report MUST say
+  whether it is present.
 
 ## 3. Install
 
 - Skills and `core` hook MUST come from armory plugin. `setup` MUST NOT write hook config
   or skill files into project; when probe fails, it MUST write the pointer instead.
 - Parts MUST be these: (a) pointer, only when probe fails; (b) agent cards, in host's
-  format; (c) project context sections (§4).
+  format; (c) project context sections (§4); (d) worktree copy list (§4.4).
 - Before any write, `setup` MUST ask one consent question. Its message text MUST hold
   probe result, or each present item in an update run, and full write set: each write with
   its part, path and diff. Options MUST be:
@@ -106,18 +110,33 @@ Main session sets up armory on its host. User decides every write.
   5. Project-only rules, as MUST or SHOULD lines [none], and the `auto-fix:` classes
      [`none`] (`code` §3).
   6. Tracker [docs fallback].
+- In a repo with source files, a first run MUST have an agent (`delegate` §4 row 7) scan
+  four conventions: order of parts inside a file, names of state and flags, where shared
+  helpers live, and error-handling style. With up to 50 source files, it MUST read each;
+  above that, 2–3 files per convention from each layer.
+- For each convention, the majority style MUST become a prefilled rule line of question 5
+  when each other style has under 5% of hits and under 10 hits: a MUST line, or a
+  `MUST NOT` on a minority style that names the majority style instead. Each such line
+  MUST name one exemplar file by path. Done when each convention has a line, a conflict,
+  or no finding.
 - Before round, `setup` MUST probe host's connections (MCP servers and CLIs) for a
   tracker. It MUST propose a binding for each verb of `tracking` §1, its target, and the
   `closes by PR merge:` line of `templates/AGENTS.md` (the closing reference form the
-  probe finds, else `no`). It MUST bind an optional verb only when tracker has it; a
-  tracker that can only create a branch MUST leave the branch name verb unbound. Only when
-  it binds every label verb, it MUST propose the five label lines of `tracking` §3. Each
-  MUST default to an existing label of the same name first, then one of the same meaning,
-  else role name. Probe MUST prove binding with one live read (list or read) against
-  target, with no write. Failed read MUST count as no fit.
+  probe finds, else `no`). It MUST bind an optional verb only when tracker has it, a
+  forge verb aside (below); a tracker that can only create a branch MUST leave the branch
+  name verb unbound. Only when it binds every label verb, it MUST propose the five label
+  lines of `tracking` §3. Each MUST default to an existing label of the same name first,
+  then one of the same meaning, else role name. Probe MUST prove binding with one live
+  read (list or read) against target, with no write. Failed read MUST count as no fit. A
+  forge verb (`tracking` §1) that tracker lacks MAY bind to the repo's forge, such as its
+  CLI. Either way, a forge verb MUST be proved instead by one live list of review threads
+  on a PR of the repo; with no PR or a failed list, the forge verbs MUST stay unbound,
+  and the tracker keeps its fit.
 - One round MUST show prefilled set, item by item, and ask user to confirm or edit it.
   As a free-text question, it goes as a plain message (`core-main` §2). A further round
-  MUST come only from §4.3.
+  MUST come only from §4.3, or from a convention conflict: a split the threshold above
+  does not settle. Each conflict MUST be its own question, with the two most used styles,
+  one path each, and the options "style A", "style B" and "a new rule".
 - Missing answer MUST take prefilled value (detected value or default). MUST say so.
 
 ### 4.3. Answer checks
@@ -126,6 +145,9 @@ Main session sets up armory on its host. User decides every write.
   `on`. Else MUST ask for the command, or leave the gate off.
 - `coverage` command MUST fail below threshold set in build tools (default 90% per core
   module), through a fail-under setting. Else MUST ask for it, or leave the gate off.
+- When a run raises the `coverage` threshold, `setup` SHOULD first run a mutation tool on
+  the covered code. Each mutant that survives MUST be recorded (`core` §6) as a hollow
+  assertion to fix before the raise.
 - With no tracker fit, a required verb unbound, or no `closes by PR merge:` value, `setup`
   MUST ask user how to reach tracker, that verb or that value, or keep docs fallback.
 
@@ -159,6 +181,10 @@ Main session sets up armory on its host. User decides every write.
 - Fill `templates/AGENTS.md` from answers. Drop a gate line that is off with no reason,
   and any placeholder line left empty. A gate with parts keeps its line, with its parts
   under it.
+- When host copies listed gitignored files into each new worktree, the write set MUST
+  hold that list file at the project root, with each gitignored env file of the project,
+  such as `.env`, and the lines of an existing list. Done when the list holds each such
+  file, or user declined it.
 
 ## 5. Report
 

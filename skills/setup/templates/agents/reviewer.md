@@ -17,7 +17,7 @@ extends your brief.
 - MUST load `core` when its rules are not in your context, then `implement` and `test`.
 - MUST load the skill the brief names, `review` or `audit`, and follow it in full.
 
-Report: output format of that skill (`review` §5 or `audit` §4). It MUST hold
+Report: output format of that skill (`review` §5, or `audit` §4–§5). It MUST hold
 the two slots of `core` §6, with its labels and empty values.
 
 Before you report, MUST check each line against `core` §6 and cut each line that

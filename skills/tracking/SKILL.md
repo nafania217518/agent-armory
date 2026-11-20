@@ -7,7 +7,7 @@ description: >
 metadata:
   type: abstract
   extends: [core-main, requirements]
-  max-lines: 147
+  max-lines: 155
 user-invocable: false
 ---
 
@@ -23,9 +23,12 @@ Load `requirements` before an amendment when its rules are not in your context.
   order, each with its status, assignee and blockers, create an item, edit an item body,
   link a child to its parent, add a blocked-by edge, claim (assign to the user), comment,
   set the status open, done or dropped; optional: branch name (a read of the tracker's
-  branch name for an item, with no side effect), and the label verbs: list items (by
-  status and label), list labels, set labels (add or remove) and create label. Project
-  context `## Tracker` binds each verb.
+  branch name for an item, with no side effect), the label verbs: list items (by
+  status and label), list labels, set labels (add or remove) and create label, and the
+  forge verbs: list a PR's open review threads (unresolved only, each with its id, file,
+  line and comments), reply in a thread and resolve a thread. Project context
+  `## Tracker` binds each verb. A thread reply MUST count as a comment, and a resolve as
+  a write, under the rules below.
 - Docs fallback: with no `## Tracker` in project context, milestones, tasks and their
   status live in docs files, not in a tracker.
 - Each write MUST be one the approved plan lists. Any other write MUST get user's yes
@@ -145,3 +148,8 @@ Load `requirements` before an amendment when its rules are not in your context.
 
 - Business quiz topics: goal, who is affected, done criteria, users, features, business
   rules, out of scope, constraints.
+- A strategic run that adds a milestone for new user-facing work MUST also take the topic
+  pre-mortem: it MUST propose the assumption most likely to make the work useless, the
+  smallest evidence that tests it, and what to delay until that evidence is in. A
+  milestone that gathers that evidence SHOULD come first in the milestone list. Done when
+  user accepted or changed the three items.

@@ -1,8 +1,9 @@
+import { spawnSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import path from 'node:path';
 import { parseFront, splitLines } from './frontmatter.mjs';
 
-const USAGE = 'usage: node scripts/doc-checks.mjs [root]';
+const USAGE = 'usage: node scripts/doc-checks.mjs [--verbose] [root]';
 const WIDTH = 90;
 
 // Paths relative to root of the .md files in dir, or [] when dir is missing.
@@ -250,8 +251,86 @@ function evalFailures(root) {
     ]);
 }
 
+// Each caveat entry of one file as { line, file }; pointer and `—` entries are left out.
+function caveatEntries(root, rel) {
+  let lines;
+  try {
+    lines = readFileSync(path.join(root, rel), 'utf8').split('\n');
+  } catch {
+    return [];
+  }
+  let inSection = rel !== 'AGENTS.md';
+  const entries = [];
+  lines.forEach((line, i) => {
+    if (rel === 'AGENTS.md' && line.startsWith('## ')) inSection = line.trim() === '## Caveats';
+    if (!inSection || !line.startsWith('- ')) return;
+    const fields = line.split(' : ');
+    if (fields.length < 2) return;
+    const last = fields.length - 1;
+    const file = (fields[last].startsWith('Unverified:') ? fields[last - 1] : fields[last]).trim();
+    if (file === '—' || file.startsWith('docs/caveats/')) return;
+    entries.push({ line: i + 1, file });
+  });
+  return entries;
+}
+
+function git(root, args) {
+  const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' });
+  if (r.error) return { error: r.error.message };
+  if (r.status !== 0) return { error: r.stderr.split('\n')[0] };
+  return { out: r.stdout };
+}
+
+// The commit of each line of rel, by line number, from one `git blame --porcelain`.
+function lineCommits(root, rel) {
+  const r = git(root, ['blame', '--porcelain', '--', rel]);
+  if (r.error !== undefined) return r;
+  const commits = new Map();
+  for (const line of r.out.split('\n')) {
+    const m = /^([0-9a-f]{40}) \d+ (\d+)/.exec(line);
+    if (m) commits.set(Number(m[2]), m[1]);
+  }
+  return { commits };
+}
+
+// Drift warnings: each unchecked file, then one count line, or each drifted entry when verbose.
+function driftWarnings(root, verbose) {
+  const caveatFiles = [
+    ...(existsSync(path.join(root, 'AGENTS.md')) ? ['AGENTS.md'] : []),
+    ...mdFiles(root, 'docs/caveats', false),
+  ];
+  const warnings = [];
+  const drifted = [];
+  for (const rel of caveatFiles) {
+    const entries = caveatEntries(root, rel);
+    if (entries.length === 0) continue;
+    const blame = lineCommits(root, rel);
+    if (blame.error !== undefined) {
+      warnings.push(`${rel}: drift not checked (${blame.error})`);
+      continue;
+    }
+    for (const { line, file } of entries) {
+      const sha = blame.commits.get(line);
+      if (sha === undefined || /^0+$/.test(sha)) continue;
+      const log = git(root, ['log', '--format=%h', `${sha}..HEAD`, '--', file]);
+      if (log.error !== undefined) {
+        warnings.push(`${rel}:${line}: drift not checked (${log.error})`);
+      } else if (log.out.trim() !== '') {
+        drifted.push(`${rel}:${line}: ${file} changed after ${sha.slice(0, 7)}`);
+      }
+    }
+  }
+  if (verbose) return [...warnings, ...drifted];
+  if (drifted.length > 0) {
+    warnings.push(`${drifted.length} caveat entries drifted; --verbose lists them`);
+  }
+  return warnings;
+}
+
 function main() {
-  const args = process.argv.slice(2);
+  const all = process.argv.slice(2);
+  const verbose = all.includes('--verbose');
+  const args = all.filter((arg) => arg !== '--verbose');
   if (args.length > 1) {
     process.stderr.write(`${USAGE}\n`);
     process.exit(2);
@@ -264,6 +343,9 @@ function main() {
     ...evalFailures(root),
   ];
   for (const failure of failures) process.stderr.write(`${failure}\n`);
+  for (const warning of driftWarnings(root, verbose)) {
+    process.stderr.write(`doc-checks: warning: ${warning}\n`);
+  }
   process.exit(failures.length > 0 ? 1 : 0);
 }
 
